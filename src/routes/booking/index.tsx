@@ -1,6 +1,10 @@
 import { component$, useSignal, useTask$, $ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
-import { useServicesLoader, useTechniciansLoader } from "~/routes/layout";
+import { server$, type DocumentHead } from "@builder.io/qwik-city";
+import {
+  useEnv,
+  useServicesLoader,
+  useTechniciansLoader,
+} from "~/routes/layout";
 import type { Technician, TechnicianSlots } from "~/types";
 
 // Components
@@ -22,9 +26,80 @@ const WEEKDAYS = [
   "saturday",
 ];
 
+const fetchTechnicianSlots = server$(
+  async (
+    api_base_url: string,
+    tech: Technician,
+    date: string,
+    weekday: string,
+    duration: number
+  ) => {
+    const url = `${api_base_url}/calendar/technician/${tech.id}?date=${date}&weekday=${weekday}&slot_duration=${duration}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const slots = await response.json();
+
+    if (
+      !Array.isArray(slots) ||
+      slots.length === 0 ||
+      slots.every((slot) => Object.keys(slot).length === 0)
+    ) {
+      return null;
+    }
+
+    return {
+      technician: tech,
+      slots: slots.map((slot) => ({
+        start: slot.start,
+        end: slot.end,
+        status: slot.status,
+      })),
+    };
+  }
+);
+
+const submitBooking = server$(
+  async (bookingData: {
+    api_base_url: string;
+    technicianId: string;
+    services: string[];
+    slotStart: string;
+    weekday: string;
+    email: string;
+    name: string;
+    phone: string;
+  }) => {
+    const response = await fetch(
+      `${bookingData.api_base_url}/calendar/technician/${bookingData.technicianId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: bookingData.services,
+          date: bookingData.slotStart,
+          weekday: bookingData.weekday,
+          user_email: bookingData.email,
+          name: bookingData.name,
+          phone: bookingData.phone,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Booking failed");
+    }
+    return data;
+  }
+);
+
 export default component$(() => {
   const servicesSignal = useServicesLoader();
   const techniciansSignal = useTechniciansLoader();
+  const envs = useEnv();
 
   // Form state
   const name = useSignal("");
@@ -82,32 +157,13 @@ export default component$(() => {
     try {
       const slotsPromises = eligibleTechnicians.map(
         async (tech: Technician) => {
-          const url = `https://jfedotov.app.n8n.cloud/webhook/b952a03f-d926-4afc-8d4f-9a3ce7750146/calendar/technician/${tech.id}?date=${date}&weekday=${weekday}&slot_duration=${totalDuration.value}`;
-
-          const response = await fetch(url);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const slots = await response.json();
-
-          if (
-            !Array.isArray(slots) ||
-            slots.length === 0 ||
-            slots.every((slot) => Object.keys(slot).length === 0)
-          ) {
-            return null;
-          }
-
-          return {
-            technician: tech,
-            slots: slots.map((slot) => ({
-              start: slot.start,
-              end: slot.end,
-              status: slot.status,
-            })),
-          };
+          return await fetchTechnicianSlots(
+            envs.value.API_BASE_URL,
+            tech,
+            date,
+            weekday,
+            totalDuration.value
+          );
         }
       );
 
@@ -173,28 +229,19 @@ export default component$(() => {
 
     if (!formState.value) return;
 
+    const weekday = await getWeekday(formState.value.date);
+
     try {
-      const response = await fetch(
-        `https://jfedotov.app.n8n.cloud/webhook/f5856c87-6629-4338-98b2-8580c868c441/calendar/technician/${formState.value.technician.id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            service_id: formState.value.services,
-            date: formState.value.slot!.start,
-            weekday: await getWeekday(formState.value.date),
-            user_email: formState.value.email,
-            name: formState.value.name,
-            phone: formState.value.phone,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Booking failed");
-      }
+      await submitBooking({
+        api_base_url: envs.value.API_BASE_URL,
+        technicianId: formState.value.technician.id,
+        services: formState.value.services,
+        slotStart: formState.value.slot!.start,
+        weekday: weekday,
+        email: formState.value.email,
+        name: formState.value.name,
+        phone: formState.value.phone,
+      });
 
       showModal.value = false;
       bookingStatus.value = "success";

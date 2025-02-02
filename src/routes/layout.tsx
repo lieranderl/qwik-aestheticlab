@@ -13,17 +13,23 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
+export const useEnv = routeLoader$(({env}) => {
+  const API_BASE_URL = env.get("API_BASE_URL") || "";
+  return {
+    API_BASE_URL
+  };
+});
+
 export const useServerTimeLoader = routeLoader$(() => {
   return {
     date: new Date().toISOString(),
   };
 });
 
-export const useTechniciansLoader = routeLoader$(async () => {
+export const useTechniciansLoader = routeLoader$(async ({ env }) => {
+  const API_BASE_URL = env.get("API_BASE_URL");
   try {
-    const response = await fetch(
-      "https://jfedotov.app.n8n.cloud/webhook/f5856c87-6629-4338-98b2-8580c868c441/technicians"
-    );
+    const response = await fetch(`${API_BASE_URL}/technicians`);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -32,11 +38,10 @@ export const useTechniciansLoader = routeLoader$(async () => {
   }
 });
 
-export const useServicesLoader = routeLoader$(async () => {
+export const useServicesLoader = routeLoader$(async ({ env }) => {
+  const API_BASE_URL = env.get("API_BASE_URL");
   try {
-    const response = await fetch(
-      "https://jfedotov.app.n8n.cloud/webhook/f5856c87-6629-4338-98b2-8580c868c441/services"
-    );
+    const response = await fetch(`${API_BASE_URL}/services`);
     const data = await response.json();
     return data;
   } catch (error) {
