@@ -1,5 +1,5 @@
-import { component$ } from '@builder.io/qwik';
-import { useServicesLoader } from '~/routes/layout';
+import { component$ } from "@builder.io/qwik";
+import { useServicesLoader } from "~/routes/layout";
 
 interface Service {
   id: string;
@@ -15,14 +15,16 @@ export default component$(() => {
   const servicesSignal = useServicesLoader();
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
+    return new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR",
     }).format(price);
   };
 
   // Sort services by price in ascending order
-  const sortedServices = [...servicesSignal.value].sort((a: Service, b: Service) => a.price - b.price);
+  const sortedServices = [...servicesSignal.value].sort(
+    (a: Service, b: Service) => a.price - b.price
+  );
 
   return (
     <section id="services" class="py-20 bg-cream">

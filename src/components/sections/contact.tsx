@@ -1,5 +1,5 @@
-import { component$ } from '@builder.io/qwik';
-import { SiInstagram } from '@qwikest/icons/simpleicons';
+import { component$ } from "@builder.io/qwik";
+import { SiInstagram } from "@qwikest/icons/simpleicons";
 
 export default component$(() => {
   return (
@@ -11,9 +11,7 @@ export default component$(() => {
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 class="text-2xl font-serif text-sage-800 mb-4">
-                Hours
-              </h3>
+              <h3 class="text-2xl font-serif text-sage-800 mb-4">Hours</h3>
               <ul class="space-y-2 text-sage-600">
                 <li>Monday - Friday: 9:00 AM - 7:00 PM</li>
                 <li>Saturday: 9:00 AM - 6:00 PM</li>
@@ -21,17 +19,15 @@ export default component$(() => {
               </ul>
             </div>
             <div>
-              <h3 class="text-2xl font-serif text-sage-800 mb-4">
-                Contact
-              </h3>
+              <h3 class="text-2xl font-serif text-sage-800 mb-4">Contact</h3>
               <ul class="space-y-2 text-sage-600">
                 <li>Phone: (555) 123-4567</li>
                 <li>Email: info@aestheticlab.com</li>
                 <li>Address: 123 Beauty Lane, Style City</li>
                 <li class="flex items-center mt-4">
-                  <a 
-                    href="https://instagram.com/aestheticlab" 
-                    target="_blank" 
+                  <a
+                    href="https://instagram.com/aestheticlab"
+                    target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-sage-600 hover:text-sage-800 transition-colors"
                   >

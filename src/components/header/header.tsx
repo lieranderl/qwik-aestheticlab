@@ -1,4 +1,13 @@
-import { component$, useSignal, $, useOnDocument } from '@builder.io/qwik';
+import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
+
+const navLinks = [
+  { href: "/#home", text: "Home" },
+  { href: "/#about", text: "About" },
+  { href: "/#services", text: "Services" },
+  { href: "/#team", text: "Team" },
+  { href: "/#work", text: "Our Work" },
+  { href: "/#contact", text: "Contact" },
+];
 
 export default component$(() => {
   const isMenuOpen = useSignal(false);
@@ -7,7 +16,7 @@ export default component$(() => {
 
   // Handle click outside
   useOnDocument(
-    'click',
+    "click",
     $((event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (
@@ -25,37 +34,49 @@ export default component$(() => {
   return (
     <header class="fixed w-full bg-[#8b9687]/90 backdrop-blur-sm z-50">
       <nav class="max-w-5xl mx-auto px-4 py-2">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between h-12">
           <div class="flex items-center">
-            <a href="/" class="text-2xl font-serif text-cream">
-              <img src="/AestheticLab.svg" alt="Aesthetic Lab" class="h-12" />
-            </a>
+            {/* <a href="/" class="text-2xl font-serif text-cream">
+              <ImgAestheticlab class="h-12 w-12" />
+            </a> */}
           </div>
 
           {/* Mobile menu button */}
           <button
+            type="button"
             ref={buttonRef}
-            onClick$={() => isMenuOpen.value = !isMenuOpen.value}
+            onClick$={() => {
+              isMenuOpen.value = !isMenuOpen.value;
+            }}
             class="md:hidden text-cream p-2"
             aria-label="Toggle menu"
           >
             <div class="w-6 h-5 relative flex flex-col justify-between">
-              <span class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? 'opacity-0' : ''}`}></span>
-              <span class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? '-rotate-45 -translate-y-2' : ''}`}></span>
+              <span
+                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "rotate-45 translate-y-2" : ""}`}
+              />
+              <span
+                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "opacity-0" : ""}`}
+              />
+              <span
+                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""}`}
+              />
             </div>
           </button>
 
           {/* Desktop Navigation */}
           <div class="hidden md:flex items-center space-x-6">
-            <a href="/#home" class="text-sm text-cream hover:text-cream/80 transition-colors">Home</a>
-            <a href="/#about" class="text-sm text-cream hover:text-cream/80 transition-colors">About</a>
-            <a href="/#services" class="text-sm text-cream hover:text-cream/80 transition-colors">Services</a>
-            <a href="/#team" class="text-sm text-cream hover:text-cream/80 transition-colors">Team</a>
-            <a href="/#work" class="text-sm text-cream hover:text-cream/80 transition-colors">Our Work</a>
-            <a href="/#contact" class="text-sm text-cream hover:text-cream/80 transition-colors">Contact</a>
-            <a 
-              href="/booking" 
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                class="text-sm text-cream hover:text-cream/80 transition-colors"
+              >
+                {link.text}
+              </a>
+            ))}
+            <a
+              href="/booking"
               class="bg-cream text-[#8b9687] px-4 py-1.5 rounded-full text-sm hover:bg-cream/90 transition-colors"
             >
               Book Now
@@ -64,18 +85,21 @@ export default component$(() => {
         </div>
 
         {/* Mobile Navigation */}
-        <div 
+        <div
           ref={menuRef}
-          class={`md:hidden ${isMenuOpen.value ? 'block' : 'hidden'} pt-4 pb-2`}
+          class={`md:hidden ${isMenuOpen.value ? "block" : "hidden"} pt-4 pb-2`}
         >
           <div class="flex flex-col space-y-3">
-            <a href="/#home" class="text-sm text-cream hover:text-cream/80 transition-colors">Home</a>
-            <a href="/#about" class="text-sm text-cream hover:text-cream/80 transition-colors">About</a>
-            <a href="/#services" class="text-sm text-cream hover:text-cream/80 transition-colors">Services</a>
-            <a href="/#team" class="text-sm text-cream hover:text-cream/80 transition-colors">Team</a>
-            <a href="/#work" class="text-sm text-cream hover:text-cream/80 transition-colors">Our Work</a>
-            <a href="/#contact" class="text-sm text-cream hover:text-cream/80 transition-colors">Contact</a>
-            <a 
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                class="text-sm text-cream hover:text-cream/80 transition-colors"
+              >
+                {link.text}
+              </a>
+            ))}
+            <a
               href="/booking"
               class="bg-cream text-[#8b9687] px-4 py-1.5 rounded-full text-sm hover:bg-cream/90 transition-colors w-fit"
             >

@@ -1,5 +1,5 @@
-import { component$ } from '@builder.io/qwik';
-import { useTechniciansLoader } from '~/routes/layout';
+import { component$ } from "@builder.io/qwik";
+import { useTechniciansLoader } from "~/routes/layout";
 
 interface WorkingHours {
   monday: string[];
@@ -38,14 +38,16 @@ export default component$(() => {
           {techniciansSignal.value.map((tech: Technician) => (
             <div key={tech.id} class="text-center">
               <div class="w-36 h-36 mx-auto rounded-full mb-4 overflow-hidden">
-                <img 
-                  src={tech.photo_url} 
+                <img
+                  src={tech.photo_url}
                   alt={tech.name}
                   class="w-full h-full object-cover"
                 />
               </div>
               <h3 class="text-xl font-serif text-sage-800 mb-2">{tech.name}</h3>
-              <p class="text-sage-600 mb-4 capitalize">{tech.role || 'Technician'}</p>
+              <p class="text-sage-600 mb-4 capitalize">
+                {tech.role || "Technician"}
+              </p>
               {tech.about && (
                 <p class="text-sage-600 text-sm leading-relaxed">
                   {tech.about}
