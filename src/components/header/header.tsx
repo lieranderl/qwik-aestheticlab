@@ -69,12 +69,12 @@ export default component$(() => {
           class={`md:hidden ${isMenuOpen.value ? 'block' : 'hidden'} pt-4 pb-2`}
         >
           <div class="flex flex-col space-y-3">
-            <a href="#home" class="text-sm text-cream hover:text-cream/80 transition-colors">Home</a>
-            <a href="#about" class="text-sm text-cream hover:text-cream/80 transition-colors">About</a>
-            <a href="#services" class="text-sm text-cream hover:text-cream/80 transition-colors">Services</a>
-            <a href="#team" class="text-sm text-cream hover:text-cream/80 transition-colors">Team</a>
-            <a href="#work" class="text-sm text-cream hover:text-cream/80 transition-colors">Our Work</a>
-            <a href="#contact" class="text-sm text-cream hover:text-cream/80 transition-colors">Contact</a>
+            <a href="/#home" class="text-sm text-cream hover:text-cream/80 transition-colors">Home</a>
+            <a href="/#about" class="text-sm text-cream hover:text-cream/80 transition-colors">About</a>
+            <a href="/#services" class="text-sm text-cream hover:text-cream/80 transition-colors">Services</a>
+            <a href="/#team" class="text-sm text-cream hover:text-cream/80 transition-colors">Team</a>
+            <a href="/#work" class="text-sm text-cream hover:text-cream/80 transition-colors">Our Work</a>
+            <a href="/#contact" class="text-sm text-cream hover:text-cream/80 transition-colors">Contact</a>
             <a 
               href="/booking"
               class="bg-cream text-[#8b9687] px-4 py-1.5 rounded-full text-sm hover:bg-cream/90 transition-colors w-fit"
