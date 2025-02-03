@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import Hero from "~/components/sections/hero";
 import About from "~/components/sections/about";
@@ -7,6 +7,7 @@ import Team from "~/components/sections/team";
 import Work from "~/components/sections/work";
 import Contact from "~/components/sections/contact";
 import Header from "~/components/header/header";
+
 
 export default component$(() => {
   return (
