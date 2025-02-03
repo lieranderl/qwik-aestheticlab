@@ -31,7 +31,7 @@ export default component$(() => {
   return (
     <section id="team" class="py-20 bg-sage-50">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-serif text-center text-sage-800 mb-12">
+        <h2 class="text-4xl font-qestero text-center text-sage-800 mb-12">
           Meet Our Team
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

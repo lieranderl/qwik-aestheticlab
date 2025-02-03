@@ -30,21 +30,23 @@
   "devDependencies": {
     "@builder.io/qwik": "^1.7.3",
     "@builder.io/qwik-city": "^1.7.3",
+    "@ditadi/qwik-hooks": "^0.1.6",
     "@qwikest/icons": "^0.0.13",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "autoprefixer": "^10.4.14",
+    "class-variance-authority": "^0.7.1",
     "eslint": "^8.57.0",
     "eslint-plugin-qwik": "^1.7.3",
     "postcss": "^8.4.31",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.3.3",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "5.4.5",
     "undici": "*",
     "vite": "^5.2.10",
-    "vite-tsconfig-paths": "^4.2.1",
-    "@ditadi/qwik-hooks": "^0.1.0"
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }

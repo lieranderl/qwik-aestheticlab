@@ -6,10 +6,12 @@ import Services from "~/components/sections/services";
 import Team from "~/components/sections/team";
 import Work from "~/components/sections/work";
 import Contact from "~/components/sections/contact";
+import Header from "~/components/header/header";
 
 export default component$(() => {
   return (
     <>
+      <Header />
       <Hero />
       <About />
       <Services />
