@@ -15,7 +15,7 @@ export default component$(() => {
             <div key={tech.id} class="text-center">
               <div class="avatar">
                 <div class="w-32 rounded-full">
-                  <img src={tech.photo_url} alt={tech.name} />
+                  <img src={tech.photo_url} alt={tech.name} width={128} height={128} />
                 </div>
               </div>
               <h3 class="text-xl  mb-2">{tech.name}</h3>
