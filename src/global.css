@@ -6,6 +6,7 @@
 @theme {
   --font-qestero: "qestero", "sans-serif";
   --font-montserrat: "Montserrat", "sans-serif";
+  --font-inter: "Inter", "sans-serif";
 }
 
 @font-face {

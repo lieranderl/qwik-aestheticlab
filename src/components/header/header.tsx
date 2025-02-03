@@ -1,4 +1,5 @@
 import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
+import { BookingBtn } from "../booking-button";
 
 const navLinks = [
   { href: "/#home", text: "Home" },
@@ -9,19 +10,8 @@ const navLinks = [
   { href: "/#contact", text: "Contact" },
 ];
 
-const BookingBtn = component$(() => {
-  return (
-    <button
-      type="button"
-      class="btn btn-sm max-w-fit"
-      onClick$={() => {
-        window.location.href = "/booking/";
-      }}
-    >
-      Book Now
-    </button>
-  );
-});
+
+
 
 export default component$(() => {
   const isMenuOpen = useSignal(false);
@@ -63,7 +53,7 @@ export default component$(() => {
             ))}
           </div>
           <div class="hidden md:block">
-            <BookingBtn />
+            <BookingBtn additionalClasses="btn-sm" />
           </div>
           {/* Mobile menu button */}
           <button
@@ -104,7 +94,7 @@ export default component$(() => {
                 {link.text}
               </a>
             ))}
-            <BookingBtn />
+            <BookingBtn  additionalClasses="btn-sm"/>
           </div>
         </div>
       </nav>

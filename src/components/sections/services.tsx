@@ -27,24 +27,24 @@ export default component$(() => {
   );
 
   return (
-    <section id="services" class="py-20 bg-cream">
+    <section id="services" class="py-20">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-qestero text-center text-sage-800 mb-12">
+        <h2 class="text-4xl font-qestero text-center mb-12">
           Our Services
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sortedServices.map((service: Service) => (
-            <div key={service.id} class="bg-sage-50 p-8 rounded-lg">
+            <div key={service.id} class="bg-neutral-100 p-8 rounded-lg">
               <div class="flex justify-between items-start mb-4">
-                <h3 class="text-2xl font-serif text-sage-800 capitalize">
+                <h3 class="text-2xl font-serif  capitalize">
                   {service.name}
                 </h3>
-                <div class="text-sage-800 font-semibold">
+                <div class=" font-semibold text-neutral-content">
                   {formatPrice(service.price)}
                 </div>
               </div>
-              <p class="text-sage-600 mb-4">{service.description}</p>
-              <div class="text-sm text-sage-500">
+              <p class="text-neutral-content mb-4">{service.description}</p>
+              <div class="text-sm text-neutral-content">
                 Duration: {service.duration} minutes
               </div>
             </div>

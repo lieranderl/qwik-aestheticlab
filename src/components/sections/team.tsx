@@ -29,29 +29,23 @@ export default component$(() => {
   const techniciansSignal = useTechniciansLoader();
 
   return (
-    <section id="team" class="py-20 bg-sage-50">
+    <section id="team" class="py-20">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-qestero text-center text-sage-800 mb-12">
-          Meet Our Team
-        </h2>
+        <h2 class="text-4xl font-qestero text-center mb-12">Meet Our Team</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           {techniciansSignal.value.map((tech: Technician) => (
             <div key={tech.id} class="text-center">
-              <div class="w-36 h-36 mx-auto rounded-full mb-4 overflow-hidden">
-                <img
-                  src={tech.photo_url}
-                  alt={tech.name}
-                  class="w-full h-full object-cover"
-                />
+              <div class="avatar">
+                <div class="w-32 rounded-full">
+                  <img src={tech.photo_url} alt={tech.name} />
+                </div>
               </div>
-              <h3 class="text-xl font-serif text-sage-800 mb-2">{tech.name}</h3>
-              <p class="text-sage-600 mb-4 capitalize">
+              <h3 class="text-xl  mb-2">{tech.name}</h3>
+              <p class=" mb-4 capitalize font-inter">
                 {tech.role || "Technician"}
               </p>
               {tech.about && (
-                <p class="text-sage-600 text-sm leading-relaxed">
-                  {tech.about}
-                </p>
+                <p class="text-sm leading-relaxed">{tech.about}</p>
               )}
             </div>
           ))}
