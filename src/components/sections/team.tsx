@@ -10,7 +10,7 @@ export default component$(() => {
     <section id="team" class="py-20 bg-base-200">
       <div class="container mx-auto px-4">
         <h2 class="text-4xl font-qestero text-center mb-12">Meet Our Team</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           {techniciansSignal.value.map((tech: Technician) => (
             <div key={tech.id} class="text-center">
               <div class="avatar">
@@ -23,7 +23,7 @@ export default component$(() => {
                 {tech.role || "Technician"}
               </p>
               {tech.about && (
-                <p class="text-sm leading-relaxed">{tech.about}</p>
+                <p class="text-sm leading-relaxed text-left font-inter">{tech.about}</p>
               )}
             </div>
           ))}

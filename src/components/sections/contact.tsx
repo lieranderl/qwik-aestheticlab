@@ -26,7 +26,7 @@ export default component$(() => {
                   <a
                     rel="noopener noreferrer"
                     target="_blank"
-                    href="https://instagram.com/aestheticlab"
+                    href="https://www.instagram.com/aestheticlabbe/"
                     class="link inline-flex no-underline hover:text-base-content/70 transition-colors"
                   >
                     <SiInstagram class="w-6 h-6 mr-2" />

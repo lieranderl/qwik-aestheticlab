@@ -36,7 +36,7 @@ export default component$(() => {
                 </div>
               </div>
               <p class=" mb-4">{service.description}</p>
-              <div class="text-sm ">
+              <div class="text-sm font-inter">
                 Duration: {service.duration} minutes
               </div>
             </div>
