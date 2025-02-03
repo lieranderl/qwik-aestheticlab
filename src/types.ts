@@ -14,6 +14,16 @@ export interface TimeSlot {
   status: 'available' | 'busy';
 }
 
+export interface WorkingHours {
+  monday: string[];
+  tuesday: string[];
+  wednesday: string[];
+  thursday: string[];
+  friday: string[];
+  saturday: string[];
+  sunday: string[];
+}
+
 export interface Technician {
   id: string;
   name: string;
@@ -21,7 +31,10 @@ export interface Technician {
   email: string;
   calendar_id: string;
   services: string[];
+  working_hours: WorkingHours;
+  created_at: string;
   active: boolean;
+  about: string;
   role: string;
 }
 
