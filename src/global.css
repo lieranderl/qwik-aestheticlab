@@ -25,7 +25,7 @@ html {
 @plugin "daisyui/theme" {
   name: "Aesthetic";
   default: true;
-  prefersdark: false;
+  prefersdark: true;
   color-scheme: "light";
   --color-base-100: #F4F5F1;
   --color-base-200: #E1E4D6;
