@@ -10,7 +10,7 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-export const useEnv = routeLoader$(({env}) => {
+export const useEnvLoader = routeLoader$(({env}) => {
   const API_BASE_URL = env.get("API_BASE_URL") || "";
   return {
     API_BASE_URL

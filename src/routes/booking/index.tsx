@@ -1,7 +1,7 @@
 import { component$, useSignal, useTask$, $ } from "@builder.io/qwik";
 import { server$, type DocumentHead } from "@builder.io/qwik-city";
 import {
-  useEnv,
+  useEnvLoader,
   useServicesLoader,
   useTechniciansLoader,
 } from "~/routes/layout";
@@ -99,7 +99,7 @@ const submitBooking = server$(
 export default component$(() => {
   const servicesSignal = useServicesLoader();
   const techniciansSignal = useTechniciansLoader();
-  const envs = useEnv();
+  const envs = useEnvLoader();
 
   // Form state
   const name = useSignal("");

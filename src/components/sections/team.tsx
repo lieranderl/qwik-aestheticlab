@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { useTechniciansLoader } from "~/routes/layout";
-import { Technician } from "~/types";
+import type { Technician } from "~/types";
 
 
 export default component$(() => {

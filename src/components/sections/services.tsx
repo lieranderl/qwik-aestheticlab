@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { useServicesLoader } from "~/routes/layout";
-import { Service } from "~/types";
+import type { Service } from "~/types";
 
 
 export default component$(() => {
