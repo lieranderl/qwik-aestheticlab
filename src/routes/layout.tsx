@@ -1,6 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import { Service } from "~/types";
 
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
@@ -40,7 +41,7 @@ export const useServicesLoader = routeLoader$(async ({ env }) => {
   try {
     const response = await fetch(`${API_BASE_URL}/services`);
     const data = await response.json();
-    return data;
+    return data as Service[];
   } catch (error) {
     console.error("Error fetching services:", error);
     return [];

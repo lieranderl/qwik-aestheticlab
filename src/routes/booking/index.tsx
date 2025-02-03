@@ -1,17 +1,6 @@
-import {
-  $,
-  component$,
-  useComputed$,
-  useSignal,
-  useStore,
-  useTask$,
-} from "@builder.io/qwik";
-import { Form, routeAction$, server$, validator$ } from "@builder.io/qwik-city";
-import {
-  HiEnvelopeOutline,
-  HiUserOutline,
-  HiPhoneOutline,
-} from "@qwikest/icons/heroicons";
+import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
+import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+
 import type { Technician, TimeSlot } from "~/types";
 import {
   useServicesLoader,
@@ -19,6 +8,8 @@ import {
   useEnvLoader,
 } from "../layout";
 import { ConfirmationSidePanel } from "~/components/booking2/confirmation-side-panel";
+import { ContactFormInputs } from "~/components/booking2/contact-form-inputs";
+import { ServiceSelector } from "~/components/booking2/service-selector";
 
 const WEEKDAYS = [
   "sunday",
@@ -74,31 +65,37 @@ export default component$(() => {
   const techniciansSignal = useTechniciansLoader();
   const envs = useEnvLoader();
 
-  const name$ = useSignal("tttt");
-  const email$ = useSignal("tt@tt.er");
-  const phone$ = useSignal("456789765456");
+  const nameSignal = useSignal("tttt");
+  const emailSignal = useSignal("tt@tt.er");
+  const phoneSignal = useSignal("456789765456");
+  const selectedServices = useSignal<string[]>([]);
+  const totalDuration = useComputed$(() => {
+    return selectedServices.value.reduce((total, serviceId) => {
+      const service = servicesSignal.value.find((s) => s.id === serviceId);
+      return total + (service?.duration || 0);
+    }, 0);
+  });
 
-  
-  const IsValidForm$ = useComputed$(() => {
-    const nameValid = /^[a-zA-Z\s]{2,50}$/.test(name$.value);
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email$.value);
-    const phoneValid = /^\+?[0-9\-\s]{10,15}$/.test(phone$.value);
+  const IsValidFormSignal = useComputed$(() => {
+    const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
+    const phoneValid = /^\+?[0-9\-\s]{10,15}$/.test(phoneSignal.value);
     return nameValid && emailValid && phoneValid;
   });
 
-  const showConfirmationPanel = useSignal(false);
+  const showConfirmationPanelSignal = useSignal(false);
   const action = useBookAppointment();
 
   //   console.log(action)
 
   const handleBookButtonClick = $(() => {
-    showConfirmationPanel.value = IsValidForm$.value;
+    showConfirmationPanelSignal.value = IsValidFormSignal.value;
   });
 
   return (
     <div class="min-h-screen bg-base-200 pt-24">
       <div class="container mx-auto px-4">
-        <h1 class="text-4xl md:text-5xl mb-8 text-center font-inter font-normal">
+        <h1 class="text-4xl md:text-5xl mb-8 text-center font-qestero font-normal">
           Book Your Appointment
         </h1>
         <div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
@@ -107,66 +104,28 @@ export default component$(() => {
               class="space-y-6 flex flex-col justify-center"
               action={action}
             >
-              <div>
-                <label class="input validator w-full">
-                  <HiUserOutline class="text-primary w-4 h-4" />
-                  <input
-                    name="name"
-                    type="text"
-                    placeholder="Enter you name..."
-                    pattern="^[a-zA-Z\s]{2,50}$"
-                    required
-                    bind:value={name$}
-                    disabled={showConfirmationPanel.value}
-                  />
-                </label>
-                <div class="validator-hint hidden">Please enter your name</div>
-              </div>
-              <div>
-                <label class="input validator w-full">
-                  <HiEnvelopeOutline class="text-primary w-4 h-4" />
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="mail@site.com"
-                    required
-                    bind:value={email$}
-                    disabled={showConfirmationPanel.value}
-                  />
-                </label>
-                <div class="validator-hint hidden">
-                  Please enter valid email address
-                </div>
-              </div>
-              <div>
-                <label class="input validator w-full">
-                  <HiPhoneOutline class="text-primary w-4 h-4" />
-                  <input
-                    name="phone"
-                    type="tel"
-                    placeholder="Enter your phone number..."
-                    required
-                    pattern="^\+?[0-9\-\s]{10,15}$"
-                    bind:value={phone$}
-                    disabled={showConfirmationPanel.value}
-                  />
-                </label>
-                <div class="validator-hint hidden">
-                  Please enter valid phone number
-                </div>
-              </div>
-
+              <ContactFormInputs
+                nameSignal={nameSignal}
+                emailSignal={emailSignal}
+                phoneSignal={phoneSignal}
+                showConfirmationPanelSignal={showConfirmationPanelSignal}
+              />
+              <ServiceSelector
+                selectedServices={selectedServices}
+                services={servicesSignal.value}
+                totalDuration={totalDuration.value}
+              />
               {/* <button type="submit" class="btn ">Book Appointment</button> */}
               <button
                 type="button"
                 class="btn"
                 onClick$={handleBookButtonClick}
-                disabled={!IsValidForm$.value}
+                disabled={!IsValidFormSignal.value}
               >
                 Book Appointment
               </button>
 
-              <ConfirmationSidePanel isOpen={showConfirmationPanel} />
+              <ConfirmationSidePanel isOpen={showConfirmationPanelSignal} />
             </Form>
           </div>
         </div>
