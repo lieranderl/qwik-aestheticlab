@@ -9,6 +9,20 @@ const navLinks = [
   { href: "/#contact", text: "Contact" },
 ];
 
+const BookingBtn = component$(() => {
+  return (
+    <button
+      type="button"
+      class="btn btn-sm max-w-fit"
+      onClick$={() => {
+        window.location.href = "/booking/";
+      }}
+    >
+      Book Now
+    </button>
+  );
+});
+
 export default component$(() => {
   const isMenuOpen = useSignal(false);
   const menuRef = useSignal<HTMLDivElement>();
@@ -32,15 +46,25 @@ export default component$(() => {
   );
 
   return (
-    <header class="fixed w-full bg-[#8b9687]/90 backdrop-blur-sm z-50">
+    <header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
       <nav class="max-w-5xl mx-auto px-4 py-2">
         <div class="flex items-center justify-between h-12">
-          <div class="flex items-center">
-            {/* <a href="/" class="text-2xl font-serif text-cream">
-              <ImgAestheticlab class="h-12 w-12" />
-            </a> */}
+          <div />
+          {/* Desktop Navigation */}
+          <div class="hidden md:flex flex-1 items-center justify-center space-x-6">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                class="link no-underline text-base-100 hover:text-base-100/80 transition-colors"
+              >
+                {link.text}
+              </a>
+            ))}
           </div>
-
+          <div class="hidden md:block">
+            <BookingBtn />
+          </div>
           {/* Mobile menu button */}
           <button
             type="button"
@@ -48,40 +72,21 @@ export default component$(() => {
             onClick$={() => {
               isMenuOpen.value = !isMenuOpen.value;
             }}
-            class="md:hidden text-cream p-2"
+            class="md:hidden "
             aria-label="Toggle menu"
           >
             <div class="w-6 h-5 relative flex flex-col justify-between">
               <span
-                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "rotate-45 translate-y-2" : ""}`}
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "rotate-45 translate-y-2" : ""}`}
               />
               <span
-                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "opacity-0" : ""}`}
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "opacity-0" : ""}`}
               />
               <span
-                class={`w-full h-0.5 bg-cream transition-all duration-300 ${isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""}`}
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""}`}
               />
             </div>
           </button>
-
-          {/* Desktop Navigation */}
-          <div class="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                class="text-sm text-cream hover:text-cream/80 transition-colors"
-              >
-                {link.text}
-              </a>
-            ))}
-            <a
-              href="/booking"
-              class="bg-cream text-[#8b9687] px-4 py-1.5 rounded-full text-sm hover:bg-cream/90 transition-colors"
-            >
-              Book Now
-            </a>
-          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -89,22 +94,17 @@ export default component$(() => {
           ref={menuRef}
           class={`md:hidden ${isMenuOpen.value ? "block" : "hidden"} pt-4 pb-2`}
         >
-          <div class="flex flex-col space-y-3">
+          <div class="flex flex-col space-y-3 items-end">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                class="text-sm text-cream hover:text-cream/80 transition-colors"
+                class="link no-underline text-base-100 text-right hover:text-base-100/80 transition-colors"
               >
                 {link.text}
               </a>
             ))}
-            <a
-              href="/booking"
-              class="bg-cream text-[#8b9687] px-4 py-1.5 rounded-full text-sm hover:bg-cream/90 transition-colors w-fit"
-            >
-              Book Now
-            </a>
+            <BookingBtn />
           </div>
         </div>
       </nav>
