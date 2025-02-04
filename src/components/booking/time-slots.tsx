@@ -1,61 +1,102 @@
-import { component$ } from '@builder.io/qwik';
-import type { TechnicianSlots, TimeSlot, Technician } from '~/types';
+import type { Signal } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
+import type { Technician } from "~/types";
+import type { TechnicianSlots, TimeSlot } from "~/types";
 
 export interface TimeSlotsProps {
-  availableSlots: TechnicianSlots[];
-  selectedSlot: { start: string; end: string } | null;
-  selectedTechnician: Technician | null;
-  onSlotSelect$: (slot: TimeSlot, technician: Technician) => void;
+  availableSlots: Signal<TechnicianSlots[]>;
+  selectedSlot: Signal<TimeSlot | null>;
+  selectedTechnician: Signal<Technician | null>;
 }
 
-export default component$<TimeSlotsProps>(({
-  availableSlots,
-  selectedSlot,
-  selectedTechnician,
-  onSlotSelect$
-}) => {
-  const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString([], { 
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-  };
+export default component$<TimeSlotsProps>(
+  ({ availableSlots, selectedSlot, selectedTechnician }) => {
+    const formatTime = (dateString: string) => {
+      return new Date(dateString).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+    };
 
-  return (
-    <div class="space-y-6">
-      {availableSlots.map((techSlots) => (
-        <div key={techSlots.technician.id} class="border border-sage-200 rounded-lg p-4">
-          <div class="flex items-center gap-4 mb-4">
-            <img 
-              src={techSlots.technician.photo_url} 
-              alt={techSlots.technician.name}
-              class="w-12 h-12 rounded-full object-cover"
-            />
-            <div>
-              <h3 class="font-medium text-sage-800">{techSlots.technician.name}</h3>
-              <p class="text-sm text-sage-600 capitalize">{techSlots.technician.role || 'Technician'}</p>
+    const onSlotSelect$ = $((slot: TimeSlot, technician: Technician) => {
+      if (slot.status === "busy") return;
+
+      if (
+        selectedSlot.value?.start === slot.start &&
+        selectedTechnician.value?.id === technician.id
+      ) {
+        selectedSlot.value = null;
+        selectedTechnician.value = null;
+        return;
+      }
+
+      selectedSlot.value = {
+        start: slot.start,
+        end: slot.end,
+        status: slot.status,
+      };
+      selectedTechnician.value = technician;
+    });
+
+    return (
+      <div class="space-y-6">
+        {availableSlots.value.map((techSlots) => (
+          <div
+            key={techSlots.tech.id}
+            class="card border-1 border-base-200 shadow-sm"
+          >
+            <div class="card-body">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="avatar">
+                  <div class="w-12 rounded-full">
+                    <img
+                      src={techSlots.tech.photo_url}
+                      alt={techSlots.tech.name}
+                      width={128}
+                      height={128}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-medium">{techSlots.tech.name}</h3>
+                  <p class="font-inter capitalize badge badge-sm badge-soft badge-secondary">
+                    {techSlots.tech.role || "Technician"}
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {techSlots.slots.map(
+                  (slot) =>
+                    slot.status !== "busy" && (
+                      <button
+                        key={slot.start}
+                        type="button"
+                        onClick$={() => onSlotSelect$(slot, techSlots.tech)}
+                        class={`btn btn-secondary ${
+                          selectedSlot.value?.start === slot.start &&
+                          selectedTechnician.value?.id === techSlots.tech.id
+                            ? ""
+                            : "btn-soft"
+                        }`}
+                      >
+                        {formatTime(slot.start)}
+                      </button>
+                    )
+                )}
+              </div>
             </div>
+
+            <input name="slotStart" hidden value={selectedSlot.value?.start} />
+            <input
+              name="selectedTechId"
+              hidden
+              value={selectedTechnician.value?.id}
+            />
           </div>
-          
-          <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-            {techSlots.slots.map((slot, index) => (
-              slot.status != 'busy' && <button
-                key={index}
-                type="button"
-                onClick$={() => onSlotSelect$(slot, techSlots.technician)}
-                class={`p-2 text-sm rounded-md ${
-                  selectedSlot?.start === slot.start && selectedTechnician?.id === techSlots.technician.id
-                    ? 'bg-sage-600 text-white'
-                    : 'bg-sage-100 text-sage-700 hover:bg-sage-200'
-                }`}
-              >
-                {formatTime(slot.start)}
-              </button>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-});
+        ))}
+      </div>
+    );
+  }
+);

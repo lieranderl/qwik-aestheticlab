@@ -14,12 +14,13 @@ import {
   useTechniciansLoader,
   useEnvLoader,
 } from "../layout";
-import { ConfirmationSidePanel } from "~/components/booking2/confirmation-side-panel";
-import { ContactFormInputs } from "~/components/booking2/contact-form-inputs";
-import { ServiceSelector } from "~/components/booking2/service-selector";
-import { DateSelector } from "~/components/booking2/date-selector";
-import TimeSlots from "~/components/booking2/time-slots";
-import StatusModal from "~/components/booking2/status-modal";
+import { ConfirmationSidePanel } from "~/components/booking/confirmation-side-panel";
+import { ContactFormInputs } from "~/components/booking/contact-form-inputs";
+import { ServiceSelector } from "~/components/booking/service-selector";
+import { DateSelector } from "~/components/booking/date-selector";
+import TimeSlots from "~/components/booking/time-slots";
+import StatusModal from "~/components/booking/status-modal";
+import { TotalSummary } from "~/components/booking/total-summary";
 
 const WEEKDAYS = [
   "sunday",
@@ -66,34 +67,34 @@ export const useBookAppointment = routeAction$(async (form, event) => {
   console.log("ACTION");
   console.log(form);
   const API_BASE_URL = event.env.get("API_BASE_URL");
-//   const response = await fetch(
-//     `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
-//     {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         service_id: Object.keys(form.services),
-//         date: form.slotStart,
-//         weekday: form.weekday,
-//         user_email: form.email,
-//         name: form.name,
-//         phone: form.phone,
-//       }),
-//     }
-//   );
+  const response = await fetch(
+    `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: Object.keys(form.services),
+        date: form.slotStart,
+        weekday: form.weekday,
+        user_email: form.email,
+        name: form.name,
+        phone: form.phone,
+      }),
+    }
+  );
 
-//   const data = await response.json();
-//   if (!response.ok) {
-//     return {
-//       success: false,
-//     };
-//   }
+  const data = await response.json();
+  if (!response.ok) {
+    return {
+      success: false,
+    };
+  }
 
-await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  return {
-    success: false,
-  };
+  //   return {
+  //     success: false,
+  //   };
 });
 
 export default component$(() => {
@@ -242,6 +243,7 @@ export default component$(() => {
                 selectedServices={selectedServices}
                 services={servicesSignal.value}
                 totalDuration={totalDuration.value}
+                totalPrice={totalPrice.value}
               />
 
               {selectedServices.value.length > 0 && (
@@ -258,9 +260,15 @@ export default component$(() => {
                 />
               )}
 
+              <TotalSummary
+                selectedServices={selectedServices.value}
+                totalDuration={totalDuration.value}
+                totalPrice={totalPrice.value}
+              />
+
               <button
                 type="button"
-                class="btn btn-lg"
+                class="btn btn-secondary btn-lg"
                 onClick$={handleBookButtonClick}
                 disabled={!IsValidFormSignal.value}
               >
@@ -280,7 +288,7 @@ export default component$(() => {
             </Form>
           </div>
         </div>
-        <StatusModal action={action}/>
+        <StatusModal action={action} />
       </div>
     </div>
   );

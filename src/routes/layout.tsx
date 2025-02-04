@@ -1,7 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { Service, Technician } from "~/types";
+import type { Service, Technician } from "~/types";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({

@@ -1,34 +1,55 @@
-import { component$ } from '@builder.io/qwik';
+import type { Signal } from "@builder.io/qwik";
+import { component$, useComputed$ } from "@builder.io/qwik";
+import {
+  HiArrowLeftOutline,
+  HiArrowRightOutline,
+  HiCalendarOutline,
+} from "@qwikest/icons/heroicons";
 
 export interface DateSelectorProps {
-  selectedDate: string;
-  onDateChange$: (date: string) => void;
+  selectedDateSignal: Signal<string>;
 }
 
-export default component$<DateSelectorProps>(({
-  selectedDate,
-  onDateChange$
-}) => {
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
+export const DateSelector = component$<DateSelectorProps>(
+  ({ selectedDateSignal }) => {
 
-  return (
-    <div>
-      <label for="date" class="block text-sm font-medium text-sage-700 mb-1">
-        Select Date
-      </label>
-      <input
-        type="date"
-        id="date"
-        name="date"
-        min={getMinDate()}
-        value={selectedDate}
-        onChange$={(e) => onDateChange$((e.target as HTMLInputElement).value)}
-        class="w-full px-4 py-2 border border-sage-200 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-400"
-        required
-      />
-    </div>
-  );
-});
+    return (
+      <div>
+        <label class="input input-primary">
+          <HiCalendarOutline class="text-primary w-4 h-4" />
+          <input
+            type="button"
+            popovertarget="cally-popover1"
+            // style="anchor-name:--cally1"
+            id="cally1"
+            bind:value={selectedDateSignal}
+            placeholder="Pick a date"
+          />
+        </label>
+        <div
+          popover="auto"
+          id="cally-popover1"
+          class="dropdown bg-base-100 rounded-box shadow-lg"
+          style="position-anchor:--cally1"
+        >
+          <calendar-date
+            class="cally"
+            // onchange={(document.getElementById("cally1").innerText = this.value)}
+            onChange$={(e, v) => {
+              selectedDateSignal.value = v.value;
+            }}
+          >
+            <HiArrowLeftOutline
+              aria-label="Previous"
+              class="size-4"
+              slot="previous"
+            />
+            <HiArrowRightOutline aria-label="Next" class="size-4" slot="next" />
+
+            <calendar-month />
+          </calendar-date>
+        </div>
+      </div>
+    );
+  }
+);
