@@ -11,7 +11,7 @@ export default component$(() => {
         <h2 class="text-4xl font-qestero text-center mb-12 font-bold">Meet Our Team</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 ">
           {techniciansSignal.value.map((tech: Technician) => (
-            <div key={tech.id} class="card bg-base-100">
+            <div key={tech.id} class="card bg-base-100" data-aos="fade-up">
               <div class="card-body">
                 <div class="avatar justify-center">
                   <div class="w-32 rounded-full">
@@ -24,7 +24,7 @@ export default component$(() => {
                   </div>
                 </div>
                 {tech.about && (
-                  <div class="collapse collapse-arrow bg-base-100 ">
+                  <div class="collapse collapse-arrow bg-base-100 " data-aos="fade-up">
                     <input type="checkbox" />
                     <div class="collapse-title ">
                       <p class="text-xl">{tech.name}</p>

@@ -14,7 +14,7 @@ export default component$(() => {
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           {servicesSignal.value.map((service: Service) => (
-            <div key={service.id} class="p-4 rounded-lg bg-base-100">
+            <div key={service.id} class="p-4 rounded-lg bg-base-100" data-aos="fade-up">
               <div class="collapse collapse-arrow ">
                 <input type="checkbox" />
                 <div class="collapse-title ">
