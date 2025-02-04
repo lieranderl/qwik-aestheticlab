@@ -52,7 +52,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               type="tel"
               placeholder="Enter your phone number..."
               required
-              pattern="^\+?[0-9\-\s]{10,15}$"
+              pattern="^\+?[0-9\-\s]{9,15}$"
               bind:value={phoneSignal}
               readOnly={showConfirmationPanel}
             />

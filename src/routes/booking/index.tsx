@@ -109,9 +109,9 @@ export default component$(() => {
   const techniciansSignal = useTechniciansLoader();
   const envs = useEnvLoader();
 
-  const nameSignal = useSignal("tttt");
-  const emailSignal = useSignal("tt@tt.er");
-  const phoneSignal = useSignal("456789765456");
+  const nameSignal = useSignal("");
+  const emailSignal = useSignal("");
+  const phoneSignal = useSignal("");
   const selectedServices = useSignal<string[]>([]);
   const selectedServicesNames = useComputed$(() => {
     return servicesSignal.value
@@ -145,7 +145,7 @@ export default component$(() => {
   const IsValidFormSignal = useComputed$(() => {
     const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
-    const phoneValid = /^\+?[0-9\-\s]{10,15}$/.test(phoneSignal.value);
+    const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phoneSignal.value);
     return (
       nameValid &&
       emailValid &&
