@@ -6,7 +6,6 @@ export interface ServiceSelectorProps {
   services: Service[];
   selectedServices: Signal<string[]>;
   totalDuration: number;
-  showConfirmationPanelSignal: Signal<boolean>;
 }
 
 export const ServiceSelector = component$<ServiceSelectorProps>(
@@ -14,8 +13,6 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
     services,
     selectedServices,
     totalDuration,
-    showConfirmationPanelSignal,
-    //   onToggleService$
   }) => {
     const formatPrice = (price: number) => {
       return new Intl.NumberFormat("de-DE", {

@@ -4,10 +4,11 @@ import {
   useComputed$,
   useOnDocument,
   useSignal,
+  useTask$,
 } from "@builder.io/qwik";
-import { Form, routeAction$, server$, ServerQRL } from "@builder.io/qwik-city";
+import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
 
-import type { Technician, TimeSlot } from "~/types";
+import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
   useServicesLoader,
   useTechniciansLoader,
@@ -17,6 +18,7 @@ import { ConfirmationSidePanel } from "~/components/booking2/confirmation-side-p
 import { ContactFormInputs } from "~/components/booking2/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking2/service-selector";
 import { DateSelector } from "~/components/booking2/date-selector";
+import TimeSlots from "~/components/booking2/time-slots";
 
 const WEEKDAYS = [
   "sunday",
@@ -53,9 +55,9 @@ const fetchTechnicianSlots = server$(
     }
 
     return {
-      tech_id: tech.id,
+      tech: tech,
       slots: slots,
-    };
+    } as TechnicianSlots;
   }
 );
 
@@ -80,15 +82,34 @@ export default component$(() => {
   const emailSignal = useSignal("tt@tt.er");
   const phoneSignal = useSignal("456789765456");
   const selectedServices = useSignal<string[]>([]);
+  const selectedServicesNames = useComputed$(() => {
+    return servicesSignal.value
+      .filter((service) => selectedServices.value.includes(service.id))
+      .map((service) => service.name);
+  });
   const totalDuration = useComputed$(() => {
     return selectedServices.value.reduce((total, serviceId) => {
       const service = servicesSignal.value.find((s) => s.id === serviceId);
       return total + (service?.duration || 0);
     }, 0);
   });
+
+  const totalPrice = useComputed$(() => {
+    return selectedServices.value.reduce((total, serviceId) => {
+      const service = servicesSignal.value.find((s) => s.id === serviceId);
+      return total + (service?.price || 0);
+    }, 0);
+  });
+
   const selectedDateSignal = useSignal("Pick a date");
-  const availableSlots = useSignal<{ tech_id: string; slots: TimeSlot }[]>([]);
-  const selectedSlot = useSignal<TimeSlot>();
+  const selectedWeekDay = useComputed$(() => {
+    const dayIndex = new Date(selectedDateSignal.value).getDay();
+    return WEEKDAYS[dayIndex];
+  });
+  const availableSlots = useSignal<TechnicianSlots[]>([]);
+
+  const selectedSlot = useSignal<TimeSlot | null>(null);
+  const selectedTechnician = useSignal<Technician | null>(null);
 
   const IsValidFormSignal = useComputed$(() => {
     const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
@@ -99,7 +120,8 @@ export default component$(() => {
       emailValid &&
       phoneValid &&
       selectedServices.value.length > 0 &&
-      selectedDateSignal.value !== "Pick a date"
+      selectedDateSignal.value !== "Pick a date" &&
+      selectedSlot.value !== null
     );
   });
 
@@ -110,11 +132,6 @@ export default component$(() => {
     showConfirmationPanelSignal.value = IsValidFormSignal.value;
   });
 
-  const getWeekday = $(async (date: string) => {
-    const dayIndex = new Date(date).getDay();
-    return WEEKDAYS[dayIndex];
-  });
-
   const getEligibleTechnicians = $(() => {
     return techniciansSignal.value.filter((tech: Technician) =>
       selectedServices.value.every((serviceId) =>
@@ -123,23 +140,20 @@ export default component$(() => {
     );
   });
 
-  const fetchAvailableSlots = $(async (date: string) => {
+  const fetchAvailableSlots = $(async () => {
     const eligibleTechnicians = await getEligibleTechnicians();
-    const weekday = await getWeekday(date);
-
     try {
       const slotsPromises = eligibleTechnicians.map(
         async (tech: Technician) => {
           return await fetchTechnicianSlots(
             envs.value.API_BASE_URL,
             tech,
-            date,
-            weekday,
+            selectedDateSignal.value,
+            selectedWeekDay.value,
             totalDuration.value
           );
         }
       );
-
       const results = await Promise.all(
         slotsPromises.map((p) =>
           p.catch((error) => {
@@ -148,16 +162,30 @@ export default component$(() => {
           })
         )
       );
-
-      availableSlots.value = results.filter(
+      return results.filter(
         (result) =>
           result !== null &&
           result.slots.length > 0 &&
           result.slots.some((slot) => Object.keys(slot).length > 0)
-      );
+      ) as TechnicianSlots[];
     } catch (error) {
       console.error("Error fetching slots:", error);
+      return [] as TechnicianSlots[];
+    }
+  });
+
+  useTask$(async ({ track }) => {
+    track(() => selectedServices.value.length);
+    track(() => selectedDateSignal.value);
+    if (
+      selectedDateSignal.value !== "Pick a date" &&
+      selectedServices.value.length > 0
+    ) {
+      const as = await fetchAvailableSlots();
+      availableSlots.value = as;
+    } else {
       availableSlots.value = [];
+      selectedTechnician.value = null;
     }
   });
 
@@ -184,19 +212,22 @@ export default component$(() => {
                 selectedServices={selectedServices}
                 services={servicesSignal.value}
                 totalDuration={totalDuration.value}
-                showConfirmationPanelSignal={showConfirmationPanelSignal}
               />
 
               {selectedServices.value.length > 0 && (
                 <DateSelector selectedDateSignal={selectedDateSignal} />
               )}
 
-              {selectedServices.value.length > 0 &&
-                selectedDateSignal.value !== "Pick a date" && (
-                  <div>Time slots</div>
-                )}
+              <input name="weekday" hidden value={selectedWeekDay.value} />
 
-              {/* <button type="submit" class="btn ">Book Appointment</button> */}
+              {availableSlots.value.length > 0 && (
+                <TimeSlots
+                  availableSlots={availableSlots}
+                  selectedSlot={selectedSlot}
+                  selectedTechnician={selectedTechnician}
+                />
+              )}
+
               <button
                 type="button"
                 class="btn btn-lg"
@@ -206,7 +237,15 @@ export default component$(() => {
                 Book Appointment
               </button>
 
-              <ConfirmationSidePanel isOpen={showConfirmationPanelSignal} />
+              <ConfirmationSidePanel
+                isOpen={showConfirmationPanelSignal}
+                isSubmitting={action.isRunning}
+                selectedServicesNames={selectedServicesNames.value}
+                selectedSlot={selectedSlot.value}
+                selectedTechnician={selectedTechnician.value}
+                duration={totalDuration.value}
+                price={totalPrice.value}
+              />
             </Form>
           </div>
         </div>

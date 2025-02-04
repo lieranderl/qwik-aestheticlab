@@ -39,6 +39,6 @@ export interface Technician {
 }
 
 export interface TechnicianSlots {
-  technician: Technician;
+  tech: Technician;
   slots: TimeSlot[];
 }

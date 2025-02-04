@@ -19,7 +19,7 @@ export default component$(() => {
                 </div>
               </div>
               <h3 class="text-xl  mb-2">{tech.name}</h3>
-              <p class=" mb-4 capitalize font-inter">
+              <p class=" mb-4 capitalize font-inter text-accent">
                 {tech.role || "Technician"}
               </p>
               {tech.about && (

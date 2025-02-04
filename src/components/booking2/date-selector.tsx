@@ -1,5 +1,5 @@
 import type { Signal } from "@builder.io/qwik";
-import { component$ } from "@builder.io/qwik";
+import { component$, useComputed$ } from "@builder.io/qwik";
 import {
   HiArrowLeftOutline,
   HiArrowRightOutline,
@@ -12,9 +12,9 @@ export interface DateSelectorProps {
 
 export const DateSelector = component$<DateSelectorProps>(
   ({ selectedDateSignal }) => {
+
     return (
       <div>
-        
         <label class="input input-primary">
           <HiCalendarOutline class="text-primary w-4 h-4" />
           <input
@@ -26,13 +26,6 @@ export const DateSelector = component$<DateSelectorProps>(
             placeholder="Pick a date"
           />
         </label>
-        <input
-          hidden
-          name="selectedDate"
-          type="date"
-          bind:value={selectedDateSignal}
-        />
-
         <div
           popover="auto"
           id="cally-popover1"

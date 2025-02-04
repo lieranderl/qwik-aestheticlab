@@ -1,110 +1,45 @@
-import { $, component$, Signal } from "@builder.io/qwik";
-
+import type { Signal } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
+import type { Technician, TimeSlot } from "~/types";
 
 export interface ConfirmationPanelProps {
   isOpen: Signal<boolean>;
-  isSubmitting?: Signal<boolean>;
+  isSubmitting: boolean;
+  selectedSlot: TimeSlot | null;
+  selectedTechnician: Technician | null;
+  selectedServicesNames: string[];
+  duration: number;
+  price: number;
 }
 
-export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(({isOpen, isSubmitting}) => {
+export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
+  ({
+    isOpen,
+    isSubmitting,
+    selectedSlot,
+    selectedServicesNames,
+    selectedTechnician,
+    duration,
+    price,
+  }) => {
+    const onClose$ = $(() => {
+      isOpen.value = false;
+    });
 
-
-  const onClose$ = $(()=>{
-    isOpen.value = false
-  })
-
-  return (
-    <div
-      class={`fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
-        isOpen.value ? "translate-x-0" : "translate-x-full"
-      }`}
-    >
-      <div class="h-full flex flex-col">
-        {/* <div class="p-6 border-b border-sage-100">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-serif text-sage-800">
-              {error ? "Booking Failed" : "Confirm Your Appointment"}
-            </h3>
-            <button
-              onClick$={onClose$}
-              class="text-sage-500 hover:text-sage-700 transition-colors"
-              aria-label="Close panel"
-            >
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {error ? (
-            <p class="text-red-600 mb-4">{error}</p>
-          ) : (
-            <div class="space-y-4">
-              <div class="bg-sage-50 p-4 rounded-lg">
-                <p class="text-sage-700 font-medium mb-2">{selectedDate}</p>
-                <p class="text-sage-700">
-                  {formatTime(selectedSlot.start)} -{" "}
-                  {formatTime(selectedSlot.end)}
-                </p>
-              </div>
-
-              <div class="border-t border-b border-sage-100 py-4">
-                <div class="flex items-center gap-4">
-                  <img
-                    src={selectedTechnician.photo_url}
-                    alt={selectedTechnician.name}
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <p class="font-medium text-sage-800">
-                      {selectedTechnician.name}
-                    </p>
-                    <p class="text-sm text-sage-600 capitalize">
-                      {selectedTechnician.role || "Technician"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <p class="font-medium text-sage-800 mb-2">Selected Services:</p>
-                <ul class="space-y-2">
-                  {getSelectedServiceNames().map((serviceName, index) => (
-                    <li
-                      key={index}
-                      class="text-sage-700 flex items-center gap-2"
-                    >
-                      <svg
-                        class="w-4 h-4 text-sage-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      {serviceName}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div> */}
+    return (
+      <div
+        class={`fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+          isOpen.value ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div>
+          {selectedSlot?.start} - {selectedSlot?.end}
+          {duration}
+          {price}
+          {selectedServicesNames.join(" ")}
+          {selectedTechnician?.name}
+          {selectedTechnician?.role}
+        </div>
 
         <div class="mt-auto p-6 ">
           <div class="flex gap-3">
@@ -112,14 +47,16 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(({isOpen
               type="button"
               onClick$={onClose$}
               class="btn "
-              disabled={isSubmitting?.value}
+              disabled={isSubmitting}
             >
               Cancel
             </button>
-            <button type="submit" class="btn ">Book Appointment</button>
+            <button type="submit" class="btn ">
+              Book Appointment
+            </button>
           </div>
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
