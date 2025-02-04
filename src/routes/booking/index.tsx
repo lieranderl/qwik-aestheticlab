@@ -19,6 +19,7 @@ import { ContactFormInputs } from "~/components/booking2/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking2/service-selector";
 import { DateSelector } from "~/components/booking2/date-selector";
 import TimeSlots from "~/components/booking2/time-slots";
+import StatusModal from "~/components/booking2/status-modal";
 
 const WEEKDAYS = [
   "sunday",
@@ -61,9 +62,38 @@ const fetchTechnicianSlots = server$(
   }
 );
 
-export const useBookAppointment = routeAction$(async (form) => {
+export const useBookAppointment = routeAction$(async (form, event) => {
   console.log("ACTION");
   console.log(form);
+  const API_BASE_URL = event.env.get("API_BASE_URL");
+//   const response = await fetch(
+//     `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
+//     {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         service_id: Object.keys(form.services),
+//         date: form.slotStart,
+//         weekday: form.weekday,
+//         user_email: form.email,
+//         name: form.name,
+//         phone: form.phone,
+//       }),
+//     }
+//   );
+
+//   const data = await response.json();
+//   if (!response.ok) {
+//     return {
+//       success: false,
+//     };
+//   }
+
+await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  return {
+    success: true,
+  };
 });
 
 export default component$(() => {
@@ -128,8 +158,9 @@ export default component$(() => {
   const showConfirmationPanelSignal = useSignal(false);
   const action = useBookAppointment();
 
-  const handleBookButtonClick = $(() => {
-    showConfirmationPanelSignal.value = IsValidFormSignal.value;
+  const handleBookButtonClick = $(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    showConfirmationPanelSignal.value = true;
   });
 
   const getEligibleTechnicians = $(() => {
@@ -177,15 +208,14 @@ export default component$(() => {
   useTask$(async ({ track }) => {
     track(() => selectedServices.value.length);
     track(() => selectedDateSignal.value);
+    selectedSlot.value = null;
+    selectedTechnician.value = null;
     if (
       selectedDateSignal.value !== "Pick a date" &&
       selectedServices.value.length > 0
     ) {
       const as = await fetchAvailableSlots();
       availableSlots.value = as;
-    } else {
-      availableSlots.value = [];
-      selectedTechnician.value = null;
     }
   });
 
@@ -205,7 +235,7 @@ export default component$(() => {
                 nameSignal={nameSignal}
                 emailSignal={emailSignal}
                 phoneSignal={phoneSignal}
-                showConfirmationPanelSignal={showConfirmationPanelSignal}
+                showConfirmationPanel={showConfirmationPanelSignal.value}
               />
               <div class="w-1 content-center" style="anchor-name:--cally1" />
               <ServiceSelector
@@ -239,6 +269,7 @@ export default component$(() => {
 
               <ConfirmationSidePanel
                 isOpen={showConfirmationPanelSignal}
+                isValid={IsValidFormSignal.value}
                 isSubmitting={action.isRunning}
                 selectedServicesNames={selectedServicesNames.value}
                 selectedSlot={selectedSlot.value}
@@ -249,6 +280,7 @@ export default component$(() => {
             </Form>
           </div>
         </div>
+        <StatusModal action={action}/>
       </div>
     </div>
   );

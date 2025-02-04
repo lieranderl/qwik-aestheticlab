@@ -6,11 +6,11 @@ export interface ContactFormInputsProps {
   nameSignal: Signal<string>;
   emailSignal: Signal<string>;
   phoneSignal: Signal<string>;
-  showConfirmationPanelSignal: Signal<boolean>;
+  showConfirmationPanel: boolean;
 }
 
 export const ContactFormInputs = component$<ContactFormInputsProps>(
-  ({ nameSignal, emailSignal, phoneSignal, showConfirmationPanelSignal }) => {
+  ({ nameSignal, emailSignal, phoneSignal, showConfirmationPanel }) => {
     return (
       <>
         <div>
@@ -23,7 +23,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               pattern="^[a-zA-Z\s]{2,50}$"
               required
               bind:value={nameSignal}
-              readOnly={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanel}
             />
           </label>
           <div class="validator-hint hidden">Please enter your name</div>
@@ -37,7 +37,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               placeholder="mail@site.com"
               required
               bind:value={emailSignal}
-              readOnly={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanel}
             />
           </label>
           <div class="validator-hint hidden">
@@ -54,7 +54,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               required
               pattern="^\+?[0-9\-\s]{10,15}$"
               bind:value={phoneSignal}
-              readOnly={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanel}
             />
           </label>
           <div class="validator-hint hidden">

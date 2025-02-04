@@ -7,7 +7,7 @@ export default component$(() => {
         <h2 class="text-4xl font-qestero text-center  mb-12">Our Work</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} class="aspect-square bg-base-100 rounded-lg"></div>
+            <div key={i} class="aspect-square bg-base-100 rounded-lg" />
           ))}
         </div>
       </div>
