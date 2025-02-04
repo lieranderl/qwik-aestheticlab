@@ -47,7 +47,7 @@ export default component$(() => {
           </div>
 
           {/* Centered Instagram Section */}
-          <div class="mt-12 flex justify-center">
+          <div class="my-12 flex justify-center">
             <a
               rel="noopener noreferrer"
               target="_blank"

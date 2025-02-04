@@ -219,9 +219,9 @@ export default component$(() => {
   });
 
   return (
-    <div class="min-h-screen bg-base-200 pt-24">
+    <div class="min-h-screen bg-base-200 py-24">
       <div class="container mx-auto px-4">
-        <h1 class="text-4xl md:text-5xl mb-8 text-center font-qestero font-normal">
+        <h1 class="text-2xl md:text-5xl mb-8 text-center font-qestero font-semibold">
           Book Your Appointment
         </h1>
         <div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">

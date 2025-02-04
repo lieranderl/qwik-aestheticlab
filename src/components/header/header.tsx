@@ -37,7 +37,7 @@ export default component$(() => {
 
   return (
     <header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
-      <nav class="custom-container py-2">
+      <nav class="custom-container py-2 ">
         <div class="flex items-center justify-between h-12">
           <div />
           {/* Desktop Navigation */}
@@ -82,13 +82,14 @@ export default component$(() => {
         {/* Mobile Navigation */}
         <div
           ref={menuRef}
-          class={`md:hidden ${isMenuOpen.value ? "block" : "hidden"} pt-4 pb-2`}
+          class={`md:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2 `}
         >
           <div class="flex flex-col space-y-3 items-end">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
+                onClick$={()=>{isMenuOpen.value = !isMenuOpen.value;}}
                 class="link no-underline text-base-100 text-right hover:text-base-100/80 transition-colors"
               >
                 {link.text}

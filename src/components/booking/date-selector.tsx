@@ -38,6 +38,7 @@ export const DateSelector = component$<DateSelectorProps>(
             class="cally"
             onChange$={(e, v) => {
               selectedDateSignal.value = v.value;
+              document.getElementById("cally-popover1")?.hidePopover();
             }}
           >
             {/* <HiArrowLeftOutline
