@@ -11,7 +11,9 @@ export default component$(() => {
     <section id="contact" class="py-20 bg-base-300">
       <div class="custom-container">
         <div class="max-w-4xl mx-auto">
-          <h2 class="text-4xl font-qestero text-center mb-12 ">Visit Us</h2>
+          <h2 class="text-4xl font-qestero text-center mb-12 font-bold">
+            Visit Us
+          </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
               <h3 class="text-2xl mb-6 font-semibold">Hours</h3>

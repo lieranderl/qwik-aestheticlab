@@ -61,7 +61,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
         }`}
       >
         <div class="flex flex-col h-full">
-          <div class="px-6 py-4 border-b border-secondary text-2xl font-semibold font-sans  text-center">
+          <div class="px-6 py-4 border-b border-secondary text-2xl font-semibold text-center">
             Confirm Your Booking
           </div>
 
