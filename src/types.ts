@@ -6,6 +6,7 @@ export interface Service {
   description: string;
   created_at: string;
   active: boolean;
+  priority: number;
 }
 
 export interface TimeSlot {

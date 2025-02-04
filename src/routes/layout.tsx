@@ -42,7 +42,7 @@ export const useServicesLoader = routeLoader$(async ({ env }) => {
   try {
     const response = await fetch(`${API_BASE_URL}/services`);
     const data: Service[] = await response.json();
-    return data.filter((service) => service.active);
+    return data.filter((service) => service.active).sort((a,b) => (a.priority- b.priority))
   } catch (error) {
     console.error("Error fetching services:", error);
     return [];

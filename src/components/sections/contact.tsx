@@ -9,7 +9,7 @@ import { SiInstagram } from "@qwikest/icons/simpleicons";
 export default component$(() => {
   return (
     <section id="contact" class="py-20 bg-base-300">
-      <div class="container mx-auto px-6">
+      <div class="custom-container">
         <div class="max-w-4xl mx-auto">
           <h2 class="text-4xl font-qestero text-center mb-12 ">Visit Us</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-10">

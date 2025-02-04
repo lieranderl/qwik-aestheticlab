@@ -8,6 +8,11 @@
   --font-montserrat: "Montserrat", "sans-serif";
   --font-inter: "Inter", "sans-serif";
 }
+@layer components {
+  .custom-container {
+    @apply container mx-auto px-4 md:px-16 lg:px-32 xl:px-48;
+  }
+}
 
 @font-face {
   font-family: "qestero";

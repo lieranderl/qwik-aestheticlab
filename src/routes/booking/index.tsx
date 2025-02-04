@@ -83,7 +83,7 @@ export const useBookAppointment = routeAction$(async (form, event) => {
     }
   );
 
-  const data = await response.json();
+  await response.json();
   if (!response.ok) {
     return {
       success: false,

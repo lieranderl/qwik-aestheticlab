@@ -1,11 +1,11 @@
 import type { Signal } from "@builder.io/qwik";
 import { useClickOutside } from "@ditadi/qwik-hooks";
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import {
   HiCheckCircleOutline,
   HiXCircleOutline,
 } from "@qwikest/icons/heroicons";
-import { formatPrice } from "~/consts";
+import { formatDate, formatPrice, formatTime } from "~/consts";
 import type { Technician, TimeSlot } from "~/types";
 
 export interface ConfirmationPanelProps {
@@ -34,24 +34,6 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
       isOpen.value = false;
     });
 
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      return date.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    };
-
-    const formatTime = (dateString: string) => {
-      const date = new Date(dateString);
-      return date.toLocaleString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZoneName: "short",
-      });
-    };
 
     const ref = useSignal<HTMLDivElement>();
 
@@ -63,6 +45,12 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
         }
       })
     );
+
+    const modalSig = useSignal<HTMLDialogElement | null>(null);
+
+    useOnDocument('DOMContentLoaded', $(()=>{
+      modalSig.value = document.getElementById("confirmation_modal") as HTMLDialogElement
+    }))
 
     return (
       <div
@@ -153,7 +141,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
                 class="btn btn-success"
                 disabled={isSubmitting || !isValid}
                 onClick$={() => {
-                  document.getElementById("confirmation_modal")?.showModal();
+                  modalSig.value?.showModal();
                   isOpen.value = false;
                 }}
               >

@@ -6,19 +6,16 @@ import { formatPrice } from "~/consts";
 export default component$(() => {
   const servicesSignal = useServicesLoader();
 
-  // Sort services by price in ascending order
-  const sortedServices = [...servicesSignal.value].sort(
-    (a: Service, b: Service) => a.price - b.price
-  );
+  
 
   return (
     <section id="services" class="py-20 bg-base-200">
-      <div class="container mx-auto px-4">
+      <div class="custom-container">
         <h2 class="text-4xl font-qestero text-center mb-12">
           Our Services
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {sortedServices.map((service: Service) => (
+          {servicesSignal.value.map((service: Service) => (
             <div key={service.id} class="p-8 rounded-lg bg-base-100" data-aos="fade-up">
               <div class="flex justify-between items-start mb-4">
                 <h3 class="text-2xl font-serif  capitalize">

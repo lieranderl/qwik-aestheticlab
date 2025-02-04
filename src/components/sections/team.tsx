@@ -7,7 +7,7 @@ export default component$(() => {
 
   return (
     <section id="team" class="py-20 bg-base-200">
-      <div class="container mx-auto px-4">
+      <div class="custom-container">
         <h2 class="text-4xl font-qestero text-center mb-12">Meet Our Team</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           {techniciansSignal.value.map((tech: Technician) => (

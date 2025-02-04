@@ -1,10 +1,11 @@
 import type { Signal } from "@builder.io/qwik";
-import { component$, useComputed$ } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import {
-  HiArrowLeftOutline,
-  HiArrowRightOutline,
+  // HiArrowLeftOutline,
+  // HiArrowRightOutline,
   HiCalendarOutline,
 } from "@qwikest/icons/heroicons";
+import { formatDate } from "~/consts";
 
 export interface DateSelectorProps {
   selectedDateSignal: Signal<string>;
@@ -12,7 +13,6 @@ export interface DateSelectorProps {
 
 export const DateSelector = component$<DateSelectorProps>(
   ({ selectedDateSignal }) => {
-
     return (
       <div>
         <label class="input input-primary">
@@ -20,10 +20,12 @@ export const DateSelector = component$<DateSelectorProps>(
           <input
             type="button"
             popovertarget="cally-popover1"
-            // style="anchor-name:--cally1"
             id="cally1"
-            bind:value={selectedDateSignal}
-            placeholder="Pick a date"
+            value={
+              selectedDateSignal.value !== "Pick a date"
+                ? formatDate(selectedDateSignal.value)
+                : "Pick a date"
+            }
           />
         </label>
         <div
@@ -34,17 +36,16 @@ export const DateSelector = component$<DateSelectorProps>(
         >
           <calendar-date
             class="cally"
-            // onchange={(document.getElementById("cally1").innerText = this.value)}
             onChange$={(e, v) => {
               selectedDateSignal.value = v.value;
             }}
           >
-            <HiArrowLeftOutline
+            {/* <HiArrowLeftOutline
               aria-label="Previous"
               class="size-4"
               slot="previous"
             />
-            <HiArrowRightOutline aria-label="Next" class="size-4" slot="next" />
+            <HiArrowRightOutline aria-label="Next" class="size-4" slot="next" /> */}
 
             <calendar-month />
           </calendar-date>

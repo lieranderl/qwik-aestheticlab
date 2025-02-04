@@ -37,7 +37,7 @@ export default component$(() => {
 
   return (
     <header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
-      <nav class="max-w-5xl mx-auto px-4 py-2">
+      <nav class="custom-container py-2">
         <div class="flex items-center justify-between h-12">
           <div />
           {/* Desktop Navigation */}
