@@ -1,5 +1,11 @@
-import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
-import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+import {
+  $,
+  component$,
+  useComputed$,
+  useOnDocument,
+  useSignal,
+} from "@builder.io/qwik";
+import { Form, routeAction$, server$, ServerQRL } from "@builder.io/qwik-city";
 
 import type { Technician, TimeSlot } from "~/types";
 import {
@@ -10,6 +16,7 @@ import {
 import { ConfirmationSidePanel } from "~/components/booking2/confirmation-side-panel";
 import { ContactFormInputs } from "~/components/booking2/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking2/service-selector";
+import { DateSelector } from "~/components/booking2/date-selector";
 
 const WEEKDAYS = [
   "sunday",
@@ -46,21 +53,25 @@ const fetchTechnicianSlots = server$(
     }
 
     return {
-      technician: tech,
-      slots: slots.map((slot) => ({
-        start: slot.start,
-        end: slot.end,
-        status: slot.status,
-      })),
+      tech_id: tech.id,
+      slots: slots,
     };
   }
 );
 
-export const useBookAppointment = routeAction$(async () => {
+export const useBookAppointment = routeAction$(async (form) => {
   console.log("ACTION");
+  console.log(form);
 });
 
 export default component$(() => {
+  useOnDocument(
+    "DOMContentLoaded",
+    $(async () => {
+      await import("cally");
+    })
+  );
+
   const servicesSignal = useServicesLoader();
   const techniciansSignal = useTechniciansLoader();
   const envs = useEnvLoader();
@@ -75,21 +86,79 @@ export default component$(() => {
       return total + (service?.duration || 0);
     }, 0);
   });
+  const selectedDateSignal = useSignal("Pick a date");
+  const availableSlots = useSignal<{ tech_id: string; slots: TimeSlot }[]>([]);
+  const selectedSlot = useSignal<TimeSlot>();
 
   const IsValidFormSignal = useComputed$(() => {
     const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
     const phoneValid = /^\+?[0-9\-\s]{10,15}$/.test(phoneSignal.value);
-    return nameValid && emailValid && phoneValid;
+    return (
+      nameValid &&
+      emailValid &&
+      phoneValid &&
+      selectedServices.value.length > 0 &&
+      selectedDateSignal.value !== "Pick a date"
+    );
   });
 
   const showConfirmationPanelSignal = useSignal(false);
   const action = useBookAppointment();
 
-  //   console.log(action)
-
   const handleBookButtonClick = $(() => {
     showConfirmationPanelSignal.value = IsValidFormSignal.value;
+  });
+
+  const getWeekday = $(async (date: string) => {
+    const dayIndex = new Date(date).getDay();
+    return WEEKDAYS[dayIndex];
+  });
+
+  const getEligibleTechnicians = $(() => {
+    return techniciansSignal.value.filter((tech: Technician) =>
+      selectedServices.value.every((serviceId) =>
+        tech.services.includes(serviceId)
+      )
+    );
+  });
+
+  const fetchAvailableSlots = $(async (date: string) => {
+    const eligibleTechnicians = await getEligibleTechnicians();
+    const weekday = await getWeekday(date);
+
+    try {
+      const slotsPromises = eligibleTechnicians.map(
+        async (tech: Technician) => {
+          return await fetchTechnicianSlots(
+            envs.value.API_BASE_URL,
+            tech,
+            date,
+            weekday,
+            totalDuration.value
+          );
+        }
+      );
+
+      const results = await Promise.all(
+        slotsPromises.map((p) =>
+          p.catch((error) => {
+            console.error("Error fetching slots for technician:", error);
+            return null;
+          })
+        )
+      );
+
+      availableSlots.value = results.filter(
+        (result) =>
+          result !== null &&
+          result.slots.length > 0 &&
+          result.slots.some((slot) => Object.keys(slot).length > 0)
+      );
+    } catch (error) {
+      console.error("Error fetching slots:", error);
+      availableSlots.value = [];
+    }
   });
 
   return (
@@ -110,15 +179,27 @@ export default component$(() => {
                 phoneSignal={phoneSignal}
                 showConfirmationPanelSignal={showConfirmationPanelSignal}
               />
+              <div class="w-1 content-center" style="anchor-name:--cally1" />
               <ServiceSelector
                 selectedServices={selectedServices}
                 services={servicesSignal.value}
                 totalDuration={totalDuration.value}
+                showConfirmationPanelSignal={showConfirmationPanelSignal}
               />
+
+              {selectedServices.value.length > 0 && (
+                <DateSelector selectedDateSignal={selectedDateSignal} />
+              )}
+
+              {selectedServices.value.length > 0 &&
+                selectedDateSignal.value !== "Pick a date" && (
+                  <div>Time slots</div>
+                )}
+
               {/* <button type="submit" class="btn ">Book Appointment</button> */}
               <button
                 type="button"
-                class="btn"
+                class="btn btn-lg"
                 onClick$={handleBookButtonClick}
                 disabled={!IsValidFormSignal.value}
               >

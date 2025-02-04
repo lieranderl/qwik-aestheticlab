@@ -1,8 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { Service } from "~/types";
-
+import { Service, Technician } from "~/types";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
@@ -11,10 +10,10 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
-export const useEnvLoader = routeLoader$(({env}) => {
+export const useEnvLoader = routeLoader$(({ env }) => {
   const API_BASE_URL = env.get("API_BASE_URL") || "";
   return {
-    API_BASE_URL
+    API_BASE_URL,
   };
 });
 
@@ -24,24 +23,26 @@ export const useServerTimeLoader = routeLoader$(() => {
   };
 });
 
-export const useTechniciansLoader = routeLoader$(async ({ env }) => {
-  const API_BASE_URL = env.get("API_BASE_URL");
-  try {
-    const response = await fetch(`${API_BASE_URL}/technicians`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching technicians:", error);
-    return [];
+export const useTechniciansLoader = routeLoader$<Technician[]>(
+  async ({ env }) => {
+    const API_BASE_URL = env.get("API_BASE_URL");
+    try {
+      const response = await fetch(`${API_BASE_URL}/technicians`);
+      const data: Technician[] = await response.json();
+      return data.filter((technician) => technician.active);
+    } catch (error) {
+      console.error("Error fetching technicians:", error);
+      return [];
+    }
   }
-});
+);
 
 export const useServicesLoader = routeLoader$(async ({ env }) => {
   const API_BASE_URL = env.get("API_BASE_URL");
   try {
     const response = await fetch(`${API_BASE_URL}/services`);
-    const data = await response.json();
-    return data as Service[];
+    const data: Service[] = await response.json();
+    return data.filter((service) => service.active);
   } catch (error) {
     console.error("Error fetching services:", error);
     return [];

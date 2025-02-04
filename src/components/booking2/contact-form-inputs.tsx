@@ -14,7 +14,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
     return (
       <>
         <div>
-          <label class="input validator w-full">
+          <label class="input input-primary validator w-full">
             <HiUserOutline class="text-primary w-4 h-4" />
             <input
               name="name"
@@ -23,13 +23,13 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               pattern="^[a-zA-Z\s]{2,50}$"
               required
               bind:value={nameSignal}
-              disabled={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanelSignal.value}
             />
           </label>
           <div class="validator-hint hidden">Please enter your name</div>
         </div>
         <div>
-          <label class="input validator w-full">
+          <label class="input input-primary validator w-full">
             <HiEnvelopeOutline class="text-primary w-4 h-4" />
             <input
               name="email"
@@ -37,7 +37,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               placeholder="mail@site.com"
               required
               bind:value={emailSignal}
-              disabled={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanelSignal.value}
             />
           </label>
           <div class="validator-hint hidden">
@@ -45,7 +45,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
           </div>
         </div>
         <div>
-          <label class="input validator w-full">
+          <label class="input input-primary validator w-full">
             <HiPhoneOutline class="text-primary w-4 h-4" />
             <input
               name="phone"
@@ -54,7 +54,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
               required
               pattern="^\+?[0-9\-\s]{10,15}$"
               bind:value={phoneSignal}
-              disabled={showConfirmationPanelSignal.value}
+              readOnly={showConfirmationPanelSignal.value}
             />
           </label>
           <div class="validator-hint hidden">

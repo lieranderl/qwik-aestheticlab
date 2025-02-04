@@ -1,11 +1,12 @@
-import { $, component$, Signal } from "@builder.io/qwik";
+import type { Signal } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import type { Service } from "~/types";
 
 export interface ServiceSelectorProps {
   services: Service[];
   selectedServices: Signal<string[]>;
   totalDuration: number;
-  //   onToggleService$: (serviceId: string) => void;
+  showConfirmationPanelSignal: Signal<boolean>;
 }
 
 export const ServiceSelector = component$<ServiceSelectorProps>(
@@ -13,6 +14,7 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
     services,
     selectedServices,
     totalDuration,
+    showConfirmationPanelSignal,
     //   onToggleService$
   }) => {
     const formatPrice = (price: number) => {
@@ -34,13 +36,14 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
     return (
       <div class="space-y-6">
         <div>
-          <label class="block text-sm font-medium mb-3">Select Services</label>
+          <div class="block text-sm font-medium mb-3">Select Services</div>
           <div class="space-y-3">
             {services.map((service: Service) => (
               <div key={service.id} class="flex items-center">
                 <input
                   type="checkbox"
                   class="checkbox"
+                  name={`services.${service.id}`}
                   id={service.id}
                   checked={selectedServices.value.includes(service.id)}
                   onChange$={() => onToggleService$(service.id)}
@@ -60,9 +63,10 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
         </div>
 
         {selectedServices.value.length > 0 && (
-          <div class="bg-sage-50 p-4 rounded-md">
-            <p class="text-sm text-sage-700">
+          <div class="bg-neutral p-2 rounded-md">
+            <p class="text-sm">
               Total Duration: {totalDuration} minutes
+              <input name="duraiton" hidden value={totalDuration} />
             </p>
           </div>
         )}
