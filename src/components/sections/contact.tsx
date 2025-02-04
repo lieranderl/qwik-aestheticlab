@@ -9,15 +9,15 @@ import { SiInstagram } from "@qwikest/icons/simpleicons";
 export default component$(() => {
   return (
     <section id="contact" class="py-20 bg-base-300">
-      <div class="custom-container">
+      <div class="container mx-auto px-4 md:px-16 ">
         <div class="max-w-4xl mx-auto">
           <h2 class="text-4xl font-qestero text-center mb-12 font-bold">
             Visit Us
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 class="text-2xl mb-6 font-semibold">Hours</h3>
-              <ul class="space-y-2 list-disc pl-6 text-lg">
+              <ul class="space-y-2 list-disc pl-6">
                 <li>Monday - Friday: 9:00 AM - 7:00 PM</li>
                 <li>Saturday: 9:00 AM - 6:00 PM</li>
                 <li>Sunday: 10:00 AM - 5:00 PM</li>
@@ -25,10 +25,10 @@ export default component$(() => {
             </div>
             <div>
               <h3 class="text-2xl mb-6 font-semibold ">Contact</h3>
-              <ul class="space-y-2 list-none pl-6 text-lg">
+              <ul class="space-y-2 list-none pl-6">
                 <li class="flex items-center gap-2">
                   <HiPhoneOutline />
-                  <a href="tel:+32484123567" class=" hover:underline">
+                  <a href="tel:+32484123567" class="link link-hover">
                     +32 484 123 567
                   </a>
                 </li>
@@ -36,13 +36,16 @@ export default component$(() => {
                   <HiEnvelopeOutline />
                   <a
                     href="mailto:info@aestheticlab.com"
-                    class="hover:underline"
+                    class="link link-hover"
                   >
                     info@aestheticlab.com
                   </a>
                 </li>
                 <li class="flex items-center gap-2">
-                  <HiMapPinOutline /> Somestraat 22, Leuven
+                  <HiMapPinOutline /> 
+                  <a href="https://www.google.com/maps?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA" target="_blank" class="link link-hover" rel="noreferrer">
+                      1600 Amphitheatre Parkway, Mountain View, CA
+                  </a>
                 </li>
               </ul>
             </div>
