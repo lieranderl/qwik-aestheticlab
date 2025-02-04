@@ -92,7 +92,7 @@ export const useBookAppointment = routeAction$(async (form, event) => {
 await new Promise((resolve) => setTimeout(resolve, 2000));
 
   return {
-    success: true,
+    success: false,
   };
 });
 

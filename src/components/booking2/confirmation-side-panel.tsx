@@ -64,9 +64,6 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
       })
     );
 
-
-    
-
     return (
       <div
         ref={ref}
@@ -155,8 +152,8 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
                 type="submit"
                 class="btn btn-success"
                 disabled={isSubmitting || !isValid}
-                onClick$={()=>{
-                  document.getElementById('confirmation_modal')?.showModal()
+                onClick$={() => {
+                  document.getElementById("confirmation_modal")?.showModal();
                   isOpen.value = false;
                 }}
               >
