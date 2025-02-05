@@ -4,7 +4,7 @@ import type { Technician } from "~/types";
 import type { TechnicianSlots, TimeSlot } from "~/types";
 
 export interface TimeSlotsProps {
-  availableSlots: Signal<TechnicianSlots[]>;
+  availableSlots: TechnicianSlots[];
   selectedSlot: Signal<TimeSlot | null>;
   selectedTechnician: Signal<Technician | null>;
 }
@@ -41,7 +41,7 @@ export default component$<TimeSlotsProps>(
 
     return (
       <div class="space-y-6">
-        {availableSlots.value.map((techSlots) => (
+        {availableSlots.map((techSlots) => (
           <div
             key={techSlots.tech.id}
             class="card border-1 border-base-200 shadow-sm"

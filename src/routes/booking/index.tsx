@@ -1,10 +1,11 @@
 import {
   $,
   component$,
+  Resource,
   useComputed$,
   useOnDocument,
+  useResource$,
   useSignal,
-  useTask$,
 } from "@builder.io/qwik";
 import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
 
@@ -135,7 +136,6 @@ export default component$(() => {
     const dayIndex = new Date(selectedDateSignal.value).getDay();
     return WEEKDAYS[dayIndex];
   });
-  const availableSlots = useSignal<TechnicianSlots[]>([]);
 
   const selectedSlot = useSignal<TimeSlot | null>(null);
   const selectedTechnician = useSignal<Technician | null>(null);
@@ -204,18 +204,19 @@ export default component$(() => {
     }
   });
 
-  useTask$(async ({ track }) => {
-    track(() => selectedServices.value.length);
-    track(() => selectedDateSignal.value);
+  const useAvailableSlots = useResource$(async ({ track }) => {
+    track(
+      () => selectedServices.value.length.toString() + selectedDateSignal.value
+    );
     selectedSlot.value = null;
     selectedTechnician.value = null;
     if (
       selectedDateSignal.value !== "Pick a date" &&
       selectedServices.value.length > 0
     ) {
-      const as = await fetchAvailableSlots();
-      availableSlots.value = as;
+      return await fetchAvailableSlots();
     }
+    return [];
   });
 
   return (
@@ -250,13 +251,21 @@ export default component$(() => {
 
               <input name="weekday" hidden value={selectedWeekDay.value} />
 
-              {availableSlots.value.length > 0 && (
-                <TimeSlots
-                  availableSlots={availableSlots}
-                  selectedSlot={selectedSlot}
-                  selectedTechnician={selectedTechnician}
-                />
-              )}
+              <Resource
+                value={useAvailableSlots}
+                onPending={() => (
+                  <span class="loading loading-dots loading-lg text-primary" />
+                )}
+                onResolved={(availableSlots) => {
+                  return (
+                    <TimeSlots
+                      availableSlots={availableSlots}
+                      selectedSlot={selectedSlot}
+                      selectedTechnician={selectedTechnician}
+                    />
+                  );
+                }}
+              />
 
               <TotalSummary
                 selectedServices={selectedServices.value}

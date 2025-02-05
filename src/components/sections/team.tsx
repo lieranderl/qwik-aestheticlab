@@ -28,7 +28,7 @@ export default component$(() => {
                     <input type="checkbox" />
                     <div class="collapse-title ">
                       <p class="text-xl">{tech.name}</p>
-                      <p class="font-inter  badge badge badge-soft badge-info mb-4">
+                      <p class="font-inter badge badge-soft badge-info mb-4">
                         {tech.role || "Technician"}
                       </p>
                     </div>
