@@ -12,7 +12,7 @@ export const BookingBtn = component$(
 		return (
 			<button
 				type="button"
-				class={`btn max-w-fit ${additionalClasses}`}
+				class={`btn ${additionalClasses}`}
 				onClick$={() => {
 					window.location.href = "/booking/";
 				}}

@@ -41,7 +41,7 @@ export const DateSelector = component$<DateSelectorProps>(
             showOutsideDays={true}
             min={today}
             class="cally"
-            onChange$={(e, v) => {
+            onChange$={(_, v) => {
               selectedDateSignal.value = v.value;
               document.getElementById("cally-popover1")?.hidePopover();
             }}

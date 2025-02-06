@@ -13,7 +13,7 @@ export default component$(() => {
 				<p class="text-xl md:text-2xl text-base-100 mb-8 font-light">
 					Where beauty meets artistry
 				</p>
-				<BookingBtn additionalClasses="btn-lg" myText={"Book Your Visit"} />
+				<BookingBtn additionalClasses="btn-xl btn-wide" myText={"Book Your Visit"} />
 			</div>
 		</section>
 	);

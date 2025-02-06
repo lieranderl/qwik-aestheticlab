@@ -7,7 +7,7 @@ import {
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
-import { Form, routeAction$, server$, validator$ } from "@builder.io/qwik-city";
+import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
@@ -22,6 +22,7 @@ import { DateSelector } from "~/components/booking/date-selector";
 import TimeSlots from "~/components/booking/time-slots";
 import StatusModal from "~/components/booking/status-modal";
 import { TotalSummary } from "~/components/booking/total-summary";
+import { HiExclamationTriangleOutline } from "@qwikest/icons/heroicons";
 
 const WEEKDAYS = [
   "sunday",
@@ -159,6 +160,13 @@ export default component$(() => {
     );
   });
 
+  const IsInputFormSignal = useComputed$(() => {
+    const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
+    const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phoneSignal.value);
+    return nameValid && emailValid && phoneValid;
+  });
+
   const showConfirmationPanelSignal = useSignal(false);
   const action = useBookAppointment();
 
@@ -277,6 +285,28 @@ export default component$(() => {
                 totalDuration={totalDuration.value}
                 totalPrice={totalPrice.value}
               />
+			  
+              {selectedTechnician.value &&
+                (() => {
+                  const missingFields = [];
+                  if (!nameSignal.value) missingFields.push("name");
+                  if (!emailSignal.value) missingFields.push("email");
+                  if (!phoneSignal.value) missingFields.push("phone number");
+
+                  return missingFields.length > 0 ? (
+                    <div class="alert alert-warning alert-soft">
+                      <HiExclamationTriangleOutline />
+                      <span>Please enter your {missingFields.join(", ")}</span>
+                    </div>
+                  ) : (
+                    !IsInputFormSignal.value && (
+                      <div class="alert alert-warning alert-soft">
+                        <HiExclamationTriangleOutline />
+                        <span>Please provide valid details in the form.</span>
+                      </div>
+                    )
+                  );
+                })()}
 
               <button
                 type="button"
