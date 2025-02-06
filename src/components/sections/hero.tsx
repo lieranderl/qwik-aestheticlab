@@ -11,7 +11,7 @@ export default component$(() => {
 			<div class="custom-container text-center">
 				<ImgAestheticlab class="w-64 h-64 md:w-96 md:h-96 mx-auto mb-8" />
 				<p class="text-xl md:text-2xl text-base-100 mb-8 font-light">
-					Where beauty meets artistry
+				Where Expertise Crafts Unique Beauty
 				</p>
 				<BookingBtn additionalClasses="btn-xl btn-wide" myText={"Book Your Visit"} />
 			</div>

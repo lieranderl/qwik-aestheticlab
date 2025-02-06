@@ -1,8 +1,10 @@
 services:
   bun:
     build: .
+    container_name: bun
     environment:
       - API_BASE_URL=${API_BASE_URL}
+      - API_TOKEN=${API_TOKEN}
     networks:
       - mynetwork
     restart: unless-stopped
@@ -11,10 +13,13 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n
     restart: unless-stopped
+    container_name: n8n
     environment:
+      - N8N_PROTOCOL=${N8N_PROTO}
       - N8N_HOST=${N8N_HOST}
       - N8N_PORT=${N8N_PORT}
-      - N8N_PROTOCOL=${N8N_PROTO}
+      - WEBHOOK_URL=https://${N8N_HOST}.${DOMAIN_NAME}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
       - NODE_ENV=production
       - GENERIC_TIMEZONE=Europe/Brussels
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
@@ -33,6 +38,7 @@ services:
 
   caddy:
     image: caddy:latest
+    container_name: caddy
     ports:
       - "80:80"
       - "443:443"

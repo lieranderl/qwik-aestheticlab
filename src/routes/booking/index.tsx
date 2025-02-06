@@ -37,6 +37,7 @@ const WEEKDAYS = [
 const fetchTechnicianSlots = server$(
   async (
     api_base_url: string,
+    api_token: string,
     tech: Technician,
     date: string,
     weekday: string,
@@ -44,7 +45,11 @@ const fetchTechnicianSlots = server$(
   ) => {
     const url = `${api_base_url}/calendar/technician/${tech.id}?date=${date}&weekday=${weekday}&slot_duration=${duration}`;
     console.log(`Sending request to: ${url}`);
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `${api_token}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -71,6 +76,7 @@ export const useBookAppointment = routeAction$(async (form, { fail, env }) => {
   console.log(form);
   console.log(fail);
   const API_BASE_URL = env.get("API_BASE_URL");
+  const API_TOKEN = env.get("API_TOKEN");
   console.log(
     `Sending request to: ${API_BASE_URL}/calendar/technician/${form.selectedTechId}`
   );
@@ -78,7 +84,10 @@ export const useBookAppointment = routeAction$(async (form, { fail, env }) => {
     `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${API_TOKEN}`,
+      },
       body: JSON.stringify({
         service_id: Object.keys(form.services),
         date: form.slotStart,
@@ -183,6 +192,7 @@ export default component$(() => {
         async (tech: Technician) => {
           return await fetchTechnicianSlots(
             envs.value.API_BASE_URL,
+            envs.value.API_TOKEN,
             tech,
             selectedDateSignal.value,
             selectedWeekDay.value,
