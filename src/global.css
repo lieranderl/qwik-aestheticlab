@@ -26,6 +26,24 @@ html {
   scroll-behavior: smooth;
 }
 
+calendar-month {
+  &::part(button) {
+    border-radius: 0.5rem;
+  }
+
+  &::part(button day today) {
+    background-color: #f4f5f1;
+    color: #2e2e2c;
+    border-style: dashed;
+    border-width: 1px;
+  }
+
+  &::part(selected) {
+    background-color: #6a7b8c;
+    color: #f4f5f1;
+  }
+}
+
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   name: "Aesthetic";
