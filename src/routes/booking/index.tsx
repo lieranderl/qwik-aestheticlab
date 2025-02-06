@@ -65,53 +65,41 @@ const fetchTechnicianSlots = server$(
   }
 );
 
-export const useBookAppointment = routeAction$(
-  async (form, { fail, env }) => {
-    console.log("ACTION");
-    console.log(form);
-    console.log(fail);
-    const API_BASE_URL = env.get("API_BASE_URL");
-    console.log(
-      `Sending request to: ${API_BASE_URL}/calendar/technician/${form.selectedTechId}`
-    );
-    const response = await fetch(
-      `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: Object.keys(form.services),
-          date: form.slotStart,
-          weekday: form.weekday,
-          user_email: form.email,
-          name: form.name,
-          phone: form.phone,
-        }),
-      }
-    );
-
-    await response.json();
-    if (!response.ok) {
-      return {
-        success: false,
-      };
+export const useBookAppointment = routeAction$(async (form, { fail, env }) => {
+  console.log("ACTION");
+  console.log(form);
+  console.log(fail);
+  const API_BASE_URL = env.get("API_BASE_URL");
+  console.log(
+    `Sending request to: ${API_BASE_URL}/calendar/technician/${form.selectedTechId}`
+  );
+  const response = await fetch(
+    `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: Object.keys(form.services),
+        date: form.slotStart,
+        weekday: form.weekday,
+        user_email: form.email,
+        name: form.name,
+        phone: form.phone,
+      }),
     }
+  );
 
-    return {
-      success: true,
-    };
-  },
-  validator$(async (e, form) => {
-    console.log("VALIDATOR");
-	console.log(form)
+  await response.json();
+  if (!response.ok) {
     return {
       success: false,
-        error: {
-          message: "secret is not correct",
-        },
     };
-  })
-);
+  }
+
+  return {
+    success: true,
+  };
+});
 
 export default component$(() => {
   useOnDocument(
@@ -161,15 +149,14 @@ export default component$(() => {
     const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
     const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phoneSignal.value);
-    return true;
-    // return (
-    // 	nameValid &&
-    // 	emailValid &&
-    // 	phoneValid &&
-    // 	selectedServices.value.length > 0 &&
-    // 	selectedDateSignal.value !== "Pick a date" &&
-    // 	selectedSlot.value !== null
-    // );
+    return (
+      nameValid &&
+      emailValid &&
+      phoneValid &&
+      selectedServices.value.length > 0 &&
+      selectedDateSignal.value !== "Pick a date" &&
+      selectedSlot.value !== null
+    );
   });
 
   const showConfirmationPanelSignal = useSignal(false);
