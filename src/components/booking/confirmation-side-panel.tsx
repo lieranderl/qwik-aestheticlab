@@ -56,12 +56,12 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 		return (
 			<div
 				ref={ref}
-				class={`fixed inset-y-0 right-0 w-full md:w-[500px] bg-base-300 shadow-2xl transform transition-transform duration-300 ease-in-out z-50  ${
+				class={`fixed inset-y-0 right-0 w-full md:w-[500px] bg-base-100  shadow-2xl transform transition-transform duration-300 ease-in-out z-50  ${
 					isOpen.value ? "translate-x-0" : "translate-x-full"
 				}`}
 			>
-				<div class="flex flex-col h-full">
-					<div class="px-6 py-4 border-b border-secondary text-2xl font-semibold text-center">
+				<div class="flex flex-col h-full font-sans">
+					<div class="px-6 py-4 border-b border-secondary font-qestero text-2xl font-semibold text-center">
 						Confirm Your Booking
 					</div>
 
