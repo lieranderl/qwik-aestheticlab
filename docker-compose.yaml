@@ -1,0 +1,58 @@
+services:
+  bun:
+    build: .
+    environment:
+      - API_BASE_URL=${API_BASE_URL}
+    networks:
+      - mynetwork
+    restart: unless-stopped
+    command: ["bun", "run", "serve"]
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PORT=${N8N_PORT}
+      - N8N_PROTOCOL=${N8N_PROTO}
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=Europe/Brussels
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_TEMPLATES_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n_files:/files # Local files mapping (optional)
+    networks:
+      - mynetwork
+    entrypoint: >
+      sh -c "
+        n8n start
+      "
+
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - N8N_HOST=${N8N_HOST}
+      - N8N_PORT=${N8N_PORT}
+    volumes:
+      - caddy_data:/data
+      - ./caddy_config/Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - mynetwork
+    restart: unless-stopped
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  caddy_data:
+    external: true
+  n8n_data:
+    external: true

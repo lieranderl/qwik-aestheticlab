@@ -1,18 +1,18 @@
 import { component$ } from "@builder.io/qwik";
 
 export default component$(() => {
-  return (
-    <section id="about" class="py-20 bg-base-200">
-      <div class="custom-container">
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-4xl font-qestero mb-8 font-bold">Our Story</h2>
-          <p class="text-lg mb-8 leading-relaxed">
-            At Aesthetic Lab, we believe in the transformative power of beauty.
-            Our approach combines artistry with expertise, creating a sanctuary
-            where you can discover your most radiant self.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
+	return (
+		<section id="about" class="py-20 bg-base-200">
+			<div class="custom-container">
+				<div class="max-w-3xl mx-auto text-center">
+					<h2 class="text-4xl font-qestero mb-8 font-bold">Our Story</h2>
+					<p class="text-lg mb-8 leading-relaxed">
+						At Aesthetic Lab, we believe in the transformative power of beauty.
+						Our approach combines artistry with expertise, creating a sanctuary
+						where you can discover your most radiant self.
+					</p>
+				</div>
+			</div>
+		</section>
+	);
 });

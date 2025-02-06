@@ -7,7 +7,7 @@ import {
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
-import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+import { Form, routeAction$, server$, validator$ } from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
@@ -42,6 +42,7 @@ const fetchTechnicianSlots = server$(
     duration: number
   ) => {
     const url = `${api_base_url}/calendar/technician/${tech.id}?date=${date}&weekday=${weekday}&slot_duration=${duration}`;
+    console.log(`Sending request to: ${url}`);
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,37 +65,53 @@ const fetchTechnicianSlots = server$(
   }
 );
 
-export const useBookAppointment = routeAction$(async (form, event) => {
-  console.log("ACTION");
-  console.log(form);
-  const API_BASE_URL = event.env.get("API_BASE_URL");
-  const response = await fetch(
-    `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        service_id: Object.keys(form.services),
-        date: form.slotStart,
-        weekday: form.weekday,
-        user_email: form.email,
-        name: form.name,
-        phone: form.phone,
-      }),
-    }
-  );
+export const useBookAppointment = routeAction$(
+  async (form, { fail, env }) => {
+    console.log("ACTION");
+    console.log(form);
+    console.log(fail);
+    const API_BASE_URL = env.get("API_BASE_URL");
+    console.log(
+      `Sending request to: ${API_BASE_URL}/calendar/technician/${form.selectedTechId}`
+    );
+    const response = await fetch(
+      `${API_BASE_URL}/calendar/technician/${form.selectedTechId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: Object.keys(form.services),
+          date: form.slotStart,
+          weekday: form.weekday,
+          user_email: form.email,
+          name: form.name,
+          phone: form.phone,
+        }),
+      }
+    );
 
-  await response.json();
-  if (!response.ok) {
+    await response.json();
+    if (!response.ok) {
+      return {
+        success: false,
+      };
+    }
+
+    return {
+      success: true,
+    };
+  },
+  validator$(async (e, form) => {
+    console.log("VALIDATOR");
+	console.log(form)
     return {
       success: false,
+        error: {
+          message: "secret is not correct",
+        },
     };
-  }
-
-  return {
-    success: true,
-  };
-});
+  })
+);
 
 export default component$(() => {
   useOnDocument(
@@ -144,14 +161,15 @@ export default component$(() => {
     const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
     const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phoneSignal.value);
-    return (
-      nameValid &&
-      emailValid &&
-      phoneValid &&
-      selectedServices.value.length > 0 &&
-      selectedDateSignal.value !== "Pick a date" &&
-      selectedSlot.value !== null
-    );
+    return true;
+    // return (
+    // 	nameValid &&
+    // 	emailValid &&
+    // 	phoneValid &&
+    // 	selectedServices.value.length > 0 &&
+    // 	selectedDateSignal.value !== "Pick a date" &&
+    // 	selectedSlot.value !== null
+    // );
   });
 
   const showConfirmationPanelSignal = useSignal(false);

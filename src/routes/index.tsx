@@ -11,34 +11,34 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 export default component$(() => {
-  useOnDocument(
-    "DOMContentLoaded",
-    $(() => {
-      AOS.init({
-        duration: 800,
-      });
-    })
-  );
+	useOnDocument(
+		"DOMContentLoaded",
+		$(() => {
+			AOS.init({
+				duration: 800,
+			});
+		}),
+	);
 
-  return (
-    <>
-      <Header />
-      <Hero />
-      <About />
-      <Services />
-      <Team />
-      <Work />
-      <Contact />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<Hero />
+			<About />
+			<Services />
+			<Team />
+			<Work />
+			<Contact />
+		</>
+	);
 });
 
 export const head: DocumentHead = {
-  title: "Aesthetic Lab - Beauty & Wellness",
-  meta: [
-    {
-      name: "description",
-      content: "Experience the transformative power of beauty at Aesthetic Lab",
-    },
-  ],
+	title: "Aesthetic Lab - Beauty & Wellness",
+	meta: [
+		{
+			name: "description",
+			content: "Experience the transformative power of beauty at Aesthetic Lab",
+		},
+	],
 };
