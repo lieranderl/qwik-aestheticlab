@@ -50,7 +50,7 @@ export default component$(() => {
 						))}
 					</div>
 					<div class="hidden md:block">
-						<BookingBtn additionalClasses="btn-sm" />
+						<BookingBtn additionalClasses="btn-md" />
 					</div>
 					{/* Mobile menu button */}
 					<button
@@ -94,7 +94,7 @@ export default component$(() => {
 								{link.text}
 							</a>
 						))}
-						<BookingBtn additionalClasses="btn-sm" />
+						{/* <BookingBtn additionalClasses="btn-sm" /> */}
 					</div>
 				</div>
 			</nav>
