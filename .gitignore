@@ -40,4 +40,3 @@ lerna-debug.log*
 .yarn/*
 !.yarn/releases
 .env
-n8n_files

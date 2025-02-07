@@ -18,3 +18,5 @@ docker-compose up -d
 docker exec -it n8n sh -c "n8n import:credentials --input=/files/creds.json && n8n import:workflow --input=/files/workflows.json && n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=true"
 docker-compose restart n8n
 ```
+
+
