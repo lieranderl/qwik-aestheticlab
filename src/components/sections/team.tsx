@@ -1,5 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { useTechniciansLoader } from "~/routes/layout";
+import ImgRubina from "~/media/rubina.jpg?jsx";
+import ImgZara from "~/media/zara.jpg?jsx";
 import type { Technician } from "~/types";
 
 export default component$(() => {
@@ -17,12 +19,8 @@ export default component$(() => {
 							<div class="card-body">
 								<div class="avatar justify-center">
 									<div class="w-32 rounded-full">
-										<img
-											src={tech.photo_url}
-											alt={tech.name}
-											width={128}
-											height={128}
-										/>
+										{tech.photo_url === "rubina" && <ImgRubina />}
+										{tech.photo_url === "zara" && <ImgZara />}
 									</div>
 								</div>
 								{tech.about && (
