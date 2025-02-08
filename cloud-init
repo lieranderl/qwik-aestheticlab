@@ -2,6 +2,7 @@
 packages:
   - docker.io
   - git
+  - ufw
 
 write_files:
   - path: /etc/profile.d/env.sh
@@ -41,3 +42,10 @@ runcmd:
 
   # Restart the n8n service using docker compose
   - docker compose restart n8n
+
+  # Configure UFW firewall rules
+  - ufw allow OpenSSH
+  - ufw allow 80/tcp
+  - ufw allow 443/tcp
+  - ufw enable
+  - ufw status

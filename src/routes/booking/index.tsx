@@ -7,7 +7,12 @@ import {
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
-import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+import {
+  DocumentHead,
+  Form,
+  routeAction$,
+  server$,
+} from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
@@ -23,6 +28,7 @@ import TimeSlots from "~/components/booking/time-slots";
 import StatusModal from "~/components/booking/status-modal";
 import { TotalSummary } from "~/components/booking/total-summary";
 import { WarningForm } from "~/components/booking/form-warning";
+import { ga } from "~/consts";
 
 const WEEKDAYS = [
   "sunday",
@@ -323,3 +329,14 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Aesthetic Lab - Booking",
+  meta: [
+    {
+      name: "description",
+      content: "Booking at Aesthetic Lab",
+    },
+  ],
+  scripts: ga,
+};
