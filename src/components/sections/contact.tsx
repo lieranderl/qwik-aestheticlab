@@ -18,9 +18,7 @@ export default component$(() => {
 						<div>
 							<h3 class="text-2xl mb-6 font-semibold">Hours</h3>
 							<ul class="space-y-2 list-disc pl-6">
-								<li>Monday - Friday: 9:00 AM - 7:00 PM</li>
-								<li>Saturday: 9:00 AM - 6:00 PM</li>
-								<li>Sunday: 10:00 AM - 5:00 PM</li>
+								<li>Monday - Sunday: 10:00 - 21:00</li>
 							</ul>
 						</div>
 						<div>
@@ -44,12 +42,12 @@ export default component$(() => {
 								<li class="flex items-center gap-2">
 									<HiMapPinOutline />
 									<a
-										href="https://www.google.com/maps?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA"
+										href="https://maps.app.goo.gl/2mEvv7cnPVNuTm6e8"
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
 									>
-										1600 Amphitheatre Parkway, Mountain View, CA
+										Edouard Remyvest 24, Leuven 3000
 									</a>
 								</li>
 							</ul>
