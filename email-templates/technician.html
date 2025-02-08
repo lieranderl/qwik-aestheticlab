@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+            color: #343a40;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .header h1 {
+            color: #8b9687;
+            font-size: 26px;
+            margin: 0;
+        }
+        .content {
+            padding: 20px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #8b9687;
+            font-weight: bold;
+        }
+        .info {
+            background-color: #f1f3f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .button {
+            display: inline-block;
+            background: #8b9687;
+            color: #ffffff !important;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #7a8577;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📅 Appointment Confirmation</h1>
+    </div>
+
+    <div class="content">
+        <p>Hello <span class="highlight">{{ $('Merge').item.json.name }}</span>,</p>
+        <p>You have one new appointment:</p>
+        <div class="info">
+            <p><strong>Event:</strong> <span class="highlight">{{ $('Create Event').item.json.summary }}</span></p>
+
+            <p><strong>Visitor Details:</strong><br>
+            Name: <span class="highlight">{{ $('POST appointment').item.json.body.name }}</span><br>
+            Phone: <span class="highlight">{{ $('POST appointment').item.json.body.phone }}</span><br>
+            Email: <span class="highlight">{{ $json.attendees[0].email }}</span></p>
+
+            <p><strong>Date & Time:</strong><br>
+            <span class="highlight">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>
+            - <span class="highlight">{{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>
+            </p>
+
+            <p><strong>Timezone:</strong> <span class="highlight">{{ $('Create Event').item.json.start.timeZone }}</span></p>
+        </div>
+
+        <p style="text-align: center;">
+            <a href="{{ $('Create Event').item.json.htmlLink }}" class="button">View Event</a>
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

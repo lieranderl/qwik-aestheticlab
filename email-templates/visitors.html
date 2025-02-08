@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+    <style>
+        :root {
+            --color-base-100: #f4f5f1;
+            --color-base-200: #e1e4d6;
+            --color-base-300: #d0d2c2;
+            --color-base-content: #2e2e2c;
+            --color-primary: #8b9687;
+            --color-primary-content: #f1f4f1;
+            --color-secondary: #6a7b8c;
+            --color-secondary-content: #f4f7f9;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-base-100);
+            margin: 0;
+            padding: 20px;
+            color: var(--color-base-content);
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header {
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--color-base-300);
+        }
+        .header h1 {
+            font-size: 26px;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+        .header h2 {
+            font-size: 20px;
+            color: var(--color-secondary);
+            margin: 0;
+        }
+        .content {
+            padding: 20px 0;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .highlight {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+        .info {
+            background-color: var(--color-base-200);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .duration-price {
+            font-weight: bold;
+            color: var(--color-secondary);
+        }
+        .footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--color-base-content);
+        }
+        .footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📅 Appointment Confirmation</h1>
+        <h2>Aesthetic Lab</h2>
+    </div>
+
+    <div class="content">
+        <p>Hello <span class="highlight">{{ $('POST appointment').item.json.body.name }}</span>,</p>
+        
+        <p>We're delighted to confirm your appointment at <strong class="highlight">Aesthetic Lab</strong>!</p>
+
+        <div class="info">
+            <p><strong>Service(s):</strong> <span class="highlight">{{ $('Merge').item.json.appended_name }}</span></p>
+
+            <p><strong>Your Nail Artist:</strong><br>
+            <span class="highlight">{{ $('Merge').item.json.name }}</span> <a href="mailto:{{ $('Merge').item.json.email }}" class="highlight">✉️</a></p>
+
+            <p><strong>Date & Time:</strong><br>
+            <span class="highlight">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at 
+            <span class="highlight">{{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>
+            <br><span class="duration-price">Duration: {{ $('Summarize').item.json.sum_duration }} min</span>
+            <br><span class="duration-price">Price: {{ $('Summarize').item.json.sum_price }}€</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for choosing <strong>Aesthetic Lab</strong>!</p>
+        <p><a href="https://aestheticlab.be/">Visit our Website</a> | <a href="mailto:aestheticlabbe@gmail.com">Email Us</a> | <a href="https://www.instagram.com/aestheticlabbe/">Follow us on Instagram</a></p>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
