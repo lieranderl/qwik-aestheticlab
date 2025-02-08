@@ -39,7 +39,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content: "Experience the transformative power of beauty at Aesthetic Lab",
+      content: "Where Expertise Crafts Unique Beauty",
     },
   ],
   scripts: ga,
