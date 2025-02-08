@@ -1,5 +1,7 @@
 {$DOMAIN_NAME} {
-    reverse_proxy bun:3000
+    reverse_proxy bun:3000 {
+       header_up Origin http://{$DOMAIN_NAME}
+    }
     log
 }
 
