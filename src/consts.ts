@@ -27,21 +27,21 @@ export const formatTime = (dateString: string) => {
 };
 
 export const ga = [
-    // Google Analytics Script (External)
-    {
-      props: {
-        type: "text/javascript",
-        src: "https://www.googletagmanager.com/gtag/js?id=G-95QF984DPQ",
-        async: true,
-      },
-    },
-    // Inline Google Analytics Setup Script
-    {
-      script: `
+	// Google Analytics Script (External)
+	{
+		props: {
+			type: "text/javascript",
+			src: "https://www.googletagmanager.com/gtag/js?id=G-95QF984DPQ",
+			async: true,
+		},
+	},
+	// Inline Google Analytics Setup Script
+	{
+		script: `
        	window.dataLayer = window.dataLayer || [];
   	 	function gtag(){dataLayer.push(arguments);}
   		gtag('js', new Date());
   		gtag('config', 'G-95QF984DPQ');
       `,
-    },
-  ]
+	},
+]
