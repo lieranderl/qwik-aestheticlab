@@ -8,7 +8,6 @@ export default component$(() => {
   useOnDocument(
     "DOMContentLoaded",
     $(() => {
-		console.log("DOMContentLoaded", window.innerWidth)
       isMobile.value = window.innerWidth < 768;
     })
   );
@@ -16,7 +15,6 @@ export default component$(() => {
   useOnWindow(
     'resize',
     $(() => {
-		console.log("resize", window.innerWidth)
       isMobile.value = window.innerWidth < 768;
     })
   );
