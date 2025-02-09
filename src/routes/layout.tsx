@@ -38,8 +38,7 @@ export const useTechniciansLoader = routeLoader$<Technician[]>(
         },
       });
       const data: Technician[] = await response.json();
-      // Filter out inactive technicians and not dev technicians
-      return data.filter((technician) => technician.active && !technician.dev);
+      return data.filter((technician) => technician.active);
     } catch (error) {
       console.error("Error fetching technicians:", error);
       return [];
