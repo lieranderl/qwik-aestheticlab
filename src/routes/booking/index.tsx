@@ -7,12 +7,8 @@ import {
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
-import {
-  DocumentHead,
-  Form,
-  routeAction$,
-  server$,
-} from "@builder.io/qwik-city";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
@@ -77,10 +73,9 @@ const fetchTechnicianSlots = server$(
   }
 );
 
-export const useBookAppointment = routeAction$(async (form, { fail, env }) => {
+export const useBookAppointment = routeAction$(async (form, { env }) => {
   console.log("ACTION");
   console.log(form);
-  console.log(fail);
   const API_BASE_URL = env.get("API_BASE_URL");
   const API_TOKEN = env.get("API_TOKEN");
   console.log(
@@ -248,9 +243,9 @@ export default component$(() => {
           Book Your Appointment
         </h1>
         <div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
-          <div class="card-body">
+          <div class="card-body p-4 md:p-8">
             <Form
-              class="space-y-6 flex flex-col justify-center"
+              class="space-y-4 flex flex-col justify-center"
               action={action}
             >
               <ContactFormInputs
@@ -259,13 +254,14 @@ export default component$(() => {
                 phoneSignal={phoneSignal}
                 showConfirmationPanel={showConfirmationPanelSignal.value}
               />
-              <div class="w-1 content-center" style="anchor-name:--cally1" />
+
               <ServiceSelector
                 selectedServices={selectedServices}
                 services={servicesSignal.value}
                 totalDuration={totalDuration.value}
                 totalPrice={totalPrice.value}
               />
+              <div class="w-1 content-center" style="anchor-name:--cally1" />
 
               {selectedServices.value.length > 0 && (
                 <DateSelector selectedDateSignal={selectedDateSignal} />
@@ -290,6 +286,7 @@ export default component$(() => {
               />
 
               <TotalSummary
+                selectedServicesNames={selectedServicesNames.value}
                 selectedServices={selectedServices.value}
                 totalDuration={totalDuration.value}
                 totalPrice={totalPrice.value}

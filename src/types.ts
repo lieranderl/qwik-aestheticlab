@@ -7,6 +7,7 @@ export interface Service {
 	created_at: string;
 	active: boolean;
 	priority: number;
+	category: "manicure" | "pedicure" | "eyebrow" | "eyelash" | "hair";
 }
 
 export interface TimeSlot {
