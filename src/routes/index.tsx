@@ -25,10 +25,10 @@ export default component$(() => {
     <>
       <Header />
       <Hero />
-      <About />
       <Services />
       <Team />
       <Work />
+      <About />
       <Contact />
     </>
   );
