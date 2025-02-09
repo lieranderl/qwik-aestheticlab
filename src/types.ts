@@ -38,6 +38,7 @@ export interface Technician {
 	active: boolean;
 	about: string;
 	role: string;
+	dev: boolean;
 }
 
 export interface TechnicianSlots {
