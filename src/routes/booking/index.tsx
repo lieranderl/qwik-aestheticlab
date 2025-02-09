@@ -157,7 +157,7 @@ export default component$(() => {
   const selectedTechnician = useSignal<Technician | null>(null);
 
   const IsValidFormSignal = useComputed$(() => {
-    const nameValid = /^[a-zA-Z\s]{2,50}$/.test(nameSignal.value);
+    const nameValid = /^[\s\S]{2,50}$/.test(nameSignal.value);
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSignal.value);
     const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phoneSignal.value);
     return (
