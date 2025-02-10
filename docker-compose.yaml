@@ -28,7 +28,7 @@ services:
       - N8N_TEMPLATES_ENABLED=false
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./n8n_files:/files # Local files mapping (optional)
+      - ./n8n_files:/home/node/files # Local files mapping (optional)
     networks:
       - mynetwork
     entrypoint: >
