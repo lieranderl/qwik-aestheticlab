@@ -10,6 +10,7 @@ import Header from "~/components/header/header";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { ga } from "~/consts";
+import { Footer } from "~/components/sections/footer";
 
 export default component$(() => {
   useOnDocument(
@@ -30,6 +31,7 @@ export default component$(() => {
       <Work />
       <About />
       <Contact />
+      <Footer />
     </>
   );
 });
