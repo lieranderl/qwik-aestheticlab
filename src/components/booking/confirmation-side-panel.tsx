@@ -5,6 +5,13 @@ import { HiCheckCircleOutline } from "@qwikest/icons/heroicons";
 import { formatDate, formatPrice, formatTime } from "~/consts";
 import type { Technician, TimeSlot } from "~/types";
 
+
+const calculateEndTime = (selectedSlotStart: string, duration: number) => {
+    const startDate = new Date(selectedSlotStart);
+    const endDate = new Date(startDate.getTime() + duration * 60000); // Convert duration from minutes to milliseconds
+    return endDate.toISOString();
+}
+
 export interface ConfirmationPanelProps {
 	isOpen: Signal<boolean>;
 	isValid: boolean;
@@ -83,7 +90,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 										</span>{" "}
 										to{" "}
 										<span class="font-semibold">
-											{formatTime(selectedSlot.end)}
+										{formatTime(calculateEndTime(selectedSlot.start, duration))}
 										</span>
 									</>
 								) : (
