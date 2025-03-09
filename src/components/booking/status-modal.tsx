@@ -3,82 +3,82 @@ import type { ActionStore } from "@builder.io/qwik-city";
 import { HiXCircleOutline } from "@qwikest/icons/heroicons";
 
 export interface StatusModalProps {
-  action: ActionStore<
-    {
-      success: boolean;
-    },
-    Record<string, unknown>,
-    true
-  >;
+	action: ActionStore<
+		{
+			success: boolean;
+		},
+		Record<string, unknown>,
+		true
+	>;
 }
 
 export default component$<StatusModalProps>(({ action }) => {
-  // if (!isOpen) return null;
+	// if (!isOpen) return null;
 
-  return (
-    <dialog id="confirmation_modal" class="modal">
-      <div class="modal-box ">
-        {action.isRunning && (
-          <div class="flex w-full justify-center">
-            <span class="loading loading-dots loading-xl text-primary " />
-          </div>
-        )}
-        {!action.isRunning && (
-          <div class="rounded-lg max-w-md w-full p-6 relative">
-            <div class="text-left">
-              {action.value && action.value.success && (
-                <div class="mb-4">
-                  <div
-                    role="alert"
-                    class="alert alert-success alert-soft text-xl"
-                  >
-                    <HiXCircleOutline />
-                    <span class=" font-sans">Booking Successful!</span>
-                  </div>
+	return (
+		<dialog id="confirmation_modal" class="modal">
+			<div class="modal-box ">
+				{action.isRunning && (
+					<div class="flex w-full justify-center">
+						<span class="loading loading-dots loading-xl text-primary " />
+					</div>
+				)}
+				{!action.isRunning && (
+					<div class="rounded-lg max-w-md w-full p-6 relative">
+						<div class="text-left">
+							{action.value?.success && (
+								<div class="mb-4">
+									<div
+										role="alert"
+										class="alert alert-success alert-soft text-xl"
+									>
+										<HiXCircleOutline />
+										<span class=" font-sans">Booking Successful!</span>
+									</div>
 
-                  <p class="text-success mt-2">
-                    Your appointment has been confirmed. We look forward to
-                    seeing you!
-                  </p>
-                </div>
-              )}
-              {action.value && !action.value.success && (
-                <div class="mb-4">
-                  <div
-                    role="alert"
-                    class="alert alert-error alert-soft text-xl"
-                  >
-                    <HiXCircleOutline />
-                    <span class=" font-sans">Booking Failed</span>
-                  </div>
+									<p class="text-success mt-2">
+										Your appointment has been confirmed. We look forward to
+										seeing you!
+									</p>
+								</div>
+							)}
+							{action.value && !action.value.success && (
+								<div class="mb-4">
+									<div
+										role="alert"
+										class="alert alert-error alert-soft text-xl"
+									>
+										<HiXCircleOutline />
+										<span class=" font-sans">Booking Failed</span>
+									</div>
 
-                  <p class="text-error mt-2">
-                    An error occurred while booking your appointment. Please try
-                    again.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+									<p class="text-error mt-2">
+										An error occurred while booking your appointment. Please try
+										again.
+									</p>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
 
-        <div class="modal-action">
-          <form method="dialog">
-            <button
-              class="btn btn-secondary"
-              type="submit"
-              onClick$={() => {
-                // showStatusModal.value = false;
-                if (action.value?.success) {
-                  window.location.href = "/";
-                }
-              }}
-            >
-              {action.value?.success ? "Return to Home" : "Close"}
-            </button>
-          </form>
-        </div>
-      </div>
-    </dialog>
-  );
+				<div class="modal-action">
+					<form method="dialog">
+						<button
+							class="btn btn-secondary"
+							type="submit"
+							onClick$={() => {
+								// showStatusModal.value = false;
+								if (action.value?.success) {
+									window.location.href = "/";
+								}
+							}}
+						>
+							{action.value?.success ? "Return to Home" : "Close"}
+						</button>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	);
 });

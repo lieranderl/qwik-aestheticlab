@@ -44,4 +44,4 @@ export const ga = [
   		gtag('config', 'G-95QF984DPQ');
       `,
 	},
-]
+];

@@ -13,36 +13,36 @@ import { ga } from "~/consts";
 import { Footer } from "~/components/sections/footer";
 
 export default component$(() => {
-  useOnDocument(
-    "DOMContentLoaded",
-    $(() => {
-      AOS.init({
-        duration: 800,
-      });
-    })
-  );
+	useOnDocument(
+		"DOMContentLoaded",
+		$(() => {
+			AOS.init({
+				duration: 800,
+			});
+		}),
+	);
 
-  return (
-    <>
-      <Header />
-      <Hero />
-      <Services />
-      <Team />
-      <Work />
-      <About />
-      <Contact />
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<Hero />
+			<Services />
+			<Team />
+			<Work />
+			<About />
+			<Contact />
+			<Footer />
+		</>
+	);
 });
 
 export const head: DocumentHead = {
-  title: "Aesthetic Lab - Beauty & Wellness",
-  meta: [
-    {
-      name: "description",
-      content: "Where Expertise Crafts Unique Beauty",
-    },
-  ],
-  scripts: ga,
+	title: "Aesthetic Lab - Beauty & Wellness",
+	meta: [
+		{
+			name: "description",
+			content: "Where Expertise Crafts Unique Beauty",
+		},
+	],
+	scripts: ga,
 };

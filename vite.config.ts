@@ -10,6 +10,7 @@ import pkg from "./package.json";
 import tailwindcss from "@tailwindcss/vite";
 
 type PkgDep = Record<string, string>;
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
 	dependencies: PkgDep;
 	devDependencies: PkgDep;
@@ -20,6 +21,8 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
+
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 export default defineConfig(({ command, mode }): UserConfig => {
 	return {
 		plugins: [tailwindcss(), qwikCity(), qwikVite(), tsconfigPaths()],

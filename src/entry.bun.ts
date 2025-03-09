@@ -28,7 +28,6 @@ console.log(`Server started: http://localhost:${port}/`);
 
 Bun.serve({
 	async fetch(request: Request) {
-
 		// Server-side render this request with Qwik City
 		const qwikCityResponse = await router(request);
 		if (qwikCityResponse) {
