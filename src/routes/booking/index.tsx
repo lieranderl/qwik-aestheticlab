@@ -252,8 +252,8 @@ export default component$(() => {
 				</div>
 				<div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
 					<div class="card-body p-4 md:p-8">
-						<div class="card-title text-primary text-2xl md:text-5xl font-qestero font-semibold mb-4">
-							Book Your Appointment
+						<div class="text-primary text-center text-2xl md:text-5xl font-qestero font-semibold mb-4">
+							Book New Appointment
 						</div>
 						<Form
 							class="space-y-4 flex flex-col justify-center"

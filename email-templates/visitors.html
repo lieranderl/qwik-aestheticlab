@@ -90,17 +90,21 @@
 
     <div class="content">
         <p>Hello <span class="highlight">{{ $('POST appointment').item.json.body.name }}</span>,</p>
-        
+
         <p>We're delighted to confirm your appointment at <strong class="highlight">Aesthetic Lab</strong>!</p>
 
         <div class="info">
             <p><strong>Service(s):</strong> <span class="highlight">{{ $('Merge').item.json.appended_name }}</span></p>
 
             <p><strong>Your Nail Artist:</strong><br>
-            <span class="highlight">{{ $('Merge').item.json.name }}</span> <a href="mailto:{{ $('Merge').item.json.email }}" class="highlight">✉️</a></p>
+            <span class="highlight">{{ $('Merge').item.json.name }}</span> <a href="mailto:{{ $('Merge').item.json.email }}" class="highlight">✉️</a>
+            </p>
 
+            <p><strong>Address:</strong><br>
+            <span class="highlight">Edouard Remyvest 24, Leuven 3000</span>
+            </p>
             <p><strong>Date & Time:</strong><br>
-            <span class="highlight">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at 
+            <span class="highlight">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at
             <span class="highlight">{{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>
             <br><span class="duration-price">Duration: {{ $('Summarize').item.json.sum_duration }} min</span>
             <br><span class="duration-price">Price: {{ $('Summarize').item.json.sum_price }}€</span>
@@ -116,7 +120,3 @@
 
 </body>
 </html>
-
-
-
-

@@ -25,8 +25,12 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
 	({ nameSignal, emailSignal, phoneSignal, signOut }) => {
 		return (
 			<>
-				<NameInput nameSignal={nameSignal} readonly={true} signOut={signOut} />
-				<EmailInput emailSignal={emailSignal} readonly={true} />
+				<NameInput nameSignal={nameSignal} readonly={true} />
+				<EmailInput
+					emailSignal={emailSignal}
+					readonly={true}
+					signOut={signOut}
+				/>
 				<PhoneInput phoneSignal={phoneSignal} readonly={true} />
 			</>
 		);

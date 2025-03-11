@@ -1,11 +1,29 @@
 import type { Signal } from "@builder.io/qwik";
-import { HiEnvelopeOutline } from "@qwikest/icons/heroicons";
+import type { ActionStore } from "@builder.io/qwik-city";
+import {
+	HiArrowUpOnSquareOutline,
+	HiEnvelopeOutline,
+} from "@qwikest/icons/heroicons";
 
 export interface EmailInputProps {
 	emailSignal: Signal<string>;
 	readonly?: boolean;
+	signOut?: ActionStore<
+		{
+			success: boolean;
+			error: {
+				message: string;
+			};
+		},
+		Record<string, unknown>,
+		true
+	>;
 }
-export const EmailInput = ({ emailSignal, readonly }: EmailInputProps) => {
+export const EmailInput = ({
+	emailSignal,
+	readonly,
+	signOut,
+}: EmailInputProps) => {
 	return (
 		<div>
 			<label class="input input-primary validator w-full gap-2">
@@ -19,6 +37,16 @@ export const EmailInput = ({ emailSignal, readonly }: EmailInputProps) => {
 					bind:value={emailSignal}
 					readOnly={readonly}
 				/>
+				{signOut && (
+					<button
+						type="button"
+						class="btn btn-sm btn-primary"
+						onClick$={() => signOut.submit()}
+					>
+						<HiArrowUpOnSquareOutline class="w-4 h-4 rotate-90" />
+						<span class="hidden sm:block">Logout</span>
+					</button>
+				)}
 			</label>
 			<div class="validator-hint hidden">Please enter your email</div>
 		</div>
