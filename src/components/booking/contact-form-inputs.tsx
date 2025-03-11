@@ -1,70 +1,33 @@
 import type { Signal } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import {
-	HiEnvelopeOutline,
-	HiPhoneOutline,
-	HiUserOutline,
-} from "@qwikest/icons/heroicons";
+import { PhoneInput } from "~/components/auth/phone-input";
+import { EmailInput } from "~/components/auth/email-input";
+import { NameInput } from "~/components/auth/name-input";
+import type { ActionStore } from "@builder.io/qwik-city";
 
 export interface ContactFormInputsProps {
 	nameSignal: Signal<string>;
 	emailSignal: Signal<string>;
 	phoneSignal: Signal<string>;
-	showConfirmationPanel: boolean;
+	signOut?: ActionStore<
+		{
+			success: boolean;
+			error: {
+				message: string;
+			};
+		},
+		Record<string, unknown>,
+		true
+	>;
 }
 
 export const ContactFormInputs = component$<ContactFormInputsProps>(
-	({ nameSignal, emailSignal, phoneSignal, showConfirmationPanel }) => {
+	({ nameSignal, emailSignal, phoneSignal, signOut }) => {
 		return (
 			<>
-				<div>
-					<label class="input input-primary validator w-full">
-						<HiUserOutline class="text-primary w-4 h-4" />
-						<input
-							name="name"
-							type="text"
-							placeholder="Enter you name..."
-							pattern="^[\s\S]{2,50}$"
-							required
-							bind:value={nameSignal}
-							readOnly={showConfirmationPanel}
-						/>
-					</label>
-					<div class="validator-hint hidden">Please enter your name</div>
-				</div>
-				<div>
-					<label class="input input-primary validator w-full">
-						<HiEnvelopeOutline class="text-primary w-4 h-4" />
-						<input
-							name="email"
-							type="email"
-							placeholder="mail@site.com"
-							required
-							bind:value={emailSignal}
-							readOnly={showConfirmationPanel}
-						/>
-					</label>
-					<div class="validator-hint hidden">
-						Please enter valid email address
-					</div>
-				</div>
-				<div>
-					<label class="input input-primary validator w-full">
-						<HiPhoneOutline class="text-primary w-4 h-4" />
-						<input
-							name="phone"
-							type="tel"
-							placeholder="Enter your phone number..."
-							required
-							pattern="^\+?[0-9\-\s]{9,15}$"
-							bind:value={phoneSignal}
-							readOnly={showConfirmationPanel}
-						/>
-					</label>
-					<div class="validator-hint hidden">
-						Please enter valid phone number
-					</div>
-				</div>
+				<NameInput nameSignal={nameSignal} readonly={true} signOut={signOut} />
+				<EmailInput emailSignal={emailSignal} readonly={true} />
+				<PhoneInput phoneSignal={phoneSignal} readonly={true} />
 			</>
 		);
 	},

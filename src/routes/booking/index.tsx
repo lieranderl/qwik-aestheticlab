@@ -25,6 +25,8 @@ import StatusModal from "~/components/booking/status-modal";
 import { TotalSummary } from "~/components/booking/total-summary";
 import { WarningForm } from "~/components/booking/form-warning";
 import { ga } from "~/consts";
+import { useAuthSession, useSupabaseSignOut } from "./layout";
+import { HiHomeOutline } from "@qwikest/icons/heroicons";
 
 const WEEKDAYS = [
 	"sunday",
@@ -123,10 +125,14 @@ export default component$(() => {
 	const servicesSignal = useServicesLoader();
 	const techniciansSignal = useTechniciansLoader();
 	const envs = useEnvLoader();
+	const useSession = useAuthSession();
+	const signOut = useSupabaseSignOut();
 
-	const nameSignal = useSignal("");
-	const emailSignal = useSignal("");
-	const phoneSignal = useSignal("");
+	const nameSignal = useSignal(useSession.value.user.user_metadata.name ?? "");
+	const emailSignal = useSignal(useSession.value.user.email ?? "");
+	const phoneSignal = useSignal(
+		useSession.value.user.user_metadata.phone ?? "",
+	);
 	const selectedServices = useSignal<string[]>([]);
 	const selectedServicesNames = useComputed$(() => {
 		return servicesSignal.value
@@ -239,11 +245,16 @@ export default component$(() => {
 	return (
 		<div class="min-h-screen bg-base-200 py-24">
 			<div class="container mx-auto px-4">
-				<h1 class="text-2xl md:text-5xl mb-8 text-center font-qestero font-semibold">
-					Book Your Appointment
-				</h1>
+				<div class="flex justify-center items-center mb-8">
+					<a href="/" class="link">
+						<HiHomeOutline class="text-xl md:text-3xl" />
+					</a>
+				</div>
 				<div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
 					<div class="card-body p-4 md:p-8">
+						<div class="card-title text-primary text-2xl md:text-5xl font-qestero font-semibold mb-4">
+							Book Your Appointment
+						</div>
 						<Form
 							class="space-y-4 flex flex-col justify-center"
 							action={action}
@@ -252,7 +263,7 @@ export default component$(() => {
 								nameSignal={nameSignal}
 								emailSignal={emailSignal}
 								phoneSignal={phoneSignal}
-								showConfirmationPanel={showConfirmationPanelSignal.value}
+								signOut={signOut}
 							/>
 
 							<ServiceSelector
