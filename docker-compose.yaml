@@ -5,6 +5,8 @@ services:
     environment:
       - API_BASE_URL=${API_BASE_URL}
       - API_TOKEN=${API_TOKEN}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
     networks:
       - mynetwork
     restart: unless-stopped
