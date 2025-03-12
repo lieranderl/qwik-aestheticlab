@@ -44,3 +44,16 @@ export interface TechnicianSlots {
 	tech: Technician;
 	slots: TimeSlot[];
 }
+
+export interface Booking {
+	id: string;
+	technician_id: string;
+	client_id: string;
+	services: string[];
+	services_names: string[];
+	duration: number;
+	price: number;
+	datetime: string;
+	calendar_id: string;
+	event_id: string;
+}

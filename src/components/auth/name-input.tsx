@@ -8,7 +8,13 @@ export interface NameInputProps {
 export const NameInput = ({ nameSignal, readonly }: NameInputProps) => {
 	return (
 		<div>
-			<label class="input input-primary validator w-full">
+			<label
+				class={
+					readonly
+						? "input input-primary validator w-full pointer-events-none select-none"
+						: "input input-primary validator w-full "
+				}
+			>
 				<HiUserOutline class="text-primary w-4 h-4" />
 				<input
 					name="name"

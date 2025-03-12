@@ -8,7 +8,13 @@ export interface PhoneInputProps {
 export const PhoneInput = ({ phoneSignal, readonly }: PhoneInputProps) => {
 	return (
 		<div>
-			<label class="input input-primary validator w-full">
+			<label
+				class={
+					readonly
+						? "input input-primary validator w-full pointer-events-none select-none"
+						: "input input-primary validator w-full "
+				}
+			>
 				<HiPhoneOutline class="text-primary w-4 h-4" />
 				<input
 					name="phone"

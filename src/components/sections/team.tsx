@@ -1,12 +1,12 @@
 import { component$ } from "@builder.io/qwik";
-import { useTechniciansLoader } from "~/routes/layout";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
 import type { Technician } from "~/types";
 
-export default component$(() => {
-	const techniciansSignal = useTechniciansLoader();
-
+export interface TeamSectionProps {
+	technicians: Technician[];
+}
+export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 	return (
 		<section id="team" class="py-20 bg-base-200">
 			<div class="custom-container">
@@ -14,7 +14,7 @@ export default component$(() => {
 					Meet Our Team
 				</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-8 ">
-					{techniciansSignal.value.map((tech: Technician) => (
+					{technicians.map((tech: Technician) => (
 						<div key={tech.id} class="card bg-base-100" data-aos="fade-up">
 							<div class="card-body">
 								<div class="avatar justify-center">

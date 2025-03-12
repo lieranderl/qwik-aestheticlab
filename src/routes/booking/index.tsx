@@ -25,8 +25,14 @@ import StatusModal from "~/components/booking/status-modal";
 import { TotalSummary } from "~/components/booking/total-summary";
 import { WarningForm } from "~/components/booking/form-warning";
 import { ga } from "~/consts";
-import { useAuthSession, useSupabaseSignOut } from "./layout";
+import {
+	useAuthSession,
+	useGetScheduledAppointments,
+	useRemoveBooking,
+	useSupabaseSignOut,
+} from "./layout";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
+import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
 
 const WEEKDAYS = [
 	"sunday",
@@ -128,6 +134,8 @@ export default component$(() => {
 	const useSession = useAuthSession();
 	const signOut = useSupabaseSignOut();
 
+	const upcomingAppointments = useGetScheduledAppointments();
+
 	const nameSignal = useSignal(useSession.value.user.user_metadata.name ?? "");
 	const emailSignal = useSignal(useSession.value.user.email ?? "");
 	const phoneSignal = useSignal(
@@ -178,6 +186,8 @@ export default component$(() => {
 
 	const showConfirmationPanelSignal = useSignal(false);
 	const action = useBookAppointment();
+
+	const useRemoveBookingAction = useRemoveBooking();
 
 	const handleBookButtonClick = $(async () => {
 		await new Promise((resolve) => setTimeout(resolve, 200));
@@ -243,16 +253,20 @@ export default component$(() => {
 	});
 
 	return (
-		<div class="min-h-screen bg-base-200 py-24">
+		<div class="min-h-screen bg-base-200 py-12">
 			<div class="container mx-auto px-4">
 				<div class="flex justify-center items-center mb-8">
 					<a href="/" class="link">
-						<HiHomeOutline class="text-xl md:text-3xl" />
+						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
 					</a>
 				</div>
 				<div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
 					<div class="card-body p-4 md:p-8">
-						<div class="text-primary text-center text-2xl md:text-5xl font-qestero font-semibold mb-4">
+						<UpcomingAppointment
+							upcomingAppointments={upcomingAppointments.value}
+							useRemoveBookingAction={useRemoveBookingAction}
+						/>
+						<div class="text-primary text-center text-xl md:text-4xl font-qestero font-semibold mb-4">
 							Book New Appointment
 						</div>
 						<Form
