@@ -7,7 +7,7 @@ services:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_KEY=${SUPABASE_KEY}
     container_name: bun
-    image: qwik-aestheticlab:auth
+    image: qwik-aestheticlab:${TAG}
     environment:
       - API_BASE_URL=${API_BASE_URL}
       - API_TOKEN=${API_TOKEN}
