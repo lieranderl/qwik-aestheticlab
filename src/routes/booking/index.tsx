@@ -124,6 +124,7 @@ export default component$(() => {
 	useOnDocument(
 		"DOMContentLoaded",
 		$(async () => {
+			console.log("IMPORT CALLY");
 			await import("cally");
 		}),
 	);

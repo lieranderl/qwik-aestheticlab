@@ -1,7 +1,13 @@
 services:
   bun:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_KEY=${SUPABASE_KEY}
     container_name: bun
+    image: qwik-aestheticlab:auth
     environment:
       - API_BASE_URL=${API_BASE_URL}
       - API_TOKEN=${API_TOKEN}
@@ -50,7 +56,7 @@ services:
       - N8N_PORT=${N8N_PORT}
     volumes:
       - caddy_data:/data
-      - ./caddy_config/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy_config/${CADDY_FILE}:/etc/caddy/Caddyfile
     networks:
       - mynetwork
     restart: unless-stopped

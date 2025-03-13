@@ -11,13 +11,17 @@ ENV NODE_ENV=production
 RUN npm install -g bun
 
 # Copy package.json and bun.lockb (if available) for dependency installation
-COPY package.json bun.lock /app/
+COPY package.json bun.lock  /app/
 
 # Install project dependencies
 RUN bun install
 
 # Copy only necessary files for the build
 COPY . .
+ARG SUPABASE_URL
+ARG SUPABASE_KEY
+ENV SUPABASE_URL=${SUPABASE_URL}
+ENV SUPABASE_KEY=${SUPABASE_KEY}
 
 # Build the application
 RUN bun run build

@@ -1,4 +1,4 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
 import { EmailInput } from "~/components/auth/email-input";
 import { PasswordInput } from "~/components/auth/password-input";
@@ -26,6 +26,14 @@ export default component$(() => {
 	const email = useSignal("");
 	const password = useSignal("");
 	const useSignIn = useSupabaseSignIn();
+
+	useOnDocument(
+		"DOMContentLoaded",
+		$(async () => {
+			console.log("IMPORT CALLY");
+			await import("cally");
+		}),
+	);
 
 	return (
 		<>
