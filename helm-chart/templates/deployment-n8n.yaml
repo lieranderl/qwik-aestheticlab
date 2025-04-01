@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-n8n
+  labels:
+    app: {{ .Release.Name }}-n8n
+spec:
+  replicas: {{ .Values.n8n.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-n8n
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-n8n
+    spec:
+      initContainers:
+        - name: init-config
+          image: busybox
+          command:
+            - sh
+            - "-c"
+            - |
+              echo '{"encryptionKey": "{{ .Values.n8n.env.N8N_ENCRYPTION_KEY }}"}' > /data/config
+          volumeMounts:
+            - name: n8n-data
+              mountPath: /data
+
+      containers:
+        - name: n8n
+          image: "{{ .Values.n8n.image }}:{{ .Values.n8n.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: N8N_HOST
+              value: {{ .Values.n8n.env.N8N_HOST }}
+            - name: NODE_ENV
+              value: {{ .Values.n8n.env.NODE_ENV }}
+            - name: N8N_DIAGNOSTICS_ENABLED
+              value: "{{ .Values.n8n.env.N8N_DIAGNOSTICS_ENABLED }}"
+            - name: N8N_VERSION_NOTIFICATIONS_ENABLED
+              value: "{{ .Values.n8n.env.N8N_VERSION_NOTIFICATIONS_ENABLED }}"
+            - name: N8N_TEMPLATES_ENABLED
+              value: "{{ .Values.n8n.env.N8N_TEMPLATES_ENABLED }}"
+            - name: GENERIC_TIMEZONE
+              value: "{{ .Values.n8n.env.GENERIC_TIMEZONE }}"
+            - name: DOMAIN_NAME
+              value: "{{ .Values.n8n.env.DOMAIN_NAME }}"
+            - name: WEBHOOK_URL
+              value: "{{ .Values.n8n.env.WEBHOOK_URL }}"
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secrets
+                  key: N8N_ENCRYPTION_KEY
+          volumeMounts:
+            - name: n8n-data
+              mountPath: /var/lib/docker/volumes/n8n_data/_data
+            - name: n8n-files
+              mountPath: /home/node/files
+          ports:
+            - containerPort: 5678
+              name: http
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - "-c"
+                  - |
+                    sleep 10
+                    n8n import:credentials --input=/home/node/files/creds.json &&
+                    n8n import:workflow --input=/home/node/files/workflows.json &&
+                    n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=false &&
+                    n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=true
+
+          # Health Probes
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5678
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 5678
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 2
+
+
+      volumes:
+        - name: n8n-data
+          persistentVolumeClaim:
+            claimName: n8n-pvc
+        - name: n8n-files
+          configMap:
+            name: n8n-files

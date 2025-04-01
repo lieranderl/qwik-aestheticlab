@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: n8n-files
+data:
+  creds.json: |
+    {{- if .Values.n8n.initFiles.enabled }}
+    {{ .Files.Get .Values.n8n.initFiles.credsPath | nindent 4 }}
+    {{- end }}
+  workflows.json: |
+    {{- if .Values.n8n.initFiles.enabled }}
+    {{ .Files.Get .Values.n8n.initFiles.workflowsPath | nindent 4 }}
+    {{- end }}

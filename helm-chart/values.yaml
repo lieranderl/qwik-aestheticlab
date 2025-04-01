@@ -1,9 +1,8 @@
-replicas: 1
 environment: production
-image:
-  tag: latest
+
 
 bun:
+  replicas: 1
   image: qwik-aesthetic
   port: 3000
   tag: auth
@@ -14,7 +13,10 @@ bun:
     SUPABASE_KEY: null
 
 n8n:
+  replicas: 1
   image: docker.n8n.io/n8nio/n8n
+  tag: latest
+  port: 5678
   env:
     N8N_HOST: "aesthetic-app-n8n-svc"
     WEBHOOK_URL: null
