@@ -37,7 +37,7 @@ export default component$(() => {
 										class="link link-hover"
 										rel="noreferrer"
 									>
-										Edouard Remyvest 24, Leuven 3000
+										Vital Decosterstraat 29, 3000 Leuven. Gala De Luxe.
 									</a>
 								</li>
 							</ul>
