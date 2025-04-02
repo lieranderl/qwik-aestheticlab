@@ -10,7 +10,7 @@ data:
   N8N_VERSION_NOTIFICATIONS_ENABLED: "{{ .Values.n8n.env.N8N_VERSION_NOTIFICATIONS_ENABLED }}"
   N8N_TEMPLATES_ENABLED: "{{ .Values.n8n.env.N8N_TEMPLATES_ENABLED }}"
   GENERIC_TIMEZONE: "{{ .Values.n8n.env.GENERIC_TIMEZONE }}"
-  DOMAIN_NAME: "{{ .Values.n8n.env.DOMAIN_NAME }}"
+  DOMAIN_NAME: "{{ .Values.domain }}"
   WEBHOOK_URL: "{{ .Values.n8n.env.WEBHOOK_URL }}"
   N8N_LOG_LEVEL: "{{ .Values.n8n.env.N8N_LOG_LEVEL }}"
   QUEUE_HEALTH_CHECK_ACTIVE: "{{ .Values.n8n.env.QUEUE_HEALTH_CHECK_ACTIVE }}"

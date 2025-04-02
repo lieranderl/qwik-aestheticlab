@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-bun
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Release.Name }}-bun
 spec:
   replicas: 1
   selector:
@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: API_BASE_URL
-              value: "http://{{ .Release.Name }}-n8n-svc.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.n8n.env.N8N_PORT }}{{ .Values.bun.env.WEBHOOK }}"
+              value: "http://{{ .Release.Name }}-n8n-svc.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.n8n.env.N8N_PORT }}{{ .Values.bun.env.WEBHOOK | default "" }}"
             - name: SUPABASE_KEY
               valueFrom:
                 secretKeyRef:

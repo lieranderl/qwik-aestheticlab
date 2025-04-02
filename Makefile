@@ -57,11 +57,11 @@ helm-upgrade:
 	--set bun.env.API_TOKEN="$(API_TOKEN)" \
     --set bun.env.SUPABASE_URL=$(SUPABASE_URL) \
     --set bun.env.SUPABASE_KEY=$(SUPABASE_KEY) \
-	--set bun.env.N8N_PORT=$(N8N_PORT) \
+	--set bun.env.WEBHOOK=$(WEBHOOK) \
     --set n8n.env.N8N_ENCRYPTION_KEY=$(N8N_ENCRYPTION_KEY) \
     --set n8n.env.GENERIC_TIMEZONE=$(GENERIC_TIMEZONE) \
-    --set n8n.env.DOMAIN_NAME=$(DOMAIN_NAME)
-	--set bun.env.WEBHOOK=$(WEBHOOK) \
+    --set domain=$(DOMAIN_NAME)
+	@echo "Helm upgrade completed."
 	# kubectl rollout restart deployment/aesthetic-app-n8n
 
 help:
