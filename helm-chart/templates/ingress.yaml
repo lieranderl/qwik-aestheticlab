@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{.Release.Name}}-n8n-ingress
+spec:
+  ingressClassName: traefik  # Use the new field to specify the Ingress class
+  tls:
+    - hosts:
+        - n8n.myapp.local
+      secretName: n8n-tls  # Ensure you have a TLS secret
+  rules:
+    - host: n8n.myapp.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-n8n-svc
+                port:
+                  number: 5678

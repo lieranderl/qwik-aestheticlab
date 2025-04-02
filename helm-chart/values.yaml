@@ -2,7 +2,6 @@ environment: production
 
 
 bun:
-  replicas: 1
   image: qwik-aesthetic
   port: 3000
   tag: auth
@@ -13,7 +12,6 @@ bun:
     SUPABASE_KEY: null
 
 n8n:
-  replicas: 1
   image: docker.n8n.io/n8nio/n8n
   tag: latest
   port: 5678
@@ -29,5 +27,5 @@ n8n:
     DOMAIN_NAME: null
   initFiles:
     enabled: true
-    credsPath: "n8n_files/creds.json"
-    workflowsPath: "n8n_files/workflows.json"
+    credsPath: "n8n_files/creds_all.json"
+    workflowsPath: "n8n_files/workflow.json"

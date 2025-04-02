@@ -5,7 +5,8 @@ metadata:
   labels:
     app: {{ .Release.Name }}-n8n
 spec:
-  replicas: {{ .Values.n8n.replicas }}
+  revisionHistoryLimit: 3
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Release.Name }}-n8n
@@ -21,15 +22,19 @@ spec:
             - sh
             - "-c"
             - |
-              echo '{"encryptionKey": "{{ .Values.n8n.env.N8N_ENCRYPTION_KEY }}"}' > /data/config
+              echo '{"encryptionKey": "{{ .Values.n8n.env.N8N_ENCRYPTION_KEY }}"}' > /data/config && \
+              chown 1000:1000 /data/config &&
+              chmod 600 /data/config
           volumeMounts:
             - name: n8n-data
               mountPath: /data
 
       containers:
         - name: n8n
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
           image: "{{ .Values.n8n.image }}:{{ .Values.n8n.tag }}"
-          imagePullPolicy: Always
           env:
             - name: N8N_HOST
               value: {{ .Values.n8n.env.N8N_HOST }}
@@ -47,6 +52,10 @@ spec:
               value: "{{ .Values.n8n.env.DOMAIN_NAME }}"
             - name: WEBHOOK_URL
               value: "{{ .Values.n8n.env.WEBHOOK_URL }}"
+            - name: N8N_LOG_LEVEL
+              value: debug
+            - name: QUEUE_HEALTH_CHECK_ACTIVE
+              value: "true"
             - name: N8N_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
@@ -54,43 +63,38 @@ spec:
                   key: N8N_ENCRYPTION_KEY
           volumeMounts:
             - name: n8n-data
-              mountPath: /var/lib/docker/volumes/n8n_data/_data
+              mountPath: /home/node/.n8n
             - name: n8n-files
               mountPath: /home/node/files
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
           ports:
             - containerPort: 5678
-              name: http
+              name: n8n
           lifecycle:
             postStart:
               exec:
                 command:
-                  - sh
-                  - "-c"
-                  - |
-                    sleep 10
-                    n8n import:credentials --input=/home/node/files/creds.json &&
-                    n8n import:workflow --input=/home/node/files/workflows.json &&
-                    n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=false &&
-                    n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=true
-
+                    - "/bin/sh"
+                    - "-c"
+                    - |
+                      n8n import:credentials --input=/home/node/files/creds.json
+                      n8n import:workflow --input=/home/node/files/workflows.json
+                      n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=false
+                      n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=true
           # Health Probes
           livenessProbe:
             httpGet:
               path: /healthz
               port: 5678
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 15
             failureThreshold: 3
-
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 5678
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            failureThreshold: 2
-
-
       volumes:
         - name: n8n-data
           persistentVolumeClaim:
