@@ -32,12 +32,12 @@ export default component$(() => {
 								<li class="flex items-center gap-2">
 									<HiMapPinOutline />
 									<a
-										href="https://maps.app.goo.gl/2mEvv7cnPVNuTm6e8"
+										href="https://maps.app.goo.gl/2B2nWjVD2muZm5ic9"
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
 									>
-										Vital Decosterstraat 29, 3000 Leuven. Gala De Luxe.
+										Vital Decosterstraat 29, 3000 Leuven. Gala De Luxe
 									</a>
 								</li>
 							</ul>

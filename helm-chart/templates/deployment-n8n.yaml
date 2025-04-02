@@ -6,7 +6,7 @@ metadata:
     app: {{ .Release.Name }}-n8n
 spec:
   revisionHistoryLimit: 3
-  replicas: 1
+  replicas: {{ .Values.n8n.replicas }}  
   selector:
     matchLabels:
       app: {{ .Release.Name }}-n8n
@@ -17,16 +17,22 @@ spec:
     spec:
       initContainers:
         - name: init-config
-          image: busybox
+          image: alpine
           command:
             - sh
             - "-c"
             - |
-              echo '{"encryptionKey": "{{ .Values.n8n.env.N8N_ENCRYPTION_KEY }}"}' > /data/config && \
-              chown 1000:1000 /data/config &&
+              echo '{"encryptionKey": "'$N8N_ENCRYPTION_KEY'"}' > /data/config && \
+              chown 1000:1000 /data/config && \
               chmod 600 /data/config
+          env:
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: N8N_ENCRYPTION_KEY
           volumeMounts:
-            - name: n8n-data
+            - name: {{ .Release.Name }}-n8n-data
               mountPath: /data
 
       containers:
@@ -35,36 +41,19 @@ spec:
             runAsUser: 1000
             runAsGroup: 1000
           image: "{{ .Values.n8n.image }}:{{ .Values.n8n.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-n8n-envconfig
           env:
-            - name: N8N_HOST
-              value: {{ .Values.n8n.env.N8N_HOST }}
-            - name: NODE_ENV
-              value: {{ .Values.n8n.env.NODE_ENV }}
-            - name: N8N_DIAGNOSTICS_ENABLED
-              value: "{{ .Values.n8n.env.N8N_DIAGNOSTICS_ENABLED }}"
-            - name: N8N_VERSION_NOTIFICATIONS_ENABLED
-              value: "{{ .Values.n8n.env.N8N_VERSION_NOTIFICATIONS_ENABLED }}"
-            - name: N8N_TEMPLATES_ENABLED
-              value: "{{ .Values.n8n.env.N8N_TEMPLATES_ENABLED }}"
-            - name: GENERIC_TIMEZONE
-              value: "{{ .Values.n8n.env.GENERIC_TIMEZONE }}"
-            - name: DOMAIN_NAME
-              value: "{{ .Values.n8n.env.DOMAIN_NAME }}"
-            - name: WEBHOOK_URL
-              value: "{{ .Values.n8n.env.WEBHOOK_URL }}"
-            - name: N8N_LOG_LEVEL
-              value: debug
-            - name: QUEUE_HEALTH_CHECK_ACTIVE
-              value: "true"
             - name: N8N_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: n8n-secrets
+                  name: {{ .Release.Name }}-secrets
                   key: N8N_ENCRYPTION_KEY
           volumeMounts:
-            - name: n8n-data
+            - name: {{ .Release.Name }}-n8n-data
               mountPath: /home/node/.n8n
-            - name: n8n-files
+            - name: {{ .Release.Name }}-n8n-files
               mountPath: /home/node/files
           resources:
             requests:
@@ -74,7 +63,7 @@ spec:
               cpu: 300m
               memory: 512Mi
           ports:
-            - containerPort: 5678
+            - containerPort: {{ .Values.n8n.env.N8N_PORT | int }}
               name: n8n
           lifecycle:
             postStart:
@@ -83,22 +72,22 @@ spec:
                     - "/bin/sh"
                     - "-c"
                     - |
+                      set -e
                       n8n import:credentials --input=/home/node/files/creds.json
                       n8n import:workflow --input=/home/node/files/workflows.json
                       n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=false
                       n8n update:workflow --id=PgnuLOJDGJgX1OeB --active=true
-          # Health Probes
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 5678
+              port: {{ .Values.n8n.env.N8N_PORT | int }}
             initialDelaySeconds: 30
             periodSeconds: 15
             failureThreshold: 3
       volumes:
-        - name: n8n-data
+        - name: {{ .Release.Name }}-n8n-data
           persistentVolumeClaim:
-            claimName: n8n-pvc
-        - name: n8n-files
+            claimName: {{ .Release.Name }}-n8n-pvc
+        - name: {{ .Release.Name }}-n8n-files
           configMap:
-            name: n8n-files
+            name: {{ .Release.Name }}-n8n-files

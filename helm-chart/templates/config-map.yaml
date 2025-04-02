@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: n8n-files
+  name: {{ .Release.Name }}-n8n-files
 data:
   creds.json: |
     {{- if .Values.n8n.initFiles.enabled }}

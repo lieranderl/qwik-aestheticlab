@@ -1,5 +1,5 @@
 # Stage 1: Building the application
-FROM node:20-bookworm-slim AS build
+FROM --platform=$BUILDPLATFORM node:23-bookworm-slim AS build
 
 # Set the working directory
 WORKDIR /app

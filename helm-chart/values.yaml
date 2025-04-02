@@ -6,7 +6,7 @@ bun:
   port: 3000
   tag: auth
   env:
-    API_BASE_URL: null
+    WEBHOOK: null
     API_TOKEN: null
     SUPABASE_URL: null
     SUPABASE_KEY: null
@@ -14,10 +14,9 @@ bun:
 n8n:
   image: docker.n8n.io/n8nio/n8n
   tag: latest
-  port: 5678
+  replicas: 1
   env:
-    N8N_HOST: "aesthetic-app-n8n-svc"
-    WEBHOOK_URL: null
+    N8N_PORT: 5678
     N8N_ENCRYPTION_KEY: null
     NODE_ENV: "production"
     GENERIC_TIMEZONE: null
@@ -25,6 +24,8 @@ n8n:
     N8N_VERSION_NOTIFICATIONS_ENABLED: false
     N8N_TEMPLATES_ENABLED: false
     DOMAIN_NAME: null
+    N8N_LOG_LEVEL: debug
+    QUEUE_HEALTH_CHECK_ACTIVE: "true"
   initFiles:
     enabled: true
     credsPath: "n8n_files/creds_all.json"

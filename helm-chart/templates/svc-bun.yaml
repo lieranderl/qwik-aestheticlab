@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-bun-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: {{ .Values.bun.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Release.Name }}-bun

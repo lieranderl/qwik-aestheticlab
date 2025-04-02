@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-bun
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-bun
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-bun
+    spec:
+      containers:
+        - name: bun
+          image: "furlingene/{{ .Values.bun.image }}:{{ .Values.bun.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: API_BASE_URL
+              value: "http://{{ .Release.Name }}-n8n-svc.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.n8n.env.N8N_PORT }}{{ .Values.bun.env.WEBHOOK }}"
+            - name: SUPABASE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: SUPABASE_KEY
+            - name: SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: SUPABASE_URL
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: API_TOKEN
+          ports:
+            - containerPort: {{ .Values.bun.port }}
+              name: http
+              protocol: TCP
+          command: ["bun", "run", "serve"]
+
