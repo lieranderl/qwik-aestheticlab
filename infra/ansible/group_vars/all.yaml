@@ -1,0 +1,2 @@
+lb_ip_pool: "{{ hostvars['master'].ansible_host }}/32" # Use Terraform-assigned IP
+reserved_ips: 1 # Start with 1 IP, add more later

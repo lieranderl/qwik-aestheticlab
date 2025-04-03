@@ -1,0 +1,57 @@
+---
+- name: Install MicroK8s
+  snap:
+    name: microk8s
+    classic: yes
+
+- name: Add user to microk8s group
+  user:
+    name: "{{ ansible_user }}"
+    groups: microk8s
+    append: yes
+
+- name: Enable dns
+  command: microk8s enable dns
+
+- name: Enable hostpath-storage
+  command: microk8s enable hostpath-storage
+
+- name: Enable metrics
+  command: microk8s enable metrics-server
+
+- name: Enable dashboard
+  command: microk8s enable dashboard
+
+- name: Enable community
+  command: microk8s enable community
+
+- name: Enable metallb
+  command: microk8s enable metallb:"{{ lb_ip_pool }}"
+
+- name: Enable traefik
+  command: microk8s enable traefik
+
+- name: Ensure local Kubeconfig directory exists
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.kube"
+    state: directory
+    mode: '0700'
+
+- name: Get Kubeconfig from MicroK8s
+  command: microk8s config > /tmp/microk8s-config
+  become: yes
+
+- name: Fetch Kubeconfig file from remote node to local machine
+  fetch:
+    src: /tmp/microk8s-config
+    dest: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
+    flat: yes
+
+- name: Ensure correct ownership of microk8s-config
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0600'

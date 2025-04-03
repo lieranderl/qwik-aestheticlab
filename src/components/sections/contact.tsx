@@ -37,9 +37,35 @@ export default component$(() => {
 										class="link link-hover"
 										rel="noreferrer"
 									>
-										Vital Decosterstraat 29, 3000 Leuven. Gala De Luxe
+										<div>
+										Vital Decosterstraat 29, 3000 Leuven
+										</div>
+										<div>
+										Gala De Luxe
+										</div>
+										
 									</a>
 								</li>
+								<li class="flex items-center gap-2">
+									<HiMapPinOutline />
+									<a
+										href="https://maps.app.goo.gl/Tr3hdD81eHZ6sQ997"
+										target="_blank"
+										class="link link-hover"
+										rel="noreferrer"
+									>
+										<div>
+										Parking available at
+										</div>
+										<div>
+										Q-Park Centrum Leuven
+										</div>
+										<div>
+										Vital Decosterstraat 37, 3000 Leuven
+										</div>
+									</a>
+								</li>
+
 							</ul>
 						</div>
 					</div>
@@ -56,6 +82,7 @@ export default component$(() => {
 							Follow us on Instagram
 						</a>
 					</div>
+					
 				</div>
 			</div>
 		</section>

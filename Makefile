@@ -20,6 +20,9 @@ endif
 ifndef DOMAIN_NAME
 $(error DOMAIN_NAME is not set)
 endif
+ifndef KUBECONFIG
+$(error KUBECONFIG is not set)
+endif
 ifndef TAG
 $(error TAG is not set)
 endif
@@ -29,10 +32,9 @@ $(error "The 'helm' command is not available. Please install Helm.")
 endif
 
 
-
 # Default target
 .PHONY: all
-all: build push helm-upgrade
+all: init apply playbook build push helm-upgrade
 
 # Build the Docker image using nerdctl
 .PHONY: build
@@ -53,7 +55,7 @@ push:
 helm-upgrade:
 	@echo "Running Helm upgrade..."
 	helm ls
-	helm upgrade -i aesthetic-app ./helm-chart \
+	helm upgrade -i aesthetic-app ./infra/helm-chart \
 	--set bun.env.API_TOKEN="$(API_TOKEN)" \
     --set bun.env.SUPABASE_URL=$(SUPABASE_URL) \
     --set bun.env.SUPABASE_KEY=$(SUPABASE_KEY) \
@@ -64,9 +66,57 @@ helm-upgrade:
 	@echo "Helm upgrade completed."
 	# kubectl rollout restart deployment/aesthetic-app-n8n
 
+
+# Variables
+TERRAFORM_DIR := infra/terraform
+ANSIBLE_DIR := infra/ansible
+
+# Initialize Terraform
+.PHONY: init
+init:
+	@cd $(TERRAFORM_DIR) && terraform init
+
+# Plan Terraform infrastructure
+.PHONY: plan
+plan: init
+	@cd $(TERRAFORM_DIR) && terraform plan
+
+# Apply Terraform infrastructure
+.PHONY: apply
+apply: init
+	@cd $(TERRAFORM_DIR) && terraform apply -auto-approve
+
+# Destroy Terraform infrastructure
+.PHONY: destroy
+destroy:
+	@cd $(TERRAFORM_DIR) && terraform destroy -auto-approve
+
+# Clean up Terraform state and temporary files
+.PHONY: clean
+clean:
+	@cd $(TERRAFORM_DIR) && \
+		rm -f terraform.tfstate terraform.tfstate.backup && \
+		rm -rf .terraform .terraform.lock.hcl
+	@rm -f $(ANSIBLE_DIR)/inventory/hosts
+
+
+# Run Ansible playbook
+.PHONY: playbook
+playbook:
+	@cd $(ANSIBLE_DIR) && \
+		ansible-playbook -i inventory/hosts.ini playbook.yaml
+
+
 help:
 	@echo "Available commands:"
-	@echo "  make all       - Build, push and upgrade Helm chart"
-	@echo "  make build     - Build the Docker image"
-	@echo "  make push      - Push the Docker image to Docker Hub"
-	@echo "  make helm-upgrade     - Run the Helm upgrade"
+	@echo "  make all       		- Init, Apply, configure, build, push and upgrade Helm chart"
+	@echo "  make build     		- Build the Docker image"
+	@echo "  make push      	 	- Push the Docker image to Docker Hub"
+	@echo "  make helm-upgrade      - Run the Helm upgrade"
+	@echo "  make init              - Initialize Terraform"
+	@echo "  make plan              - Show Terraform execution plan"
+	@echo "  make apply             - Create infrastructure"
+	@echo "  make destroy           - Terminate infrastructure"
+	@echo "  make clean             - Remove Terraform state files"
+	@echo "  make help              - Show this help message"
+	@echo "  make playbook          - Run Ansible playbook"

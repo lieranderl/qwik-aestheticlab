@@ -41,3 +41,31 @@ lerna-debug.log*
 !.yarn/releases
 .env
 cloud-init
+terraform.tfvars
+# Local .terraform directory
+.terraform/
+# Override files
+override.tf
+override.tf.json
+# .tfstate files (Terraform state files)
+*.tfstate
+*.tfstate.*
+
+# Backup files
+*.tfstate.backup
+
+# Crash log files
+crash.log
+
+# Exclude Terraform plan files
+*.tfplan
+
+# Terraform variables file, containing sensitive information
+terraform.tfvars
+*.tfvars.json
+
+# .terraform.lock.hcl (if you are using Terraform v0.14+)
+.terraform.lock.hcl
+
+#Ansible inventory file
+hosts
