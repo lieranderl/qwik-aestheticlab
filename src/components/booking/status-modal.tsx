@@ -12,7 +12,7 @@ export interface StatusModalProps {
 	>;
 }
 
-export default component$<StatusModalProps>(({ action }) => {
+export const StatusModal = component$<StatusModalProps>(({ action }) => {
 	// if (!isOpen) return null;
 
 	return (

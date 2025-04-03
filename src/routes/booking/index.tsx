@@ -21,7 +21,7 @@ import { ContactFormInputs } from "~/components/booking/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking/service-selector";
 import { DateSelector } from "~/components/booking/date-selector";
 import TimeSlots from "~/components/booking/time-slots";
-import StatusModal from "~/components/booking/status-modal";
+import { StatusModal } from "~/components/booking/status-modal";
 import { TotalSummary } from "~/components/booking/total-summary";
 import { WarningForm } from "~/components/booking/form-warning";
 import { ga } from "~/consts";
