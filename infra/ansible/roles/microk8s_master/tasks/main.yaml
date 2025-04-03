@@ -32,26 +32,31 @@
   command: microk8s enable traefik
 
 - name: Ensure local Kubeconfig directory exists
-  delegate_to: localhost
-  ansible.builtin.file:
+  local_action:
+    module: file
     path: "{{ lookup('env', 'HOME') }}/.kube"
     state: directory
     mode: '0700'
+  become: no  # Prevent root escalation
 
 - name: Get Kubeconfig from MicroK8s
-  command: microk8s config > /tmp/microk8s-config
-  become: yes
+  command: microk8s config
+  register: microk8s_config
 
-- name: Fetch Kubeconfig file from remote node to local machine
-  fetch:
-    src: /tmp/microk8s-config
+- name: Save Kubeconfig locally (overwrite if exists)
+  local_action:
+    module: copy
+    content: "{{ microk8s_config.stdout }}"
     dest: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
-    flat: yes
+    mode: '0600'  # Set to read/write for the local user
+    force: yes  # Ensures the file is overwritten if it already exists
+  become: no
 
-- name: Ensure correct ownership of microk8s-config
-  delegate_to: localhost
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0600'
+# - name: Ensure correct ownership of microk8s-config
+#   local_action:
+#     module: file
+#     path: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
+#     owner: "{{ lookup('env', 'USER') }}"
+#     group: "{{ lookup('env', 'USER') }}"
+#     mode: '0600'
+#   become: no  # Ensure it's not run as root
