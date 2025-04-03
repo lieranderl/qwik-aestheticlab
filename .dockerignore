@@ -16,4 +16,5 @@ helm-charts
 coverage*
 server
 dist
-n8n_files
+infra
+email-templates
