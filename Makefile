@@ -1,60 +1,42 @@
-# Check environment variables
-ifndef SUPABASE_URL
-$(error SUPABASE_URL is not set)
-endif
-ifndef SUPABASE_KEY
-$(error SUPABASE_KEY is not set)
-endif
-ifndef API_TOKEN
-$(error API_TOKEN is not set)
-endif
-ifndef WEBHOOK
-$(error WEBHOOK is not set)
-endif
-ifndef N8N_ENCRYPTION_KEY
-$(error N8N_ENCRYPTION_KEY is not set)
-endif
-ifndef GENERIC_TIMEZONE
-$(error GENERIC_TIMEZONE is not set)
-endif
-ifndef DOMAIN_NAME
-$(error DOMAIN_NAME is not set)
-endif
-ifndef KUBECONFIG
-$(error KUBECONFIG is not set)
-endif
-ifndef EMAIL
-$(error EMAIL is not set)
-endif
-ifndef TAG
-$(error TAG is not set)
-endif
-# Check if the command "helm" is available
-ifeq (, $(shell which helm))
-$(error "The 'helm' command is not available. Please install Helm.")
-endif
+# Ensure that Make uses bash
+SHELL := /bin/bash
 
+# Check environment variables
+check-env-vars:
+	@echo "Checking environment variables..."
+	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG; do \
+		if [ -z "$${!var}" ]; then \
+			echo "$${var} is not set."; \
+			exit 1; \
+		fi \
+	done
+
+# Check if the command "helm" is available
+check-helm:
+	@which helm > /dev/null || (echo "'helm' command is not available. Please install Helm." && exit 1)
 
 # Default target
 .PHONY: all
-all: init apply delay playbook build push helm-upgrade
+all: check-env-vars check-helm init apply delay playbook build push helm-upgrade
 
+# Delay execution to allow for resources to settle (useful for async tasks)
+.PHONY: delay
 delay:
-	sleep 25 
+	@sleep 25 
 
 # Build the Docker image using nerdctl
 .PHONY: build
 build:
 	@echo "Building Docker image for ARM64..."
-	bunx @biomejs/biome check --fix
-	docker buildx create --use
-	docker buildx build --platform linux/arm64 --load -t docker.io/furlingene/qwik-aesthetic:$(TAG) -f Dockerfile --build-arg SUPABASE_URL=$(SUPABASE_URL) --build-arg SUPABASE_KEY=$(SUPABASE_KEY) .
+	@bunx @biomejs/biome check --fix
+	@docker buildx create --use
+	@docker buildx build --platform linux/arm64 --load -t docker.io/furlingene/qwik-aesthetic:$(TAG) -f Dockerfile --build-arg SUPABASE_URL=$(SUPABASE_URL) --build-arg SUPABASE_KEY=$(SUPABASE_KEY) .
 
 # Push the Docker image to Docker Hub
 .PHONY: push
 push:
 	@echo "Pushing Docker image to Docker Hub..."
-	docker push docker.io/furlingene/qwik-aesthetic:$(TAG)
+	@docker push docker.io/furlingene/qwik-aesthetic:$(TAG)
 
 # Run the Helm upgrade
 .PHONY: helm-upgrade
@@ -72,10 +54,8 @@ helm-upgrade:
 	--set bun.tag=$(TAG) \
 	--set email=$(EMAIL)
 	@echo "Helm upgrade completed."
-	# kubectl rollout restart deployment/aesthetic-app-n8n
 
-
-# Variables
+# Terraform variables
 TERRAFORM_DIR := infra/terraform
 ANSIBLE_DIR := infra/ansible
 
@@ -107,8 +87,7 @@ clean:
 		rm -rf .terraform .terraform.lock.hcl
 	@rm -f $(ANSIBLE_DIR)/inventory/hosts
 
-
-# Run Ansible playbook
+# Run Ansible playbooks
 .PHONY: playbook
 playbook:
 	@cd $(ANSIBLE_DIR) && \
@@ -120,18 +99,39 @@ playbook-role:
 	@cd $(ANSIBLE_DIR) && \
 		ansible-playbook -i inventory/hosts.ini playbook.yaml --tags $(ROLE)
 
-
+# Help target to show available commands
+.PHONY: help
 help:
 	@echo "Available commands:"
-	@echo "  make all       		- Init, Apply, configure, build, push and upgrade Helm chart"
-	@echo "  make build     		- Build the Docker image"
-	@echo "  make push      	 	- Push the Docker image to Docker Hub"
+	@echo "  make all               - Check env vars, initialize, apply, build, push and upgrade Helm chart"
+	@echo "  make build             - Build the Docker image"
+	@echo "  make push              - Push the Docker image to Docker Hub"
 	@echo "  make helm-upgrade      - Run the Helm upgrade"
 	@echo "  make init              - Initialize Terraform"
 	@echo "  make plan              - Show Terraform execution plan"
 	@echo "  make apply             - Create infrastructure"
 	@echo "  make destroy           - Terminate infrastructure"
 	@echo "  make clean             - Remove Terraform state files"
-	@echo "  make help              - Show this help message"
 	@echo "  make playbook          - Run Ansible playbook"
 	@echo "  make playbook-role     - Run Ansible playbook with specific role. Use ROLE=role_name"
+	@echo "  make help              - Show this help message"
+	@echo "  make check-env-vars    - Check environment variables"
+	@echo "  make check-deployment  - Check Kubernetes deployment"
+	@echo "  make start-dashboard   - Start Kubernetes dashboard"
+
+# Check k8s deplpoyment
+.PHONY: check-deployment
+check-deployment:
+	@echo "Checking k8s deployment..."
+	@kubectl get pods -A
+	@kubectl get svc -A
+	@kubectl get ingressroutes -A
+	@echo "k8s deployment check completed."
+
+# Start k8s dashboard
+.PHONY: start-dashboard
+start-dashboard:
+	@echo "Generating Kubernetes dashboard token..."
+	@kubectl create token default -n kube-system 
+	@echo "Starting Kubernetes dashboard..."
+	@kubectl -n kube-system port-forward svc/kubernetes-dashboard 8443:443

@@ -27,3 +27,19 @@ variable "kubernetes_version" {
   type        = string
   default     = "1.32"
 }
+
+variable "server_name" {
+  default = "k8s-master"
+}
+
+variable "image" {
+  default = "ubuntu-24.04"
+}
+
+variable "ansible_user" {
+  default = "root"
+}
+
+variable "ssh_private_key" {
+  default = "~/.ssh/ev-server-hetzner"
+}

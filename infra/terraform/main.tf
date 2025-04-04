@@ -1,10 +1,16 @@
 
 resource "hcloud_server" "k8s_master" {
-  name        = "k8s-master"
-  image       = "ubuntu-24.04"
+  name        = var.server_name
+  image       = var.image
   server_type = var.server_type
   location    = var.location
   ssh_keys    = [var.ssh_key_name]
+}
+
+resource "null_resource" "create_inventory_folder" {
+  provisioner "local-exec" {
+    command = "mkdir -p ../ansible/inventory"
+  }
 }
 
 resource "local_file" "ansible_inventory" {
@@ -14,3 +20,4 @@ resource "local_file" "ansible_inventory" {
   EOT
   filename = "../ansible/inventory/hosts.ini"
 }
+
