@@ -10,7 +10,7 @@
     groups: microk8s
     append: yes
 
-- name: Enable dns
+- name: Enable DNS
   command: microk8s enable dns
 
 - name: Enable hostpath-storage
@@ -28,8 +28,6 @@
 - name: Enable metallb
   command: microk8s enable metallb:"{{ lb_ip_pool }}"
 
-- name: Enable traefik
-  command: microk8s enable traefik
 
 - name: Ensure local Kubeconfig directory exists
   local_action:
@@ -52,11 +50,40 @@
     force: yes  # Ensures the file is overwritten if it already exists
   become: no
 
-# - name: Ensure correct ownership of microk8s-config
-#   local_action:
-#     module: file
-#     path: "{{ lookup('env', 'HOME') }}/.kube/microk8s-config"
-#     owner: "{{ lookup('env', 'USER') }}"
-#     group: "{{ lookup('env', 'USER') }}"
-#     mode: '0600'
-#   become: no  # Ensure it's not run as root
+- name: Add Traefik Helm Repo
+  command:
+    cmd: microk8s helm repo add traefik https://traefik.github.io/charts
+  ignore_errors: true
+
+- name: Update Helm Repos
+  command:
+    cmd: microk8s helm repo update
+
+
+# Apply a PersistentVolumeClaim for Traefik's ACME storage
+- name: Apply PersistentVolumeClaim for ACME Storage
+  template:
+    src: templates/traefik-pvc.yaml.j2
+    dest: /tmp/traefik-pvc.yaml
+
+- name: Deploy PVC for Traefik ACME
+  command:
+    cmd: microk8s kubectl apply -f /tmp/traefik-pvc.yaml
+
+# Install Traefik with Let's Encrypt support using Helm
+- name: Install Traefik with Let's Encrypt support
+  command: >
+    microk8s helm upgrade -i traefik traefik/traefik --namespace kube-system
+    --set certificatesResolvers.letsencrypt.acme.email={{ lookup('env', 'EMAIL') }}
+    --set certificatesResolvers.letsencrypt.acme.storage="/data/acme.json"
+    --set certificatesResolvers.letsencrypt.acme.httpChallenge.entryPoint=web
+    --set entryPoints.web.address=:80
+    --set entryPoints.websecure.address=:443
+    --set persistence.enabled=true
+    --set persistence.existingClaim="traefik-acme-pvc"
+    --set persistence.storageClassName="microk8s-hostpath"
+
+
+- name: Traefik CRDs
+  command:
+    cmd: microk8s kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.3/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml

@@ -34,7 +34,10 @@ endif
 
 # Default target
 .PHONY: all
-all: init apply playbook build push helm-upgrade
+all: init apply delay playbook build push helm-upgrade
+
+delay:
+	sleep 25 
 
 # Build the Docker image using nerdctl
 .PHONY: build
@@ -63,7 +66,8 @@ helm-upgrade:
     --set n8n.env.N8N_ENCRYPTION_KEY=$(N8N_ENCRYPTION_KEY) \
     --set n8n.env.GENERIC_TIMEZONE=$(GENERIC_TIMEZONE) \
     --set domain=$(DOMAIN_NAME) \
-	--set bun.tag=$(TAG) 
+	--set bun.tag=$(TAG) \
+	--set email=$(EMAIL)
 	@echo "Helm upgrade completed."
 	# kubectl rollout restart deployment/aesthetic-app-n8n
 

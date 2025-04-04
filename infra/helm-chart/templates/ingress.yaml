@@ -1,33 +1,22 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: {{.Release.Name}}-ingress
+  name: {{ .Release.Name }}-ingressroute
+  namespace: {{ .Release.Namespace }}
 spec:
-  ingressClassName: traefik  # Use the new field to specify the Ingress class
+  entryPoints:
+    - websecure
+    - web
+  routes:
+    - match: Host(`n8n.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-n8n-svc
+          port: {{ .Values.n8n.env.N8N_PORT }}
+    - match: Host(`{{ .Values.domain }}`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-bun-svc
+          port: 80
   tls:
-    - hosts:
-        - "n8n.{{ .Values.domain }}"
-        - {{ .Values.domain }}
-      secretName: {{.Release.Name}}-secret-tls  # Ensure you have a TLS secret
-  rules:
-    - host: "n8n.{{ .Values.domain }}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}-n8n-svc
-                port:
-                  number: {{ .Values.n8n.env.N8N_PORT }}
-
-    - host: {{ .Values.domain }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}-bun-svc
-                port:
-                  number: 80
+    certResolver: letsencrypt

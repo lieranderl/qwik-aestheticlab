@@ -43,12 +43,12 @@
     state: enabled
     policy: deny
   loop:
-    - { rule: "allow", port: "22" }
-    - { rule: "allow", port: "80" }
-    - { rule: "allow", port: "443" }
-    - { rule: "allow", port: "7946" }
-    - { rule: "allow", port: "16443" }
-    - { rule: "allow", port: "10443" }
+    - { rule: "allow", port: "22",  proto: "tcp" }
+    - { rule: "allow", port: "80",  proto: "tcp" }
+    - { rule: "allow", port: "443",  proto: "tcp" }
+    - { rule: "allow", port: "7946",  proto: "tcp"}
+    - { rule: "allow", port: "16443",  proto: "tcp"}
+    - { rule: "allow", port: "10443",  proto: "tcp"}
     - { rule: "allow", port: "30000:32767", proto: "tcp" }
   notify: reload firewall
 
