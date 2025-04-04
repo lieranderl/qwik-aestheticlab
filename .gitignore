@@ -67,6 +67,7 @@ terraform.tfvars
 # .terraform.lock.hcl (if you are using Terraform v0.14+)
 .terraform.lock.hcl
 
-#Ansible inventory file
-hosts
-hosts.ini
+# Ansible inventory files
+inventory
+# Ansible vault files
+*.vault
