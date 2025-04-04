@@ -3,6 +3,7 @@ import { supabase } from "./supabase-client";
 
 // eslint-disable-next-line qwik/loader-location
 export const useAuthSession = routeLoader$(async (requestEv) => {
+	console.log("useAuthSession triggered");
 	const {
 		data: { session },
 	} = await supabase(requestEv).auth.getSession();

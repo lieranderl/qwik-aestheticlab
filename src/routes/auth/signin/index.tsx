@@ -5,6 +5,10 @@ import { PasswordInput } from "~/components/auth/password-input";
 import { supabase } from "~/shared/supabase-client";
 
 export const useSupabaseSignIn = routeAction$(async (formData, requestEv) => {
+	console.log(
+		"Sign in action triggered with email:",
+		formData.email.toString(),
+	);
 	const signInResponse = await supabase(requestEv).auth.signInWithPassword({
 		email: formData.email.toString(),
 		password: formData.password.toString(),
