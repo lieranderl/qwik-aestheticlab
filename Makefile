@@ -23,6 +23,9 @@ endif
 ifndef KUBECONFIG
 $(error KUBECONFIG is not set)
 endif
+ifndef EMAIL
+$(error EMAIL is not set)
+endif
 ifndef TAG
 $(error TAG is not set)
 endif
@@ -111,6 +114,12 @@ playbook:
 	@cd $(ANSIBLE_DIR) && \
 		ansible-playbook -i inventory/hosts.ini playbook.yaml
 
+# Run a specific role with tags
+.PHONY: playbook-role
+playbook-role:
+	@cd $(ANSIBLE_DIR) && \
+		ansible-playbook -i inventory/hosts.ini playbook.yaml --tags $(ROLE)
+
 
 help:
 	@echo "Available commands:"
@@ -125,3 +134,4 @@ help:
 	@echo "  make clean             - Remove Terraform state files"
 	@echo "  make help              - Show this help message"
 	@echo "  make playbook          - Run Ansible playbook"
+	@echo "  make playbook-role     - Run Ansible playbook with specific role. Use ROLE=role_name"

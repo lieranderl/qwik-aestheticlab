@@ -2,5 +2,7 @@
 - hosts: k8s_masters
   become: true
   roles:
-    - base
-    - microk8s_master
+    - role: base
+      tags: base
+    - role: microk8s_master
+      tags: microk8s

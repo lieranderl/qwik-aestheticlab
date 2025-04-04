@@ -69,3 +69,4 @@ terraform.tfvars
 
 #Ansible inventory file
 hosts
+hosts.ini
