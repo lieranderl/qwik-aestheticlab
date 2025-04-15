@@ -18,16 +18,16 @@ export default component$(() => {
 								{t("app.contact.opening_hours@@Opening Hours")}
 							</h3>
 							<ul class="space-y-2 list-disc pl-6">
-
 								<li>
-
-									{t("app.contact.monday@@Monday")} - {t("app.contact.sunday@@Sunday")}: 10:00 - 21:00</li>
+									{t("app.contact.monday@@Monday")} -{" "}
+									{t("app.contact.sunday@@Sunday")}: 10:00 - 21:00
+								</li>
 							</ul>
 						</div>
 						<div>
 							<h3 class="text-2xl mb-6 font-semibold ">
 								{t("app.contact.contact@@Contact")}
-								</h3>
+							</h3>
 							<ul class="space-y-2 list-none pl-6">
 								<li class="flex items-center gap-2">
 									<HiEnvelopeOutline />

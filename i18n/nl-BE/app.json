@@ -1,83 +1,83 @@
 {
-  "app": {
-    "book": {
-      "book_now": "Boek nu"
-    },
-    "changeLocale": "Verander taal",
-    "contact": {
-      "contact": "Contact",
-      "instagram": "Volg ons op Instagram",
-      "monday": "Maandag",
-      "opening_hours": "Openingstijden",
-      "parking": "Parkeren beschikbaar bij",
-      "sunday": "Zondag",
-      "visit_us": "Bezoek ons"
-    },
-    "footer": {
-      "all_rights": "Alle rechten voorbehouden",
-      "copyright": "Copyright"
-    },
-    "head": {
-      "home": {
-        "description": "Localized routing",
-        "title": "{{name}}"
-      }
-    },
-    "hero": {
-      "book_visit": "Boek uw bezoek",
-      "slogan": "Waar expertise unieke schoonheid creëert"
-    },
-    "nav": {
-      "about": "Over",
-      "contact": "Contact",
-      "home": "Home",
-      "services": "Diensten",
-      "team": "Team",
-      "work": "Werken"
-    },
-    "privacy": {
-      "changes": "7. Wijzigingen in dit beleid",
-      "changes_text": "We kunnen deze privacyverklaring van tijd tot tijd bijwerken. De laatste versie is altijd beschikbaar op onze website.",
-      "cookies": "6. Cookies en trackingtechnologieën",
-      "cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in de instellingen van uw browser.",
-      "email": "E-mailadres",
-      "improve": "Verbeter onze diensten",
-      "info": "1. Informatie die we verzamelen",
-      "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak maakt of contact met ons opneemt:",
-      "last_update": "Laatste update:",
-      "legal": "Wettelijke autoriteiten indien vereist door de wet",
-      "name": "Naam",
-      "phone": "Telefoonnummer",
-      "privacy_title": "Privacybeleid",
-      "respond": "Beantwoorden van uw vragen",
-      "rights": "5. Uw rechten",
-      "rights_text": "U kunt verzoeken om toegang tot, bijwerking of verwijdering van uw persoonlijke gegevens. Om een verzoek in te dienen, kunt u contact met ons opnemen via:",
-      "schedule": "Afspraak plannen en bevestigen",
-      "security": "3. Gegevensbescherming en beveiliging",
-      "security_text": "We nemen redelijke maatregelen om uw persoonlijke gegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
-      "send": "Stuur herinneringen en updates voor afspraken",
-      "service": "Dienstenaanbieders (bijv. boekingsplatforms)",
-      "sharing": "4. Delen van uw informatie",
-      "sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
-      "use": "2. Hoe we uw informatie gebruiken",
-      "use_text": "we gebruiken uw informatie om:"
-    },
-    "services": {
-      "duration": "Duur:",
-      "minutes": "minuten",
-      "title": "Onze diensten"
-    },
-    "story": "Ons verhaal",
-    "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunst en expertise, waardoor een toevluchtsoord ontstaat waar je je meest stralende zelf kunt ontdekken.",
-    "team": {
-      "title": "Ons Team"
-    },
-    "test": "TEST DUTCH",
-    "title": "{{name}} demo",
-    "work": {
-      "title": "Ons werk"
-    }
-  },
-  "dates": "Dates",
-  "numbers": "Numbers"
+	"app": {
+		"book": {
+			"book_now": "Boek nu"
+		},
+		"changeLocale": "Verander taal",
+		"contact": {
+			"contact": "Contact",
+			"instagram": "Volg ons op Instagram",
+			"monday": "Maandag",
+			"opening_hours": "Openingstijden",
+			"parking": "Parkeren beschikbaar bij",
+			"sunday": "Zondag",
+			"visit_us": "Bezoek ons"
+		},
+		"footer": {
+			"all_rights": "Alle rechten voorbehouden",
+			"copyright": "Copyright"
+		},
+		"head": {
+			"home": {
+				"description": "Localized routing",
+				"title": "{{name}}"
+			}
+		},
+		"hero": {
+			"book_visit": "Boek uw bezoek",
+			"slogan": "Waar expertise unieke schoonheid creëert"
+		},
+		"nav": {
+			"about": "Over",
+			"contact": "Contact",
+			"home": "Home",
+			"services": "Diensten",
+			"team": "Team",
+			"work": "Werken"
+		},
+		"privacy": {
+			"changes": "7. Wijzigingen in dit beleid",
+			"changes_text": "We kunnen deze privacyverklaring van tijd tot tijd bijwerken. De laatste versie is altijd beschikbaar op onze website.",
+			"cookies": "6. Cookies en trackingtechnologieën",
+			"cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in de instellingen van uw browser.",
+			"email": "E-mailadres",
+			"improve": "Verbeter onze diensten",
+			"info": "1. Informatie die we verzamelen",
+			"info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak maakt of contact met ons opneemt:",
+			"last_update": "Laatste update:",
+			"legal": "Wettelijke autoriteiten indien vereist door de wet",
+			"name": "Naam",
+			"phone": "Telefoonnummer",
+			"privacy_title": "Privacybeleid",
+			"respond": "Beantwoorden van uw vragen",
+			"rights": "5. Uw rechten",
+			"rights_text": "U kunt verzoeken om toegang tot, bijwerking of verwijdering van uw persoonlijke gegevens. Om een verzoek in te dienen, kunt u contact met ons opnemen via:",
+			"schedule": "Afspraak plannen en bevestigen",
+			"security": "3. Gegevensbescherming en beveiliging",
+			"security_text": "We nemen redelijke maatregelen om uw persoonlijke gegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
+			"send": "Stuur herinneringen en updates voor afspraken",
+			"service": "Dienstenaanbieders (bijv. boekingsplatforms)",
+			"sharing": "4. Delen van uw informatie",
+			"sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
+			"use": "2. Hoe we uw informatie gebruiken",
+			"use_text": "we gebruiken uw informatie om:"
+		},
+		"services": {
+			"duration": "Duur:",
+			"minutes": "minuten",
+			"title": "Onze diensten"
+		},
+		"story": "Ons verhaal",
+		"story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunst en expertise, waardoor een toevluchtsoord ontstaat waar je je meest stralende zelf kunt ontdekken.",
+		"team": {
+			"title": "Ons Team"
+		},
+		"test": "TEST DUTCH",
+		"title": "{{name}} demo",
+		"work": {
+			"title": "Ons werk"
+		}
+	},
+	"dates": "Dates",
+	"numbers": "Numbers"
 }

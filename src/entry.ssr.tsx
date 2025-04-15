@@ -11,7 +11,7 @@
  *
  */
 import {
-	RenderOptions,
+	type RenderOptions,
 	renderToStream,
 	type RenderToStreamOptions,
 } from "@builder.io/qwik/server";
@@ -22,22 +22,21 @@ import { config } from "./speak-config";
 
 export function extractBase({ serverData }: RenderOptions): string {
 	if (!isDev && serverData?.locale) {
-	  return '/build/' + serverData.locale;
-	} else {
-	  return '/build';
+		return `/build/${serverData.locale}`;
 	}
-  }
+	return "/build";
+}
 
-  export default function (opts: RenderToStreamOptions) {
+export default function (opts: RenderToStreamOptions) {
 	return renderToStream(<Root />, {
-	  manifest,
-	  ...opts,
-	  // Determine the base URL for the client code
-	  base: extractBase,
-	  // Use container attributes to set attributes on the html tag
-	  containerAttributes: {
-		lang: opts.serverData?.locale || config.defaultLocale.lang,
-		...opts.containerAttributes,
-	  },
+		manifest,
+		...opts,
+		// Determine the base URL for the client code
+		base: extractBase,
+		// Use container attributes to set attributes on the html tag
+		containerAttributes: {
+			lang: opts.serverData?.locale || config.defaultLocale.lang,
+			...opts.containerAttributes,
+		},
 	});
-  }
+}

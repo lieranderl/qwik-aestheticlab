@@ -8,7 +8,6 @@ export interface ServicesSectionProps {
 }
 
 export const ServicesSection = component$(
-
 	({ services }: ServicesSectionProps) => {
 		const t = inlineTranslate();
 		return (
@@ -39,8 +38,7 @@ export const ServicesSection = component$(
 									</div>
 								</div>
 								<div class="text-sm font-inter text-end me-4">
-									{t("app.services.duration@@Duration:")}{" "}
-									{service.duration}{" "}
+									{t("app.services.duration@@Duration:")} {service.duration}{" "}
 									{t("app.services.minutes@@minutes")}
 								</div>
 							</div>

@@ -26,11 +26,17 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 // biome-ignore lint/correctness/noUnusedVariables: <explanation>
 export default defineConfig(({ command, mode }): UserConfig => {
 	return {
-		plugins: [tailwindcss(), qwikCity(), qwikVite(), tsconfigPaths(), qwikSpeakInline({
-			supportedLangs: ['en-US', 'it-IT'],
-			defaultLang: 'en-US',
-			assetsPath: 'i18n'
-		}),],
+		plugins: [
+			tailwindcss(),
+			qwikCity(),
+			qwikVite(),
+			tsconfigPaths(),
+			qwikSpeakInline({
+				supportedLangs: ["en-US", "it-IT"],
+				defaultLang: "en-US",
+				assetsPath: "i18n",
+			}),
+		],
 		// This tells Vite which dependencies to pre-build in dev mode.
 		optimizeDeps: {
 			// Put problematic deps that break bundling here, mostly those with binaries.
@@ -105,8 +111,8 @@ function errorOnDuplicatesPkgDeps(
 	// The `join` function is used to represent the elements of the 'duplicateDeps' array as a comma-separated string.
 	msg = `
     Warning: The dependency "${duplicateDeps.join(
-		", ",
-	)}" is listed in both "devDependencies" and "dependencies".
+			", ",
+		)}" is listed in both "devDependencies" and "dependencies".
     Please move the duplicated dependencies to "devDependencies" only and remove it from "dependencies"
   `;
 

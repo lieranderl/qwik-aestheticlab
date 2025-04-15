@@ -1,7 +1,7 @@
 import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
 import { BookingBtn } from "../booking-button";
 import { ChangeLocale } from "../change-locale";
-import { inlineTranslate, InlineTranslateFn } from "qwik-speak";
+import { inlineTranslate, type InlineTranslateFn } from "qwik-speak";
 
 const NAV_LINKS = (t: InlineTranslateFn) => {
 	return [
@@ -11,7 +11,7 @@ const NAV_LINKS = (t: InlineTranslateFn) => {
 		{ href: "/#work", text: t("app.nav.work@@Work") },
 		{ href: "/#about", text: t("app.nav.about@@About") },
 		{ href: "/#contact", text: t("app.nav.contact@@Contact") },
-	]
+	];
 };
 
 export default component$(() => {
@@ -60,7 +60,10 @@ export default component$(() => {
 						))}
 					</div>
 					<div class="hidden md:block">
-						<BookingBtn additionalClasses="btn-md" myText={t('app.book.book_now@@Book Now')} />
+						<BookingBtn
+							additionalClasses="btn-md"
+							myText={t("app.book.book_now@@Book Now")}
+						/>
 					</div>
 					<ChangeLocale />
 					{/* Mobile menu button */}
@@ -73,16 +76,19 @@ export default component$(() => {
 					>
 						<div class="w-6 h-5 relative flex flex-col justify-between">
 							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "rotate-45 translate-y-2" : ""
-									}`}
+								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+									isMenuOpen.value ? "rotate-45 translate-y-2" : ""
+								}`}
 							/>
 							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "opacity-0" : ""
-									}`}
+								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+									isMenuOpen.value ? "opacity-0" : ""
+								}`}
 							/>
 							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""
-									}`}
+								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+									isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""
+								}`}
 							/>
 						</div>
 					</button>

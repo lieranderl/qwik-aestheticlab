@@ -52,7 +52,8 @@ helm-upgrade:
     --set n8n.env.GENERIC_TIMEZONE=$(GENERIC_TIMEZONE) \
     --set domain=$(DOMAIN_NAME) \
 	--set bun.tag=$(TAG) \
-	--set email=$(EMAIL)
+	--set email=$(EMAIL) \
+	--set volume_id=$(VOLUME_ID) 
 	@echo "Helm upgrade completed."
 
 # Terraform variables

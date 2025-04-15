@@ -1,16 +1,12 @@
+kind: PersistentVolumeClaim
 apiVersion: v1
-kind: PersistentVolume
 metadata:
-  name: {{ .Release.Name }}-n8n-pv
+  name: {{ .Release.Name }}-n8n-pvc
 spec:
-  capacity:
-    storage: 10Gi
-  volumeMode: Filesystem
+  storageClassName: hcloud-volumes
+  volumeName: {{ .Release.Name }}-n8n-pv
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: hcloud-volumes
-  csi:
-   # hetzner-csi-driver
-    driver: csi.hcloud.com
-    volumeHandle: 102394029  # Replace this with your existing volume ID
+  resources:
+    requests:
+      storage: 10Gi

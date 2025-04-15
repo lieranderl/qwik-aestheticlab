@@ -1,6 +1,7 @@
 environment: production
 domain: null
 email: null
+volume_id: null
 
 bun:
   image: qwik-aesthetic
