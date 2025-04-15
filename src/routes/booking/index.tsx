@@ -15,7 +15,7 @@ import {
 	useServicesLoader,
 	useTechniciansLoader,
 	useEnvLoader,
-} from "../layout";
+} from "../[...lang]/layout";
 import { ConfirmationSidePanel } from "~/components/booking/confirmation-side-panel";
 import { ContactFormInputs } from "~/components/booking/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking/service-selector";

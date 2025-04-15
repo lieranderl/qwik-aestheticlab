@@ -1,18 +1,21 @@
 import { component$ } from "@builder.io/qwik";
 import type { Service } from "~/types";
 import { formatPrice } from "~/consts";
+import { inlineTranslate } from "qwik-speak";
 
 export interface ServicesSectionProps {
 	services: Service[];
 }
 
 export const ServicesSection = component$(
+
 	({ services }: ServicesSectionProps) => {
+		const t = inlineTranslate();
 		return (
 			<section id="services" class="py-20 bg-base-200">
 				<div class="custom-container">
 					<h2 class="text-4xl font-qestero text-center mb-12 font-bold">
-						Our Services
+						{t("app.services.title@@Our Services")}
 					</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 						{services.map((service: Service) => (
@@ -35,9 +38,10 @@ export const ServicesSection = component$(
 										{service.description}
 									</div>
 								</div>
-
 								<div class="text-sm font-inter text-end me-4">
-									Duration: {service.duration} minutes
+									{t("app.services.duration@@Duration:")}{" "}
+									{service.duration}{" "}
+									{t("app.services.minutes@@minutes")}
 								</div>
 							</div>
 						))}

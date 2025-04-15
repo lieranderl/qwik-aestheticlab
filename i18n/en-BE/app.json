@@ -1,0 +1,83 @@
+{
+  "app": {
+    "book": {
+      "book_now": "Book Now"
+    },
+    "changeLocale": "Change language",
+    "contact": {
+      "contact": "Contact",
+      "instagram": "Follow us on Instagram",
+      "monday": "Monday",
+      "opening_hours": "Opening Hours",
+      "parking": "Parking available at",
+      "sunday": "Sunday",
+      "visit_us": "Visit Us"
+    },
+    "footer": {
+      "all_rights": "All right reserved",
+      "copyright": "Copyright"
+    },
+    "head": {
+      "home": {
+        "description": "Localized routing",
+        "title": "{{name}}"
+      }
+    },
+    "hero": {
+      "book_visit": "Book Your Visit",
+      "slogan": "Where Expertise Crafts Unique Beauty"
+    },
+    "nav": {
+      "about": "About",
+      "contact": "Contact",
+      "home": "Home",
+      "services": "Services",
+      "team": "Team",
+      "work": "Work"
+    },
+    "privacy": {
+      "changes": "7. Changes to This Policy",
+      "changes_text": "We may update this Privacy Policy from time to time. The latest version will always be available on our website.",
+      "cookies": "6. Cookies & Tracking Technologies",
+      "cookies_text": "We may use cookies or analytics tools to enhance user experience. You can disable cookies in your browser settings.",
+      "email": "Email address",
+      "improve": "Improve our services",
+      "info": "1. Information We Collect",
+      "info_text": "We collect the following personal information when you book an appointment or contact us:",
+      "last_update": "Last updated:",
+      "legal": "Legal authorities if required by law",
+      "name": "Name",
+      "phone": "Phone number",
+      "privacy_title": "Privacy Policy",
+      "respond": "Respond to your inquiries",
+      "rights": "5. Your Rights",
+      "rights_text": "You can request to access, update, or delete your personal data. To make a request, contact us at:",
+      "schedule": "Schedule and confirm appointments",
+      "security": "3. Data Protection & Security",
+      "security_text": "We take reasonable measures to protect your personal data from unauthorized access, loss, or misuse.",
+      "send": "Send appointment reminders and updates",
+      "service": "Service providers (e.g., booking platforms)",
+      "sharing": "4. Sharing Your Information",
+      "sharing_text": "We do not sell or rent your personal information. We may share it with:",
+      "use": "2. How We Use Your Information",
+      "use_text": "we use your information to:"
+    },
+    "services": {
+      "duration": "Duration:",
+      "minutes": "minutes",
+      "title": "Our Services"
+    },
+    "story": "Our Story",
+    "story_text": "At Aesthetic Lab, we believe in the transformative power of beauty. Our approach combines artistry with expertise, creating a sanctuary where you can discover your most radiant self.",
+    "team": {
+      "title": "Meet Our Team"
+    },
+    "test": "TEST English",
+    "title": "{{name}} demo",
+    "work": {
+      "title": "Our Work"
+    }
+  },
+  "dates": "Dates",
+  "numbers": "Numbers"
+}

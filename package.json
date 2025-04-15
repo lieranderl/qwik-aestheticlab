@@ -25,7 +25,8 @@
 		"serve": "bun server/entry.bun.js",
 		"start": "vite --open --mode ssr",
 		"qwik": "qwik",
-		"biome": "biome check --fix"
+		"biome": "biome check --fix",
+		"qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-BE,nl-BE,fr-BE,ru-BE --assetsPath=i18n"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
@@ -33,32 +34,33 @@
 		"@builder.io/qwik-city": "^1.13.0",
 		"@ditadi/qwik-hooks": "^0.1.6",
 		"@qwikest/icons": "^0.0.13",
-		"@types/bun": "^1.2.8",
+		"@types/bun": "^1.2.9",
 		"@types/eslint": "^8.56.12",
 		"@types/node": "^20.17.30",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
 		"autoprefixer": "^10.4.21",
 		"class-variance-authority": "^0.7.1",
-		"daisyui": "^5.0.12",
+		"daisyui": "^5.0.19",
 		"eslint": "^8.57.1",
 		"eslint-plugin-qwik": "^1.13.0",
 		"luxon": "^3.6.1",
 		"prettier": "^3.5.3",
 		"typescript": "5.4.5",
-		"undici": "^7.7.0",
-		"vite": "^5.4.16",
+		"undici": "^7.8.0",
+		"vite": "^5.4.18",
 		"vite-tsconfig-paths": "^4.3.2",
-		"supabase-auth-helpers-qwik": "^0.0.3"
+		"supabase-auth-helpers-qwik": "^0.0.3",
+		"qwik-speak": "^0.23.0"
 	},
 	"dependencies": {
 		"@supabase/ssr": "^0.5.2",
-		"@tailwindcss/vite": "^4.1.1",
+		"@tailwindcss/vite": "^4.1.4",
 		"@types/aos": "^3.0.7",
-		"@types/luxon": "^3.6.0",
+		"@types/luxon": "^3.6.2",
 		"aos": "^3.0.0-beta.6",
 		"cally": "^0.8.0",
-		"tailwindcss": "^4.1.1",
+		"tailwindcss": "^4.1.4",
 		"tailwindcss-animate": "^1.0.7"
 	}
 }

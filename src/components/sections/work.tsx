@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { InstagramCard } from "./instagram-card";
+import { inlineTranslate } from "qwik-speak";
 
 const INSTAGRAM_LINKS = [
 	"DFlEmP1OZ1W",
@@ -10,11 +11,12 @@ const INSTAGRAM_LINKS = [
 ];
 
 export default component$(() => {
+	const t = inlineTranslate();
 	return (
 		<section id="work" class="py-20 bg-base-200">
 			<div class="custom-container">
 				<h2 class="text-4xl font-qestero text-center mb-12 font-bold">
-					Our Work
+					{t("app.work.title@@Our Work")}
 				</h2>
 				<div class="carousel w-full gap-8" data-aos="fade-up">
 					{INSTAGRAM_LINKS.map((post_id) => {

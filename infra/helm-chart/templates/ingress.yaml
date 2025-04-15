@@ -1,22 +1,97 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+# apiVersion: traefik.io/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: {{ .Release.Name }}-ingressroute
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   entryPoints:
+#     - websecure
+#     - web
+#   routes:
+#     - match: Host(`n8n.{{ .Values.domain }}`)
+#       kind: Rule
+#       services:
+#         - name: {{ .Release.Name }}-n8n-svc
+#           port: {{ .Values.n8n.env.N8N_PORT }}
+#     - match: Host(`{{ .Values.domain }}`)
+#       kind: Rule
+#       services:
+#         - name: {{ .Release.Name }}-bun-svc
+#           port: 80
+#   tls:
+#     certResolver: letsencrypt
+
+apiVersion: cert-manager.io/v1
+kind: Issuer
 metadata:
-  name: {{ .Release.Name }}-ingressroute
+  name: {{ .Release.Name }}-issuer-staging
   namespace: {{ .Release.Namespace }}
 spec:
-  entryPoints:
-    - websecure
-    - web
-  routes:
-    - match: Host(`n8n.{{ .Values.domain }}`)
-      kind: Rule
-      services:
-        - name: {{ .Release.Name }}-n8n-svc
-          port: {{ .Values.n8n.env.N8N_PORT }}
-    - match: Host(`{{ .Values.domain }}`)
-      kind: Rule
-      services:
-        - name: {{ .Release.Name }}-bun-svc
-          port: 80
+  acme:
+    email: {{ .Values.email }}
+    # We use the staging server here for testing to avoid hitting production
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # if not existing, it will register a new account and stores it
+      name: issuer-account-key
+    solvers:
+      - http01:
+          # The ingressClass used to create the necessary ingress routes
+          ingress:
+            class: traefik
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Release.Name }}-issuer-production
+  namespace: {{ .Release.Namespace }}
+spec:
+  acme:
+    email: {{ .Values.email }}
+    # We use the production server here for actual deployments
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # if not existing, it will register a new account and stores it
+      name: issuer-account-key
+    solvers:
+      - http01:
+          # The ingressClass used to create the necessary ingress routes
+          ingress:
+            class: traefik
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    cert-manager.io/issuer: {{ .Release.Name }}-issuer-staging
+spec:
   tls:
-    certResolver: letsencrypt
+    - hosts:
+        - {{ .Values.domain }}
+        - "n8n.{{ .Values.domain }}"
+      secretName: "tls-{{ .Release.Name }}-ingress-http"
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: "/"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-bun-svc
+                port:
+                  number: 80
+    - host: "n8n.{{ .Values.domain }}"
+      http:
+        paths:
+          - path: "/"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-n8n-svc
+                port:
+                  number: {{ .Values.n8n.env.N8N_PORT }}
