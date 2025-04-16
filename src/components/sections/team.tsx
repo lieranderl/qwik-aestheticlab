@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { inlineTranslate, useSpeakLocale } from "qwik-speak";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
 import type { Technician } from "~/types";
@@ -9,6 +9,8 @@ export interface TeamSectionProps {
 }
 export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 	const t = inlineTranslate();
+	const local = useSpeakLocale();
+	const shortlang = local.lang.split("-")[0];
 	return (
 		<section id="team" class="py-20 bg-base-200">
 			<div class="custom-container">
@@ -37,7 +39,14 @@ export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 												{tech.role || "Technician"}
 											</p>
 										</div>
-										<div class="collapse-content text-sm">{tech.about}</div>
+										{shortlang === "en" && (
+											<div class="collapse-content text-sm">{tech.about}</div>
+										)}{" "}
+										{shortlang === "ru" && (
+											<div class="collapse-content text-sm">
+												{tech.about_ru}
+											</div>
+										)}
 									</div>
 								)}
 							</div>

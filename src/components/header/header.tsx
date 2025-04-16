@@ -61,20 +61,20 @@ export default component$(() => {
 				<div class="flex items-center justify-between h-12">
 					<div />
 					{/* Desktop Navigation */}
-					<div class="hidden md:flex flex-1 items-center justify-center space-x-6">
+					<div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
 						{NAV_LINKS(t).map(({ href, text }) => (
 							<a
 								key={href}
 								href={href}
-								class="link no-underline text-base-100 hover:text-base-100/80 transition-colors"
+								class="link no-underline text-base-100 hover:text-base-100/80 transition-colors text-nowrap"
 							>
 								{text}
 							</a>
 						))}
 					</div>
-					<div class="hidden md:block">
+					<div class="hidden lg:block">
 						<BookingBtn
-							additionalClasses="btn-md"
+							additionalClasses="btn-md text-nowrap ms-4"
 							myText={t("app.book.book_now@@Book Now")}
 						/>
 					</div>
@@ -84,7 +84,7 @@ export default component$(() => {
 						type="button"
 						ref={buttonRef}
 						onClick$={toggleMenu}
-						class="md:hidden"
+						class="lg:hidden"
 						aria-label="Toggle menu"
 					>
 						<div class="w-6 h-5 relative flex flex-col justify-between">
@@ -118,7 +118,7 @@ export default component$(() => {
 								key={href}
 								href={href}
 								onClick$={toggleMenu}
-								class="link no-underline text-base-100 text-right hover:text-base-100/80 transition-colors"
+								class="link no-underline text-base-100 text-right hover:text-base-100/80 transition-colors text-nowrap"
 							>
 								{text}
 							</a>

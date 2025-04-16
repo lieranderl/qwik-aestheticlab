@@ -37,6 +37,7 @@ export interface Technician {
 	created_at: string;
 	active: boolean;
 	about: string;
+	about_ru: string;
 	role: string;
 }
 
