@@ -4,6 +4,7 @@ import {
 	HiArrowUpOnSquareOutline,
 	HiEnvelopeOutline,
 } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
 
 export interface EmailInputProps {
 	emailSignal: Signal<string>;
@@ -24,6 +25,7 @@ export const EmailInput = ({
 	readonly,
 	signOut,
 }: EmailInputProps) => {
+	const t = inlineTranslate();
 	return (
 		<div>
 			<div class="flex flex-nowrap gap-2 items-center">
@@ -38,7 +40,9 @@ export const EmailInput = ({
 					<input
 						name="email"
 						type="email"
-						placeholder="Enter your email"
+						placeholder={t(
+							"app.auth.email_placeholder@@Enter your email address",
+						)}
 						pattern="[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,}$"
 						required
 						bind:value={emailSignal}
@@ -57,13 +61,17 @@ export const EmailInput = ({
 						) : (
 							<>
 								<HiArrowUpOnSquareOutline class="w-4 h-4 rotate-90" />
-								<span class="hidden sm:block">Logout</span>
+								<span class="hidden sm:block">
+									{t("app.auth.signout@@Sign out")}
+								</span>
 							</>
 						)}
 					</button>
 				)}
 			</div>
-			<div class="validator-hint hidden">Please enter your email</div>
+			<div class="validator-hint hidden">
+				{t("app.auth.email_hint@@Please enter a valid email address")}
+			</div>
 		</div>
 	);
 };

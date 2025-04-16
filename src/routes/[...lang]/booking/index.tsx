@@ -38,7 +38,7 @@ import {
 } from "./layout";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 
 const WEEKDAYS = [
 	"sunday",
@@ -137,6 +137,7 @@ export default component$(() => {
 	const getPath = localizePath();
 	const locale = useSpeakLocale();
 	const pathtohome = getPath("/", locale.lang);
+	const t = inlineTranslate();
 
 	const servicesSignal = useServicesLoader();
 	const techniciansSignal = useTechniciansLoader();
@@ -277,7 +278,7 @@ export default component$(() => {
 							useRemoveBookingAction={useRemoveBookingAction}
 						/>
 						<div class="text-primary text-center text-xl md:text-4xl font-qestero font-semibold mb-4">
-							Book New Appointment
+							{t("app.book.book_new_app@@Book New Appointment")}
 						</div>
 						<Form
 							class="space-y-4 flex flex-col justify-center"
@@ -340,7 +341,7 @@ export default component$(() => {
 								onClick$={handleBookButtonClick}
 								disabled={!IsValidFormSignal.value}
 							>
-								Book Appointment
+								{t("app.book.book_app@@Book Appointment")}
 							</button>
 
 							<ConfirmationSidePanel

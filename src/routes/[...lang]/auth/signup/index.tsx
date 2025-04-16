@@ -6,6 +6,7 @@ import {
 	$,
 } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
+import { inlineTranslate } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { NameInput } from "~/components/auth/name-input";
 import { PasswordInput } from "~/components/auth/password-input";
@@ -83,7 +84,7 @@ export default component$(() => {
 	const passwordMismatch = useComputed$(
 		() => password.value !== confirmPassword.value,
 	);
-
+	const t = inlineTranslate();
 	useOnDocument(
 		"DOMContentLoaded",
 		$(async () => {
@@ -97,7 +98,7 @@ export default component$(() => {
 	return (
 		<>
 			<h1 class="text-3xl font-bold text-center text-primary font-qestero">
-				Sign Up
+				{t("app.auth.signup@@Sign Up")}
 			</h1>
 			<Form class="space-y-6" action={useSignUp}>
 				<div class="space-y-4">
@@ -108,17 +109,21 @@ export default component$(() => {
 					<EmailInput emailSignal={email} />
 					<PasswordInput
 						password={password}
-						placeholder="Enter your password"
+						placeholder={t("app.auth.set_password_placeh@@Enter your password")}
 						minLength={6}
 					/>
 					<PasswordInput
 						password={confirmPassword}
-						placeholder="Confirm your password"
+						placeholder={t(
+							"app.auth.set_passwordconf_placeh@@Confirm your password",
+						)}
 						minLength={6}
 					/>
 				</div>
 				{passwordMismatch.value && (
-					<div class="text-error text-xs">Passwords do not match</div>
+					<div class="text-error text-xs">
+						{t("app.auth.password_mismatch@@Passwords do not match")}
+					</div>
 				)}
 				<button
 					type="submit"
@@ -142,8 +147,9 @@ export default component$(() => {
 			<div class="flex justify-center">
 				{useSignUp.value?.success && (
 					<p class="text-success">
-						User added successfully. Please check your email for a verification
-						link.
+						{t(
+							"app.auth.user_added@@User added successfully. Please check your email for a verification link.",
+						)}
 					</p>
 				)}
 				{!useSignUp.value?.success && (

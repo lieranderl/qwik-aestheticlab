@@ -14,7 +14,7 @@ const NAV_LINKS = (t: InlineTranslateFn) => {
 	return [
 		{ href: getPath("/#home", locale.lang), text: t("app.nav.home@@Home") },
 		{
-			href: getPath("/#service", locale.lang),
+			href: getPath("/#services", locale.lang),
 			text: t("app.nav.services@@Services"),
 		},
 		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },

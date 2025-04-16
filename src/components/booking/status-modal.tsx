@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import { HiXCircleOutline } from "@qwikest/icons/heroicons";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 
 export interface StatusModalProps {
 	action: ActionStore<
@@ -18,6 +18,7 @@ export const StatusModal = component$<StatusModalProps>(({ action }) => {
 	const getPath = localizePath();
 	const locale = useSpeakLocale();
 	const homePath = getPath("/", locale.lang);
+	const t = inlineTranslate();
 	return (
 		<dialog id="confirmation_modal" class="modal">
 			<div class="modal-box ">
@@ -36,12 +37,17 @@ export const StatusModal = component$<StatusModalProps>(({ action }) => {
 										class="alert alert-success alert-soft text-xl"
 									>
 										<HiXCircleOutline />
-										<span class=" font-sans">Booking Successful!</span>
+										<span class=" font-sans">
+											{t(
+												"app.booking.success@@Your appointment has been booked successfully.",
+											)}
+										</span>
 									</div>
 
 									<p class="text-success mt-2">
-										Your appointment has been confirmed. We look forward to
-										seeing you!
+										{t(
+											"app.booking.success_message@@Your appointment has been booked successfully. We look forward to seeing you!",
+										)}
 									</p>
 								</div>
 							)}
@@ -52,12 +58,17 @@ export const StatusModal = component$<StatusModalProps>(({ action }) => {
 										class="alert alert-error alert-soft text-xl"
 									>
 										<HiXCircleOutline />
-										<span class=" font-sans">Booking Failed</span>
+										<span class=" font-sans">
+											{t(
+												"app.booking.error@@An error occurred while booking your appointment.",
+											)}
+										</span>
 									</div>
 
 									<p class="text-error mt-2">
-										An error occurred while booking your appointment. Please try
-										again.
+										{t(
+											"app.booking.error_message@@An error occurred while booking your appointment. Please try again.",
+										)}
 									</p>
 								</div>
 							)}
@@ -77,7 +88,9 @@ export const StatusModal = component$<StatusModalProps>(({ action }) => {
 								}
 							}}
 						>
-							{action.value?.success ? "Return to Home" : "Close"}
+							{action.value?.success
+								? t("app.booking.return_home@@Return to Home")
+								: t("app.booking.close@@Close")}
 						</button>
 					</form>
 				</div>

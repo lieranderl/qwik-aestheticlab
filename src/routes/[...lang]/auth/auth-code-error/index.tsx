@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { HiExclamationCircleOutline } from "@qwikest/icons/heroicons";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 
 export const useAuthCodeError = routeLoader$(({ query }) => {
 	return query.get("error");
@@ -12,13 +12,18 @@ export default component$(() => {
 	const getPath = localizePath();
 	const locale = useSpeakLocale();
 	const homePath = getPath("/", locale.lang);
+	const t = inlineTranslate();
 
 	return (
 		<>
 			<div class="text-center">
-				<h1 class="text-2xl font-extrabold text-error">Authentication Error</h1>
+				<h1 class="text-2xl font-extrabold text-error">
+					{t("app.auth.auth_error@@Authentication Error")}
+				</h1>
 				<div class="text-secondary mt-2">
-					Oops! Something went wrong during the login process.
+					{t(
+						"app.auth.auth_error_message@@Oops! Something went wrong during the login process.",
+					)}
 				</div>
 			</div>
 
@@ -31,7 +36,7 @@ export default component$(() => {
 
 			<div class="text-center">
 				<a href={homePath} class="btn btn-primary mt-4">
-					Back to Home
+					{t("app.auth.back_home@@Back to Home")}
 				</a>
 			</div>
 		</>

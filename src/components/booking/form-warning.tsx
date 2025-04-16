@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { HiExclamationTriangleOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
 import type { Technician } from "~/types";
 
 export interface WarningFormProps {
@@ -14,7 +15,7 @@ export const WarningForm = component$<WarningFormProps>(
 		const nameValid = /^[\s\S]{2,50}$/.test(name);
 		const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 		const phoneValid = /^\+?[0-9\-\s]{9,15}$/.test(phone);
-
+		const t = inlineTranslate();
 		return (
 			<>
 				{selectedTechnician &&
@@ -27,13 +28,20 @@ export const WarningForm = component$<WarningFormProps>(
 						return missingFields.length > 0 ? (
 							<div class="alert alert-warning alert-soft">
 								<HiExclamationTriangleOutline />
-								<span>Please enter your {missingFields.join(", ")}</span>
+								<span>
+									{t("app.booking.missing_fields@@Please enter your: ")}{" "}
+									{missingFields.join(", ")}
+								</span>
 							</div>
 						) : (
 							!(nameValid && emailValid && phoneValid) && (
 								<div class="alert alert-warning alert-soft">
 									<HiExclamationTriangleOutline />
-									<span>Please provide valid details in the form.</span>
+									<span>
+										{t(
+											"app.booking.invalid_fields@@Please provide valid details in the form.",
+										)}
+									</span>
 								</div>
 							)
 						);

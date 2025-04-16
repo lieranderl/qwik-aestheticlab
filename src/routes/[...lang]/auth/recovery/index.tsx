@@ -1,11 +1,12 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
-import { localizePath } from "qwik-speak";
+import { inlineTranslate, localizePath } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { supabase } from "~/shared/supabase-client";
 
 export const useSupabaseRecovery = routeAction$(async (formData, requestEv) => {
 	const getPath = localizePath();
+	const t = inlineTranslate();
 	const recoveryResponse = await supabase(requestEv).auth.resetPasswordForEmail(
 		formData.email.toString(),
 		{
@@ -15,7 +16,7 @@ export const useSupabaseRecovery = routeAction$(async (formData, requestEv) => {
 
 	if (recoveryResponse.error) {
 		console.error(
-			"An error occurred during recovery:",
+			t("app.auth.recovery_error@@An error occurred during recovery:"),
 			recoveryResponse.error.message,
 		);
 		return {
@@ -25,7 +26,9 @@ export const useSupabaseRecovery = routeAction$(async (formData, requestEv) => {
 	}
 	return {
 		success: true,
-		message: "Check your email for recovery instructions",
+		message: t(
+			"app.auth.recovery_success@@Check your email for recovery instructions",
+		),
 	};
 });
 
@@ -33,11 +36,12 @@ export default component$(() => {
 	// Reactive signals for form inputs and error
 	const email = useSignal("");
 	const useRecovery = useSupabaseRecovery();
+	const t = inlineTranslate();
 
 	return (
 		<>
 			<h1 class="text-3xl font-bold text-center text-primary font-qestero">
-				Password Recovery
+				{t("app.auth.recovery@@Password Recovery")}
 			</h1>
 			<Form class="space-y-4" action={useRecovery}>
 				<EmailInput emailSignal={email} />
@@ -53,7 +57,7 @@ export default component$(() => {
 					{useRecovery.isRunning ? (
 						<span class="loading loading-spinner me-2 loading-md" />
 					) : (
-						"Reset"
+						<span>{t("app.auth.reset@@Reset")}</span>
 					)}
 				</button>
 			</Form>

@@ -1,11 +1,13 @@
 import type { Signal } from "@builder.io/qwik";
 import { HiUserOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
 
 export interface NameInputProps {
 	nameSignal: Signal<string>;
 	readonly?: boolean;
 }
 export const NameInput = ({ nameSignal, readonly }: NameInputProps) => {
+	const t = inlineTranslate();
 	return (
 		<div>
 			<label
@@ -19,14 +21,16 @@ export const NameInput = ({ nameSignal, readonly }: NameInputProps) => {
 				<input
 					name="name"
 					type="text"
-					placeholder="Enter you name"
+					placeholder={t("app.auth.name_placeholder@@Enter your name")}
 					pattern="^[\s\S]{2,50}$"
 					required
 					bind:value={nameSignal}
 					readOnly={readonly}
 				/>
 			</label>
-			<div class="validator-hint hidden">Please enter your name</div>
+			<div class="validator-hint hidden">
+				{t("app.auth.name_placeholder@@Enter your name")}
+			</div>
 		</div>
 	);
 };

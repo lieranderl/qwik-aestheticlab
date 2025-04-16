@@ -1,6 +1,6 @@
 import { component$, useSignal, useComputed$ } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { PasswordInput } from "~/components/auth/password-input";
 import { useAuthSession } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
@@ -38,25 +38,30 @@ export default component$(() => {
 	const getPath = localizePath();
 	const locale = useSpeakLocale();
 	const redirectPath = getPath("/auth/signin", locale.lang);
+	const t = inlineTranslate();
 
 	return (
 		<>
 			<h1 class="text-3xl font-bold text-center text-primary font-qestero">
-				Enter your new password
+				{t("app.auth.set_password@@Enter your new password")}
 			</h1>
 			<Form class="space-y-4" action={usePasswordSet}>
 				<PasswordInput
 					password={password}
-					placeholder="Enter your password"
+					placeholder={t("app.auth.set_password_placeh@@Enter your password")}
 					minLength={6}
 				/>
 				<PasswordInput
 					password={confirmPassword}
-					placeholder="Confirm your password"
+					placeholder={t(
+						"app.auth.set_passwordconf_placeh@@Confirm your password",
+					)}
 					minLength={6}
 				/>
 				{passwordMismatch.value && (
-					<div class="text-error text-xs">Passwords do not match</div>
+					<div class="text-error text-xs">
+						{t("app.auth.password_mismatch@@Passwords do not match")}
+					</div>
 				)}
 				<button
 					type="submit"
@@ -72,19 +77,20 @@ export default component$(() => {
 					{usePasswordSet.isRunning ? (
 						<span class="loading loading-spinner me-2 loading-md" />
 					) : (
-						"Save"
+						<span>{t("app.auth.save@@Save")}</span>
 					)}
 				</button>
 			</Form>
 
 			{usePasswordSet.value?.success && (
 				<div class="flex flex-col items-center">
-					<p class="text-success">Password changed successfully</p>
+					<p class="text-success">
+						{t("app.auth.password_changed@@Password changed successfully")}
+					</p>
 					<p class="text-primary my-1">
-						{" "}
-						Go to{" "}
+						{t("app.auth.goto@@Go to")}
 						<a class="link" href={redirectPath}>
-							login page
+							{t("app.auth.login@@Login page")}
 						</a>
 					</p>
 				</div>

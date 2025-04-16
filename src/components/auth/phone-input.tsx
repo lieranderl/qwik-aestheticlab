@@ -1,11 +1,13 @@
 import type { Signal } from "@builder.io/qwik";
 import { HiPhoneOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
 
 export interface PhoneInputProps {
 	phoneSignal: Signal<string>;
 	readonly?: boolean;
 }
 export const PhoneInput = ({ phoneSignal, readonly }: PhoneInputProps) => {
+	const t = inlineTranslate();
 	return (
 		<div>
 			<label
@@ -19,14 +21,16 @@ export const PhoneInput = ({ phoneSignal, readonly }: PhoneInputProps) => {
 				<input
 					name="phone"
 					type="tel"
-					placeholder="Enter your phone number"
+					placeholder={t("app.auth.phone_placeholder@@Enter your phone number")}
 					required
 					pattern="^\+?[0-9\-\s]{9,15}$"
 					bind:value={phoneSignal}
 					readOnly={readonly}
 				/>
 			</label>
-			<div class="validator-hint hidden">Please enter valid phone number</div>
+			<div class="validator-hint hidden">
+				{t("app.auth.phone_placeholder@@Enter your phone number")}
+			</div>
 		</div>
 	);
 };

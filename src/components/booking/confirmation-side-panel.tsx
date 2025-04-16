@@ -4,6 +4,7 @@ import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { HiCheckCircleOutline } from "@qwikest/icons/heroicons";
 import { formatDate, formatPrice, formatTime } from "~/consts";
 import type { Technician, TimeSlot } from "~/types";
+import { inlineTranslate } from "qwik-speak";
 
 const calculateEndTime = (selectedSlotStart: string, duration: number) => {
 	const startDate = new Date(selectedSlotStart);
@@ -38,7 +39,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 		});
 
 		const ref = useSignal<HTMLDivElement>();
-
+		const t = inlineTranslate();
 		useClickOutside(
 			ref,
 			$(() => {
@@ -68,13 +69,13 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 			>
 				<div class="flex flex-col h-full font-sans">
 					<div class="px-6 py-4 border-b border-secondary font-qestero text-2xl font-semibold text-center">
-						Confirm Your Booking
+						{t("app.booking.confirm@@Confirm Your Booking")}
 					</div>
 
 					<div class="p-6 space-y-4 overflow-y-auto flex-1">
 						<div class="card shadow-sm p-4 bg-base-200">
 							<h3 class="text-lg font-semibold font-sans mb-1 text-end">
-								Appointment Details
+								{t("app.booking.appointment_details@@Appointment Details")}
 							</h3>
 							<p class="text-sm ms-2 mb-1 text-end">
 								{selectedSlot?.start && selectedSlot.end ? (
@@ -83,11 +84,11 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 											{formatDate(selectedSlot.start)}
 										</span>
 										<br />
-										from{" "}
+										{t("app.booking.from@@From")}{" "}
 										<span class="font-semibold">
 											{formatTime(selectedSlot.start)}
 										</span>{" "}
-										to{" "}
+										{t("app.booking.to@@To")}{" "}
 										<span class="font-semibold">
 											{formatTime(
 												calculateEndTime(selectedSlot.start, duration),
@@ -100,15 +101,16 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 							</p>
 							{duration > 0 && (
 								<p class="text-sm ms-2 text-end">
-									Total Duration: <span class="font-semibold ">{duration}</span>{" "}
-									minutes
+									{t("app.booking.total_duration@@Total Duration:")}{" "}
+									<span class="font-semibold ">{duration}</span>{" "}
+									{t("app.booking.minutes@@minutes")}
 								</p>
 							)}
 						</div>
 
 						<div class="card  shadow-sm p-4 bg-base-200">
 							<h3 class="text-lg font-semibold font-sans mb-1 text-end">
-								Services
+								{t("app.booking.services@@Services")}
 							</h3>
 							<ul class="list-none list-inside ms-2 text-end">
 								{selectedServicesNames.map((service) => (
@@ -119,7 +121,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 
 						<div class="card shadow-sm p-4 bg-base-200">
 							<h3 class="text-lg font-semibold font-sans mb-1 text-end">
-								Specialist
+								{t("app.booking.specialist@@Specialist")}
 							</h3>
 							<p class="font-semibold ms-2 text-end">
 								{selectedTechnician?.name}
@@ -131,7 +133,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 
 						<div class="card  shadow-sm p-4 bg-base-200">
 							<h3 class="text-lg font-semibold font-sans mb-1 text-end">
-								Total Price
+								{t("app.booking.total_price@@Total Price")}
 							</h3>
 							<p class="text-xl font-semibold ms-2 text-end">
 								{formatPrice(price)}
@@ -147,7 +149,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 								class="btn btn-outline btn-error"
 								disabled={isSubmitting}
 							>
-								Cancel
+								{t("app.booking.cancel@@Cancel")}
 							</button>
 							<button
 								type="submit"
@@ -158,7 +160,8 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 									isOpen.value = false;
 								}}
 							>
-								<HiCheckCircleOutline class="w-5 h-5" /> Confirm
+								<HiCheckCircleOutline class="w-5 h-5" />{" "}
+								{t("app.booking.confirm@@Confirm")}
 							</button>
 						</div>
 					</div>

@@ -19,6 +19,7 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 	console.log("type", type);
 	console.log("next", next);
 	const getPath = localizePath();
+
 	if (token_hash && type) {
 		const { error } = await supabase(req).auth.verifyOtp({
 			type,

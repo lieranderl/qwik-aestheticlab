@@ -4,6 +4,7 @@ import {
 	HiEyeSlashOutline,
 	HiEyeOutline,
 } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
 
 export interface PasswordInputProps {
 	password: Signal<string>;
@@ -13,6 +14,7 @@ export interface PasswordInputProps {
 export const PasswordInput = component$(
 	({ password, placeholder, minLength }: PasswordInputProps) => {
 		const showPassword = useSignal(false);
+		const t = inlineTranslate();
 		return (
 			<div>
 				<label class="input input-primary validator w-full">
@@ -41,7 +43,9 @@ export const PasswordInput = component$(
 						/>
 					)}
 				</label>
-				<div class="validator-hint hidden">Please enter your password</div>
+				<div class="validator-hint hidden">
+					{t("app.auth.password_placeholder@@Enter your password")}
+				</div>
 			</div>
 		);
 	},

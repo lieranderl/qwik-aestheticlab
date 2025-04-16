@@ -1,6 +1,6 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { PasswordInput } from "~/components/auth/password-input";
 import { supabase } from "~/shared/supabase-client";
@@ -36,6 +36,7 @@ export default component$(() => {
 	const locale = useSpeakLocale();
 	const signup_path = getPath("/auth/signup", locale.lang);
 	const recovery_path = getPath("/auth/recovery", locale.lang);
+	const t = inlineTranslate();
 
 	useOnDocument(
 		"DOMContentLoaded",
@@ -48,20 +49,22 @@ export default component$(() => {
 	return (
 		<>
 			<h1 class="text-3xl font-bold text-center text-primary font-qestero">
-				Sign In
+				{t("app.auth.signin@@Sign In")}
 			</h1>
 			<Form class="space-y-4" action={useSignIn}>
 				<EmailInput emailSignal={email} />
 
 				<PasswordInput
 					password={password}
-					placeholder="Enter your password"
+					placeholder={t("app.auth.set_password_placeh@@Enter your password")}
 					minLength={6}
 				/>
 
 				<div class="flex justify-end">
 					<div class="link text-sm">
-						<a href={recovery_path}>Forgot your password?</a>
+						<a href={recovery_path}>
+							{t("app.auth.forgot_pass@@Forgot your password?")}
+						</a>
 					</div>
 				</div>
 				<div>
@@ -75,13 +78,15 @@ export default component$(() => {
 						{useSignIn.isRunning ? (
 							<span class="loading loading-spinner me-2 loading-md" />
 						) : (
-							"Login"
+							<span>{t("app.auth.signin@@Sign In")}</span>
 						)}
 					</button>
 				</div>
 				<div class="flex justify-end">
 					<div class="link  text-sm">
-						<a href={signup_path}>Don't have an account? Sign up</a>
+						<a href={signup_path}>
+							{t("app.auth.donthaveaccount@@Don't have an account? Sign up")}
+						</a>
 					</div>
 				</div>
 			</Form>

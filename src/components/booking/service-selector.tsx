@@ -1,5 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$ } from "@builder.io/qwik";
+import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Service } from "~/types";
 
@@ -22,7 +23,7 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 			},
 			{} as Record<string, Service[]>,
 		);
-
+		const t = inlineTranslate();
 		const onToggleService$ = $(
 			(e: Event, serviceId: string, category: string) => {
 				const target = e.target as HTMLInputElement;
@@ -42,7 +43,9 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 
 		return (
 			<div>
-				<div class="block text-sm font-medium mb-3">Select Services</div>
+				<div class="block text-sm font-medium mb-3">
+					{t("app.booking.select_services@@Select Services")}
+				</div>
 				<div class="space-y-4">
 					{Object.entries(groupedServices).map(([category, services]) => (
 						<div

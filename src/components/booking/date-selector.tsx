@@ -6,6 +6,7 @@ import {
 	HiCalendarOutline,
 } from "@qwikest/icons/heroicons";
 import { DateTime } from "luxon";
+import { inlineTranslate } from "qwik-speak";
 import { formatDate } from "~/consts";
 
 const today = DateTime.now().toISODate();
@@ -16,6 +17,7 @@ export interface DateSelectorProps {
 
 export const DateSelector = component$<DateSelectorProps>(
 	({ selectedDateSignal }) => {
+		const t = inlineTranslate();
 		return (
 			<div>
 				<label class="input input-primary">
@@ -27,7 +29,7 @@ export const DateSelector = component$<DateSelectorProps>(
 						value={
 							selectedDateSignal.value !== "Pick a date"
 								? formatDate(selectedDateSignal.value)
-								: "Pick a date"
+								: t("app.booking.date_selector@@Pick a date")
 						}
 					/>
 				</label>
