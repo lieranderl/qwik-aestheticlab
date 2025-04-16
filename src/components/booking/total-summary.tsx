@@ -33,12 +33,10 @@ export const TotalSummary = component$<TotalSummaryProps>(
 						<div class="flex justify-between w-full">
 							<div>
 								<p class="font-semibold">
-
 									{t("app.booking.total_duration@@Total Duration:")}
 								</p>
 								<p>
-									{totalDuration}{" "}
-									{t("app.booking.minutes@@min")}
+									{totalDuration} {t("app.booking.minutes@@min")}
 								</p>
 							</div>
 							<div>

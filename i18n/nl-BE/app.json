@@ -1,142 +1,142 @@
 {
-  "app": {
-    "auth": {
-      "auth_error": "Authenticatie fout",
-      "auth_error_message": "Oeps! Er is iets misgegaan tijdens het inloggen.",
-      "back_home": "Terug naar de startpagina",
-      "donthaveaccount": "Heeft u geen account? Meld u aan",
-      "email_hint": "Voer een geldig e-mailadres in",
-      "email_placeholder": "Voer uw e-mailadres in",
-      "forgot_pass": "Wachtwoord vergeten?",
-      "goto": "Ga naar",
-      "login": "Inlogpagina",
-      "name_placeholder": "Voer uw naam in",
-      "password_changed": "Wachtwoord succesvol gewijzigd",
-      "password_mismatch": "Wachtwoorden komen niet overeen",
-      "password_placeholder": "Voer uw wachtwoord in",
-      "phone_placeholder": "Voer uw telefoonnummer in",
-      "recovery": "Wachtwoordherstel",
-      "recovery_error": "Er is een fout opgetreden tijdens het herstel:",
-      "recovery_success": "Controleer uw e-mail voor herstelinstructies",
-      "reset": "Reset",
-      "save": "Opslaan",
-      "set_password": "Voer uw nieuwe wachtwoord in",
-      "set_password_placeh": "Voer uw wachtwoord in",
-      "set_passwordconf_placeh": "Bevestig uw wachtwoord",
-      "signin": "Inloggen",
-      "signout": "Afmelden",
-      "signup": "Aanmelden",
-      "user_added": "Gebruiker succesvol toegevoegd. Controleer uw e-mail voor een verificatielink."
-    },
-    "book": {
-      "book_app": "Boek afspraak",
-      "book_new_app": "Boek nieuwe afspraak",
-      "book_now": "Boek nu"
-    },
-    "booking": {
-      "appointment_details": "Afspraakdetails",
-      "cancel": "Annuleren",
-      "close": "Sluiten",
-      "confirm": "Bevestigen",
-      "date": "Datum:",
-      "date_selector": "Kies een datum",
-      "duration": "Duur:",
-      "error": "Er is een fout opgetreden tijdens het boeken van uw afspraak.",
-      "error_message": "Er is een fout opgetreden tijdens het boeken van uw afspraak. Probeer het opnieuw.",
-      "from": "Van",
-      "invalid_fields": "Voer geldige gegevens in het formulier in.",
-      "minutes": "minuten",
-      "missing_fields": "Voer uw in: ",
-      "price": "Prijs:",
-      "remove": "Verwijderen",
-      "return_home": "Terug naar de startpagina",
-      "select_services": "Selecteer diensten",
-      "selected_services": "Geselecteerde diensten",
-      "services": "Diensten:",
-      "specialist": "Specialist",
-      "success": "Uw afspraak is succesvol geboekt.",
-      "success_message": "Uw afspraak is succesvol geboekt. We kijken ernaar uit u te zien!",
-      "time": "Tijd:",
-      "to": "Aan",
-      "total_duration": "Totale duur:",
-      "total_price": "Totaal bedrag:",
-      "upcoming_appointments": "Uw aankomende afspraken"
-    },
-    "changeLocale": "Verander taal",
-    "contact": {
-      "contact": "Contact",
-      "instagram": "Volg ons op Instagram",
-      "monday": "Maandag",
-      "opening_hours": "Openingstijden",
-      "parking": "Parkeren beschikbaar bij",
-      "sunday": "Zondag",
-      "visit_us": "Bezoek ons"
-    },
-    "footer": {
-      "all_rights": "Alle rechten voorbehouden",
-      "copyright": "Copyright"
-    },
-    "head": {
-      "home": {
-        "description": "Localized routing",
-        "title": "{{name}}"
-      }
-    },
-    "hero": {
-      "book_visit": "Boek uw bezoek",
-      "slogan": "Waar expertise unieke schoonheid creëert"
-    },
-    "nav": {
-      "about": "Over",
-      "contact": "Contact",
-      "home": "Home",
-      "services": "Diensten",
-      "team": "Team",
-      "work": "Werken"
-    },
-    "privacy": {
-      "changes": "7. Wijzigingen in dit beleid",
-      "changes_text": "We kunnen deze privacyverklaring van tijd tot tijd bijwerken. De laatste versie is altijd beschikbaar op onze website.",
-      "cookies": "6. Cookies en trackingtechnologieën",
-      "cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in de instellingen van uw browser.",
-      "email": "E-mailadres",
-      "improve": "Verbeter onze diensten",
-      "info": "1. Informatie die we verzamelen",
-      "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak maakt of contact met ons opneemt:",
-      "last_update": "Laatste update:",
-      "legal": "Wettelijke autoriteiten indien vereist door de wet",
-      "name": "Naam",
-      "phone": "Telefoonnummer",
-      "privacy_title": "Privacybeleid",
-      "respond": "Beantwoorden van uw vragen",
-      "rights": "5. Uw rechten",
-      "rights_text": "U kunt verzoeken om toegang tot, bijwerking of verwijdering van uw persoonlijke gegevens. Om een verzoek in te dienen, kunt u contact met ons opnemen via:",
-      "schedule": "Afspraak plannen en bevestigen",
-      "security": "3. Gegevensbescherming en beveiliging",
-      "security_text": "We nemen redelijke maatregelen om uw persoonlijke gegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
-      "send": "Stuur herinneringen en updates voor afspraken",
-      "service": "Dienstenaanbieders (bijv. boekingsplatforms)",
-      "sharing": "4. Delen van uw informatie",
-      "sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
-      "use": "2. Hoe we uw informatie gebruiken",
-      "use_text": "we gebruiken uw informatie om:"
-    },
-    "services": {
-      "duration": "Duur:",
-      "minutes": "minuten",
-      "title": "Onze diensten"
-    },
-    "story": "Ons verhaal",
-    "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunst en expertise, waardoor een toevluchtsoord ontstaat waar je je meest stralende zelf kunt ontdekken.",
-    "team": {
-      "title": "Ons Team"
-    },
-    "test": "TEST DUTCH",
-    "title": "{{name}} demo",
-    "work": {
-      "title": "Ons werk"
-    }
-  },
-  "dates": "Dates",
-  "numbers": "Numbers"
+	"app": {
+		"auth": {
+			"auth_error": "Authenticatie fout",
+			"auth_error_message": "Oeps! Er is iets misgegaan tijdens het inloggen.",
+			"back_home": "Terug naar de startpagina",
+			"donthaveaccount": "Heeft u geen account? Meld u aan",
+			"email_hint": "Voer een geldig e-mailadres in",
+			"email_placeholder": "Voer uw e-mailadres in",
+			"forgot_pass": "Wachtwoord vergeten?",
+			"goto": "Ga naar",
+			"login": "Inlogpagina",
+			"name_placeholder": "Voer uw naam in",
+			"password_changed": "Wachtwoord succesvol gewijzigd",
+			"password_mismatch": "Wachtwoorden komen niet overeen",
+			"password_placeholder": "Voer uw wachtwoord in",
+			"phone_placeholder": "Voer uw telefoonnummer in",
+			"recovery": "Wachtwoordherstel",
+			"recovery_error": "Er is een fout opgetreden tijdens het herstel:",
+			"recovery_success": "Controleer uw e-mail voor herstelinstructies",
+			"reset": "Reset",
+			"save": "Opslaan",
+			"set_password": "Voer uw nieuwe wachtwoord in",
+			"set_password_placeh": "Voer uw wachtwoord in",
+			"set_passwordconf_placeh": "Bevestig uw wachtwoord",
+			"signin": "Inloggen",
+			"signout": "Afmelden",
+			"signup": "Aanmelden",
+			"user_added": "Gebruiker succesvol toegevoegd. Controleer uw e-mail voor een verificatielink."
+		},
+		"book": {
+			"book_app": "Boek afspraak",
+			"book_new_app": "Boek nieuwe afspraak",
+			"book_now": "Boek nu"
+		},
+		"booking": {
+			"appointment_details": "Afspraakdetails",
+			"cancel": "Annuleren",
+			"close": "Sluiten",
+			"confirm": "Bevestigen",
+			"date": "Datum:",
+			"date_selector": "Kies een datum",
+			"duration": "Duur:",
+			"error": "Er is een fout opgetreden tijdens het boeken van uw afspraak.",
+			"error_message": "Er is een fout opgetreden tijdens het boeken van uw afspraak. Probeer het opnieuw.",
+			"from": "Van",
+			"invalid_fields": "Voer geldige gegevens in het formulier in.",
+			"minutes": "minuten",
+			"missing_fields": "Voer uw in: ",
+			"price": "Prijs:",
+			"remove": "Verwijderen",
+			"return_home": "Terug naar de startpagina",
+			"select_services": "Selecteer diensten",
+			"selected_services": "Geselecteerde diensten",
+			"services": "Diensten:",
+			"specialist": "Specialist",
+			"success": "Uw afspraak is succesvol geboekt.",
+			"success_message": "Uw afspraak is succesvol geboekt. We kijken ernaar uit u te zien!",
+			"time": "Tijd:",
+			"to": "Aan",
+			"total_duration": "Totale duur:",
+			"total_price": "Totaal bedrag:",
+			"upcoming_appointments": "Uw aankomende afspraken"
+		},
+		"changeLocale": "Verander taal",
+		"contact": {
+			"contact": "Contact",
+			"instagram": "Volg ons op Instagram",
+			"monday": "Maandag",
+			"opening_hours": "Openingstijden",
+			"parking": "Parkeren beschikbaar bij",
+			"sunday": "Zondag",
+			"visit_us": "Bezoek ons"
+		},
+		"footer": {
+			"all_rights": "Alle rechten voorbehouden",
+			"copyright": "Copyright"
+		},
+		"head": {
+			"home": {
+				"description": "Localized routing",
+				"title": "{{name}}"
+			}
+		},
+		"hero": {
+			"book_visit": "Boek uw bezoek",
+			"slogan": "Waar expertise unieke schoonheid creëert"
+		},
+		"nav": {
+			"about": "Over",
+			"contact": "Contact",
+			"home": "Home",
+			"services": "Diensten",
+			"team": "Team",
+			"work": "Werken"
+		},
+		"privacy": {
+			"changes": "7. Wijzigingen in dit beleid",
+			"changes_text": "We kunnen deze privacyverklaring van tijd tot tijd bijwerken. De laatste versie is altijd beschikbaar op onze website.",
+			"cookies": "6. Cookies en trackingtechnologieën",
+			"cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in de instellingen van uw browser.",
+			"email": "E-mailadres",
+			"improve": "Verbeter onze diensten",
+			"info": "1. Informatie die we verzamelen",
+			"info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak maakt of contact met ons opneemt:",
+			"last_update": "Laatste update:",
+			"legal": "Wettelijke autoriteiten indien vereist door de wet",
+			"name": "Naam",
+			"phone": "Telefoonnummer",
+			"privacy_title": "Privacybeleid",
+			"respond": "Beantwoorden van uw vragen",
+			"rights": "5. Uw rechten",
+			"rights_text": "U kunt verzoeken om toegang tot, bijwerking of verwijdering van uw persoonlijke gegevens. Om een verzoek in te dienen, kunt u contact met ons opnemen via:",
+			"schedule": "Afspraak plannen en bevestigen",
+			"security": "3. Gegevensbescherming en beveiliging",
+			"security_text": "We nemen redelijke maatregelen om uw persoonlijke gegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
+			"send": "Stuur herinneringen en updates voor afspraken",
+			"service": "Dienstenaanbieders (bijv. boekingsplatforms)",
+			"sharing": "4. Delen van uw informatie",
+			"sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
+			"use": "2. Hoe we uw informatie gebruiken",
+			"use_text": "we gebruiken uw informatie om:"
+		},
+		"services": {
+			"duration": "Duur:",
+			"minutes": "minuten",
+			"title": "Onze diensten"
+		},
+		"story": "Ons verhaal",
+		"story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunst en expertise, waardoor een toevluchtsoord ontstaat waar je je meest stralende zelf kunt ontdekken.",
+		"team": {
+			"title": "Ons Team"
+		},
+		"test": "TEST DUTCH",
+		"title": "{{name}} demo",
+		"work": {
+			"title": "Ons werk"
+		}
+	},
+	"dates": "Dates",
+	"numbers": "Numbers"
 }
