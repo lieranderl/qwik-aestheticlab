@@ -1,13 +1,15 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
+import { localizePath } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { supabase } from "~/shared/supabase-client";
 
 export const useSupabaseRecovery = routeAction$(async (formData, requestEv) => {
+	const getPath = localizePath();
 	const recoveryResponse = await supabase(requestEv).auth.resetPasswordForEmail(
 		formData.email.toString(),
 		{
-			redirectTo: `${requestEv.url.origin}/auth/password-recovery`,
+			redirectTo: `${requestEv.url.origin}${getPath("/auth/password-recovery", requestEv.locale())}`,
 		},
 	);
 

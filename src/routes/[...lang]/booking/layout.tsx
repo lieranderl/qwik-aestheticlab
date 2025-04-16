@@ -8,11 +8,14 @@ export { useAuthSession };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
 	const { error } = await supabase(requestEv).auth.signOut();
+
 	if (error) {
 		console.log("Error signing out:", error);
 		return { success: false, error: { message: error.message } };
 	}
-	throw requestEv.redirect(302, "/");
+	console.log("Sign out successful");
+	console.log(requestEv.pathname);
+	throw requestEv.redirect(302, requestEv.pathname);
 });
 
 export const useRemoveBooking = routeAction$(async (data, { env }) => {

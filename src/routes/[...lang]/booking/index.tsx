@@ -8,14 +8,19 @@ import {
 	useSignal,
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+import {
+	Form,
+	routeAction$,
+	server$,
+	useLocation,
+} from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
 	useServicesLoader,
 	useTechniciansLoader,
 	useEnvLoader,
-} from "../[...lang]/layout";
+} from "../layout";
 import { ConfirmationSidePanel } from "~/components/booking/confirmation-side-panel";
 import { ContactFormInputs } from "~/components/booking/contact-form-inputs";
 import { ServiceSelector } from "~/components/booking/service-selector";
@@ -33,6 +38,7 @@ import {
 } from "./layout";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
+import { localizePath, useSpeakLocale } from "qwik-speak";
 
 const WEEKDAYS = [
 	"sunday",
@@ -128,6 +134,9 @@ export default component$(() => {
 			await import("cally");
 		}),
 	);
+	const getPath = localizePath();
+	const locale = useSpeakLocale();
+	const pathtohome = getPath("/", locale.lang);
 
 	const servicesSignal = useServicesLoader();
 	const techniciansSignal = useTechniciansLoader();
@@ -257,7 +266,7 @@ export default component$(() => {
 		<div class="min-h-screen bg-base-200 py-12">
 			<div class="container mx-auto px-4">
 				<div class="flex justify-center items-center mb-8">
-					<a href="/" class="link">
+					<a href={pathtohome} class="link">
 						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
 					</a>
 				</div>

@@ -1,16 +1,29 @@
 import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
 import { BookingBtn } from "../booking-button";
 import { ChangeLocale } from "../change-locale";
-import { inlineTranslate, type InlineTranslateFn } from "qwik-speak";
+import {
+	inlineTranslate,
+	localizePath,
+	useSpeakLocale,
+	type InlineTranslateFn,
+} from "qwik-speak";
 
 const NAV_LINKS = (t: InlineTranslateFn) => {
+	const getPath = localizePath();
+	const locale = useSpeakLocale();
 	return [
-		{ href: "/#home", text: t("app.nav.home@@Home") },
-		{ href: "/#services", text: t("app.nav.services@@Services") },
-		{ href: "/#team", text: t("app.nav.team@@Team") },
-		{ href: "/#work", text: t("app.nav.work@@Work") },
-		{ href: "/#about", text: t("app.nav.about@@About") },
-		{ href: "/#contact", text: t("app.nav.contact@@Contact") },
+		{ href: getPath("/#home", locale.lang), text: t("app.nav.home@@Home") },
+		{
+			href: getPath("/#service", locale.lang),
+			text: t("app.nav.services@@Services"),
+		},
+		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
+		{ href: getPath("/#work", locale.lang), text: t("app.nav.work@@Work") },
+		{ href: getPath("/#about", locale.lang), text: t("app.nav.about@@About") },
+		{
+			href: getPath("/#contact", locale.lang),
+			text: t("app.nav.contact@@Contact"),
+		},
 	];
 };
 

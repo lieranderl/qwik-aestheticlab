@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
+import { localizePath } from "qwik-speak";
 import { supabase } from "~/shared/supabase-client";
 
 export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
@@ -17,7 +18,7 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 	console.log("token_hash", token_hash);
 	console.log("type", type);
 	console.log("next", next);
-
+	const getPath = localizePath();
 	if (token_hash && type) {
 		const { error } = await supabase(req).auth.verifyOtp({
 			type,
@@ -28,10 +29,16 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 			throw req.redirect(303, `${req.url.origin}/${next}`);
 		}
 		console.error("Failed to verify OTP", error);
-		throw req.redirect(303, `/auth/auth-code-error?error=${error.message}`);
+		throw req.redirect(
+			303,
+			getPath(`/auth/auth-code-error?error=${error.message}`, req.locale()),
+		);
 	}
 
-	throw req.redirect(303, "/auth/auth-code-error?error=no token hash or type");
+	throw req.redirect(
+		303,
+		getPath("/auth/auth-code-error?error=Invalid token_hash", req.locale()),
+	);
 });
 
 export default component$(() => {

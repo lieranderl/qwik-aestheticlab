@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import { HiXCircleOutline } from "@qwikest/icons/heroicons";
+import { localizePath, useSpeakLocale } from "qwik-speak";
 
 export interface StatusModalProps {
 	action: ActionStore<
@@ -14,7 +15,9 @@ export interface StatusModalProps {
 
 export const StatusModal = component$<StatusModalProps>(({ action }) => {
 	// if (!isOpen) return null;
-
+	const getPath = localizePath();
+	const locale = useSpeakLocale();
+	const homePath = getPath("/", locale.lang);
 	return (
 		<dialog id="confirmation_modal" class="modal">
 			<div class="modal-box ">
@@ -70,7 +73,7 @@ export const StatusModal = component$<StatusModalProps>(({ action }) => {
 							onClick$={() => {
 								// showStatusModal.value = false;
 								if (action.value?.success) {
-									window.location.href = "/";
+									window.location.href = homePath;
 								}
 							}}
 						>

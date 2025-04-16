@@ -1,5 +1,6 @@
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { supabase } from "./supabase-client";
+import { localizePath } from "qwik-speak";
 
 // eslint-disable-next-line qwik/loader-location
 export const useAuthSession = routeLoader$(async (requestEv) => {
@@ -9,7 +10,8 @@ export const useAuthSession = routeLoader$(async (requestEv) => {
 	} = await supabase(requestEv).auth.getSession();
 
 	if (!session) {
-		throw requestEv.redirect(302, "/auth/signin"); // Redirect if no session
+		const getPath = localizePath();
+		throw requestEv.redirect(302, getPath("/auth/signin", requestEv.locale())); // Redirect if no session
 	}
 
 	return session;

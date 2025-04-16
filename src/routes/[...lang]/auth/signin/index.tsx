@@ -1,5 +1,6 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
+import { localizePath, useSpeakLocale } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { PasswordInput } from "~/components/auth/password-input";
 import { supabase } from "~/shared/supabase-client";
@@ -22,7 +23,8 @@ export const useSupabaseSignIn = routeAction$(async (formData, requestEv) => {
 		return { success: false, error: { message: signInResponse.error.message } };
 	}
 	console.log("Successfully signed in existing user!", formData.email);
-	throw requestEv.redirect(302, "/booking");
+	const getPath = localizePath();
+	throw requestEv.redirect(302, getPath("/booking", requestEv.locale()));
 });
 
 export default component$(() => {
@@ -30,6 +32,10 @@ export default component$(() => {
 	const email = useSignal("");
 	const password = useSignal("");
 	const useSignIn = useSupabaseSignIn();
+	const getPath = localizePath();
+	const locale = useSpeakLocale();
+	const signup_path = getPath("/auth/signup", locale.lang);
+	const recovery_path = getPath("/auth/recovery", locale.lang);
 
 	useOnDocument(
 		"DOMContentLoaded",
@@ -55,7 +61,7 @@ export default component$(() => {
 
 				<div class="flex justify-end">
 					<div class="link text-sm">
-						<a href="/auth/recovery">Forgot your password?</a>
+						<a href={recovery_path}>Forgot your password?</a>
 					</div>
 				</div>
 				<div>
@@ -75,7 +81,7 @@ export default component$(() => {
 				</div>
 				<div class="flex justify-end">
 					<div class="link  text-sm">
-						<a href="/auth/signup">Don't have an account? Sign up</a>
+						<a href={signup_path}>Don't have an account? Sign up</a>
 					</div>
 				</div>
 			</Form>

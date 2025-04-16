@@ -13,4 +13,4 @@ spec:
   csi:
    # hetzner-csi-driver
     driver: csi.hetzner.cloud
-    volumeHandle: {{ .Values.volume_id }}  # Replace this with your existing volume ID
+    volumeHandle: "{{ .Values.volume_id }}"  # Replace this with your existing volume ID

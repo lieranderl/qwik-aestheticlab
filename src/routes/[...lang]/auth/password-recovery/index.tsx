@@ -1,5 +1,6 @@
 import { component$, useSignal, useComputed$ } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
+import { localizePath, useSpeakLocale } from "qwik-speak";
 import { PasswordInput } from "~/components/auth/password-input";
 import { useAuthSession } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
@@ -34,6 +35,9 @@ export default component$(() => {
 	);
 
 	const usePasswordSet = useSupabasePasswordSet();
+	const getPath = localizePath();
+	const locale = useSpeakLocale();
+	const redirectPath = getPath("/auth/signin", locale.lang);
 
 	return (
 		<>
@@ -79,7 +83,7 @@ export default component$(() => {
 					<p class="text-primary my-1">
 						{" "}
 						Go to{" "}
-						<a class="link" href="/auth/signin">
+						<a class="link" href={redirectPath}>
 							login page
 						</a>
 					</p>
