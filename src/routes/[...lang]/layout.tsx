@@ -69,6 +69,15 @@ export const useServicesLoader = routeLoader$(async ({ env, locale }) => {
 				service.name = service.name_fr;
 			}
 		}
+		for (const service of data) {
+			if (shortlocal === "ru") {
+				service.description = service.description_ru;
+			} else if (shortlocal === "nl") {
+				service.description = service.description_nl;
+			} else if (shortlocal === "fr") {
+				service.description = service.description_fr;
+			}
+		}
 		// map Service to ServiceFiltered
 		data
 			.filter((service) => service.active)

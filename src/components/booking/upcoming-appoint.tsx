@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
-import { formatPrice, formatDate, formatTime } from "~/consts";
+import { inlineTranslate, useFormatDate } from "qwik-speak";
+import { formatPrice } from "~/consts";
 import type { Booking } from "~/types";
 
 export interface UpcomingAppointmentProps {
@@ -20,6 +20,7 @@ export const UpcomingAppointment = component$(
 		useRemoveBookingAction,
 	}: UpcomingAppointmentProps) => {
 		const t = inlineTranslate();
+		const fd = useFormatDate();
 		return (
 			<>
 				{upcomingAppointments.length > 0 && (
@@ -50,11 +51,15 @@ export const UpcomingAppointment = component$(
 										</div>
 										<div class="flex justify-between">
 											<strong>{t("app.booking.date@@Date:")}</strong>
-											<span>{formatDate(booking.datetime)}</span>
+											<span>
+												{fd(booking.datetime, { dateStyle: "medium" })}
+											</span>
 										</div>
 										<div class="flex justify-between">
 											<strong>{t("app.booking.time@@Time:")}</strong>
-											<span>{formatTime(booking.datetime)}</span>
+											<span>
+												{fd(booking.datetime, { timeStyle: "short" })}
+											</span>
 										</div>
 										<div class="card-actions justify-end pt-4">
 											<button

@@ -2,9 +2,9 @@ import type { Signal } from "@builder.io/qwik";
 import { useClickOutside } from "@ditadi/qwik-hooks";
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { HiCheckCircleOutline } from "@qwikest/icons/heroicons";
-import { formatDate, formatPrice, formatTime } from "~/consts";
+import { formatPrice } from "~/consts";
 import type { Technician, TimeSlot } from "~/types";
-import { inlineTranslate } from "qwik-speak";
+import { inlineTranslate, useFormatDate } from "qwik-speak";
 
 const calculateEndTime = (selectedSlotStart: string, duration: number) => {
 	const startDate = new Date(selectedSlotStart);
@@ -40,6 +40,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 
 		const ref = useSignal<HTMLDivElement>();
 		const t = inlineTranslate();
+		const fd = useFormatDate();
 		useClickOutside(
 			ref,
 			$(() => {
@@ -81,18 +82,18 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 								{selectedSlot?.start && selectedSlot.end ? (
 									<>
 										<span class="font-semibold">
-											{formatDate(selectedSlot.start)}
+											{fd(selectedSlot.start, { dateStyle: "medium" })}
 										</span>
 										<br />
 										{t("app.booking.from@@From")}{" "}
 										<span class="font-semibold">
-											{formatTime(selectedSlot.start)}
+											{fd(selectedSlot.start, { timeStyle: "short" })}
 										</span>{" "}
 										{t("app.booking.to@@To")}{" "}
 										<span class="font-semibold">
-											{formatTime(
-												calculateEndTime(selectedSlot.start, duration),
-											)}
+											{fd(calculateEndTime(selectedSlot.start, duration), {
+												timeStyle: "short",
+											})}
 										</span>
 									</>
 								) : (

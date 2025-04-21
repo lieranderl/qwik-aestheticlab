@@ -13,6 +13,9 @@ export interface Service extends ServiceFiltered {
 	name_ru: string;
 	name_nl: string;
 	name_fr: string;
+	description_ru: string;
+	description_nl: string;
+	description_fr: string;
 	active: boolean;
 }
 

@@ -7,24 +7,24 @@ export const formatPrice = (price: number) => {
 	}).format(price);
 };
 
-export const formatDate = (dateString: string) => {
-	const date = new Date(dateString);
-	return date.toLocaleString("en-GB", {
-		day: "2-digit",
-		month: "long",
-		year: "numeric",
-	});
-};
+// export const formatDate = (dateString: string) => {
+// 	const date = new Date(dateString);
+// 	return date.toLocaleString("en-GB", {
+// 		day: "2-digit",
+// 		month: "long",
+// 		year: "numeric",
+// 	});
+// };
 
-export const formatTime = (dateString: string) => {
-	const date = new Date(dateString);
-	return date.toLocaleString("en-GB", {
-		hour: "2-digit",
-		minute: "2-digit",
-		hour12: false,
-		timeZoneName: "short",
-	});
-};
+// export const formatTime = (dateString: string) => {
+// 	const date = new Date(dateString);
+// 	return date.toLocaleString("en-GB", {
+// 		hour: "2-digit",
+// 		minute: "2-digit",
+// 		hour12: false,
+// 		timeZoneName: "short",
+// 	});
+// };
 
 export const ga = [
 	// Google Analytics Script (External)

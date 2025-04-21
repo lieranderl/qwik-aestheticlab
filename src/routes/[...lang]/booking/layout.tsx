@@ -3,7 +3,7 @@ import type { RequestEventAction } from "@builder.io/qwik-city";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { useAuthSession } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
-import type { Booking, ServiceCategory } from "~/types";
+import type { Booking, Service, ServiceCategory } from "~/types";
 export { useAuthSession };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
@@ -82,11 +82,33 @@ async function getUpcomingBookingsByEmail(
 		bookingsData.map(async (booking) => {
 			const services = await supabase(req)
 				.from("services")
-				.select("name")
+				.select("name,name_ru,name_nl,name_fr")
 				.in("id", booking.services);
+
+			if (services.error) {
+				console.error("Error fetching services:", services.error);
+				return booking;
+			}
+
+			const s = services.data as Service[];
+
 			return {
 				...booking,
-				services_names: services.data?.map((service) => service.name),
+				// get name based on locale
+
+				services_names: s.map((service) => {
+					const shortlocal = req.locale().split("-")[0];
+					if (shortlocal === "ru") {
+						return service.name_ru;
+					}
+					if (shortlocal === "nl") {
+						return service.name_nl;
+					}
+					if (shortlocal === "fr") {
+						return service.name_fr;
+					}
+					return service.name;
+				}) as string[],
 			};
 		}),
 	);
