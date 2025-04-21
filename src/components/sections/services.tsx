@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { Service } from "~/types";
 import { formatPrice } from "~/consts";
-import { inlineTranslate, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate } from "qwik-speak";
 
 export interface ServicesSectionProps {
 	services: Service[];
@@ -10,8 +10,6 @@ export interface ServicesSectionProps {
 export const ServicesSection = component$(
 	({ services }: ServicesSectionProps) => {
 		const t = inlineTranslate();
-		const local = useSpeakLocale();
-		const shortlang = local.lang.split("-")[0];
 		return (
 			<section id="services" class="py-20 bg-base-200">
 				<div class="custom-container">
@@ -29,18 +27,7 @@ export const ServicesSection = component$(
 									<input type="checkbox" />
 									<div class="collapse-title ">
 										<div class="flex justify-between items-center mb-4">
-											{shortlang === "en" && (
-												<h3 class="text-lg md:text-xl ">{service.name}</h3>
-											)}{" "}
-											{shortlang === "ru" && (
-												<h3 class="text-lg md:text-xl ">{service.name_ru}</h3>
-											)}
-											{shortlang === "nl" && (
-												<h3 class="text-lg md:text-xl ">{service.name_nl}</h3>
-											)}{" "}
-											{shortlang === "fr" && (
-												<h3 class="text-lg md:text-xl ">{service.name_fr}</h3>
-											)}{" "}
+											<h3 class="text-lg md:text-xl ">{service.name}</h3>
 											<div class=" font-semibold ">
 												{formatPrice(service.price)}
 											</div>

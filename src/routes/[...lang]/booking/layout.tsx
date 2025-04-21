@@ -115,8 +115,25 @@ export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
 	if (!data) {
 		return [];
 	}
+	// use local and return correct name based on locale
+	const locale = requestEv.locale().split("-")[0];
+	const shortlang = locale === "en" ? "en" : locale;
 
-	return data.filter((category) => category.active);
+	const categories = data.map((category) => ({
+		id: category.id,
+		name:
+			shortlang === "en"
+				? category.name
+				: shortlang === "ru"
+					? category.name_ru
+					: shortlang === "nl"
+						? category.name_nl
+						: shortlang === "fr"
+							? category.name_fr
+							: category.name,
+	}));
+
+	return categories;
 });
 
 export default component$(() => {

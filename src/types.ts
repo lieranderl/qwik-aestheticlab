@@ -1,21 +1,27 @@
-export interface Service {
+export interface ServiceFiltered {
 	id: string;
 	name: string;
-	name_ru: string;
-	name_nl: string;
-	name_fr: string;
 	duration: number;
 	price: number;
 	description: string;
 	created_at: string;
-	active: boolean;
 	priority: number;
 	category_id: ServiceCategory["id"];
 }
 
-export interface ServiceCategory {
+export interface Service extends ServiceFiltered {
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	active: boolean;
+}
+
+export interface ServiceCategoryFiltered {
 	id: string;
 	name: string;
+}
+
+export interface ServiceCategory extends ServiceCategoryFiltered {
 	name_ru: string;
 	name_nl: string;
 	name_fr: string;

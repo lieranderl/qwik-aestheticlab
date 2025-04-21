@@ -1,6 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$, useComputed$ } from "@builder.io/qwik";
-import { inlineTranslate, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import { useServicesCategoryLoader } from "~/routes/[...lang]/booking/layout";
 import type { Service } from "~/types";
@@ -16,36 +16,22 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 	({ services, selectedServices }) => {
 		const serviceCategorySignal = useServicesCategoryLoader();
 		const t = inlineTranslate();
-		const local = useSpeakLocale();
-		const shortlang = local.lang.split("-")[0];
-		// Group services by category ID
-		// and create a mapping of category ID to category name, based on language
+
+		// Group services by category name from serviceCategorySignal based on ID
 		const groupedServices = useComputed$(() => {
-			const grouped = services.reduce(
-				(acc, service) => {
-					const category = serviceCategorySignal.value.find(
-						(cat) => cat.id === service.category_id,
-					);
-					if (category) {
-						const categoryName =
-							shortlang === "en"
-								? category.name
-								: shortlang === "ru"
-									? category.name_ru
-									: shortlang === "nl"
-										? category.name_nl
-										: shortlang === "fr"
-											? category.name_fr
-											: category.name;
-						if (!acc[categoryName]) {
-							acc[categoryName] = [];
-						}
-						acc[categoryName].push(service);
+			const categories = serviceCategorySignal.value;
+			const grouped: Record<string, Service[]> = {};
+			for (const service of services) {
+				const category = categories.find(
+					(cat) => cat.id === service.category_id,
+				);
+				if (category) {
+					if (!grouped[category.name]) {
+						grouped[category.name] = [];
 					}
-					return acc;
-				},
-				{} as Record<string, Service[]>,
-			);
+					grouped[category.name].push(service);
+				}
+			}
 			return grouped;
 		});
 
@@ -100,19 +86,7 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 											for={service.id}
 											class="ml-2 flex justify-between items-center w-full"
 										>
-											{shortlang === "en" && (
-												<span class="text-sm">{service.name}</span>
-											)}
-											{shortlang === "ru" && (
-												<span class="text-sm">{service.name_ru}</span>
-											)}
-											{shortlang === "nl" && (
-												<span class="text-sm">{service.name_nl}</span>
-											)}
-											{shortlang === "fr" && (
-												<span class="text-sm">{service.name_fr}</span>
-											)}
-
+											<span class="text-sm">{service.name}</span>
 											<div class="flex flex-col text-sm text-right">
 												<span>{formatPrice(service.price)}</span>
 												<span class="font-light">{service.duration} min</span>
