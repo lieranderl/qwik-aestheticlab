@@ -47,6 +47,16 @@ export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 												{tech.about_ru}
 											</div>
 										)}
+										{shortlang === "nl" && (
+											<div class="collapse-content text-sm">
+												{tech.about_nl}
+											</div>
+										)}{" "}
+										{shortlang === "fr" && (
+											<div class="collapse-content text-sm">
+												{tech.about_fr}
+											</div>
+										)}{" "}
 									</div>
 								)}
 							</div>

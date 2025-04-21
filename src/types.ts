@@ -1,13 +1,25 @@
 export interface Service {
 	id: string;
 	name: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
 	duration: number;
 	price: number;
 	description: string;
 	created_at: string;
 	active: boolean;
 	priority: number;
-	category: "manicure" | "pedicure" | "eyebrow" | "eyelash" | "hair";
+	category_id: ServiceCategory["id"];
+}
+
+export interface ServiceCategory {
+	id: string;
+	name: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	active: boolean;
 }
 
 export interface TimeSlot {
@@ -38,6 +50,8 @@ export interface Technician {
 	active: boolean;
 	about: string;
 	about_ru: string;
+	about_nl: string;
+	about_fr: string;
 	role: string;
 }
 
@@ -48,7 +62,7 @@ export interface TechnicianSlots {
 
 export interface Booking {
 	id: string;
-	technician_id: string;
+	technician_id: Technician["id"];
 	client_id: string;
 	services: string[];
 	services_names: string[];
