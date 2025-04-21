@@ -4,13 +4,13 @@ import { ChangeLocale } from "../change-locale";
 import {
 	inlineTranslate,
 	localizePath,
+	type SpeakLocale,
 	useSpeakLocale,
 	type InlineTranslateFn,
 } from "qwik-speak";
 
-const NAV_LINKS = (t: InlineTranslateFn) => {
+const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 	const getPath = localizePath();
-	const locale = useSpeakLocale();
 	return [
 		{ href: getPath("/#home", locale.lang), text: t("app.nav.home@@Home") },
 		{
@@ -32,6 +32,7 @@ export default component$(() => {
 	const menuRef = useSignal<HTMLDivElement>();
 	const buttonRef = useSignal<HTMLButtonElement>();
 	const t = inlineTranslate();
+	const locale = useSpeakLocale();
 
 	// Memoized click handler
 	const toggleMenu = $(() => {
@@ -62,7 +63,7 @@ export default component$(() => {
 					<div />
 					{/* Desktop Navigation */}
 					<div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
-						{NAV_LINKS(t).map(({ href, text }) => (
+						{NAV_LINKS(t,locale).map(({ href, text }) => (
 							<a
 								key={href}
 								href={href}
@@ -110,10 +111,10 @@ export default component$(() => {
 				{/* Mobile Navigation */}
 				<div
 					ref={menuRef}
-					class={`md:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2`}
+					class={`lg:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2`}
 				>
 					<div class="flex flex-col space-y-3 items-end">
-						{NAV_LINKS(t).map(({ href, text }) => (
+						{NAV_LINKS(t, locale).map(({ href, text }) => (
 							<a
 								key={href}
 								href={href}

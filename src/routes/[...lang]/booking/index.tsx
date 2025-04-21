@@ -12,7 +12,6 @@ import {
 	Form,
 	routeAction$,
 	server$,
-	useLocation,
 } from "@builder.io/qwik-city";
 
 import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
