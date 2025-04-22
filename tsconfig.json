@@ -22,8 +22,8 @@
 		"outDir": "tmp",
 		"noEmit": true,
 		"noUnusedLocals": false,
-    	"noUnusedParameters": false,
-    	"noPropertyAccessFromIndexSignature": false,
+		"noUnusedParameters": false,
+		"noPropertyAccessFromIndexSignature": false,
 		"paths": {
 			"~/*": ["./src/*"]
 		}

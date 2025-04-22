@@ -20,11 +20,6 @@ const { router, notFound, staticFile } = createQwikCity({
 	manifest,
 });
 
-// Liveness probe endpoint
-const livenessHandler = () => {
-	return new Response("OK", { status: 200 });
-};
-
 // Allow for dynamic port
 const port = Number(Bun.env.PORT ?? 3000);
 
@@ -38,12 +33,15 @@ const trustProxy = (req: Request) => {
 console.log(`Server started: http://localhost:${port}/`);
 
 Bun.serve({
+	routes: {
+		"/healthz": {
+			async GET() {
+				return new Response("OK", { status: 200 });
+			},
+		},
+	},
 	async fetch(request: Request) {
 		let adjustedRequest = request;
-		const url = new URL(request.url);
-		if (url.pathname === "/healthz") {
-			return livenessHandler();
-		}
 
 		if (trustProxy(request)) {
 			const url = new URL(request.url);

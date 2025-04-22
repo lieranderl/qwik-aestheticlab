@@ -2,6 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import type { Service } from "~/types";
 import { formatPrice } from "~/consts";
 import { inlineTranslate } from "qwik-speak";
+import { HiClockOutline } from "@qwikest/icons/heroicons";
 
 export interface ServicesSectionProps {
 	services: Service[];
@@ -26,9 +27,9 @@ export const ServicesSection = component$(
 								<div class="collapse collapse-arrow ">
 									<input type="checkbox" />
 									<div class="collapse-title ">
-										<div class="flex justify-between items-center mb-4">
+										<div class="flex justify-between items-top mb-4">
 											<h3 class="text-lg md:text-xl ">{service.name}</h3>
-											<div class=" font-semibold ">
+											<div class="ms-2 font-semibold ">
 												{formatPrice(service.price)}
 											</div>
 										</div>
@@ -37,9 +38,12 @@ export const ServicesSection = component$(
 										{service.description}
 									</div>
 								</div>
-								<div class="text-sm font-inter text-end me-4">
-									{t("app.services.duration@@Duration:")} {service.duration}{" "}
-									{t("app.services.minutes@@minutes")}
+								<div class="flex justify-end items-center ">
+									<HiClockOutline class="mr-1" />
+									<div class="font-normal italic font-inter text-sm">
+										{" "}
+										{service.duration} {t("app.services.minutes@@minutes")}
+									</div>
 								</div>
 							</div>
 						))}

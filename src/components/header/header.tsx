@@ -63,7 +63,7 @@ export default component$(() => {
 					<div />
 					{/* Desktop Navigation */}
 					<div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
-						{NAV_LINKS(t,locale).map(({ href, text }) => (
+						{NAV_LINKS(t, locale).map(({ href, text }) => (
 							<a
 								key={href}
 								href={href}
