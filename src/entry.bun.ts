@@ -20,48 +20,36 @@ const { router, notFound, staticFile } = createQwikCity({
 	manifest,
 });
 
-// Allow for dynamic port
-const port = Number(Bun.env.PORT ?? 3000);
+// Dynamic port support
+const port = Number(Bun.env.PORT) || 3000;
 
 // Trust proxy headers (Important for CSRF fix)
-const trustProxy = (req: Request) => {
-	const forwardedProto = req.headers.get("x-forwarded-proto");
-	return forwardedProto === "https";
-};
+const trustProxy = (headers: Headers) =>
+	headers.get("x-forwarded-proto") === "https";
 
 // eslint-disable-next-line no-console
-console.log(`Server started: http://localhost:${port}/`);
+console.log(`🚀 Server started: http://localhost:${port}/`);
 
 Bun.serve({
+	port,
 	routes: {
-		"/healthz": {
-			async GET() {
-				return new Response("OK", { status: 200 });
-			},
+		// Health check endpoint
+		"/healthz": new Response("OK"),
+		// Wildcard route: everything else goes through Qwik City
+		"/*": async (req: Request) => {
+			let adjustedRequest = req;
+
+			if (trustProxy(req.headers)) {
+				const httpsUrl = new URL(req.url);
+				httpsUrl.protocol = "https:";
+				adjustedRequest = new Request(httpsUrl.toString(), req);
+			}
+
+			return (
+				(await staticFile(adjustedRequest)) ||
+				(await router(adjustedRequest)) ||
+				notFound(adjustedRequest)
+			);
 		},
 	},
-	async fetch(request: Request) {
-		let adjustedRequest = request;
-
-		if (trustProxy(request)) {
-			const url = new URL(request.url);
-			url.protocol = "https:";
-			adjustedRequest = new Request(url.toString(), request);
-		}
-
-		// Server-side render this request with Qwik City
-		const qwikCityResponse = await router(adjustedRequest);
-		if (qwikCityResponse) {
-			return qwikCityResponse;
-		}
-
-		const staticResponse = await staticFile(adjustedRequest);
-		if (staticResponse) {
-			return staticResponse;
-		}
-
-		// Path not found
-		return notFound(adjustedRequest);
-	},
-	port,
 });
