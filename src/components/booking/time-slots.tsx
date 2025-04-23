@@ -1,4 +1,4 @@
-import { component$, $, useSignal } from "@builder.io/qwik";
+import { component$, $ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
 import { useFormatDate } from "qwik-speak";
 

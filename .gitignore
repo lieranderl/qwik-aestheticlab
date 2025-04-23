@@ -71,3 +71,4 @@ terraform.tfvars
 inventory
 # Ansible vault files
 *.vault
+infra/terraform/*.yaml
