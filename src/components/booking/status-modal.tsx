@@ -14,7 +14,6 @@ export interface StatusModalProps {
 }
 
 export const StatusModal = component$<StatusModalProps>(({ action }) => {
-	// if (!isOpen) return null;
 	const getPath = localizePath();
 	const locale = useSpeakLocale();
 	const homePath = getPath("/", locale.lang);
