@@ -57,6 +57,10 @@ helm-upgrade:
 	--set volume_id=$(VOLUME_ID) 
 	@echo "Helm upgrade completed."
 
+# 
+.PHONY: release
+release: check-env-vars check-helm build push helm-upgrade
+
 # Terraform variables
 TERRAFORM_DIR := infra/terraform
 # ANSIBLE_DIR := infra/ansible
@@ -106,6 +110,7 @@ clean:
 help:
 	@echo "Available commands:"
 	@echo "  make all               - Check env vars, initialize, apply, build, push and upgrade Helm chart"
+	@echo "  make release           - Check env vars, build, push and upgrade Helm chart"
 	@echo "  make build             - Build the Docker image"
 	@echo "  make push              - Push the Docker image to Docker Hub"
 	@echo "  make helm-upgrade      - Run the Helm upgrade"

@@ -20,7 +20,7 @@ const { router, notFound, staticFile } = createQwikCity({
 	manifest,
 });
 
-// Dynamic port support
+// Allow for dynamic port
 const port = Number(Bun.env.PORT) || 3000;
 
 // Trust proxy headers (Important for CSRF fix)
@@ -33,23 +33,28 @@ console.log(`🚀 Server started: http://localhost:${port}/`);
 Bun.serve({
 	port,
 	routes: {
-		// Health check endpoint
-		"/healthz": new Response("OK"),
-		// Wildcard route: everything else goes through Qwik City
-		"/*": async (req: Request) => {
-			let adjustedRequest = req;
-
-			if (trustProxy(req.headers)) {
-				const httpsUrl = new URL(req.url);
-				httpsUrl.protocol = "https:";
-				adjustedRequest = new Request(httpsUrl.toString(), req);
-			}
-
-			return (
-				(await staticFile(adjustedRequest)) ||
-				(await router(adjustedRequest)) ||
-				notFound(adjustedRequest)
-			);
+		"/healthz": {
+			GET: () => new Response("OK", { status: 200 }),
 		},
+	},
+	async fetch(request: Request) {
+		const { headers, url } = request;
+		let adjustedRequest = request;
+
+		console.log(new Date(), request.method, request.url);
+
+		if (trustProxy(headers)) {
+			const httpsUrl = new URL(url);
+			httpsUrl.protocol = "https:";
+			adjustedRequest = new Request(httpsUrl.toString(), request);
+		}
+
+		// Try handling with Qwik City router
+		const response =
+			(await staticFile(adjustedRequest)) ??
+			(await router(adjustedRequest)) ??
+			notFound(adjustedRequest);
+
+		return response;
 	},
 });

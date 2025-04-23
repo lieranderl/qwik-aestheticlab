@@ -10,7 +10,7 @@ spec:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # if not existing, it will register a new account and stores it
-      name: issuer-account-key
+      name: "tls-{{ .Release.Name }}-ingress-http"
     solvers:
       - http01:
           # The ingressClass used to create the necessary ingress routes
@@ -30,7 +30,7 @@ spec:
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # if not existing, it will register a new account and stores it
-      name: issuer-account-key
+      name: "tls-{{ .Release.Name }}-ingress-http"
     solvers:
       - http01:
           # The ingressClass used to create the necessary ingress routes
@@ -46,6 +46,7 @@ metadata:
   annotations:
     cert-manager.io/issuer: "{{ .Release.Name }}-issuer-{{ .Values.environment }}"
 spec:
+  ingressClassName: traefik
   tls:
     - hosts:
         - {{ .Values.domain }}
@@ -56,7 +57,7 @@ spec:
       http:
         paths:
           - path: "/"
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-bun-svc
@@ -66,7 +67,7 @@ spec:
       http:
         paths:
           - path: "/"
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-n8n-svc

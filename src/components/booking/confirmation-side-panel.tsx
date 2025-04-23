@@ -154,7 +154,7 @@ export const ConfirmationSidePanel = component$<ConfirmationPanelProps>(
 							</button>
 							<button
 								type="submit"
-								class="btn btn-success btn-wide"
+								class="btn btn-success w-44"
 								disabled={isSubmitting || !isValid}
 								onClick$={() => {
 									modalSig.value?.showModal();
