@@ -1,2 +1,3 @@
-hcloud_token = ""
-ssh_key_name = "hetzner_ssh_key_name"
+hcloud_token    = ""
+ssh_public_key  = ""
+ssh_private_key = ""

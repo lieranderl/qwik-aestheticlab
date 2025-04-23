@@ -4,12 +4,13 @@ SHELL := /bin/bash
 # Check environment variables
 check-env-vars:
 	@echo "Checking environment variables..."
-	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG; do \
+	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
 		if [ -z "$${!var}" ]; then \
 			echo "$${var} is not set."; \
 			exit 1; \
 		fi \
 	done
+	@echo "All variables are set."
 
 # Check if the command "helm" is available
 check-helm:
@@ -17,7 +18,7 @@ check-helm:
 
 # Default target
 .PHONY: all
-all: check-env-vars check-helm init apply delay playbook build push helm-upgrade
+all: check-env-vars check-helm init apply build push delay helm-upgrade
 
 # Delay execution to allow for resources to settle (useful for async tasks)
 .PHONY: delay
@@ -58,7 +59,7 @@ helm-upgrade:
 
 # Terraform variables
 TERRAFORM_DIR := infra/terraform
-ANSIBLE_DIR := infra/ansible
+# ANSIBLE_DIR := infra/ansible
 
 # Initialize Terraform
 .PHONY: init
@@ -86,19 +87,19 @@ clean:
 	@cd $(TERRAFORM_DIR) && \
 		rm -f terraform.tfstate terraform.tfstate.backup && \
 		rm -rf .terraform .terraform.lock.hcl
-	@rm -f $(ANSIBLE_DIR)/inventory/hosts
+	# @rm -f $(ANSIBLE_DIR)/inventory/hosts
 
 # Run Ansible playbooks
-.PHONY: playbook
-playbook:
-	@cd $(ANSIBLE_DIR) && \
-		ansible-playbook -i inventory/hosts.ini playbook.yaml
+# .PHONY: playbook
+# playbook:
+# 	@cd $(ANSIBLE_DIR) && \
+# 		ansible-playbook -i inventory/hosts.ini playbook.yaml
 
 # Run a specific role with tags
-.PHONY: playbook-role
-playbook-role:
-	@cd $(ANSIBLE_DIR) && \
-		ansible-playbook -i inventory/hosts.ini playbook.yaml --tags $(ROLE)
+# .PHONY: playbook-role
+# playbook-role:
+# 	@cd $(ANSIBLE_DIR) && \
+# 		ansible-playbook -i inventory/hosts.ini playbook.yaml --tags $(ROLE)
 
 # Help target to show available commands
 .PHONY: help
@@ -113,8 +114,6 @@ help:
 	@echo "  make apply             - Create infrastructure"
 	@echo "  make destroy           - Terminate infrastructure"
 	@echo "  make clean             - Remove Terraform state files"
-	@echo "  make playbook          - Run Ansible playbook"
-	@echo "  make playbook-role     - Run Ansible playbook with specific role. Use ROLE=role_name"
 	@echo "  make help              - Show this help message"
 	@echo "  make check-env-vars    - Check environment variables"
 	@echo "  make check-deployment  - Check Kubernetes deployment"
