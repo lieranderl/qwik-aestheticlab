@@ -14,10 +14,6 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 		| "email_change"
 		| null;
 	const next = req.query.get("next") ?? "/";
-
-	console.log("token_hash", token_hash);
-	console.log("type", type);
-	console.log("next", next);
 	const getPath = localizePath();
 
 	if (token_hash && type) {
