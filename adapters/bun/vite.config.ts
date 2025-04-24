@@ -20,6 +20,7 @@ export default extendConfig(baseConfig, () => {
 				ssg: {
 					include: ["/*"],
 					origin: "https://aestheticlab.be",
+					sitemapOutFile: 'sitemap.xml',
 					maxWorkers: 1, // Limit Workers to 1, otherwise SSG will hang when compiling Qwik City app with `bun run --bun build`.
 				},
 			}),

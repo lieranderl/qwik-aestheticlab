@@ -4,7 +4,7 @@ SHELL := /bin/bash
 # Check environment variables
 check-env-vars:
 	@echo "Checking environment variables..."
-	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
+	@for var in ENV SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
 		if [ -z "$${!var}" ]; then \
 			echo "$${var} is not set."; \
 			exit 1; \
@@ -68,22 +68,35 @@ TERRAFORM_DIR := infra/terraform
 # Initialize Terraform
 .PHONY: init
 init:
-	@cd $(TERRAFORM_DIR) && terraform init
+	@cd $(TERRAFORM_DIR) && \
+	if terraform workspace show | grep -q "^$(ENV)$$"; then \
+		echo "Already in workspace $(ENV)."; \
+	else \
+		if terraform workspace list | grep -q "[[:space:]]$(ENV)$$"; then \
+			echo "Switching to existing workspace $(ENV)..."; \
+			terraform workspace select $(ENV); \
+		else \
+			echo "Creating new workspace $(ENV)..."; \
+			terraform workspace new $(ENV); \
+		fi \
+	fi && \
+	terraform init -var="env=$(ENV)"
+
 
 # Plan Terraform infrastructure
 .PHONY: plan
 plan: init
-	@cd $(TERRAFORM_DIR) && terraform plan
+	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform plan -var="env=$(ENV)"
 
 # Apply Terraform infrastructure
 .PHONY: apply
 apply: init
-	@cd $(TERRAFORM_DIR) && terraform apply -auto-approve
+	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform apply -var="env=$(ENV)" -auto-approve
 
 # Destroy Terraform infrastructure
 .PHONY: destroy
 destroy:
-	@cd $(TERRAFORM_DIR) && terraform destroy -auto-approve
+	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform destroy -var="env=$(ENV)" -auto-approve
 
 # Clean up Terraform state and temporary files
 .PHONY: clean

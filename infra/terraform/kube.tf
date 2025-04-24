@@ -5,6 +5,16 @@ variable "hcloud_token" {
   sensitive   = true
 }
 
+variable "env" {
+  description = "Environment to deploy (stage or prod)"
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Cluster name"
+  type        = string
+}
+
 variable "ssh_public_key" {
   description = "SSH public key"
   type        = string
@@ -651,7 +661,8 @@ module "kube-hetzner" {
   # sys_upgrade_controller_version = "v0.14.2"
 
   # The cluster name, by default "k3s"
-  cluster_name = "aesthetic-cluster"
+  cluster_name = format("%s-%s", var.env, var.cluster_name)
+
 
   # Whether to use the cluster name in the node name, in the form of {cluster_name}-{nodepool_name}, the default is "true".
   # use_cluster_name_in_node_name = false
