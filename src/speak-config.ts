@@ -11,6 +11,7 @@ export const config: SpeakConfig = {
 		{ lang: "ru-BE", currency: "EUR", timeZone: "Europe/Brussels" },
 		{ lang: "nl-BE", currency: "EUR", timeZone: "Europe/Brussels" },
 		{ lang: "fr-BE", currency: "EUR", timeZone: "Europe/Brussels" },
+		{ lang: "uk-BE", currency: "EUR", timeZone: "Europe/Brussels" },
 	],
 	// Translations available in the whole app
 	assets: ["app"],

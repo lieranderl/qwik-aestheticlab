@@ -26,7 +26,7 @@
 		"start": "vite --open --mode ssr",
 		"qwik": "qwik",
 		"biome": "biome check --fix",
-		"qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-BE,nl-BE,fr-BE,ru-BE --assetsPath=i18n"
+		"qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-BE,nl-BE,fr-BE,ru-BE,uk-BE --assetsPath=i18n"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
