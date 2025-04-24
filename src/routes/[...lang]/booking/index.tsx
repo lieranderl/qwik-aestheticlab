@@ -363,7 +363,8 @@ export const head: DocumentHead = {
 	meta: [
 		{
 			name: "description",
-			content: "Booking at Aesthetic Lab",
+			content:
+				"Book now! Looking for expert nails and manicure in Leuven? Visit Aesthetic Lab for top-tier beauty & nail care.",
 		},
 	],
 	scripts: ga,

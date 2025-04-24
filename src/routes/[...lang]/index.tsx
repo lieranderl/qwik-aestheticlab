@@ -41,11 +41,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-	title: "Aesthetic Lab - Beauty & Wellness",
+	title: "Best Manicure in Leuven | Aesthetic Lab",
 	meta: [
 		{
 			name: "description",
-			content: "Where Expertise Crafts Unique Beauty",
+			content:
+				"Looking for expert nails and manicure in Leuven? Visit Aesthetic Lab for top-tier beauty & nail care.",
 		},
 	],
 	scripts: ga,

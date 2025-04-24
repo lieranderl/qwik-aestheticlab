@@ -45,6 +45,19 @@ calendar-month {
 	}
 }
 
+@keyframes colorPulse {
+	0%,
+	100% {
+		color: oklch(65.6% 0.241 354.308);
+	}
+	50% {
+		color: oklch(57.7% 0.245 27.325);
+	}
+}
+.animate-color-pulse {
+	animation: colorPulse 5s infinite;
+}
+
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {

@@ -83,8 +83,14 @@
 			}
 		},
 		"hero": {
+			"according": "*selon nos clientes",
+			"and": "et",
 			"book_visit": "Réservez votre visite",
-			"slogan": "Là où l'expertise façonne une beauté unique"
+			"in_leuven": "à Louvain",
+			"manicure": "manucure",
+			"pedicure": "pédicure",
+			"slogan": "Là où l'expertise façonne une beauté unique",
+			"the_best": "La meilleure"
 		},
 		"nav": {
 			"about": "À propos",

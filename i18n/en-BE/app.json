@@ -83,8 +83,14 @@
 			}
 		},
 		"hero": {
+			"according": "*according to our clients",
+			"and": "and",
 			"book_visit": "Book Your Visit",
-			"slogan": "Where Expertise Crafts Unique Beauty"
+			"in_leuven": "in Leuven",
+			"manicure": "manicure",
+			"pedicure": "pedicure",
+			"slogan": "Where Expertise Crafts Unique Beauty",
+			"the_best": "The best"
 		},
 		"nav": {
 			"about": "About",

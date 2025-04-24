@@ -24,6 +24,20 @@ export default component$(() => {
 		<QwikCityProvider>
 			<head>
 				<meta charset="utf-8" />
+				<script type="application/ld+json">{`
+					{
+					"@context": "https://schema.org",
+					"@type": "BeautySalon",
+					"name": "Aesthetic Lab",
+					"address": {
+						"@type": "PostalAddress",
+						"addressLocality": "Leuven",
+						"addressCountry": "BE"
+					},
+					"url": "https://aestheticlab.be"
+					}
+					`}</script>
+
 				{!isDev && (
 					<link
 						rel="manifest"

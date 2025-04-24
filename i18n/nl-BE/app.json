@@ -83,8 +83,14 @@
 			}
 		},
 		"hero": {
+			"according": "*volgens onze klanten",
+			"and": "en",
 			"book_visit": "Boek uw bezoek",
-			"slogan": "Waar expertise unieke schoonheid creëert"
+			"in_leuven": "in Leuven",
+			"manicure": "manicure",
+			"pedicure": "pedicure",
+			"slogan": "Waar expertise unieke schoonheid creëert",
+			"the_best": "De beste"
 		},
 		"nav": {
 			"about": "Over",

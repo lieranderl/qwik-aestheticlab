@@ -32,7 +32,24 @@ export default component$(() => {
 			class="relative min-h-screen flex flex-col items-center justify-center bg-primary"
 		>
 			<div class="custom-container text-center">
-				<ImgAestheticlab class="w-64 h-64 md:w-96 md:h-96 mx-auto mb-8" />
+				<ImgAestheticlab class="w-64 h-64 md:w-96 md:h-96 mx-auto" />
+				<h1 class="text-3xl md:text-5xl font-bold font-montserrat text-center text-base-100">
+					{t("app.hero.the_best@@The best")}
+					<span class="font-extrabold animate-color-pulse">
+						{" "}
+						{t("app.hero.manicure@@manicure")}{" "}
+					</span>
+					{t("app.hero.and@@and")}
+					<span class="font-extrabold animate-color-pulse">
+						{" "}
+						{t("app.hero.pedicure@@pedicure")}{" "}
+					</span>
+					{t("app.hero.in_leuven@@in Leuven")}
+				</h1>
+				<p class="text-center font-extralight text-xs italic text-base-300 mb-8">
+					{t("app.hero.according@@*according to our clients")}
+				</p>
+
 				<p class="text-xl md:text-2xl text-base-100 mb-8 font-light">
 					{t("app.hero.slogan@@Where Expertise Crafts Unique Beauty")}
 				</p>
