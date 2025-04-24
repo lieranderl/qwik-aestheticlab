@@ -18,35 +18,37 @@ export const ServicesSection = component$(
 						{t("app.services.title@@Our Services")}
 					</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-						{services.map((service: Service) => (
-							<div
-								key={service.id}
-								class="p-4 rounded-lg bg-base-100"
-								data-aos="fade-up"
-							>
-								<div class="collapse collapse-arrow ">
-									<input type="checkbox" />
-									<div class="collapse-title ">
-										<div class="flex justify-between items-top mb-4">
-											<h3 class="text-lg md:text-xl ">{service.name}</h3>
-											<div class="ms-2 font-semibold ">
-												{formatPrice(service.price)}
+						{services
+							.sort((a, b) => b.price - a.price)
+							.map((service: Service) => (
+								<div
+									key={service.id}
+									class="p-4 rounded-lg bg-base-100"
+									data-aos="fade-up"
+								>
+									<div class="collapse collapse-arrow ">
+										<input type="checkbox" />
+										<div class="collapse-title ">
+											<div class="flex justify-between items-top mb-4">
+												<h3 class="text-lg md:text-xl ">{service.name}</h3>
+												<div class="ms-2 font-semibold ">
+													{formatPrice(service.price)}
+												</div>
 											</div>
 										</div>
+										<div class="collapse-content text-sm">
+											{service.description}
+										</div>
 									</div>
-									<div class="collapse-content text-sm">
-										{service.description}
+									<div class="flex justify-end items-center ">
+										<HiClockOutline class="mr-1" />
+										<div class="font-normal italic font-inter text-sm">
+											{" "}
+											{service.duration} {t("app.services.minutes@@minutes")}
+										</div>
 									</div>
 								</div>
-								<div class="flex justify-end items-center ">
-									<HiClockOutline class="mr-1" />
-									<div class="font-normal italic font-inter text-sm">
-										{" "}
-										{service.duration} {t("app.services.minutes@@minutes")}
-									</div>
-								</div>
-							</div>
-						))}
+							))}
 					</div>
 				</div>
 			</section>
