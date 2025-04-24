@@ -67,6 +67,8 @@ export const useServicesLoader = routeLoader$(async ({ env, locale }) => {
 				service.name = service.name_nl;
 			} else if (shortlocal === "fr") {
 				service.name = service.name_fr;
+			} else if (shortlocal === "uk") {
+				service.name = service.name_uk;
 			}
 		}
 		for (const service of data) {
@@ -76,6 +78,8 @@ export const useServicesLoader = routeLoader$(async ({ env, locale }) => {
 				service.description = service.description_nl;
 			} else if (shortlocal === "fr") {
 				service.description = service.description_fr;
+			} else if (shortlocal === "uk") {
+				service.description = service.description_uk;
 			}
 		}
 		// map Service to ServiceFiltered

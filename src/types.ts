@@ -13,9 +13,11 @@ export interface Service extends ServiceFiltered {
 	name_ru: string;
 	name_nl: string;
 	name_fr: string;
+	name_uk: string;
 	description_ru: string;
 	description_nl: string;
 	description_fr: string;
+	description_uk: string;
 	active: boolean;
 }
 
@@ -28,6 +30,7 @@ export interface ServiceCategory extends ServiceCategoryFiltered {
 	name_ru: string;
 	name_nl: string;
 	name_fr: string;
+	name_uk: string;
 	active: boolean;
 }
 
@@ -61,6 +64,7 @@ export interface Technician {
 	about_ru: string;
 	about_nl: string;
 	about_fr: string;
+	about_uk: string;
 	role: string;
 }
 

@@ -152,7 +152,9 @@ export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
 						? category.name_nl
 						: shortlang === "fr"
 							? category.name_fr
-							: category.name,
+							: shortlang === "uk"
+								? category.name_uk
+								: category.name,
 	}));
 
 	return categories;
