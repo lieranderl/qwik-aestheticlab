@@ -133,7 +133,8 @@ export default component$(() => {
 						!password.value ||
 						!confirmPassword.value ||
 						passwordMismatch.value ||
-						useSignUp.isRunning
+						useSignUp.isRunning ||
+						useSignUp.value?.success
 					}
 				>
 					{useSignUp.isRunning ? (
