@@ -6,7 +6,7 @@ import {
 	$,
 } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
+import { inlineTranslate, localizePath } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { NameInput } from "~/components/auth/name-input";
 import { PasswordInput } from "~/components/auth/password-input";
@@ -71,7 +71,10 @@ export const useSupabaseSignUp = routeAction$(async (formData, requestEv) => {
 		return { success: false, error: { message: signInResponse.error.message } };
 	}
 	console.log("Successfully signed in existing user!");
-	throw requestEv.redirect(302, "/booking");
+	const getPath = localizePath();
+	const pathtohome = getPath("/booking", requestEv.locale());
+	console.log(pathtohome);
+	throw requestEv.redirect(302, pathtohome);
 });
 
 export default component$(() => {

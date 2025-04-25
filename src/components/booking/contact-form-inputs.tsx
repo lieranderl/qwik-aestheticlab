@@ -9,16 +9,7 @@ export interface ContactFormInputsProps {
 	nameSignal: Signal<string>;
 	emailSignal: Signal<string>;
 	phoneSignal: Signal<string>;
-	signOut?: ActionStore<
-		{
-			success: boolean;
-			error: {
-				message: string;
-			};
-		},
-		Record<string, unknown>,
-		true
-	>;
+	signOut?: ActionStore<unknown, Record<string, unknown>, true>;
 }
 
 export const ContactFormInputs = component$<ContactFormInputsProps>(

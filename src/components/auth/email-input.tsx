@@ -9,16 +9,7 @@ import { inlineTranslate } from "qwik-speak";
 export interface EmailInputProps {
 	emailSignal: Signal<string>;
 	readonly?: boolean;
-	signOut?: ActionStore<
-		{
-			success: boolean;
-			error: {
-				message: string;
-			};
-		},
-		Record<string, unknown>,
-		true
-	>;
+	signOut?: ActionStore<unknown, Record<string, unknown>, true>;
 }
 export const EmailInput = ({
 	emailSignal,
@@ -43,7 +34,7 @@ export const EmailInput = ({
 						placeholder={t(
 							"app.auth.email_placeholder@@Enter your email address",
 						)}
-						pattern="[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,}$"
+						pattern="[a-z0-9._%+\-]+@[a-z0-9\-]+\.[a-z]{2,}$"
 						required
 						bind:value={emailSignal}
 						readOnly={readonly}
