@@ -41,8 +41,6 @@ Bun.serve({
 		const { headers, url } = request;
 		let adjustedRequest = request;
 
-		console.log(new Date(), request.method, request.url);
-
 		if (trustProxy(headers)) {
 			const httpsUrl = new URL(url);
 			httpsUrl.protocol = "https:";
