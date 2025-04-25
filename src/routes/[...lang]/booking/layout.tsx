@@ -11,13 +11,12 @@ export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
 	if (error) {
 		console.error("SignOUT error:", error.message);
 		console.log("Manually removing the token from cookies");
-		requestEv.cookie.set("supabase-auth-token", "", {
-			path: "/",
-			httpOnly: true,
-			secure: true,
-			sameSite: "Lax",
-			expires: new Date(0),
-		});
+		const allCookies = requestEv.cookie.getAll();
+		for (const [name] of Object.entries(allCookies)) {
+			if (name.endsWith("-auth-token")) {
+				requestEv.cookie.delete(name);
+			}
+		}
 	}
 	return {
 		success: true,
