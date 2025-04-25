@@ -34,6 +34,7 @@ import {
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
 import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
+import { ChangeLocale } from "~/components/change-locale";
 
 const WEEKDAYS = [
 	"sunday",
@@ -260,13 +261,14 @@ export default component$(() => {
 
 	return (
 		<div class="min-h-screen bg-base-200 py-12">
-			<div class="container mx-auto px-4">
-				<div class="flex justify-center items-center mb-8">
+			<div class="container mx-auto px-4 max-w-2xl">
+				<div class="flex justify-between items-center mb-4">
 					<a href={pathtohome} class="link">
 						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
 					</a>
+					<ChangeLocale />
 				</div>
-				<div class="card max-w-2xl mx-auto bg-base-100 shadow-sm">
+				<div class="card mx-auto bg-base-100 shadow-sm">
 					<div class="card-body p-4 md:p-8">
 						<UpcomingAppointment
 							upcomingAppointments={upcomingAppointments.value}

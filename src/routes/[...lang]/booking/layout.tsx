@@ -7,7 +7,18 @@ import type { Booking, Service, ServiceCategory } from "~/types";
 export { useAuthSession };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
-	await supabase(requestEv).auth.signOut();
+	const { error } = await supabase(requestEv).auth.signOut();
+	if (error) {
+		console.error("SignOUT error:", error.message);
+		console.log("Manually removing the token from cookies");
+		requestEv.cookie.set("supabase-auth-token", "", {
+			path: "/",
+			httpOnly: true,
+			secure: true,
+			sameSite: "Lax",
+			expires: new Date(0),
+		});
+	}
 	return {
 		success: true,
 	};
@@ -156,7 +167,5 @@ export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
 });
 
 export default component$(() => {
-	const authSession = useAuthSession();
-	console.log(authSession.value.user);
 	return <Slot />;
 });

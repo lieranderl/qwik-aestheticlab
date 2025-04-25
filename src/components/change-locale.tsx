@@ -28,7 +28,11 @@ export const ChangeLocale = component$(() => {
 
 	return (
 		<div class="dropdown dropdown-end">
-			<button tabIndex={0} type="button" class="btn btn-primary mx-2 w-30">
+			<button
+				tabIndex={0}
+				type="button"
+				class="btn btn-primary w-30 btn-sm md:btn-md"
+			>
 				<HiLanguageSolid class="text-lg" /> {humanreadble_lang(locale.lang)}
 			</button>
 			<ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-36 z-[1]">

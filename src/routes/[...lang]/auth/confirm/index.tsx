@@ -23,7 +23,7 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 		});
 		if (!error) {
 			console.log("Successfully verified OTP");
-			throw req.redirect(303, `${req.url.origin}/${next}`);
+			throw req.redirect(303, getPath(`/${next}`, req.locale()));
 		}
 		console.error("Failed to verify OTP", error);
 		throw req.redirect(
