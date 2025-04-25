@@ -9,7 +9,13 @@ export interface ContactFormInputsProps {
 	nameSignal: Signal<string>;
 	emailSignal: Signal<string>;
 	phoneSignal: Signal<string>;
-	signOut?: ActionStore<unknown, Record<string, unknown>, true>;
+	signOut?: ActionStore<
+		{
+			success: boolean;
+		},
+		Record<string, unknown>,
+		true
+	>;
 }
 
 export const ContactFormInputs = component$<ContactFormInputsProps>(

@@ -9,7 +9,13 @@ import { inlineTranslate } from "qwik-speak";
 export interface EmailInputProps {
 	emailSignal: Signal<string>;
 	readonly?: boolean;
-	signOut?: ActionStore<unknown, Record<string, unknown>, true>;
+	signOut?: ActionStore<
+		{
+			success: boolean;
+		},
+		Record<string, unknown>,
+		true
+	>;
 }
 export const EmailInput = ({
 	emailSignal,

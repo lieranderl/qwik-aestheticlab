@@ -4,7 +4,7 @@ SHELL := /bin/bash
 # Check environment variables
 check-env-vars:
 	@echo "Checking environment variables..."
-	@for var in ENV SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
+	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
 		if [ -z "$${!var}" ]; then \
 			echo "$${var} is not set."; \
 			exit 1; \

@@ -8,6 +8,9 @@ export { useAuthSession };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
 	await supabase(requestEv).auth.signOut();
+	return {
+		success: true,
+	};
 });
 
 export const useRemoveBooking = routeAction$(async (data, { env }) => {
