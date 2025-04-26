@@ -40,7 +40,7 @@ jobs:
     - name: Restore kubeconfig
       run: |
         mkdir -p infra/terraform
-        echo "${{ secrets.KUBECONFIG }}" > ${{ env.PATH_TO_KUBECONFIG }}
+        echo "${{ secrets.KUBECONFIG_STAGING }}" > ${{ env.PATH_TO_KUBECONFIG }}
 
     - name: Generate Tag
       id: tag
