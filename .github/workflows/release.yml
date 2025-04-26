@@ -34,10 +34,10 @@ jobs:
 
     - name: Release app
       env:
-        GENERIC_TIMEZONE: ${{ env.GENERIC_TIMEZONE }}
-        ENV: ${{env.ENV}}
-        EMAIL: ${{env.EMAIL}}
-        TAG: ${{env.ENV}}-v1.0.24
+        GENERIC_TIMEZONE : ${{ vars.GENERIC_TIMEZONE }}
+        ENV: ${{ vars.ENV }}
+        EMAIL: ${{ vars.EMAIL }}
+        TAG: ${{ vars.ENV }}-v1.0.24
         VOLUME_ID: ${{env.VOLUME_ID}}
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
