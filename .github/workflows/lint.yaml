@@ -4,10 +4,7 @@ name: Lint Check
 on:
   push:
     branches:
-      - '**'   # all branches
-    paths:
-      - 'src/**'
-      - 'package.json'
+      - '**' 
 
 jobs:
   lint:
