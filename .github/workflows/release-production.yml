@@ -1,19 +1,16 @@
-# .github/workflows/release-staging.yml
-name: Release to staging
+# .github/workflows/release-production.yml
+name: Release to production
 
 on:
   push:
-    branches:
-      - staging
-    paths:
-      - 'src/**'
-      - 'package.json'
+    tags:
+      - 'v*'  # triggers when you push tags like v1.0.0, v2.3.1, etc.
 
 jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      PATH_TO_KUBECONFIG: infra/terraform/staging-aesthetic-cluster_kubeconfig.yaml
+      PATH_TO_KUBECONFIG: infra/terraform/prod-aesthetic-cluster_kubeconfig.yaml
 
     steps:
     - name: Checkout repo
@@ -40,21 +37,20 @@ jobs:
     - name: Restore kubeconfig
       run: |
         mkdir -p infra/terraform
-        echo "${{ secrets.KUBECONFIG_STAGING }}" > ${{ env.PATH_TO_KUBECONFIG }}
+        echo "${{ secrets.KUBECONFIG_PROD }}" > ${{ env.PATH_TO_KUBECONFIG }}
 
-    - name: Generate Tag
-      id: tag
-      run: echo "TAG=${{ vars.ENV_STAGING }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
+    - name: Set Tag
+      run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       
     - name: Release app
       env:
         GENERIC_TIMEZONE: ${{ vars.GENERIC_TIMEZONE }}
-        ENV: ${{ vars.ENV_STAGING }}
+        ENV: ${{ vars.ENV_PROD}}
         EMAIL: ${{ vars.EMAIL }}
         TAG: ${{ env.TAG }}
-        VOLUME_ID: ${{ vars.VOLUME_ID_STAGING }}
+        VOLUME_ID: ${{ vars.VOLUME_ID_PROD }}
         API_TOKEN: ${{ secrets.API_TOKEN }}
-        DOMAIN_NAME: ${{ secrets.DOMAIN_NAME_STAGING }}
+        DOMAIN_NAME: ${{ secrets.DOMAIN_NAME_PROD }}
         KUBECONFIG: ${{ github.workspace }}/${{ env.PATH_TO_KUBECONFIG }}
         N8N_ENCRYPTION_KEY: ${{ secrets.N8N_ENCRYPTION_KEY }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
