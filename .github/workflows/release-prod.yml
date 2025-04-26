@@ -1,10 +1,10 @@
 # .github/workflows/release.yml
-name: Release to Kubernetes
+name: Release to Prod
 
 on:
   push:
     branches:
-      - lang
+      - prod
 
 jobs:
   release:
@@ -35,7 +35,7 @@ jobs:
     - name: Release app
       env:
         GENERIC_TIMEZONE : ${{ vars.GENERIC_TIMEZONE }}
-        ENV: ${{ vars.ENV }}
+        ENV: prod
         EMAIL: ${{ vars.EMAIL }}
         TAG: ${{ vars.ENV }}-v1.0.24
         VOLUME_ID: ${{vars.VOLUME_ID}}
