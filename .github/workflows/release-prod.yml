@@ -1,6 +1,8 @@
 # .github/workflows/release-prod.yml
 name: Release to Prod
 
+
+
 on:
   push:
     branches:
@@ -9,6 +11,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      path_to_kubeconfig: infra/terraform/prod-aesthetic-cluster_kubeconfig.yaml
 
     steps:
     - name: Checkout repo
@@ -32,16 +36,25 @@ jobs:
     - name: Docker login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+    - name: Restore kubeconfig
+      run: |
+        mkdir -p infra/terraform
+        echo "${{ secrets.KUBECONFIG }}" > $path_to_kubeconfig
+
+    - name: Generate Tag
+      id: tag
+      run: echo "TAG=${{ vars.ENV_PROD }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
+      
     - name: Release app
       env:
         GENERIC_TIMEZONE : ${{ vars.GENERIC_TIMEZONE }}
-        ENV: prod
+        ENV: ${{ vars.ENV_PROD }}
         EMAIL: ${{ vars.EMAIL }}
-        TAG: ${{ vars.ENV }}-v1.0.24
-        VOLUME_ID: ${{vars.VOLUME_ID}}
+        TAG: ${{ env.TAG }}
+        VOLUME_ID: ${{vars.VOLUME_ID_STAGE}}
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        KUBECONFIG: "/home/runner/work/qwik-aestheticlab/qwik-aestheticlab/$path_to_kubeconfig"
         N8N_ENCRYPTION_KEY: ${{ secrets.N8N_ENCRYPTION_KEY }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

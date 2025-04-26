@@ -1,5 +1,5 @@
-# .github/workflows/release.yml
-name: Release to Staging
+# .github/workflows/release-staging.yml
+name: Release to staging
 
 on:
   push:
@@ -9,6 +9,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      PATH_TO_KUBECONFIG: infra/terraform/staging-aesthetic-cluster_kubeconfig.yaml
 
     steps:
     - name: Checkout repo
@@ -35,19 +37,22 @@ jobs:
     - name: Restore kubeconfig
       run: |
         mkdir -p infra/terraform
-        echo "${{ secrets.KUBECONFIG }}" > infra/terraform/staging-aesthetic-cluster_kubeconfig.yaml
+        echo "${{ secrets.KUBECONFIG }}" > ${{ env.PATH_TO_KUBECONFIG }}
 
-        
+    - name: Generate Tag
+      id: tag
+      run: echo "TAG=${{ vars.ENV }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
+      
     - name: Release app
       env:
-        GENERIC_TIMEZONE : ${{ vars.GENERIC_TIMEZONE }}
+        GENERIC_TIMEZONE: ${{ vars.GENERIC_TIMEZONE }}
         ENV: ${{ vars.ENV }}
         EMAIL: ${{ vars.EMAIL }}
-        TAG: ${{ vars.ENV }}-v1.0.24
-        VOLUME_ID: ${{vars.VOLUME_ID}}
+        TAG: ${{ env.TAG }}
+        VOLUME_ID: ${{ vars.VOLUME_ID }}
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
-        KUBECONFIG: /home/runner/work/qwik-aestheticlab/qwik-aestheticlab/infra/terraform/staging-aesthetic-cluster_kubeconfig.yaml
+        KUBECONFIG: ${{ github.workspace }}/${{ env.PATH_TO_KUBECONFIG }}
         N8N_ENCRYPTION_KEY: ${{ secrets.N8N_ENCRYPTION_KEY }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
