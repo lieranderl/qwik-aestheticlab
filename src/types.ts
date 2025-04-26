@@ -34,6 +34,7 @@ export interface ServiceCategory extends ServiceCategoryFiltered {
 	active: boolean;
 }
 
+
 export interface TimeSlot {
 	start: string;
 	end: string;
