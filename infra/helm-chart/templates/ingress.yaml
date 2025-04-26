@@ -1,32 +1,33 @@
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: {{ .Release.Name }}-issuer-staging
-  namespace: {{ .Release.Namespace }}
-spec:
-  acme:
-    email: {{ .Values.email }}
-    # We use the staging server here for testing to avoid hitting production
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      # if not existing, it will register a new account and stores it
-      name: "tls-{{ .Release.Name }}-ingress-http"
-    solvers:
-      - http01:
-          # The ingressClass used to create the necessary ingress routes
-          ingress:
-            class: traefik
+# apiVersion: cert-manager.io/v1
+# kind: Issuer
+# metadata:
+#   name: "{{ .Release.Name }}-issuer-{{ .Values.environment }}"
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   acme:
+#     email: {{ .Values.email }}
+#     # We use the staging server here for testing to avoid hitting production
+#     server: https://acme-staging-v02.api.letsencrypt.org/directory
+#     privateKeySecretRef:
+#       # if not existing, it will register a new account and stores it
+#       name: "tls-{{ .Release.Name }}-ingress-http"
+#     solvers:
+#       - http01:
+#           # The ingressClass used to create the necessary ingress routes
+#           ingress:
+#             class: traefik
 
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: {{ .Release.Name }}-issuer-production
+  name: "{{ .Release.Name }}-issuer-{{ .Values.environment }}"
   namespace: {{ .Release.Namespace }}
 spec:
   acme:
     email: {{ .Values.email }}
     # We use the production server here for actual deployments
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # if not existing, it will register a new account and stores it
