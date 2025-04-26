@@ -25,7 +25,6 @@ export default component$(() => {
 
 	const techniciansSignal = useTechniciansLoader();
 	const servicesSignal = useServicesLoader();
-
 	return (
 		<>
 			<Header />

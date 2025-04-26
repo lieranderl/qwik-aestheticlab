@@ -34,7 +34,6 @@ export interface ServiceCategory extends ServiceCategoryFiltered {
 	active: boolean;
 }
 
-
 export interface TimeSlot {
 	start: string;
 	end: string;
@@ -86,4 +85,3 @@ export interface Booking {
 	calendar_id: string;
 	event_id: string;
 }
-
