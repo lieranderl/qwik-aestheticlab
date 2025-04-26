@@ -38,7 +38,7 @@ jobs:
         ENV: ${{ vars.ENV }}
         EMAIL: ${{ vars.EMAIL }}
         TAG: ${{ vars.ENV }}-v1.0.24
-        VOLUME_ID: ${{env.VOLUME_ID}}
+        VOLUME_ID: ${{vars.VOLUME_ID}}
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
