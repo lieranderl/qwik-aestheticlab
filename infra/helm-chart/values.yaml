@@ -1,4 +1,4 @@
-environment: production
+environment: prod
 domain: null
 email: null
 volume_id: null
