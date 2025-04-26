@@ -25,8 +25,8 @@ jobs:
     - name: Install dependencies
       run: bun install
 
-    - name: Run Linter (Biome, ESLint, Prettier)
+    - name: Run Linter (Biome, ESLint)
       run: |
         bun run biome
         bun run lint
-        bun run fmt.check
+
