@@ -44,15 +44,15 @@ jobs:
 
     - name: Generate Tag
       id: tag
-      run: echo "TAG=${{ vars.ENV }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
+      run: echo "TAG=${{ vars.ENV_STAGING }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
       
     - name: Release app
       env:
         GENERIC_TIMEZONE: ${{ vars.GENERIC_TIMEZONE }}
-        ENV: ${{ vars.ENV }}
+        ENV: ${{ vars.ENV_STAGING }}
         EMAIL: ${{ vars.EMAIL }}
         TAG: ${{ env.TAG }}
-        VOLUME_ID: ${{ vars.VOLUME_ID }}
+        VOLUME_ID: ${{ vars.VOLUME_ID_STAGING }}
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
         KUBECONFIG: ${{ github.workspace }}/${{ env.PATH_TO_KUBECONFIG }}
