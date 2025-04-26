@@ -4,7 +4,10 @@ name: Release to staging
 on:
   push:
     branches:
-      - lang
+      - staging
+    paths:
+      - 'src/**'
+      - 'package.json'
 
 jobs:
   release:
