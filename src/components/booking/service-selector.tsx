@@ -1,5 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$, useComputed$ } from "@builder.io/qwik";
+import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import { useServicesCategoryLoader } from "~/routes/[...lang]/booking/layout";
@@ -21,7 +22,7 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 		const groupedServices = useComputed$(() => {
 			const categories = serviceCategorySignal.value;
 			const grouped: Record<string, Service[]> = {};
-			for (const service of services) {
+			for (const service of services.sort((a, b) => b.price - a.price)) {
 				const category = categories.find(
 					(cat) => cat.id === service.category_id,
 				);
@@ -86,10 +87,17 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 											for={service.id}
 											class="ml-2 flex justify-between items-center w-full"
 										>
-											<span class="text-sm">{service.name}</span>
-											<div class="flex flex-col text-sm text-right">
-												<span>{formatPrice(service.price)}</span>
-												<span class="font-light">{service.duration} min</span>
+											<span>{service.name}</span>
+											<div class="flex flex-col  text-right ">
+												<span class="font-medium">
+													{formatPrice(service.price)}
+												</span>
+												<div class="flex justify-end items-center text-xs">
+													<HiClockOutline class="mr-1" />
+													<span class="font-light text-nowrap italic">
+														{service.duration}"
+													</span>
+												</div>
 											</div>
 										</label>
 									</div>
