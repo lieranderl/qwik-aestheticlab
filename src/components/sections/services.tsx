@@ -27,7 +27,7 @@ export const ServicesSection = component$(
 									groups[key].push(service);
 									return groups;
 								},
-								{} as Record<number, Service[]>,
+								{} as Record<string, Service[]>,
 							),
 						)
 							.sort(([catA], [catB]) => Number(catA) - Number(catB))
