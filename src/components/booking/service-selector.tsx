@@ -3,7 +3,7 @@ import { $, component$, useComputed$ } from "@builder.io/qwik";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
-import { useServicesCategoryLoader } from "~/routes/[...lang]/booking/layout";
+import { useServicesCategoryLoader } from "~/routes/[...lang]/layout";
 import type { Service } from "~/types";
 
 export interface ServiceSelectorProps {

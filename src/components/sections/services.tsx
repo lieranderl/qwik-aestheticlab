@@ -39,7 +39,7 @@ export const ServicesSection = component$(
 
 								return (
 									<div key={categoryId}>
-										<h2 class="text-2xl font-bold my-4">
+										<h2 class="text-2xl font-bold my-4" data-aos="fade-up">
 											{categoryName.charAt(0).toUpperCase() +
 												categoryName.substring(1)}
 										</h2>
