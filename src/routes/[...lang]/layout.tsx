@@ -1,7 +1,8 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import type { Service, Technician } from "~/types";
+import { supabase } from "~/shared/supabase-client";
+import type { Service, ServiceCategory, Technician } from "~/types";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({
@@ -23,6 +24,42 @@ export const useServerTimeLoader = routeLoader$(() => {
 	return {
 		date: new Date().toISOString(),
 	};
+});
+
+export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
+	console.log("Fetching categories from Supabase");
+	const response = await supabase(requestEv)
+		.from("category_service")
+		.select("*");
+	const data = response.data as ServiceCategory[];
+	if (response.error) {
+		console.error("Error fetching categories:", response.error);
+		return [];
+	}
+	if (!data) {
+		return [];
+	}
+	// use local and return correct name based on locale
+	const locale = requestEv.locale().split("-")[0];
+	const shortlang = locale === "en" ? "en" : locale;
+
+	const categories = data.map((category) => ({
+		id: category.id,
+		name:
+			shortlang === "en"
+				? category.name
+				: shortlang === "ru"
+					? category.name_ru
+					: shortlang === "nl"
+						? category.name_nl
+						: shortlang === "fr"
+							? category.name_fr
+							: shortlang === "uk"
+								? category.name_uk
+								: category.name,
+	}));
+
+	return categories;
 });
 
 export const useTechniciansLoader = routeLoader$<Technician[]>(
