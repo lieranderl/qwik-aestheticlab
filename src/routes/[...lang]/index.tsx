@@ -12,6 +12,7 @@ import "aos/dist/aos.css";
 import { ga } from "~/consts";
 import { Footer } from "~/components/sections/footer";
 import { useServicesLoader, useTechniciansLoader } from "./layout";
+import { useServicesCategoryLoader } from "./layout";
 
 export default component$(() => {
 	useOnDocument(
@@ -25,11 +26,15 @@ export default component$(() => {
 
 	const techniciansSignal = useTechniciansLoader();
 	const servicesSignal = useServicesLoader();
+	const serviceCategoriesSig = useServicesCategoryLoader();
 	return (
 		<>
 			<Header />
 			<Hero />
-			<ServicesSection services={servicesSignal.value} />
+			<ServicesSection
+				services={servicesSignal.value}
+				serviceCategories={serviceCategoriesSig.value}
+			/>
 			<TeamSection technicians={techniciansSignal.value} />
 			<Work />
 			<About />

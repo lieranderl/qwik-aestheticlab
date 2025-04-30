@@ -3,7 +3,7 @@ import type { RequestEventAction } from "@builder.io/qwik-city";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { useAuthSession } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
-import type { Booking, Service, ServiceCategory } from "~/types";
+import type { Booking, Service } from "~/types";
 export { useAuthSession };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
@@ -127,42 +127,6 @@ export const useGetScheduledAppointments = routeLoader$(async (req) => {
 	const userEmail = session?.user.email || "";
 	const bookings = await getUpcomingBookingsByEmail(userEmail, req);
 	return bookings;
-});
-
-export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
-	console.log("Fetching categories from Supabase");
-	const response = await supabase(requestEv)
-		.from("category_service")
-		.select("*");
-	const data = response.data as ServiceCategory[];
-	if (response.error) {
-		console.error("Error fetching categories:", response.error);
-		return [];
-	}
-	if (!data) {
-		return [];
-	}
-	// use local and return correct name based on locale
-	const locale = requestEv.locale().split("-")[0];
-	const shortlang = locale === "en" ? "en" : locale;
-
-	const categories = data.map((category) => ({
-		id: category.id,
-		name:
-			shortlang === "en"
-				? category.name
-				: shortlang === "ru"
-					? category.name_ru
-					: shortlang === "nl"
-						? category.name_nl
-						: shortlang === "fr"
-							? category.name_fr
-							: shortlang === "uk"
-								? category.name_uk
-								: category.name,
-	}));
-
-	return categories;
 });
 
 export default component$(() => {
