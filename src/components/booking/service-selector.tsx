@@ -18,19 +18,28 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 		const serviceCategorySignal = useServicesCategoryLoader();
 		const t = inlineTranslate();
 
-		// Group services by category name from serviceCategorySignal based on ID
 		const groupedServices = useComputed$(() => {
 			const categories = serviceCategorySignal.value;
+			const desiredOrder = ["manicure", "pedicure", "eyebrows"]; // Desired order of categories
 			const grouped: Record<string, Service[]> = {};
-			for (const service of services.sort((a, b) => b.price - a.price)) {
-				const category = categories.find(
-					(cat) => cat.id === service.category_id,
+
+			// Sort services by price (ascending) - Creating a shallow copy
+			const sortedServices = [...services].sort((a, b) => a.price - b.price);
+
+			// Sort categories based on the desired order
+			const sortedCategories = categories.sort((a, b) => {
+				const indexA = desiredOrder.indexOf(a.name);
+				const indexB = desiredOrder.indexOf(b.name);
+				return indexA - indexB;
+			});
+
+			// Group services by category and sort services inside each category by price
+			for (const category of sortedCategories) {
+				const servicesInCategory = sortedServices.filter(
+					(service) => service.category_id === category.id,
 				);
-				if (category) {
-					if (!grouped[category.name]) {
-						grouped[category.name] = [];
-					}
-					grouped[category.name].push(service);
+				if (servicesInCategory.length > 0) {
+					grouped[category.name] = servicesInCategory;
 				}
 			}
 			return grouped;
@@ -40,13 +49,15 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 			(e: Event, serviceId: string, category: string) => {
 				const target = e.target as HTMLInputElement;
 				if (target.checked) {
-					selectedServices.value = selectedServices.value.filter(
-						(id) =>
-							!groupedServices.value[category].some(
-								(service) => service.id === id,
-							),
-					);
-					selectedServices.value.push(serviceId);
+					selectedServices.value = [
+						...selectedServices.value.filter(
+							(id) =>
+								!groupedServices.value[category].some(
+									(service) => service.id === id,
+								),
+						),
+						serviceId,
+					];
 				} else {
 					selectedServices.value = selectedServices.value.filter(
 						(id) => id !== serviceId,
@@ -88,7 +99,7 @@ export const ServiceSelector = component$<ServiceSelectorProps>(
 											class="ml-2 flex justify-between items-center w-full"
 										>
 											<span>{service.name}</span>
-											<div class="flex flex-col  text-right ">
+											<div class="flex flex-col text-right">
 												<span class="font-medium">
 													{formatPrice(service.price)}
 												</span>
