@@ -1397,9 +1397,67 @@
           "name": "Aesthetic Lab Gmail account"
         }
       }
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "={{ $json.summary }}\nDate: {{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM/yyyy HH:mm\") }}\n\n{{ $json.description }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_notification": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2040,
+        320
+      ],
+      "id": "fe0e9505-4433-4640-9401-42a266b18c06",
+      "name": "Telegram",
+      "webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "POST appointment": [
+      {
+        "json": {
+          "headers": {
+            "authorization": "Bearer vr7xbPGDD4DIytcTv9KiZAfQj62HLphIE9WytUOxBvpQ2GxFGCaDhVDImuQIGXC2",
+            "content-type": "application/json",
+            "connection": "keep-alive",
+            "user-agent": "Bun/1.2.11",
+            "accept": "*/*",
+            "host": "aesthetic-app-n8n-svc.default.svc.cluster.local:5678",
+            "accept-encoding": "gzip, deflate, br",
+            "content-length": "194"
+          },
+          "params": {
+            "id": "9e8705a7-ea07-4059-8036-98c408922dda"
+          },
+          "query": {},
+          "body": {
+            "service_id": [
+              "bf5e534b-2285-40b3-be93-f6247431161f"
+            ],
+            "date": "2025-05-19T12:00:00.000+02:00",
+            "weekday": "monday",
+            "user_email": "jfedotov@gmail.com",
+            "name": "Evgeni Fedotov",
+            "phone": "+32484731632"
+          },
+          "webhookUrl": "http://aesthetic-app-n8n-svc.default.svc.cluster.local:5678/webhook/f5856c87-6629-4338-98b2-8580c868c441/calendar/technician/:id",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "connections": {
     "Get All": {
       "main": [
@@ -1509,6 +1567,11 @@
           },
           {
             "node": "Check New Client",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
             "type": "main",
             "index": 0
           }
@@ -1926,7 +1989,7 @@
     "timezone": "Europe/Brussels",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "d8ea1a6b-cb02-4cfc-9cd7-1a6f0efe511f",
+  "versionId": "ec5059b3-8ddb-4184-91be-cf3873fc9358",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c0938987d8992d621cd065e6731681d2792477bd9113b1da05dc9241d4ebcd7"
