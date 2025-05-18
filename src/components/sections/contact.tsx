@@ -20,7 +20,7 @@ export default component$(() => {
 							<ul class="space-y-2 list-disc pl-6">
 								<li>
 									{t("app.contact.monday@@Monday")} -{" "}
-									{t("app.contact.sunday@@Sunday")}: 10:00 - 21:00
+									{t("app.contact.sunday@@Sunday")}: 10:00 - 18:00
 								</li>
 							</ul>
 						</div>
