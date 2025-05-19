@@ -1422,6 +1422,31 @@
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "=Appointment Canceled. \nClient: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_notification": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        2400
+      ],
+      "id": "94188401-a619-4b38-99b6-04fd9b1a624d",
+      "name": "Telegram1",
+      "webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1945,6 +1970,11 @@
             "node": "Email to Visitor Canceled",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1989,7 +2019,7 @@
     "timezone": "Europe/Brussels",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "ec5059b3-8ddb-4184-91be-cf3873fc9358",
+  "versionId": "eeb4a233-7c56-45fa-857b-0dbcf36d49e6",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c0938987d8992d621cd065e6731681d2792477bd9113b1da05dc9241d4ebcd7"
