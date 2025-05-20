@@ -1141,7 +1141,7 @@
     {
       "parameters": {
         "sendTo": "={{ $json.tech_email }}",
-        "subject": "=Appointment Canceled. Client: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
+        "subject": "=Appointment Canceled. Client: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
         "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.tech_name }}</span>,</p>\n        <p>The following appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Visitor: </strong><span class=\"highlight\">{{ $json.client_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
         "options": {
           "appendAttribution": false
@@ -1376,7 +1376,7 @@
     {
       "parameters": {
         "sendTo": "={{ $json.tech_email }}",
-        "subject": "=Appointment Canceled. {{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}.",
+        "subject": "=Appointment Canceled. {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}.",
         "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.client_name }}</span>,</p>\n        <p>We confirm that your appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Nail Artist:</strong> <span class=\"highlight\">{{ $json.tech_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
         "options": {
           "appendAttribution": false
@@ -1426,7 +1426,7 @@
     {
       "parameters": {
         "chatId": "-4805287164",
-        "text": "=Appointment Canceled. \nClient: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
+        "text": "=Appointment Canceled. \nNail Artist: {{ $json.tech_name }}\nClient: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}\n\nServices:{{ $json.services_name.join(\", \") }}\n",
         "additionalFields": {
           "appendAttribution": false,
           "disable_notification": false
@@ -1449,40 +1449,7 @@
       }
     }
   ],
-  "pinData": {
-    "POST appointment": [
-      {
-        "json": {
-          "headers": {
-            "authorization": "Bearer vr7xbPGDD4DIytcTv9KiZAfQj62HLphIE9WytUOxBvpQ2GxFGCaDhVDImuQIGXC2",
-            "content-type": "application/json",
-            "connection": "keep-alive",
-            "user-agent": "Bun/1.2.11",
-            "accept": "*/*",
-            "host": "aesthetic-app-n8n-svc.default.svc.cluster.local:5678",
-            "accept-encoding": "gzip, deflate, br",
-            "content-length": "194"
-          },
-          "params": {
-            "id": "9e8705a7-ea07-4059-8036-98c408922dda"
-          },
-          "query": {},
-          "body": {
-            "service_id": [
-              "bf5e534b-2285-40b3-be93-f6247431161f"
-            ],
-            "date": "2025-05-19T12:00:00.000+02:00",
-            "weekday": "monday",
-            "user_email": "jfedotov@gmail.com",
-            "name": "Evgeni Fedotov",
-            "phone": "+32484731632"
-          },
-          "webhookUrl": "http://aesthetic-app-n8n-svc.default.svc.cluster.local:5678/webhook/f5856c87-6629-4338-98b2-8580c868c441/calendar/technician/:id",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "Get All": {
       "main": [
@@ -2019,7 +1986,7 @@
     "timezone": "Europe/Brussels",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "eeb4a233-7c56-45fa-857b-0dbcf36d49e6",
+  "versionId": "cd89a634-922f-4fda-9a29-cddeaa87a6b1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8c0938987d8992d621cd065e6731681d2792477bd9113b1da05dc9241d4ebcd7"
