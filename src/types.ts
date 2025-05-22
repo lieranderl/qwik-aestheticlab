@@ -84,6 +84,7 @@ export interface Booking {
 	datetime: string;
 	calendar_id: string;
 	event_id: string;
+	technician_name: string;
 }
 
 export interface Admin {

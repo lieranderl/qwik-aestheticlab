@@ -9,6 +9,7 @@
 			"email_placeholder": "Voer uw e-mailadres in",
 			"forgot_pass": "Wachtwoord vergeten?",
 			"goto": "Ga naar",
+			"loading": "Bezig met laden...",
 			"login": "Inlogpagina",
 			"name_placeholder": "Voer uw naam in",
 			"password_changed": "Wachtwoord succesvol gewijzigd",
@@ -38,8 +39,10 @@
 			"cancel": "Annuleren",
 			"close": "Sluiten",
 			"confirm": "Bevestigen",
+			"confirm_deletion": "Verwijdering bevestigen",
 			"date": "Datum:",
 			"date_selector": "Kies een datum",
+			"do_you_really": "Wilt u deze boeking echt verwijderen?",
 			"duration": "Duur:",
 			"error": "Er is een fout opgetreden tijdens het boeken van uw afspraak.",
 			"error_message": "Er is een fout opgetreden tijdens het boeken van uw afspraak. Probeer het opnieuw.",
@@ -60,7 +63,8 @@
 			"to": "Aan",
 			"total_duration": "Totale duur:",
 			"total_price": "Totaal bedrag:",
-			"upcoming_appointments": "Uw aankomende afspraken"
+			"upcoming_appointments": "Uw aankomende afspraken",
+			"yes_delete": "Ja, verwijderen"
 		},
 		"changeLocale": "Verander taal",
 		"contact": {

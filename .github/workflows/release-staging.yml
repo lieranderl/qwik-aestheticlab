@@ -45,7 +45,7 @@ jobs:
 
       - name: Generate Tag
         id: tag
-        run: echo "TAG=${{ vars.ENV_STAGING }}-v1.0-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
+        run: echo "TAG=${{ vars.ENV_STAGING }}-v1.2-$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Release app
         env:

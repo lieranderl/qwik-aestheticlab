@@ -3,6 +3,7 @@ import type { ActionStore } from "@builder.io/qwik-city";
 import { inlineTranslate, useFormatDate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Booking } from "~/types";
+import { useSignal } from "@builder.io/qwik";
 
 export interface UpcomingAppointmentProps {
 	upcomingAppointments: Booking[];
@@ -21,6 +22,8 @@ export const UpcomingAppointment = component$(
 	}: UpcomingAppointmentProps) => {
 		const t = inlineTranslate();
 		const fd = useFormatDate();
+		const showConfirmModal = useSignal(false);
+		const selectedBookingId = useSignal<string | null>(null);
 		return (
 			<>
 				{upcomingAppointments.length > 0 && (
@@ -34,6 +37,12 @@ export const UpcomingAppointment = component$(
 							{upcomingAppointments.map((booking) => (
 								<div key={booking.id} class="card bg-base-100 shadow-md">
 									<div class="card-body">
+										<div class="flex justify-between">
+											<strong>
+												{t("app.booking.specialist@@Specialist")}:
+											</strong>
+											<span>{booking.technician_name}</span>
+										</div>
 										<div class="flex justify-between">
 											<strong>{t("app.booking.services@@Services:")}</strong>
 											<span>{booking.services_names.join(", ")}</span>
@@ -66,11 +75,10 @@ export const UpcomingAppointment = component$(
 												type="button"
 												class="btn btn-error"
 												disabled={useRemoveBookingAction.isRunning}
-												onClick$={() =>
-													useRemoveBookingAction.submit({
-														bookingId: booking.id,
-													})
-												}
+												onClick$={() => {
+													selectedBookingId.value = booking.id;
+													showConfirmModal.value = true;
+												}}
 											>
 												{useRemoveBookingAction.isRunning ? (
 													<span class="loading loading-spinner me-2 loading-md" />
@@ -83,6 +91,51 @@ export const UpcomingAppointment = component$(
 								</div>
 							))}
 						</div>
+						{/* Modal */}
+						{showConfirmModal.value && (
+							<div class="modal modal-open">
+								<div class="modal-box">
+									<h3 class="font-bold text-lg">
+										{t("app.booking.confirm_deletion@@Confirm Deletion")}
+									</h3>
+									<p class="py-4">
+										{t(
+											"app.booking.do_you_really@@Do you really want to delete this booking?",
+										)}
+									</p>
+									<div class="modal-action">
+										<button
+											class="btn"
+											type="button"
+											onClick$={() => {
+												showConfirmModal.value = false;
+											}}
+										>
+											<span>{t("app.booking.cancel@@Cancel")}</span>
+										</button>
+										<button
+											class="btn btn-error"
+											type="button"
+											disabled={useRemoveBookingAction.isRunning}
+											onClick$={() => {
+												if (selectedBookingId.value) {
+													useRemoveBookingAction.submit({
+														bookingId: selectedBookingId.value,
+													});
+												}
+												showConfirmModal.value = false;
+											}}
+										>
+											{useRemoveBookingAction.isRunning ? (
+												<span class="loading loading-spinner loading-sm" />
+											) : (
+												<span>{t("app.booking.yes_delete@@Yes, delete")}</span>
+											)}
+										</button>
+									</div>
+								</div>
+							</div>
+						)}
 					</>
 				)}
 			</>

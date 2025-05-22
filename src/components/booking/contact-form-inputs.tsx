@@ -1,4 +1,4 @@
-import type { Signal, QRL } from "@builder.io/qwik";
+import type { Signal } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
 import { PhoneInput } from "~/components/auth/phone-input";
 import { EmailInput } from "~/components/auth/email-input";
@@ -10,7 +10,7 @@ export interface ContactFormInputsProps {
 	emailSignal: Signal<string>;
 	phoneSignal: Signal<string>;
 	isAdmin: boolean;
-	changeEmailByAdmin: QRL<(e: Event) => void>;
+	changeEmailByAdmin: Signal<string>;
 	signOut?: ActionStore<
 		{
 			success: boolean;
@@ -34,6 +34,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
 				<EmailInput
 					emailSignal={emailSignal}
 					readonly={!isAdmin}
+					isAdmin={isAdmin}
 					signOut={signOut}
 					changeEmailByAdmin={changeEmailByAdmin}
 				/>

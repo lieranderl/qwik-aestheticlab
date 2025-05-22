@@ -155,10 +155,6 @@ export default component$(() => {
 			selectedSlot.value !== null,
 	);
 
-	/** Handlers */
-	const changeEmailHandler = $((e: Event) => {
-		changeEmailByAdmin.value = (e.target as HTMLInputElement).value;
-	});
 	const handleBookButtonClick = $(() => {
 		setTimeout(() => {
 			showConfirmationPanelSignal.value = true;
@@ -208,14 +204,25 @@ export default component$(() => {
 				.gt("datetime", new Date().toISOString())
 				.order("datetime", { ascending: true });
 			if (bookingsError) return [];
+
+			const technicianIds = bookingsData.map((b) => b.technician_id);
+			const { data: techniciansData } = await supabaseBrowser
+				.from("technicians")
+				.select("id, name")
+				.in("id", technicianIds);
+
+			const techMap = new Map(techniciansData?.map((t) => [t.id, t.name]));
+
 			return await Promise.all(
 				bookingsData.map(async (booking) => {
 					const services = await supabaseBrowser
 						.from("services")
 						.select("name,name_ru,name_nl,name_fr")
 						.in("id", booking.services);
+
 					const s = services.data || [];
 					const lang = locale.lang.split("-")[0];
+
 					return {
 						...booking,
 						services_names: s.map((service) =>
@@ -227,6 +234,7 @@ export default component$(() => {
 										? service.name_fr
 										: service.name,
 						),
+						technician_name: techMap.get(booking.technician_id) || "",
 					};
 				}),
 			);
@@ -307,7 +315,7 @@ export default component$(() => {
 								phoneSignal={phoneSignal}
 								signOut={signOut}
 								isAdmin={isAdminSignal.value}
-								changeEmailByAdmin={changeEmailHandler}
+								changeEmailByAdmin={changeEmailByAdmin}
 							/>
 							<ServiceSelector
 								selectedServices={selectedServices}
