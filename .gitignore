@@ -40,6 +40,7 @@ lerna-debug.log*
 .yarn/*
 !.yarn/releases
 .env
+.env.production
 cloud-init
 terraform.tfvars
 # Local .terraform directory

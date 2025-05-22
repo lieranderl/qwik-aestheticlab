@@ -23,7 +23,7 @@ all: check-env-vars check-helm init apply build push delay helm-upgrade
 # Delay execution to allow for resources to settle (useful for async tasks)
 .PHONY: delay
 delay:
-	@sleep 25 
+	@sleep 25
 
 # Build the Docker image using nerdctl
 .PHONY: build
@@ -54,10 +54,10 @@ helm-upgrade:
     --set domain=$(DOMAIN_NAME) \
 	--set bun.tag=$(TAG) \
 	--set email=$(EMAIL) \
-	--set volume_id=$(VOLUME_ID) 
+	--set volume_id=$(VOLUME_ID)
 	@echo "Helm upgrade completed."
 
-# 
+#
 .PHONY: release
 release: check-env-vars check-helm build push helm-upgrade
 
@@ -150,6 +150,6 @@ check-deployment:
 .PHONY: start-dashboard
 start-dashboard:
 	@echo "Generating Kubernetes dashboard token..."
-	@kubectl create token default -n kube-system 
+	@kubectl create token default -n kube-system
 	@echo "Starting Kubernetes dashboard..."
 	@kubectl -n kube-system port-forward svc/kubernetes-dashboard 8443:443
