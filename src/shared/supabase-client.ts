@@ -1,4 +1,5 @@
 import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import type { RequestEventAction } from "@builder.io/qwik-city";
 
 export const supabase = (event: RequestEventAction) => {
@@ -22,3 +23,8 @@ export const supabase = (event: RequestEventAction) => {
 		{ cookies },
 	);
 };
+
+export const supabaseBrowser = createClient(
+	import.meta.env.VITE_SUPABASE_URL || "",
+	import.meta.env.VITE_SUPABASE_KEY || "",
+);

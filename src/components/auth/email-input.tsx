@@ -1,4 +1,4 @@
-import type { Signal } from "@builder.io/qwik";
+import type { Signal, QRL } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import {
 	HiArrowUpOnSquareOutline,
@@ -9,6 +9,7 @@ import { inlineTranslate } from "qwik-speak";
 export interface EmailInputProps {
 	emailSignal: Signal<string>;
 	readonly?: boolean;
+	changeEmailByAdmin?: QRL<(e: Event) => void>;
 	signOut?: ActionStore<
 		{
 			success: boolean;
@@ -21,8 +22,10 @@ export const EmailInput = ({
 	emailSignal,
 	readonly,
 	signOut,
+	changeEmailByAdmin,
 }: EmailInputProps) => {
 	const t = inlineTranslate();
+
 	return (
 		<div>
 			<div class="flex flex-nowrap gap-2 items-center">
@@ -44,6 +47,7 @@ export const EmailInput = ({
 						required
 						bind:value={emailSignal}
 						readOnly={readonly}
+						onBlur$={!readonly ? changeEmailByAdmin : null}
 					/>
 				</label>
 				{signOut && (

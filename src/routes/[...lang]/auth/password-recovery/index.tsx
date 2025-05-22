@@ -2,9 +2,9 @@ import { component$, useSignal, useComputed$ } from "@builder.io/qwik";
 import { routeAction$, Form } from "@builder.io/qwik-city";
 import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { PasswordInput } from "~/components/auth/password-input";
-import { useAuthSession } from "~/shared/auth-session";
+import { useAuthUser } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
-export { useAuthSession };
+export { useAuthUser };
 
 export const useSupabasePasswordSet = routeAction$(
 	async (formData, requestEv) => {
@@ -27,7 +27,7 @@ export const useSupabasePasswordSet = routeAction$(
 );
 
 export default component$(() => {
-	useAuthSession();
+	useAuthUser();
 	const password = useSignal("");
 	const confirmPassword = useSignal("");
 	const passwordMismatch = useComputed$(
