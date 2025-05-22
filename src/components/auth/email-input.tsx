@@ -86,6 +86,7 @@ export const EmailInput = component$(
 			emailSignal.value = val;
 			debounceInput.value = val;
 			selectedIndex.value = 0;
+			dropdownOpen.value = true;
 		});
 
 		const handleFocus = $(() => {
@@ -193,7 +194,8 @@ export const EmailInput = component$(
 										? "bg-neutral p-2 cursor-pointer"
 										: "p-2 cursor-pointer"
 								}
-								onMouseDown$={() => {
+								onMouseDown$={(e) => {
+									e.preventDefault();
 									emailSignal.value = client.email;
 									applyEmailChange(client.email);
 								}}
