@@ -96,7 +96,15 @@ apply: init
 # Destroy Terraform infrastructure
 .PHONY: destroy
 destroy:
-	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform destroy -var="env=$(ENV)" -auto-approve
+	@cd $(TERRAFORM_DIR) && \
+	echo "Current workspace: $(ENV). Are you sure you want to destroy it? (yes/no)" && \
+	read confirm && \
+	if [ "$$confirm" = "yes" ]; then \
+		terraform workspace select $(ENV) && \
+		terraform destroy -var="env=$(ENV)" -auto-approve; \
+	else \
+		echo "Destroy cancelled."; \
+	fi
 
 # Clean up Terraform state and temporary files
 .PHONY: clean
