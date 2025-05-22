@@ -60,8 +60,6 @@ jobs:
           N8N_ENCRYPTION_KEY: ${{ secrets.N8N_ENCRYPTION_KEY }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           WEBHOOK: ${{ secrets.WEBHOOK }}
         run: |
           make release
