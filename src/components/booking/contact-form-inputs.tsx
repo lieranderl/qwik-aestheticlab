@@ -34,6 +34,7 @@ export const ContactFormInputs = component$<ContactFormInputsProps>(
         <EmailInput
           emailSignal={emailSignal}
           readonly={!isAdmin}
+          isAdmin={isAdmin}
           signOut={signOut}
           changeEmailByAdmin={changeEmailByAdmin}
         />

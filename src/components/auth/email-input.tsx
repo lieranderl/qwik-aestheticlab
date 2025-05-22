@@ -18,12 +18,13 @@ type Client = { email: string; name: string | null };
 export interface EmailInputProps {
   emailSignal: Signal<string>;
   readonly?: boolean;
+  isAdmin?: boolean
   changeEmailByAdmin?: Signal<string>;
   signOut?: ActionStore<{ success: boolean }, Record<string, unknown>, true>;
 }
 
 export const EmailInput = component$(
-  ({ emailSignal, readonly, changeEmailByAdmin, signOut }: EmailInputProps) => {
+  ({ emailSignal, readonly, isAdmin, changeEmailByAdmin, signOut }: EmailInputProps) => {
     const t = inlineTranslate();
     const searchTerm = useSignal("");
     const clients = useSignal<Client[]>([]);
@@ -69,12 +70,11 @@ export const EmailInput = component$(
 
     // Debounced input search
     useTask$(({ track }) => {
-      if (readonly) return;
+      if (!isAdmin) return;
       const val = track(() => debounceInput.value);
       const timeout = setTimeout(() => {
         searchTerm.value = val;
         fetchClients(true);
-        dropdownOpen.value = true;
       }, 500);
       return () => clearTimeout(timeout);
     });
@@ -138,25 +138,19 @@ export const EmailInput = component$(
             }
           >
             <HiEnvelopeOutline class="text-primary w-4 h-4" />
-            {readonly ? (
-              <input
-                type="email"
-                readOnly
-                class="bg-transparent w-full"
-                bind:value={emailSignal}
-              />
-            ) : (
-              <input
-                type="email"
-                class="bg-transparent w-full focus:outline-none"
-                placeholder={t("app.auth.email_placeholder@@Enter your email address")}
-                bind:value={emailSignal}
-                onInput$={handleInput}
-                onKeyDown$={handleKeyDown}
-                onBlur$={handleBlur}
-                onFocus$={handleFocus}
-              />
-            )}
+            <input
+              id="email-input"
+              name="email"
+              type="email"
+              class="bg-transparent w-full focus:outline-none"
+              placeholder={t("app.auth.email_placeholder@@Enter your email address")}
+              bind:value={emailSignal}
+              readOnly={readonly}
+              onInput$={handleInput}
+              onKeyDown$={isAdmin ? handleKeyDown : undefined}
+              onBlur$={isAdmin ? handleBlur : undefined}
+              onFocus$={isAdmin ? handleFocus : undefined}
+            />
           </label>
 
           {signOut && (
@@ -180,7 +174,7 @@ export const EmailInput = component$(
           )}
         </div>
 
-        {dropdownOpen.value && !readonly && clients.value.length > 0 && (
+        {dropdownOpen.value && (
           <ul
             onScroll$={handleScroll}
             class="absolute mt-2 z-10 w-full bg-base-200 rounded-box shadow max-h-48 overflow-y-auto overflow-x-hidden flex flex-col"
