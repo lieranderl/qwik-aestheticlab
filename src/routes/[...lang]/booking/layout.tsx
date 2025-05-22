@@ -1,9 +1,9 @@
 import { component$, Slot } from "@builder.io/qwik";
 // import type { RequestEventAction } from "@builder.io/qwik-city";
-import { routeAction$ } from "@builder.io/qwik-city";
+import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { useAuthUser } from "~/shared/auth-session";
 import { supabase } from "~/shared/supabase-client";
-// import type { Booking, Service } from "~/types";
+import type { Admin } from "~/types";
 export { useAuthUser };
 
 export const useSupabaseSignOut = routeAction$(async (_, requestEv) => {
@@ -48,6 +48,28 @@ export const useRemoveBooking = routeAction$(async (data, { env }) => {
     success: true,
   };
 });
+
+export const useAdminsLoader = routeLoader$<Admin[]>(
+  async ({ env }) => {
+    const API_BASE_URL = env.get("API_BASE_URL");
+    const API_TOKEN = env.get("API_TOKEN");
+    console.log(`Sending request to: ${API_BASE_URL}/admins`);
+    try {
+      const response = await fetch(`${API_BASE_URL}/admins`, {
+        headers: {
+          Authorization: `${API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data: Admin[] = await response.json();
+      return data.filter((admin) => admin.active);
+    } catch (error) {
+      console.error("Error fetching technicians:", error);
+      return [];
+    }
+  },
+);
+
 
 // Function to get upcoming bookings by user email
 // export async function getUpcomingBookingsByEmail(
