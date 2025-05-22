@@ -39,8 +39,10 @@
       "cancel": "Cancel",
       "close": "Close",
       "confirm": "Confirm",
+      "confirm_deletion": "Confirm Deletion",
       "date": "Date:",
       "date_selector": "Pick a date",
+      "do_you_really": "Do you really want to delete this booking?",
       "duration": "Duration:",
       "error": "An error occurred while booking your appointment.",
       "error_message": "An error occurred while booking your appointment. Please try again.",
@@ -61,7 +63,8 @@
       "to": "To",
       "total_duration": "Total Duration:",
       "total_price": "Total Price:",
-      "upcoming_appointments": "Your Upcoming Appointments"
+      "upcoming_appointments": "Your Upcoming Appointments",
+      "yes_delete": "Yes, delete"
     },
     "changeLocale": "Change language",
     "contact": {

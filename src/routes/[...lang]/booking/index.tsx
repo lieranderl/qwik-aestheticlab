@@ -205,14 +205,25 @@ export default component$(() => {
         .gt("datetime", new Date().toISOString())
         .order("datetime", { ascending: true });
       if (bookingsError) return [];
+
+      const technicianIds = bookingsData.map((b) => b.technician_id);
+      const { data: techniciansData } = await supabaseBrowser
+        .from("technicians")
+        .select("id, name")
+        .in("id", technicianIds);
+
+      const techMap = new Map(techniciansData?.map(t => [t.id, t.name]));
+
       return await Promise.all(
         bookingsData.map(async (booking) => {
           const services = await supabaseBrowser
             .from("services")
             .select("name,name_ru,name_nl,name_fr")
             .in("id", booking.services);
+
           const s = services.data || [];
           const lang = locale.lang.split("-")[0];
+
           return {
             ...booking,
             services_names: s.map((service) =>
@@ -224,8 +235,9 @@ export default component$(() => {
                     ? service.name_fr
                     : service.name,
             ),
+            technician_name: techMap.get(booking.technician_id) || ""
           };
-        }),
+        })
       );
     },
   );

@@ -39,8 +39,10 @@
       "cancel": "Annuler",
       "close": "Fermer",
       "confirm": "Confirmer",
+      "confirm_deletion": "Confirmer la suppression",
       "date": "Date:",
       "date_selector": "Choisir une date",
+      "do_you_really": "Voulez-vous vraiment supprimer cette réservation ?",
       "duration": "Durée:",
       "error": "Une erreur s'est produite lors de la réservation de votre rendez-vous.",
       "error_message": "Une erreur s'est produite lors de la réservation de votre rendez-vous. Veuillez réessayer.",
@@ -61,7 +63,8 @@
       "to": "À",
       "total_duration": "Durée totale:",
       "total_price": "Prix total:",
-      "upcoming_appointments": "Vos rendez-vous à venir"
+      "upcoming_appointments": "Vos rendez-vous à venir",
+      "yes_delete": "Oui, supprimer"
     },
     "changeLocale": "Changer la langue",
     "contact": {
