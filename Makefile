@@ -31,7 +31,7 @@ build:
 	@echo "Building Docker image for ARM64..."
 	@bunx @biomejs/biome check --fix
 	@docker buildx create --use
-	@docker buildx build --platform linux/arm64 --load -t docker.io/furlingene/qwik-aesthetic:$(TAG) -f Dockerfile --build-arg SUPABASE_URL=$(SUPABASE_URL) --build-arg SUPABASE_KEY=$(SUPABASE_KEY) .
+	@docker buildx build --platform linux/arm64 --load -t docker.io/furlingene/qwik-aesthetic:$(TAG) -f Dockerfile --build-arg SUPABASE_URL=$(SUPABASE_URL) --build-arg SUPABASE_KEY=$(SUPABASE_KEY) --build-arg VITE_SUPABASE_URL=$(SUPABASE_URL) --build-arg VITE_SUPABASE_KEY=$(SUPABASE_KEY)  .
 
 # Push the Docker image to Docker Hub
 .PHONY: push

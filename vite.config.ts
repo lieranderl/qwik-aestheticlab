@@ -43,6 +43,9 @@ export default defineConfig(({ command, mode }): UserConfig => {
 			// For example ['better-sqlite3'] if you use that in server functions.
 			exclude: [],
 		},
+		define: {
+			"process.env": {}, // optional, for compatibility
+		},
 
 		/**
 		 * This is an advanced setting. It improves the bundling of your server code. To use it, make sure you understand when your consumed packages are dependencies or dev dependencies. (otherwise things will break in production)
