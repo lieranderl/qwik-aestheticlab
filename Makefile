@@ -91,7 +91,15 @@ plan: init
 # Apply Terraform infrastructure
 .PHONY: apply
 apply: init
-	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform apply -var="env=$(ENV)" -auto-approve
+	@cd $(TERRAFORM_DIR) && \
+	echo "Current workspace: $(ENV). Are you sure you want to apply changes? (yes/no)" && \
+	read confirm && \
+	if [ "$$confirm" = "yes" ]; then \
+		terraform workspace select $(ENV) && \
+		terraform apply -var="env=$(ENV)" -auto-approve; \
+	else \
+		echo "Apply cancelled."; \
+	fi
 
 # Destroy Terraform infrastructure
 .PHONY: destroy
@@ -175,3 +183,8 @@ git-push:
 	@git commit -m "Update code"
 	@echo "Pushing changes..."
 	@git push
+
+
+# make terraform infra
+.PHONY: terraform-infra
+terraform-infra: check-env-vars init apply
