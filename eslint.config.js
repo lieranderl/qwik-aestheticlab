@@ -1,0 +1,103 @@
+import js from "@eslint/js";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import qwik from "eslint-plugin-qwik";
+
+export default [
+	js.configs.recommended,
+
+	{
+		files: ["**/*.ts", "**/*.tsx"],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: ["./tsconfig.eslint.json"],
+				tsconfigRootDir: process.cwd(),
+				ecmaVersion: 2021,
+				sourceType: "module",
+				ecmaFeatures: {
+					jsx: true,
+				},
+			},
+			globals: {
+				process: "readonly",
+				Bun: "readonly",
+				window: "readonly",
+				document: "readonly",
+				console: "readonly",
+				setTimeout: "readonly",
+				clearTimeout: "readonly",
+				fetch: "readonly",
+				addEventListener: "readonly",
+			},
+		},
+		plugins: {
+			"@typescript-eslint": tseslint,
+			qwik,
+		},
+		rules: {
+			...tseslint.configs.recommended.rules,
+			...qwik.configs.recommended.rules,
+
+			"@typescript-eslint/no-explicit-any": "off",
+			"@typescript-eslint/explicit-module-boundary-types": "off",
+			"@typescript-eslint/no-inferrable-types": "off",
+			"@typescript-eslint/no-non-null-assertion": "off",
+			"@typescript-eslint/no-empty-interface": "off",
+			"@typescript-eslint/no-namespace": "off",
+			"@typescript-eslint/no-empty-function": "off",
+			"@typescript-eslint/no-this-alias": "off",
+			"@typescript-eslint/ban-types": "off",
+			"@typescript-eslint/ban-ts-comment": "off",
+			"prefer-spread": "off",
+			"no-case-declarations": "off",
+			"no-console": "off",
+			"@typescript-eslint/no-unused-vars": ["error"],
+			"@typescript-eslint/consistent-type-imports": "warn",
+			"@typescript-eslint/no-unnecessary-condition": "warn",
+		},
+	},
+
+	{
+		ignores: [
+			"**/*.log",
+			"**/.DS_Store",
+			"*.",
+			".vscode",
+			".history",
+			".yarn",
+			"bazel-*",
+			"bazel-bin",
+			"bazel-out",
+			"bazel-qwik",
+			"bazel-testlogs",
+			"dist",
+			"dist-dev",
+			"lib",
+			"lib-types",
+			"etc",
+			"external",
+			"node_modules",
+			"temp",
+			"tsc-out",
+			"tsdoc-metadata.json",
+			"target",
+			"output",
+			"rollup.config.js",
+			"build",
+			".cache",
+			".rollup.cache",
+			"tsconfig.tsbuildinfo",
+			"vite.config.ts",
+			"*.spec.tsx",
+			"*.spec.ts",
+			".netlify",
+			"pnpm-lock.yaml",
+			"package-lock.json",
+			"yarn.lock",
+			"server",
+			"**/*.d.ts",
+			"eslint.config.js",
+		],
+	},
+];

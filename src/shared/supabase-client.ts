@@ -7,6 +7,7 @@ export const supabase = (event: RequestEventAction) => {
 		getAll() {
 			return Object.entries(event.cookie.getAll()).map(([name, cookie]) => ({
 				name,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				value: cookie?.value,
 			}));
 		},

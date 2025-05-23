@@ -23,6 +23,7 @@ export const ServicesSection = component$(
 							services.reduce(
 								(groups, service) => {
 									const key = service.category_id;
+									// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 									if (!groups[key]) groups[key] = [];
 									groups[key].push(service);
 									return groups;
