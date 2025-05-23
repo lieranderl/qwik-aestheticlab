@@ -1,13 +1,3 @@
-/*
- * WHAT IS THIS FILE?
- *
- * It's the entry point for the Bun HTTP server when building for production.
- *
- * Learn more about the Bun integration here:
- * - https://qwik.dev/docs/deployments/bun/
- * - https://bun.sh/docs/api/http
- *
- */
 import { createQwikCity } from "@builder.io/qwik-city/middleware/bun";
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
@@ -27,7 +17,6 @@ const port = Number(Bun.env.PORT) || 3000;
 const trustProxy = (headers: Headers) =>
 	headers.get("x-forwarded-proto") === "https";
 
-// eslint-disable-next-line no-console
 console.log(`🚀 Server started: http://localhost:${port}/`);
 
 Bun.serve({

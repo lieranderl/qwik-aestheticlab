@@ -1,6 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import { supabase } from "~/shared/supabase-client";
 import type { Service, ServiceCategory, Technician } from "~/types";
 
@@ -36,6 +36,7 @@ export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
 		console.error("Error fetching categories:", response.error);
 		return [];
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!data) {
 		return [];
 	}
