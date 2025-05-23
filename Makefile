@@ -163,7 +163,7 @@ start-dashboard:
 	@kubectl -n kube-system port-forward svc/kubernetes-dashboard 8443:443
 
 
-# make git-push. Lint, git add ., commit, and Push
+# make git-push. Lint eslint, biome, git add ., commit, and Push
 .PHONY: git-push
 git-push:
 	@echo "Linting code..."
