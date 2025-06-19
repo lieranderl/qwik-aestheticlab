@@ -1,10 +1,9 @@
-import { component$, $ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { useFormatDate } from "qwik-speak";
-
-import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
+import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
 
 export interface TimeSlotsProps {
 	availableSlots: TechnicianSlots[];

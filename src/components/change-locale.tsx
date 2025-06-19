@@ -2,10 +2,10 @@ import { component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { HiLanguageSolid } from "@qwikest/icons/heroicons";
 import {
-	useSpeakLocale,
-	useSpeakConfig,
-	useDisplayName,
 	localizePath,
+	useDisplayName,
+	useSpeakConfig,
+	useSpeakLocale,
 } from "qwik-speak";
 
 export const ChangeLocale = component$(() => {

@@ -9,7 +9,7 @@ import { config } from "../speak-config";
  * Avoid redirecting or throwing errors here, and prefer layouts or pages
  */
 export const onRequest: RequestHandler = ({ params, locale }) => {
-	let lang: string | undefined = undefined;
+	let lang: string | undefined;
 
 	if (params.lang && validateLocale(params.lang)) {
 		// Check supported locales

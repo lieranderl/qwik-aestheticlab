@@ -50,10 +50,12 @@ calendar-month {
 	100% {
 		color: oklch(65.6% 0.241 354.308);
 	}
+
 	50% {
 		color: oklch(57.7% 0.245 27.325);
 	}
 }
+
 .animate-color-pulse {
 	animation: colorPulse 5s infinite;
 }
@@ -61,11 +63,11 @@ calendar-month {
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-	/* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+	/* biome-ignore lint/correctness/noUnknownProperty: a*/
 	name: "Aesthetic";
-	/* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+	/* biome-ignore lint/correctness/noUnknownProperty: b */
 	default: true;
-	/* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+	/* biome-ignore lint/correctness/noUnknownProperty: v */
 	prefersdark: true;
 	color-scheme: "light";
 	--color-base-100: #f4f5f1;

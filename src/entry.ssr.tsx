@@ -1,10 +1,10 @@
+import { isDev } from "@builder.io/qwik/build";
 import {
 	type RenderOptions,
-	renderToStream,
 	type RenderToStreamOptions,
+	renderToStream,
 } from "@builder.io/qwik/server";
 import { manifest } from "@qwik-client-manifest";
-import { isDev } from "@builder.io/qwik/build";
 import Root from "./root";
 import { config } from "./speak-config";
 

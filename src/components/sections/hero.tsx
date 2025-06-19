@@ -5,9 +5,9 @@ import {
 	useOnWindow,
 	useSignal,
 } from "@builder.io/qwik";
+import { inlineTranslate } from "qwik-speak";
 import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
 import { BookingBtn } from "../booking-button";
-import { inlineTranslate } from "qwik-speak";
 
 export default component$(() => {
 	const isMobile = useSignal(false);

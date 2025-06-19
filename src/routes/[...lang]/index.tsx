@@ -1,18 +1,21 @@
 import { $, component$, useOnDocument } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import Hero from "~/components/sections/hero";
+import AOS from "aos";
+import Header from "~/components/header/header";
 import About from "~/components/sections/about";
+import Contact from "~/components/sections/contact";
+import Hero from "~/components/sections/hero";
 import { ServicesSection } from "~/components/sections/services";
 import { TeamSection } from "~/components/sections/team";
 import Work from "~/components/sections/work";
-import Contact from "~/components/sections/contact";
-import Header from "~/components/header/header";
-import AOS from "aos";
 import "aos/dist/aos.css";
-import { ga } from "~/consts";
 import { Footer } from "~/components/sections/footer";
-import { useServicesLoader, useTechniciansLoader } from "./layout";
-import { useServicesCategoryLoader } from "./layout";
+import { ga } from "~/consts";
+import {
+	useServicesCategoryLoader,
+	useServicesLoader,
+	useTechniciansLoader,
+} from "./layout";
 
 export default component$(() => {
 	useOnDocument(

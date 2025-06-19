@@ -1,11 +1,11 @@
 import {
+	$,
 	component$,
-	useSignal,
 	useComputed$,
 	useOnDocument,
-	$,
+	useSignal,
 } from "@builder.io/qwik";
-import { routeAction$, Form } from "@builder.io/qwik-city";
+import { Form, routeAction$ } from "@builder.io/qwik-city";
 import { inlineTranslate, localizePath } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { NameInput } from "~/components/auth/name-input";

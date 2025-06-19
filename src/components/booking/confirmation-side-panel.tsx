@@ -1,10 +1,10 @@
 import type { Signal } from "@builder.io/qwik";
-import { useClickOutside } from "@ditadi/qwik-hooks";
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { useClickOutside } from "@ditadi/qwik-hooks";
 import { HiCheckCircleOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate, useFormatDate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Technician, TimeSlot } from "~/types";
-import { inlineTranslate, useFormatDate } from "qwik-speak";
 
 const calculateEndTime = (selectedSlotStart: string, duration: number) => {
 	const startDate = new Date(selectedSlotStart);
