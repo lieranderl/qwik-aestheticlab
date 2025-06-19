@@ -1,9 +1,8 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import { inlineTranslate, useFormatDate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Booking } from "~/types";
-import { useSignal } from "@builder.io/qwik";
 
 export interface UpcomingAppointmentProps {
 	upcomingAppointments: Booking[];

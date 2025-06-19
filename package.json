@@ -6,7 +6,9 @@
 	},
 	"engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
 	"private": true,
-	"trustedDependencies": ["sharp"],
+	"trustedDependencies": [
+		"sharp"
+	],
 	"trustedDependencies-annotation": "Needed for bun to allow running install scripts",
 	"type": "module",
 	"scripts": {
@@ -29,7 +31,7 @@
 		"qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-BE,nl-BE,fr-BE,ru-BE,uk-BE --assetsPath=i18n"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
+		"@biomejs/biome": "^2.0.0",
 		"@builder.io/qwik": "^1.14.1",
 		"@builder.io/qwik-city": "^1.14.1",
 		"@ditadi/qwik-hooks": "^0.1.6",

@@ -1,6 +1,6 @@
-import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
 import type { RequestEventAction } from "@builder.io/qwik-city";
+import { type CookieMethodsServer, createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
 export const supabase = (event: RequestEventAction) => {
 	const cookies: CookieMethodsServer = {

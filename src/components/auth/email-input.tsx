@@ -1,5 +1,5 @@
-import { component$, useSignal, $, useTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
+import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import {
 	HiArrowUpOnSquareOutline,

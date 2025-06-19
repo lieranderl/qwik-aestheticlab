@@ -9,33 +9,33 @@ import {
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
-import type { Technician, TechnicianSlots, TimeSlot } from "~/types";
-import {
-	useServicesLoader,
-	useTechniciansLoader,
-	useEnvLoader,
-} from "../layout";
+import { HiHomeOutline, HiUserOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { ConfirmationSidePanel } from "~/components/booking/confirmation-side-panel";
 import { ContactFormInputs } from "~/components/booking/contact-form-inputs";
-import { ServiceSelector } from "~/components/booking/service-selector";
 import { DateSelector } from "~/components/booking/date-selector";
-import TimeSlots from "~/components/booking/time-slots";
-import { StatusModal } from "~/components/booking/status-modal";
-import { TotalSummary } from "~/components/booking/total-summary";
 import { WarningForm } from "~/components/booking/form-warning";
+import { ServiceSelector } from "~/components/booking/service-selector";
+import { StatusModal } from "~/components/booking/status-modal";
+import TimeSlots from "~/components/booking/time-slots";
+import { TotalSummary } from "~/components/booking/total-summary";
+import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
+import { ChangeLocale } from "~/components/change-locale";
 import { ga } from "~/consts";
+import { supabaseBrowser } from "~/shared/supabase-client";
+import type { Booking, Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
+	useEnvLoader,
+	useServicesLoader,
+	useTechniciansLoader,
+} from "../layout";
+import {
+	useAdminsLoader,
 	useAuthUser,
 	useRemoveBooking,
 	useSupabaseSignOut,
-	useAdminsLoader,
 } from "./layout";
-import { HiHomeOutline, HiUserOutline } from "@qwikest/icons/heroicons";
-import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
-import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
-import { ChangeLocale } from "~/components/change-locale";
-import type { Booking } from "~/types";
-import { supabaseBrowser } from "~/shared/supabase-client";
+
 const WEEKDAYS = [
 	"sunday",
 	"monday",

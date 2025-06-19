@@ -1,8 +1,8 @@
 import { component$ } from "@builder.io/qwik";
-import type { Service, ServiceCategoryFiltered } from "~/types";
-import { formatPrice } from "~/consts";
-import { inlineTranslate } from "qwik-speak";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
+import { inlineTranslate } from "qwik-speak";
+import { formatPrice } from "~/consts";
+import type { Service, ServiceCategoryFiltered } from "~/types";
 
 export interface ServicesSectionProps {
 	services: Service[];

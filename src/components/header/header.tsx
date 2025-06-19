@@ -1,13 +1,13 @@
-import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
-import { BookingBtn } from "../booking-button";
-import { ChangeLocale } from "../change-locale";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import {
+	type InlineTranslateFn,
 	inlineTranslate,
 	localizePath,
 	type SpeakLocale,
 	useSpeakLocale,
-	type InlineTranslateFn,
 } from "qwik-speak";
+import { BookingBtn } from "../booking-button";
+import { ChangeLocale } from "../change-locale";
 
 const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 	const getPath = localizePath();

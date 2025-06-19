@@ -9,9 +9,6 @@
 		"lineWidth": 80,
 		"attributePosition": "auto"
 	},
-	"organizeImports": {
-		"enabled": false
-	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -19,11 +16,9 @@
 			"complexity": {
 				"noBannedTypes": "error",
 				"noExtraBooleanCast": "error",
-				"noMultipleSpacesInRegularExpressionLiterals": "error",
 				"noUselessCatch": "error",
 				"noUselessThisAlias": "error",
-				"noUselessTypeConstraint": "error",
-				"noWith": "error"
+				"noUselessTypeConstraint": "error"
 			},
 			"correctness": {
 				"noConstAssign": "error",
@@ -33,7 +28,6 @@
 				"noGlobalObjectCalls": "error",
 				"noInnerDeclarations": "error",
 				"noInvalidConstructorSuper": "error",
-				"noNewSymbol": "error",
 				"noNonoctalDecimalEscape": "error",
 				"noPrecisionLoss": "error",
 				"noSelfAssign": "error",
@@ -46,7 +40,6 @@
 				"noUnsafeOptionalChaining": "error",
 				"noUnusedLabels": "error",
 				"noUnusedVariables": "error",
-				"useArrayLiterals": "off",
 				"useExhaustiveDependencies": "warn",
 				"useHookAtTopLevel": "error",
 				"useIsNan": "error",
@@ -87,8 +80,7 @@
 				"noSkippedTests": "warn",
 				"noUnsafeDeclarationMerging": "error",
 				"noUnsafeNegation": "error",
-				"useGetterReturn": "error",
-				"useValidTypeof": "error"
+				"useGetterReturn": "error"
 			}
 		}
 	},
@@ -108,23 +100,17 @@
 	},
 	"overrides": [
 		{
-			"include": ["*.{js,cjs,cts,mjs,ts,mts,jsx,tsx}"],
+			"includes": ["*.{js,cjs,cts,mjs,ts,mts,jsx,tsx}"],
 			"linter": {
 				"rules": {
 					"correctness": {
 						"noConstAssign": "off",
 						"noGlobalObjectCalls": "off",
 						"noInvalidConstructorSuper": "off",
-						"noNewSymbol": "off",
 						"noSetterReturn": "off",
 						"noUndeclaredVariables": "off",
 						"noUnreachable": "off",
 						"noUnreachableSuper": "off"
-					},
-					"style": {
-						"noArguments": "error",
-						"noVar": "error",
-						"useConst": "error"
 					},
 					"suspicious": {
 						"noDuplicateClassMembers": "off",
@@ -141,16 +127,8 @@
 		}
 	],
 	"files": {
-		"include": [
-			"**/*.{js,cjs,cts,mjs,ts,mts,jsx,tsx}",
-			"**/*.json",
-			"**/*.md",
-			"**/*.html",
-			"**/*.css",
-			"**/*.scss",
-			"**/*.less",
-			"**/*.vue",
-			"**/*.svelte"
+		"includes": [
+			"src/**/*.{js,cjs,cts,mjs,ts,mts,jsx,tsx,json,yml,yaml,md,html,css,sass,scss,less,vue,svelte}"
 		]
 	}
 }

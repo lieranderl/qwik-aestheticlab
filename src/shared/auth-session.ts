@@ -1,6 +1,6 @@
 import { routeLoader$ } from "@builder.io/qwik-city";
-import { supabase } from "./supabase-client";
 import { localizePath } from "qwik-speak";
+import { supabase } from "./supabase-client";
 
 // eslint-disable-next-line qwik/loader-location
 export const useAuthUser = routeLoader$(async (requestEv) => {

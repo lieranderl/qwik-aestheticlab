@@ -1,8 +1,8 @@
-import { type Signal, component$, useSignal } from "@builder.io/qwik";
+import { component$, type Signal, useSignal } from "@builder.io/qwik";
 import {
-	HiLockClosedOutline,
-	HiEyeSlashOutline,
 	HiEyeOutline,
+	HiEyeSlashOutline,
+	HiLockClosedOutline,
 } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 

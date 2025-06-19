@@ -1,5 +1,5 @@
-import { server$ } from "@builder.io/qwik-city";
 import { isDev } from "@builder.io/qwik/build";
+import { server$ } from "@builder.io/qwik-city";
 import type { LoadTranslationFn, Translation, TranslationFn } from "qwik-speak";
 
 /**

@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
-import { InstagramCard } from "./instagram-card";
 import { inlineTranslate } from "qwik-speak";
+import { InstagramCard } from "./instagram-card";
 
 const INSTAGRAM_LINKS = [
 	"DFlEmP1OZ1W",

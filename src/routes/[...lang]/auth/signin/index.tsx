@@ -1,5 +1,5 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
-import { routeAction$, Form } from "@builder.io/qwik-city";
+import { Form, routeAction$ } from "@builder.io/qwik-city";
 import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { EmailInput } from "~/components/auth/email-input";
 import { PasswordInput } from "~/components/auth/password-input";
