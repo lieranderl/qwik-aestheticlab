@@ -9,7 +9,9 @@
 		"lineWidth": 80,
 		"attributePosition": "auto"
 	},
-	"organizeImports": { "enabled": false },
+	"organizeImports": {
+		"enabled": false
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -139,14 +141,16 @@
 		}
 	],
 	"files": {
-		"ignore": [
-			"build",
-			"dist",
-			"server",
-			"public",
-			"node_modules",
-			"tmp",
-			"adapters"
+		"include": [
+			"**/*.{js,cjs,cts,mjs,ts,mts,jsx,tsx}",
+			"**/*.json",
+			"**/*.md",
+			"**/*.html",
+			"**/*.css",
+			"**/*.scss",
+			"**/*.less",
+			"**/*.vue",
+			"**/*.svelte"
 		]
 	}
 }
