@@ -34,6 +34,7 @@ import {
 	useTechniciansLoader,
 } from "../layout";
 import {
+	useAdminBookAppointment,
 	useAdminsLoader,
 	useAuthUser,
 	useBookAppointment,
@@ -134,6 +135,7 @@ export default component$(() => {
 
 	/** Actions */
 	const action = useBookAppointment();
+	const actionAdmin = useAdminBookAppointment();
 	const useRemoveBookingAction = useRemoveBooking();
 
 	/** Resources */
@@ -283,7 +285,7 @@ export default component$(() => {
 						</div>
 						<Form
 							class="space-y-4 flex flex-col justify-center"
-							action={action}
+							action={isAdminSignal.value ? actionAdmin : action}
 						>
 							<ContactFormInputs
 								nameSignal={nameSignal}

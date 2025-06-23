@@ -92,6 +92,30 @@ export const useBookAppointment = routeAction$(async (form, { env }) => {
 	return { success: res.ok };
 });
 
+//**Admin booking appointment submission**
+export const useAdminBookAppointment = routeAction$(async (form, { env }) => {
+	const res = await fetch(
+		`${env.get("API_BASE_URL")}/calendar/admin/technician/${form.selectedTechId}`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `${env.get("API_TOKEN")}`,
+			},
+			body: JSON.stringify({
+				service_id: Object.keys(form.services),
+				date: form.slotStart,
+				weekday: form.weekday,
+				user_email: form.email,
+				name: form.name,
+				phone: form.phone,
+			}),
+		},
+	);
+	await res.json();
+	return { success: res.ok };
+});
+
 export default component$(() => {
 	return <Slot />;
 });
