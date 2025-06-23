@@ -8,7 +8,7 @@ import {
 	useSignal,
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Form, routeAction$, server$ } from "@builder.io/qwik-city";
+import { Form } from "@builder.io/qwik-city";
 import { HiHomeOutline, HiUserOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { ConfirmationSidePanel } from "~/components/booking/confirmation-side-panel";
@@ -22,6 +22,10 @@ import { TotalSummary } from "~/components/booking/total-summary";
 import { UpcomingAppointment } from "~/components/booking/upcoming-appoint";
 import { ChangeLocale } from "~/components/change-locale";
 import { ga } from "~/consts";
+import {
+	fetchTechnicianSlots,
+	generate15MinTimeSlots,
+} from "~/shared/functions";
 import { supabaseBrowser } from "~/shared/supabase-client";
 import type { Booking, Technician, TechnicianSlots, TimeSlot } from "~/types";
 import {
@@ -32,6 +36,7 @@ import {
 import {
 	useAdminsLoader,
 	useAuthUser,
+	useBookAppointment,
 	useRemoveBooking,
 	useSupabaseSignOut,
 } from "./layout";
@@ -45,45 +50,6 @@ const WEEKDAYS = [
 	"friday",
 	"saturday",
 ];
-
-/** Server call to fetch available time slots */
-const fetchTechnicianSlots = server$(
-	async (api_base_url, api_token, tech, date, weekday, duration) => {
-		const url = `${api_base_url}/calendar/technician/${tech.id}?date=${date}&weekday=${weekday}&slot_duration=${duration}`;
-		const response = await fetch(url, {
-			headers: { Authorization: `${api_token}` },
-		});
-		if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-		const slots: TimeSlot[] = await response.json();
-		return !slots.length || slots.every((s) => Object.keys(s).length === 0)
-			? null
-			: { tech, slots };
-	},
-);
-
-/** Booking appointment submission */
-export const useBookAppointment = routeAction$(async (form, { env }) => {
-	const res = await fetch(
-		`${env.get("API_BASE_URL")}/calendar/technician/${form.selectedTechId}`,
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `${env.get("API_TOKEN")}`,
-			},
-			body: JSON.stringify({
-				service_id: Object.keys(form.services),
-				date: form.slotStart,
-				weekday: form.weekday,
-				user_email: form.email,
-				name: form.name,
-				phone: form.phone,
-			}),
-		},
-	);
-	await res.json();
-	return { success: res.ok };
-});
 
 export default component$(() => {
 	/** Init */
@@ -245,22 +211,32 @@ export default component$(() => {
 		track(() => selectedServices.value.length + selectedDateSignal.value);
 		selectedSlot.value = null;
 		selectedTechnician.value = null;
+
 		if (
 			selectedDateSignal.value !== "Pick a date" &&
 			selectedServices.value.length > 0
 		) {
 			const results = await Promise.all(
-				(await getEligibleTechnicians()).map((tech) =>
-					fetchTechnicianSlots(
-						envs.value.API_BASE_URL,
-						envs.value.API_TOKEN,
+				(await getEligibleTechnicians()).map((tech) => {
+					if (isAdminSignal.value) {
+						// If admin, return all generated slots
+						return {
+							tech,
+							slots: generate15MinTimeSlots(selectedDateSignal.value, "+02:00"),
+						};
+					}
+					// Otherwise, fetch slots from the API
+					return fetchTechnicianSlots({
+						api_base_url: envs.value.API_BASE_URL,
+						api_token: envs.value.API_TOKEN,
 						tech,
-						selectedDateSignal.value,
-						selectedWeekDay.value,
-						totalDuration.value,
-					).catch((e) => console.error(e)),
-				),
+						date: selectedDateSignal.value,
+						weekday: selectedWeekDay.value,
+						duration: totalDuration.value.toString(),
+					}).catch((e) => console.error(e));
+				}),
 			);
+
 			return results.filter(
 				(r) => r && r.slots.length > 0,
 			) as TechnicianSlots[];
