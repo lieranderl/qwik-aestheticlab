@@ -1,1938 +1,2264 @@
 {
-	"name": "Aethstetic Lab",
-	"nodes": [
-		{
-			"parameters": {
-				"respondWith": "allIncomingItems",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.respondToWebhook",
-			"typeVersion": 1.1,
-			"position": [280, 140],
-			"id": "39cb095b-b722-4167-a66c-f24d60406d72",
-			"name": "Respond to Webhook",
-			"alwaysOutputData": false
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"tableId": "={{ $json.params.table }}",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "=active",
-							"condition": "is",
-							"keyValue": "true"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 240],
-			"id": "07522d30-133c-4070-8134-e02a0f6015dd",
-			"name": "Get All",
-			"alwaysOutputData": true,
-			"credentials": {
-				"supabaseApi": {
-					"id": "didZea293JFJDLqQ",
-					"name": "Supabase account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "get",
-				"tableId": "={{ $json.params.table }}",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "={{ $json.query.keys()[0] }}",
-							"keyValue": "={{ $json.query.values()[0] }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 40],
-			"id": "78694a6a-f379-42e7-81d4-b751a416f35f",
-			"name": "Get item from DB",
-			"alwaysOutputData": true,
-			"credentials": {
-				"supabaseApi": {
-					"id": "didZea293JFJDLqQ",
-					"name": "Supabase account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"content": "API to get data from supabase:\nGET /:table returns all items (max 50)\nGET /:table?id=888 returns item by id",
-				"height": 80,
-				"width": 740
-			},
-			"type": "n8n-nodes-base.stickyNote",
-			"typeVersion": 1,
-			"position": [-380, -60],
-			"id": "a9749db0-607a-4681-805a-0725f516ac1a",
-			"name": "Sticky Note"
-		},
-		{
-			"parameters": {
-				"path": ":table",
-				"authentication": "headerAuth",
-				"responseMode": "responseNode",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.webhook",
-			"typeVersion": 2,
-			"position": [-380, 140],
-			"id": "d35bb724-388c-4956-887e-38a43d874b5f",
-			"name": "GET item form DB",
-			"webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
-			"credentials": {
-				"httpHeaderAuth": {
-					"id": "RFuleBb6Rvnu63wl",
-					"name": "Header Auth account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "get",
-				"tableId": "technicians",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "id",
-							"keyValue": "={{ $json.params.id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 825],
-			"id": "10566927-346d-4076-bd9b-7f337307d82b",
-			"name": "Get item by ID",
-			"alwaysOutputData": false,
-			"credentials": {
-				"supabaseApi": {
-					"id": "didZea293JFJDLqQ",
-					"name": "Supabase account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"respondWith": "allIncomingItems",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.respondToWebhook",
-			"typeVersion": 1.1,
-			"position": [2040, 900],
-			"id": "1f3801b0-3f71-4022-b72a-faeef1ab9304",
-			"name": "Respond to Webhook3"
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"tableId": "services",
-				"filterType": "string",
-				"filterString": "=id=in.({{ $json.body.service_id }})"
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [-160, 1025],
-			"id": "da85f8e0-a6cd-4654-9da4-0efa45ce2cca",
-			"name": "Get item by ID1",
-			"alwaysOutputData": false,
-			"credentials": {
-				"supabaseApi": {
-					"id": "didZea293JFJDLqQ",
-					"name": "Supabase account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"fieldsToSummarize": {
-					"values": [
-						{
-							"aggregation": "sum",
-							"field": "duration"
-						},
-						{
-							"aggregation": "sum",
-							"field": "price"
-						},
-						{
-							"aggregation": "append",
-							"field": "name"
-						}
-					]
-				},
-				"fieldsToSplitBy": "=",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.summarize",
-			"typeVersion": 1,
-			"position": [60, 1025],
-			"id": "47b458ca-d606-4d50-bf1d-0e222a2e851a",
-			"name": "Summarize"
-		},
-		{
-			"parameters": {
-				"mode": "combine",
-				"combineBy": "combineByPosition",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.merge",
-			"typeVersion": 3,
-			"position": [280, 925],
-			"id": "0ac0cd21-a3ee-4c25-ba2e-33868c899ddc",
-			"name": "Merge"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "e25721e4-1953-4775-8e7c-17605f1590a7",
-							"name": "date",
-							"value": "={{ $('POST appointment').item.json.body.date }}",
-							"type": "string"
-						},
-						{
-							"id": "0d3edde7-e466-4d75-9ceb-06922c29b993",
-							"name": "working_hours",
-							"value": "={{ $json.working_hours }}",
-							"type": "object"
-						},
-						{
-							"id": "d0aafb5c-a34a-4b55-ba07-c3da7b31cc3a",
-							"name": "weekday",
-							"value": "={{ $('POST appointment').item.json.body.weekday }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [500, 925],
-			"id": "d197a772-19a8-44db-9e22-e3a9e7667ebf",
-			"name": "Edit Fields"
-		},
-		{
-			"parameters": {
-				"content": "Book appointment\nPOST /calendar/technician/:id   \n     Body: {\n    \"service_id\": [\"1075a65d-9b61-4233-9a28-36f36dd28872\",\"bf5e534b-2285-40b3-be93-f6247431161f\"],\n    \"date\": \"2025-01-31T09:00:00+01:00\",\n    \"weekday\": \"Friday\",\n    \"user_email\": \"jfedotov@icloud.com\",\n    \"name\": \"blblb lblbl\",\n    \"phone\": \"04847444444\"\n}\n",
-				"height": 140,
-				"width": 800
-			},
-			"type": "n8n-nodes-base.stickyNote",
-			"typeVersion": 1,
-			"position": [-380, 400],
-			"id": "04af8337-7169-48d5-92ad-9db6f220d03a",
-			"name": "Sticky Note1"
-		},
-		{
-			"parameters": {
-				"calendar": {
-					"__rl": true,
-					"value": "={{ $('Merge').item.json.calendar_id }}",
-					"mode": "id"
-				},
-				"start": "={{ $('Edit Fields2').item.json.date.toDateTime() }}",
-				"end": "={{ $('Edit Fields').item.json.date.toDateTime().plus({ minutes: $('Edit Fields2').item.json.duration }) }}",
-				"additionalFields": {
-					"attendees": [
-						"={{ $('POST appointment').item.json.body.user_email }}"
-					],
-					"description": "=Appointment for {{ $('Merge').item.json.name}}\n\nVisitor: \nName: {{ $('POST appointment').item.json.body.name }}\nEmail: {{ $('POST appointment').item.json.body.user_email }}\nPhone: {{ $('POST appointment').item.json.body.phone }}\n\nServices: {{ $('Merge').item.json.appended_name }}\nDuration: {{ $('Summarize').item.json.sum_duration }}\nPrice: {{ $('Summarize').item.json.sum_price }}",
-					"sendUpdates": "none",
-					"summary": "={{ $('Merge').item.json.name.substring(0,1) }}. {{ $('Merge').item.json.appended_name }}. {{ $('POST appointment').item.json.body.name }}"
-				}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [1820, 800],
-			"id": "34194523-07c5-4e22-b054-6b9fc7b5474c",
-			"name": "Create Event",
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"conditions": {
-					"options": {
-						"caseSensitive": true,
-						"leftValue": "",
-						"typeValidation": "strict",
-						"version": 2
-					},
-					"conditions": [
-						{
-							"id": "745689c2-fc66-4ef5-8cf1-dcee1256bc41",
-							"leftValue": "={{ $json.query.id }}",
-							"rightValue": "",
-							"operator": {
-								"type": "string",
-								"operation": "exists",
-								"singleValue": true
-							}
-						}
-					],
-					"combinator": "and"
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.if",
-			"typeVersion": 2.2,
-			"position": [-160, 140],
-			"id": "3dadccde-8bec-414a-ae9c-7f37645bda23",
-			"name": "If"
-		},
-		{
-			"parameters": {
-				"httpMethod": "POST",
-				"path": "calendar/technician/:id",
-				"authentication": "headerAuth",
-				"responseMode": "responseNode",
-				"options": {
-					"rawBody": false
-				}
-			},
-			"type": "n8n-nodes-base.webhook",
-			"typeVersion": 2,
-			"position": [-380, 925],
-			"id": "0f27ac16-5e88-4fb3-a1fd-1bc466f80178",
-			"name": "POST appointment",
-			"webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
-			"credentials": {
-				"httpHeaderAuth": {
-					"id": "RFuleBb6Rvnu63wl",
-					"name": "Header Auth account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"content": "Get technician slots for specific day (Anonymized)\nGET /calendar/technician/:id \n\ndate:2025-01-31T10:00:00%2B01:00\nweekday:Friday\nslot_duration: 15",
-				"height": 120,
-				"width": 740
-			},
-			"type": "n8n-nodes-base.stickyNote",
-			"typeVersion": 1,
-			"position": [-280, 1000],
-			"id": "230a5002-7ea6-4271-adbe-c1656f55f422",
-			"name": "Sticky Note2"
-		},
-		{
-			"parameters": {
-				"respondWith": "allIncomingItems",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.respondToWebhook",
-			"typeVersion": 1.1,
-			"position": [940, 1560],
-			"id": "7c0250c4-9969-4117-bc73-cdcc2d3dc260",
-			"name": "Respond to Webhook1",
-			"alwaysOutputData": true
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"calendar": {
-					"__rl": true,
-					"value": "={{ $json.calendar_id }}",
-					"mode": "id"
-				},
-				"timeMin": "={{ $('Get Slots Trigger').item.json.query.date }}",
-				"timeMax": "={{ $('Get Slots Trigger').item.json.query.date.toDateTime().plus({ day: 1 }) }}",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [60, 1460],
-			"id": "ef3b786b-a7a7-45b3-a18a-5bea60824361",
-			"name": "Google Calendar",
-			"alwaysOutputData": true,
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "get",
-				"tableId": "technicians",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "=id",
-							"keyValue": "={{ $json.params.id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [-160, 1560],
-			"id": "307f57e2-fd99-48ff-92ec-21a9434b4ef9",
-			"name": "Get item from DB1",
-			"alwaysOutputData": false,
-			"credentials": {
-				"supabaseApi": {
-					"id": "didZea293JFJDLqQ",
-					"name": "Supabase account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "7f3b03db-d1f8-4df8-acc0-aefb06dad37c",
-							"name": "start",
-							"value": "={{ $json.start.dateTime }}",
-							"type": "string"
-						},
-						{
-							"id": "57a1d9bd-7ca0-4ba8-b6ad-dbc320195010",
-							"name": "end",
-							"value": "={{ $json.end.dateTime }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [280, 1460],
-			"id": "ec624003-4015-49a7-bd30-843421873769",
-			"name": "Edit Fields1",
-			"alwaysOutputData": false
-		},
-		{
-			"parameters": {
-				"resource": "calendar",
-				"calendar": {
-					"__rl": true,
-					"value": "={{ $json.calendar_id }}",
-					"mode": "id"
-				},
-				"timeMin": "={{ $json.date.toDateTime() }}",
-				"timeMax": "={{ $json.date.toDateTime().plus($json.duration, 'minutes') }}",
-				"options": {
-					"outputFormat": "availability"
-				}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [1380, 850],
-			"id": "e2ddbef5-5c8b-4aa6-a7ca-ff5fafb95188",
-			"name": "Availability",
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"conditions": {
-					"options": {
-						"caseSensitive": true,
-						"leftValue": "",
-						"typeValidation": "strict",
-						"version": 2
-					},
-					"conditions": [
-						{
-							"id": "977a52d9-3639-40b9-a4ce-92d683c6854a",
-							"leftValue": "={{ $json.available }}",
-							"rightValue": "",
-							"operator": {
-								"type": "boolean",
-								"operation": "true",
-								"singleValue": true
-							}
-						}
-					],
-					"combinator": "and"
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.if",
-			"typeVersion": 2.2,
-			"position": [1600, 850],
-			"id": "af37b2e0-efb8-4f3c-8b68-85bf4c424f7c",
-			"name": "If1"
-		},
-		{
-			"parameters": {
-				"jsCode": "const input = {\n    date: $input.first().json.date,\n    weekday: $input.first().json.weekday,\n    working_hours: $input.first().json.working_hours\n};\n\n// Convert date to Luxon DateTime object\nconst dateTime = DateTime.fromISO(input.date);\nconst hour = dateTime.hour;\nconst minute = dateTime.minute;\n  \n// Get the working hours for the provided weekday\nconst workHours = input.working_hours[input.weekday] || [];\n// Function to check if the time is within a range\nconst available = workHours.some(range => {\n    const [start, end] = range.split(\"-\").map(time => {\n        const [h, m] = time.split(\":\").map(Number);\n        return { hour: h, minute: m };\n    });\n    return (\n        (hour > start.hour || (hour === start.hour && minute >= start.minute)) &&\n        (hour < end.hour || (hour === end.hour && minute <= end.minute))\n    );\n});\n\n// Return result\nreturn [{ available }];\n"
-			},
-			"type": "n8n-nodes-base.code",
-			"typeVersion": 2,
-			"position": [720, 925],
-			"id": "5340b6ca-510e-473b-a45a-7a0a898ecb52",
-			"name": "Check WorkingHours"
-		},
-		{
-			"parameters": {
-				"conditions": {
-					"options": {
-						"caseSensitive": true,
-						"leftValue": "",
-						"typeValidation": "strict",
-						"version": 2
-					},
-					"conditions": [
-						{
-							"id": "52c4b756-b08a-4b21-9b38-617e5244717a",
-							"leftValue": "={{ $json.available }}",
-							"rightValue": "",
-							"operator": {
-								"type": "boolean",
-								"operation": "true",
-								"singleValue": true
-							}
-						}
-					],
-					"combinator": "and"
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.if",
-			"typeVersion": 2.2,
-			"position": [940, 925],
-			"id": "231e9ac1-ddaa-40a0-874e-d5b8cfec3aae",
-			"name": "If3"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "e25721e4-1953-4775-8e7c-17605f1590a7",
-							"name": "date",
-							"value": "={{ $('POST appointment').item.json.body.date }}",
-							"type": "string"
-						},
-						{
-							"id": "b759a3d3-253f-4dec-af7e-4a195327d1c7",
-							"name": "calendar_id",
-							"value": "={{ $('Merge').item.json.calendar_id }}",
-							"type": "string"
-						},
-						{
-							"id": "e1e02c54-5da0-4879-bc2d-f31d2616704c",
-							"name": "duration",
-							"value": "={{ $('Merge').item.json.sum_duration }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [1160, 850],
-			"id": "1ccfd8bf-ac89-4e46-be0a-1fb3a5c3b8c6",
-			"name": "Edit Fields2"
-		},
-		{
-			"parameters": {
-				"respondWith": "allIncomingItems",
-				"options": {
-					"responseCode": 403
-				}
-			},
-			"type": "n8n-nodes-base.respondToWebhook",
-			"typeVersion": 1.1,
-			"position": [1820, 1025],
-			"id": "70c6f5a2-7a26-4652-aadf-dc474b8e44fe",
-			"name": "Respond to Webhook4"
-		},
-		{
-			"parameters": {
-				"jsCode": "// Helper function to convert time strings into Date objects\nfunction parseTime(baseDate, timeStr) {\n    const [hours, minutes] = timeStr.split(\":\").map(Number);\n    const date = DateTime.fromISO(baseDate).set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });\n    return date;\n}\n\n// Check if a slot overlaps with a scheduled meeting\nfunction isSlotBusy(slot, meetings) {\n    return meetings.some(meeting => {\n        const meetingStart = DateTime.fromISO(meeting.json.start);\n        const meetingEnd = DateTime.fromISO(meeting.json.end);\n        return (slot.start < meetingEnd && slot.end > meetingStart);\n    });\n}\n\n// Check if the service duration can fit without overlapping busy slots\nfunction canFitServiceDuration(slot, serviceDuration, endOfDay, meetings) {\n    let serviceEnd = slot.start.plus({ minutes: serviceDuration });\n\n    // Check if service exceeds working hours\n    if (serviceEnd > endOfDay) return false;\n\n    // Check if any overlapping meetings during the service duration\n    return !meetings.some(meeting => {\n        const meetingStart = DateTime.fromISO(meeting.json.start);\n        const meetingEnd = DateTime.fromISO(meeting.json.end);\n        return (slot.start < meetingEnd && serviceEnd > meetingStart);\n    });\n}\n\n// Generate slots based on working hours\nfunction generateSlots(baseDate, workingHours, meetings, serviceDuration) {\n    let slots = [];\n    const now = DateTime.now(); // Get current timestamp\n    const bufferTime = now.plus({ hours: 2 }); // Add 2-hour buffer\n\n    workingHours.forEach(period => {\n        let startTime = parseTime(baseDate, period.split(\"-\")[0]);\n        let endTime = parseTime(baseDate, period.split(\"-\")[1]);\n\n        while (startTime < endTime) {\n            let slotEnd = startTime.plus({ minutes: 30 });\n\n            // Ensure slot starts after bufferTime and is not in the past, and fits in period\n            if (startTime > bufferTime && slotEnd <= endTime) {\n                let status = \"available\";\n\n                if (isSlotBusy({ start: startTime, end: slotEnd }, meetings) ||\n                    !canFitServiceDuration({ start: startTime, end: slotEnd }, serviceDuration, endTime, meetings)) {\n                    status = \"busy\";\n                }\n\n                slots.push({\n                    start: startTime.toISO(),\n                    end: slotEnd.toISO(),\n                    status: status\n                });\n            }\n\n            startTime = slotEnd;\n        }\n    });\n\n    return slots;\n}\n\n// Main function execution\nconst baseDate = DateTime.fromISO($('Get Slots Trigger').first().json.query.date);\nconst workingHours = $('Get item from DB1').first().json.working_hours[$('Get Slots Trigger').first().json.query.weekday];\nconst scheduledMeetings = $input.all();\nconst serviceDuration = $('Get Slots Trigger').first().json.query.slot_duration;\n\n// Generate slots\nconst slots = generateSlots(baseDate, workingHours, scheduledMeetings, serviceDuration);\n\nreturn slots;\n"
-			},
-			"type": "n8n-nodes-base.code",
-			"typeVersion": 2,
-			"position": [720, 1560],
-			"id": "2f79629a-2a4b-4c03-bf95-80fb982f4568",
-			"name": "Make Slots",
-			"alwaysOutputData": true
-		},
-		{
-			"parameters": {
-				"operation": "iCal",
-				"title": "={{ $json.summary }}",
-				"start": "={{ $json.start.dateTime }}",
-				"end": "={{ $json.end.dateTime }}",
-				"additionalFields": {
-					"attendeesUi": {
-						"attendeeValues": [
-							{
-								"name": "You",
-								"email": "={{ $json.attendees[0].email }}",
-								"rsvp": true
-							}
-						]
-					},
-					"busyStatus": "BUSY",
-					"organizerUi": {
-						"organizerValues": {
-							"name": "={{ $json.organizer.displayName }}",
-							"email": "={{ $json.organizer.email }}"
-						}
-					}
-				}
-			},
-			"type": "n8n-nodes-base.convertToFile",
-			"typeVersion": 1.1,
-			"position": [2040, 700],
-			"id": "fd1e2eae-17b2-4f2c-a069-693d667d9466",
-			"name": "ICS file"
-		},
-		{
-			"parameters": {
-				"sendTo": "={{ $('Create Event').item.json.attendees[0].email }}",
-				"subject": "={{ $('Create Event').item.json.summary }}. {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}.",
-				"message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        :root {\n            --color-base-100: #f4f5f1;\n            --color-base-200: #e1e4d6;\n            --color-base-300: #d0d2c2;\n            --color-base-content: #2e2e2c;\n            --color-primary: #8b9687;\n            --color-primary-content: #f1f4f1;\n            --color-secondary: #6a7b8c;\n            --color-secondary-content: #f4f7f9;\n        }\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: var(--color-base-100);\n            margin: 0;\n            padding: 20px;\n            color: var(--color-base-content);\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: white;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n            text-align: center;\n        }\n        .header {\n            padding-bottom: 20px;\n            border-bottom: 2px solid var(--color-base-300);\n        }\n        .header h1 {\n            font-size: 26px;\n            color: var(--color-primary);\n            margin-bottom: 5px;\n        }\n        .header h2 {\n            font-size: 20px;\n            color: var(--color-secondary);\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.8;\n            text-align: left;\n        }\n        .highlight {\n            color: var(--color-primary);\n            font-weight: bold;\n        }\n        .info {\n            background-color: var(--color-base-200);\n            padding: 20px;\n            border-radius: 10px;\n            margin: 15px 0;\n        }\n        .duration-price {\n            font-weight: bold;\n            color: var(--color-secondary);\n        }\n        .footer {\n            margin-top: 25px;\n            font-size: 14px;\n            color: var(--color-base-content);\n        }\n        .footer a {\n            color: var(--color-primary);\n            text-decoration: none;\n            font-weight: bold;\n        }\n        .footer a:hover {\n            text-decoration: underline;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Confirmation</h1>\n        <h2>Aesthetic Lab</h2>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $('POST appointment').item.json.body.name }}</span>,</p>\n        \n        <p>We're delighted to confirm your appointment at <strong class=\"highlight\">Aesthetic Lab</strong>!</p>\n\n        <div class=\"info\">\n            <p><strong>Service(s):</strong> <span class=\"highlight\">{{ $('Merge').item.json.appended_name }}</span></p>\n\n            <p><strong>Your Nail Artist:</strong><br>\n            <span class=\"highlight\">{{ $('Merge').item.json.name }}</span> <a href=\"mailto:{{ $('Merge').item.json.email }}\" class=\"highlight\">✉️</a></p>\n            <p><strong>Address:</strong><br>\n            <span class=\"highlight\">Vital Decosterstraat 29, 3000 Leuven\nGala De Luxe</span>\n            </p>\n<p><strong>Parking available at:</strong><br>\n            <span class=\"highlight\">\nQ-Park Centrum Leuven\nVital Decosterstraat 37, 3000 Leuven</span>\n            </p>\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at \n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            <br><span class=\"duration-price\">Duration: {{ $('Summarize').item.json.sum_duration }} min</span>\n            <br><span class=\"duration-price\">Price: {{ $('Summarize').item.json.sum_price }}€</span>\n            </p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Thank you for choosing <strong>Aesthetic Lab</strong>!</p>\n        <p><a href=\"https://aestheticlab.be/\">Visit our Website</a> | <a href=\"mailto:aestheticlabbe@gmail.com\">Email Us</a> | <a href=\"https://www.instagram.com/aestheticlabbe/\">Follow us on Instagram</a></p>\n    </div>\n</div>\n\n</body>\n</html>\n\n\n\n\n",
-				"options": {
-					"appendAttribution": false,
-					"attachmentsUi": {
-						"attachmentsBinary": [{}]
-					}
-				}
-			},
-			"type": "n8n-nodes-base.gmail",
-			"typeVersion": 2.1,
-			"position": [2260, 700],
-			"id": "e11ff248-4d31-4201-962d-7a98f3d73a97",
-			"name": "Email to participant",
-			"webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
-			"credentials": {
-				"gmailOAuth2": {
-					"id": "L2umD4YWXpQ1PHFP",
-					"name": "Aesthetic Lab Gmail account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"sendTo": "={{ $('Merge').item.json.email }}",
-				"subject": "={{ $('Merge').item.json.name.substring(0,1) }}. {{ $('Merge').item.json.appended_name }}. {{ $('POST appointment').item.json.body.name }}. {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }} - {{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}",
-				"message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: #8b9687;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Confirmation</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $('Merge').item.json.name }}</span>,</p>\n        <p>You have one new appointment:</p>\n        <div class=\"info\">\n            <p><strong>Event:</strong> <span class=\"highlight\">{{ $('Create Event').item.json.summary }}</span></p>\n\n            <p><strong>Visitor Details:</strong><br>\n            Name: <span class=\"highlight\">{{ $('POST appointment').item.json.body.name }}</span><br>\n            Phone: <span class=\"highlight\">{{ $('POST appointment').item.json.body.phone }}</span><br>\n            Email: <span class=\"highlight\">{{ $json.attendees[0].email }}</span></p>\n\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            - <span class=\"highlight\">{{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            </p>\n\n            <p><strong>Timezone:</strong> <span class=\"highlight\">{{ $('Create Event').item.json.start.timeZone }}</span></p>\n        </div>\n\n        <p style=\"text-align: center;\">\n            <a href=\"{{ $('Create Event').item.json.htmlLink }}\" class=\"button\">View Event</a>\n        </p>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
-				"options": {
-					"appendAttribution": false
-				}
-			},
-			"type": "n8n-nodes-base.gmail",
-			"typeVersion": 2.1,
-			"position": [2040, 500],
-			"id": "4aa2d1a5-9d5a-4199-8c1f-3341a7cab95b",
-			"name": "Email to Organisator",
-			"webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
-			"credentials": {
-				"gmailOAuth2": {
-					"id": "L2umD4YWXpQ1PHFP",
-					"name": "Aesthetic Lab Gmail account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"path": "calendar/technician/:id",
-				"authentication": "headerAuth",
-				"responseMode": "responseNode",
-				"options": {
-					"rawBody": false
-				}
-			},
-			"type": "n8n-nodes-base.webhook",
-			"typeVersion": 2,
-			"position": [-380, 1560],
-			"id": "c0593ff1-11fe-4c37-961b-a6a938a19afe",
-			"name": "Get Slots Trigger",
-			"webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
-			"credentials": {
-				"httpHeaderAuth": {
-					"id": "RFuleBb6Rvnu63wl",
-					"name": "Header Auth account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"conditions": {
-					"options": {
-						"caseSensitive": true,
-						"leftValue": "",
-						"typeValidation": "strict",
-						"version": 2
-					},
-					"conditions": [
-						{
-							"id": "a974a29a-0a97-4048-9800-549ccd79ed89",
-							"leftValue": "={{ $json.email }}",
-							"rightValue": "",
-							"operator": {
-								"type": "string",
-								"operation": "exists",
-								"singleValue": true
-							}
-						}
-					],
-					"combinator": "and"
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.if",
-			"typeVersion": 2.2,
-			"position": [2260, 1100],
-			"id": "fcc22bf4-a479-4524-8f5d-75a12e9587c2",
-			"name": "If2"
-		},
-		{
-			"parameters": {
-				"tableId": "bookings",
-				"fieldsUi": {
-					"fieldValues": [
-						{
-							"fieldId": "client_id",
-							"fieldValue": "={{ $json.id }}"
-						},
-						{
-							"fieldId": "technician_id",
-							"fieldValue": "={{ $('POST appointment').item.json.params.id }}"
-						},
-						{
-							"fieldId": "services",
-							"fieldValue": "={{ $('POST appointment').item.json.body.service_id }}"
-						},
-						{
-							"fieldId": "duration",
-							"fieldValue": "={{ $('Summarize').item.json.sum_duration }}"
-						},
-						{
-							"fieldId": "price",
-							"fieldValue": "={{ $('Summarize').item.json.sum_price }}"
-						},
-						{
-							"fieldId": "datetime",
-							"fieldValue": "={{ $('POST appointment').item.json.body.date.toDateTime() }}"
-						},
-						{
-							"fieldId": "calendar_id",
-							"fieldValue": "={{ $('Merge').item.json.calendar_id }}"
-						},
-						{
-							"fieldId": "event_id",
-							"fieldValue": "={{ $('Create Event').item.json.id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [2700, 1100],
-			"id": "1253385a-1024-4770-bee8-4d637052b917",
-			"name": "Create Booking",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "get",
-				"tableId": "clients",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "email",
-							"keyValue": "={{ $json.attendees[0].email }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [2040, 1100],
-			"id": "0c1a6405-2049-4e77-9fc2-d3215f39f1d9",
-			"name": "Check New Client",
-			"alwaysOutputData": true,
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"tableId": "clients",
-				"fieldsUi": {
-					"fieldValues": [
-						{
-							"fieldId": "email",
-							"fieldValue": "={{ $('POST appointment').item.json.body.user_email }}"
-						},
-						{
-							"fieldId": "phone",
-							"fieldValue": "={{ $('POST appointment').item.json.body.phone }}"
-						},
-						{
-							"fieldId": "name",
-							"fieldValue": "={{ $('POST appointment').item.json.body.name }}"
-						},
-						{
-							"fieldId": "birthdate",
-							"fieldValue": "={{ $('POST appointment').item.json.body.birthdat }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [2480, 1200],
-			"id": "1fc35bb9-4327-4c01-9a8b-47d4226de831",
-			"name": "Create New Client",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"calendar": {
-					"__rl": true,
-					"value": "={{ $json.personal_calendar_id }}",
-					"mode": "id"
-				},
-				"timeMin": "={{ $('Get Slots Trigger').item.json.query.date }}",
-				"timeMax": "={{ $('Get Slots Trigger').item.json.query.date.toDateTime().plus({ day: 1 }) }}",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [60, 1660],
-			"id": "ced5d328-6339-4701-aa97-5d62537bd8f9",
-			"name": "Get Personal Events",
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			}
-		},
-		{
-			"parameters": {},
-			"type": "n8n-nodes-base.merge",
-			"typeVersion": 3,
-			"position": [500, 1560],
-			"id": "948ec624-d5f8-4128-b29b-ea370345c5a4",
-			"name": "Merge1"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "7f3b03db-d1f8-4df8-acc0-aefb06dad37c",
-							"name": "start",
-							"value": "={{ $json.start.dateTime }}",
-							"type": "string"
-						},
-						{
-							"id": "57a1d9bd-7ca0-4ba8-b6ad-dbc320195010",
-							"name": "end",
-							"value": "={{ $json.end.dateTime }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [280, 1660],
-			"id": "847e6c86-8584-4642-9a5a-cd20ecb58d26",
-			"name": "Edit Fields3",
-			"alwaysOutputData": false
-		},
-		{
-			"parameters": {
-				"httpMethod": "DELETE",
-				"path": "bookings/:id",
-				"authentication": "headerAuth",
-				"responseMode": "responseNode",
-				"options": {
-					"rawBody": false
-				}
-			},
-			"type": "n8n-nodes-base.webhook",
-			"typeVersion": 2,
-			"position": [-380, 2590.5],
-			"id": "fa4644f1-921b-4784-9ada-0d6a835f9b7b",
-			"name": "Remove Booking Id",
-			"webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
-			"credentials": {
-				"httpHeaderAuth": {
-					"id": "RFuleBb6Rvnu63wl",
-					"name": "Header Auth account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "get",
-				"tableId": "bookings",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "id",
-							"keyValue": "={{ $json.params.id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [-160, 2590.5],
-			"id": "f9ccb843-bc66-493e-8e38-dc1f96ce8b7a",
-			"name": "Supabase",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"respondWith": "allIncomingItems",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.respondToWebhook",
-			"typeVersion": 1.1,
-			"position": [500, 2200],
-			"id": "8d8c31cb-cb21-4abe-831e-2bf6ce3c7c6d",
-			"name": "Respond to Webhook2"
-		},
-		{
-			"parameters": {
-				"operation": "delete",
-				"calendar": {
-					"__rl": true,
-					"value": "={{ $json.calendar_id }}",
-					"mode": "id"
-				},
-				"eventId": "={{ $json.event_id }}",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [280, 2020],
-			"id": "bd4183ad-0cbd-4e48-9647-d6ded02744ed",
-			"name": "Google Calendar1",
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			},
-			"onError": "continueRegularOutput"
-		},
-		{
-			"parameters": {
-				"operation": "delete",
-				"tableId": "bookings",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "id",
-							"condition": "eq",
-							"keyValue": "={{ $('Remove Booking Id').item.json.params.id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [280, 2200],
-			"id": "e5456e2c-e340-451a-be0f-967cf5cb4387",
-			"name": "RemoveRowFromSupabase",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"path": "staging/healthz",
-				"options": {
-					"responseData": "OK"
-				}
-			},
-			"type": "n8n-nodes-base.webhook",
-			"typeVersion": 2,
-			"position": [-380, 1920],
-			"id": "c46b8671-64aa-4ffa-a674-208261f3bc52",
-			"name": "Healthz",
-			"webhookId": "f847fbd1-9fca-4e22-bad9-49cc627b529c"
-		},
-		{
-			"parameters": {
-				"sendTo": "={{ $json.tech_email }}",
-				"subject": "=Appointment Canceled. Client: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
-				"message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.tech_name }}</span>,</p>\n        <p>The following appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Visitor: </strong><span class=\"highlight\">{{ $json.client_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
-				"options": {
-					"appendAttribution": false
-				}
-			},
-			"type": "n8n-nodes-base.gmail",
-			"typeVersion": 2.1,
-			"position": [720, 2580],
-			"id": "7c05d47b-2250-45bc-9955-097431b8ebef",
-			"name": "Email to Organisator1",
-			"webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
-			"credentials": {
-				"gmailOAuth2": {
-					"id": "L2umD4YWXpQ1PHFP",
-					"name": "Aesthetic Lab Gmail account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"tableId": "services",
-				"filterType": "string",
-				"filterString": "=id=in.({{ $json.services.join(',') }})"
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 2580],
-			"id": "374f7140-b700-4247-be66-33df89345000",
-			"name": "Supabase get services",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"tableId": "technicians",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "id",
-							"condition": "eq",
-							"keyValue": "={{ $json.technician_id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 2780],
-			"id": "d8b4b0d3-5a04-4986-a60b-b5bc76063991",
-			"name": "Supabase get tech",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"tableId": "clients",
-				"filters": {
-					"conditions": [
-						{
-							"keyName": "id",
-							"condition": "eq",
-							"keyValue": "={{ $json.client_id }}"
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.supabase",
-			"typeVersion": 1,
-			"position": [60, 2980],
-			"id": "747b74b1-4e02-4086-9303-cc3d83516192",
-			"name": "Supabase get client",
-			"credentials": {
-				"supabaseApi": {
-					"id": "3Qh62MphBVJLyiWj",
-					"name": "Supabase Secret"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"fieldsToAggregate": {
-					"fieldToAggregate": [
-						{
-							"fieldToAggregate": "name",
-							"renameField": true,
-							"outputFieldName": "services_name"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.aggregate",
-			"typeVersion": 1,
-			"position": [280, 2580],
-			"id": "4c174a93-9590-4276-8d85-00b86305ff44",
-			"name": "Aggregate"
-		},
-		{
-			"parameters": {
-				"mode": "combineBySql",
-				"numberInputs": 4,
-				"query": "SELECT * FROM input1,input3,input4 LEFT JOIN input2 ON input1.name = input2.id\n"
-			},
-			"type": "n8n-nodes-base.merge",
-			"typeVersion": 3.1,
-			"position": [500, 2659],
-			"id": "a64e00c4-3190-4440-b1a8-acfe10ed85ac",
-			"name": "Merge2"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "4da1bdcb-abff-4895-a190-478f0f9aa968",
-							"name": "tech_name",
-							"value": "={{ $json.name }}",
-							"type": "string"
-						},
-						{
-							"id": "e98a471d-e4bb-438c-b14d-237859c4f9f6",
-							"name": "tech_email",
-							"value": "={{ $json.email }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [280, 2780],
-			"id": "f3bd4fbc-1456-4547-95c8-f83b4638e47b",
-			"name": "Edit Fields4"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "c3b95d0d-7936-4268-8dcd-cd53b2de220d",
-							"name": "client_email",
-							"value": "={{ $json.email }}",
-							"type": "string"
-						},
-						{
-							"id": "e9024670-dab3-41c1-9288-094fae8385f5",
-							"name": "client_name",
-							"value": "={{ $json.name }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [280, 2980],
-			"id": "1077dc40-8b04-44cd-8048-24995062d978",
-			"name": "Edit Fields5"
-		},
-		{
-			"parameters": {
-				"assignments": {
-					"assignments": [
-						{
-							"id": "aa24c4af-dd8b-4f07-82a2-73e0303245cc",
-							"name": "duration",
-							"value": "={{ $json.duration }}",
-							"type": "number"
-						},
-						{
-							"id": "d8114d3b-d4d4-48af-ad20-2ffa18d6ae8a",
-							"name": "price",
-							"value": "={{ $json.price }}",
-							"type": "number"
-						},
-						{
-							"id": "409f6a51-53a3-4de5-9c25-58b0e53b5e74",
-							"name": "datetime",
-							"value": "={{ $json.datetime }}",
-							"type": "string"
-						}
-					]
-				},
-				"options": {}
-			},
-			"type": "n8n-nodes-base.set",
-			"typeVersion": 3.4,
-			"position": [280, 2380],
-			"id": "c1a7ecf1-a35b-409b-a50f-89e5bf60cc7f",
-			"name": "Edit Fields6"
-		},
-		{
-			"parameters": {
-				"sendTo": "={{ $json.client_email }}",
-				"subject": "=Appointment Canceled. {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}.",
-				"message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.client_name }}</span>,</p>\n        <p>We confirm that your appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Nail Artist:</strong> <span class=\"highlight\">{{ $json.tech_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
-				"options": {
-					"appendAttribution": false
-				}
-			},
-			"type": "n8n-nodes-base.gmail",
-			"typeVersion": 2.1,
-			"position": [720, 2780],
-			"id": "83da4da5-1356-40ef-9e53-922a3f08a748",
-			"name": "Email to Visitor Canceled",
-			"webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
-			"credentials": {
-				"gmailOAuth2": {
-					"id": "L2umD4YWXpQ1PHFP",
-					"name": "Aesthetic Lab Gmail account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"chatId": "-4805287164",
-				"text": "={{ $json.summary }}\nDate: {{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM/yyyy HH:mm\") }}\n\n{{ $json.description }}\n",
-				"additionalFields": {
-					"appendAttribution": false,
-					"disable_notification": false,
-					"parse_mode": "HTML"
-				}
-			},
-			"type": "n8n-nodes-base.telegram",
-			"typeVersion": 1.2,
-			"position": [2040, 320],
-			"id": "fe0e9505-4433-4640-9401-42a266b18c06",
-			"name": "Telegram",
-			"webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
-			"credentials": {
-				"telegramApi": {
-					"id": "ExdnBRlXc4V62U3f",
-					"name": "Telegram account"
-				}
-			},
-			"onError": "continueRegularOutput"
-		},
-		{
-			"parameters": {
-				"chatId": "-4805287164",
-				"text": "=Appointment Canceled. \nNail Artist: {{ $json.tech_name }}\nClient: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}\n\nServices:{{ $json.services_name.join(\", \") }}\n",
-				"additionalFields": {
-					"appendAttribution": false,
-					"disable_notification": false
-				}
-			},
-			"type": "n8n-nodes-base.telegram",
-			"typeVersion": 1.2,
-			"position": [720, 2400],
-			"id": "94188401-a619-4b38-99b6-04fd9b1a624d",
-			"name": "Telegram1",
-			"webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
-			"credentials": {
-				"telegramApi": {
-					"id": "ExdnBRlXc4V62U3f",
-					"name": "Telegram account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"operation": "getAll",
-				"calendar": {
-					"__rl": true,
-					"value": "aestheticlabbe@gmail.com",
-					"mode": "list",
-					"cachedResultName": "aestheticlabbe@gmail.com"
-				},
-				"timeMin": "={{ $now.plus({hour: 10}) }}",
-				"timeMax": "={{ $now.plus({ day: 1 }) }}",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.googleCalendar",
-			"typeVersion": 1.3,
-			"position": [-140, 3400],
-			"id": "ec9e3066-e3b6-4b9a-af74-f1fceb7f27a7",
-			"name": "Get Tomorow events",
-			"credentials": {
-				"googleCalendarOAuth2Api": {
-					"id": "5XoRF0JTWpWTiljA",
-					"name": "Google Calendar Aethstetic Scheduler"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"fieldToSplitOut": "attendees",
-				"include": "allOtherFields",
-				"options": {}
-			},
-			"type": "n8n-nodes-base.splitOut",
-			"typeVersion": 1,
-			"position": [80, 3400],
-			"id": "d7368d9c-02e9-4d53-8e6c-319de470a384",
-			"name": "Split Out"
-		},
-		{
-			"parameters": {
-				"sendTo": "={{ $json.attendees.email }}",
-				"subject": "=Aestheticlab Reminder! {{ $json.summary.split('. ')[1] }}. {{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}.",
-				"message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        :root {\n            --color-base-100: #f4f5f1;\n            --color-base-200: #e1e4d6;\n            --color-base-300: #d0d2c2;\n            --color-base-content: #2e2e2c;\n            --color-primary: #8b9687;\n            --color-primary-content: #f1f4f1;\n            --color-secondary: #6a7b8c;\n            --color-secondary-content: #f4f7f9;\n        }\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: var(--color-base-100);\n            margin: 0;\n            padding: 20px;\n            color: var(--color-base-content);\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: white;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n            text-align: center;\n        }\n        .header {\n            padding-bottom: 20px;\n            border-bottom: 2px solid var(--color-base-300);\n        }\n        .header h1 {\n            font-size: 26px;\n            color: var(--color-primary);\n            margin-bottom: 5px;\n        }\n        .header h2 {\n            font-size: 20px;\n            color: var(--color-secondary);\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.8;\n            text-align: left;\n        }\n        .highlight {\n            color: var(--color-primary);\n            font-weight: bold;\n        }\n        .info {\n            background-color: var(--color-base-200);\n            padding: 20px;\n            border-radius: 10px;\n            margin: 15px 0;\n        }\n        .duration-price {\n            font-weight: bold;\n            color: var(--color-secondary);\n        }\n        .footer {\n            margin-top: 25px;\n            font-size: 14px;\n            color: var(--color-base-content);\n        }\n        .footer a {\n            color: var(--color-primary);\n            text-decoration: none;\n            font-weight: bold;\n        }\n        .footer a:hover {\n            text-decoration: underline;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Reminder!</h1>\n        <h2>Aesthetic Lab</h2>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello!</p>\n        \n        <p>This is a reminder that you have an appointment at <strong class=\"highlight\">Aesthetic Lab</strong>!</p>\n\n        <div class=\"info\">\n            <p> <span class=\"highlight\">{{ $json.summary.split('. ')[1] }}. {{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span></p>\n\n<p><span class=\"highlight\">{{ $json.description.replaceAll('Appointment for ', 'Nail Artist: ').split('Visitor')[0] }}</span></p>\n            <p><strong>Address:</strong><br>\n            <span class=\"highlight\">Vital Decosterstraat 29, 3000 Leuven\nGala De Luxe</span>\n            </p>\n<p><strong>Parking available at:</strong><br>\n            <span class=\"highlight\">\nQ-Park Centrum Leuven\nVital Decosterstraat 37, 3000 Leuven</span>\n            </p>\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at \n            <span class=\"highlight\">{{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            </p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Thank you for choosing <strong>Aesthetic Lab</strong>!</p>\n        <p><a href=\"https://aestheticlab.be/\">Visit our Website</a> | <a href=\"mailto:aestheticlabbe@gmail.com\">Email Us</a> | <a href=\"https://www.instagram.com/aestheticlabbe/\">Follow us on Instagram</a></p>\n    </div>\n</div>\n\n</body>\n</html>\n\n\n\n\n",
-				"options": {
-					"appendAttribution": false
-				}
-			},
-			"type": "n8n-nodes-base.gmail",
-			"typeVersion": 2.1,
-			"position": [300, 3400],
-			"id": "ff1c11e4-0884-4c6c-9574-d27ffd4fed8c",
-			"name": "Reminder to participant",
-			"webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
-			"credentials": {
-				"gmailOAuth2": {
-					"id": "L2umD4YWXpQ1PHFP",
-					"name": "Aesthetic Lab Gmail account"
-				}
-			}
-		},
-		{
-			"parameters": {
-				"rule": {
-					"interval": [
-						{
-							"triggerAtHour": 19,
-							"triggerAtMinute": 44
-						}
-					]
-				}
-			},
-			"type": "n8n-nodes-base.scheduleTrigger",
-			"typeVersion": 1.2,
-			"position": [-380, 3400],
-			"id": "fc29dc91-b4bf-4f5e-8473-501302f5cc11",
-			"name": "Schedule Trigger at 19:44"
-		}
-	],
-	"pinData": {},
-	"connections": {
-		"Get All": {
-			"main": [
-				[
-					{
-						"node": "Respond to Webhook",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get item from DB": {
-			"main": [
-				[
-					{
-						"node": "Respond to Webhook",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"GET item form DB": {
-			"main": [
-				[
-					{
-						"node": "If",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get item by ID": {
-			"main": [
-				[
-					{
-						"node": "Merge",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get item by ID1": {
-			"main": [
-				[
-					{
-						"node": "Summarize",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Summarize": {
-			"main": [
-				[
-					{
-						"node": "Merge",
-						"type": "main",
-						"index": 1
-					}
-				]
-			]
-		},
-		"Merge": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Edit Fields": {
-			"main": [
-				[
-					{
-						"node": "Check WorkingHours",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Create Event": {
-			"main": [
-				[
-					{
-						"node": "Respond to Webhook3",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "ICS file",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Email to Organisator",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Check New Client",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Telegram",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"If": {
-			"main": [
-				[
-					{
-						"node": "Get item from DB",
-						"type": "main",
-						"index": 0
-					}
-				],
-				[
-					{
-						"node": "Get All",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"POST appointment": {
-			"main": [
-				[
-					{
-						"node": "Get item by ID",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Get item by ID1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Google Calendar": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get item from DB1": {
-			"main": [
-				[
-					{
-						"node": "Google Calendar",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Get Personal Events",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Edit Fields1": {
-			"main": [
-				[
-					{
-						"node": "Merge1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Availability": {
-			"main": [
-				[
-					{
-						"node": "If1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"If1": {
-			"main": [
-				[
-					{
-						"node": "Create Event",
-						"type": "main",
-						"index": 0
-					}
-				],
-				[
-					{
-						"node": "Respond to Webhook4",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Check WorkingHours": {
-			"main": [
-				[
-					{
-						"node": "If3",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"If3": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields2",
-						"type": "main",
-						"index": 0
-					}
-				],
-				[
-					{
-						"node": "Respond to Webhook4",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Edit Fields2": {
-			"main": [
-				[
-					{
-						"node": "Availability",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Make Slots": {
-			"main": [
-				[
-					{
-						"node": "Respond to Webhook1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"ICS file": {
-			"main": [
-				[
-					{
-						"node": "Email to participant",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get Slots Trigger": {
-			"main": [
-				[
-					{
-						"node": "Get item from DB1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"If2": {
-			"main": [
-				[
-					{
-						"node": "Create Booking",
-						"type": "main",
-						"index": 0
-					}
-				],
-				[
-					{
-						"node": "Create New Client",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Check New Client": {
-			"main": [
-				[
-					{
-						"node": "If2",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Create New Client": {
-			"main": [
-				[
-					{
-						"node": "Create Booking",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get Personal Events": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields3",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Merge1": {
-			"main": [
-				[
-					{
-						"node": "Make Slots",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Edit Fields3": {
-			"main": [
-				[
-					{
-						"node": "Merge1",
-						"type": "main",
-						"index": 1
-					}
-				]
-			]
-		},
-		"Remove Booking Id": {
-			"main": [
-				[
-					{
-						"node": "Supabase",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Supabase": {
-			"main": [
-				[
-					{
-						"node": "Google Calendar1",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Supabase get services",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Supabase get tech",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Supabase get client",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Edit Fields6",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "RemoveRowFromSupabase",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Google Calendar1": {
-			"main": [[]]
-		},
-		"RemoveRowFromSupabase": {
-			"main": [
-				[
-					{
-						"node": "Respond to Webhook2",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Supabase get services": {
-			"main": [
-				[
-					{
-						"node": "Aggregate",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Supabase get tech": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields4",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Supabase get client": {
-			"main": [
-				[
-					{
-						"node": "Edit Fields5",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Aggregate": {
-			"main": [
-				[
-					{
-						"node": "Merge2",
-						"type": "main",
-						"index": 1
-					}
-				]
-			]
-		},
-		"Merge2": {
-			"main": [
-				[
-					{
-						"node": "Email to Organisator1",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Email to Visitor Canceled",
-						"type": "main",
-						"index": 0
-					},
-					{
-						"node": "Telegram1",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Edit Fields4": {
-			"main": [
-				[
-					{
-						"node": "Merge2",
-						"type": "main",
-						"index": 2
-					}
-				]
-			]
-		},
-		"Edit Fields5": {
-			"main": [
-				[
-					{
-						"node": "Merge2",
-						"type": "main",
-						"index": 3
-					}
-				]
-			]
-		},
-		"Edit Fields6": {
-			"main": [
-				[
-					{
-						"node": "Merge2",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Get Tomorow events": {
-			"main": [
-				[
-					{
-						"node": "Split Out",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Split Out": {
-			"main": [
-				[
-					{
-						"node": "Reminder to participant",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		},
-		"Reminder to participant": {
-			"main": [[]]
-		},
-		"Schedule Trigger at 19:44": {
-			"main": [
-				[
-					{
-						"node": "Get Tomorow events",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		}
-	},
-	"active": true,
-	"settings": {
-		"executionOrder": "v1",
-		"timezone": "Europe/Brussels",
-		"callerPolicy": "workflowsFromSameOwner"
-	},
-	"versionId": "f1939743-e35c-44b2-9bb5-fa3b070008e2",
-	"meta": {
-		"templateCredsSetupCompleted": true,
-		"instanceId": "8c0938987d8992d621cd065e6731681d2792477bd9113b1da05dc9241d4ebcd7"
-	},
-	"id": "PgnuLOJDGJgX1OeB",
-	"tags": []
+  "name": "Aethstetic Lab",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        140
+      ],
+      "id": "39cb095b-b722-4167-a66c-f24d60406d72",
+      "name": "Respond to Webhook",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "={{ $json.params.table }}",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=active",
+              "condition": "is",
+              "keyValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        240
+      ],
+      "id": "07522d30-133c-4070-8134-e02a0f6015dd",
+      "name": "Get All",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "didZea293JFJDLqQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "={{ $json.params.table }}",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "={{ $json.query.keys()[0] }}",
+              "keyValue": "={{ $json.query.values()[0] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        40
+      ],
+      "id": "78694a6a-f379-42e7-81d4-b751a416f35f",
+      "name": "Get item from DB",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "didZea293JFJDLqQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "API to get data from supabase:\nGET /:table returns all items (max 50)\nGET /:table?id=888 returns item by id",
+        "height": 80,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        -60
+      ],
+      "id": "a9749db0-607a-4681-805a-0725f516ac1a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "path": ":table",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        140
+      ],
+      "id": "d35bb724-388c-4956-887e-38a43d874b5f",
+      "name": "GET item form DB",
+      "webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "RFuleBb6Rvnu63wl",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "technicians",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.params.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        825
+      ],
+      "id": "10566927-346d-4076-bd9b-7f337307d82b",
+      "name": "Get item by ID",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "didZea293JFJDLqQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2040,
+        900
+      ],
+      "id": "1f3801b0-3f71-4022-b72a-faeef1ab9304",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "services",
+        "filterType": "string",
+        "filterString": "=id=in.({{ $json.body.service_id }})"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        1025
+      ],
+      "id": "da85f8e0-a6cd-4654-9da4-0efa45ce2cca",
+      "name": "Get item by ID1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "didZea293JFJDLqQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "duration"
+            },
+            {
+              "aggregation": "sum",
+              "field": "price"
+            },
+            {
+              "aggregation": "append",
+              "field": "name"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        60,
+        1025
+      ],
+      "id": "47b458ca-d606-4d50-bf1d-0e222a2e851a",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        280,
+        925
+      ],
+      "id": "0ac0cd21-a3ee-4c25-ba2e-33868c899ddc",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e25721e4-1953-4775-8e7c-17605f1590a7",
+              "name": "date",
+              "value": "={{ $('POST appointment').item.json.body.date }}",
+              "type": "string"
+            },
+            {
+              "id": "0d3edde7-e466-4d75-9ceb-06922c29b993",
+              "name": "working_hours",
+              "value": "={{ $json.working_hours }}",
+              "type": "object"
+            },
+            {
+              "id": "d0aafb5c-a34a-4b55-ba07-c3da7b31cc3a",
+              "name": "weekday",
+              "value": "={{ $('POST appointment').item.json.body.weekday }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        925
+      ],
+      "id": "d197a772-19a8-44db-9e22-e3a9e7667ebf",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "Book appointment\nPOST /calendar/technician/:id   \n     Body: {\n    \"service_id\": [\"1075a65d-9b61-4233-9a28-36f36dd28872\",\"bf5e534b-2285-40b3-be93-f6247431161f\"],\n    \"date\": \"2025-01-31T09:00:00+01:00\",\n    \"weekday\": \"Friday\",\n    \"user_email\": \"jfedotov@icloud.com\",\n    \"name\": \"blblb lblbl\",\n    \"phone\": \"04847444444\"\n}\n",
+        "height": 140,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        400
+      ],
+      "id": "04af8337-7169-48d5-92ad-9db6f220d03a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $('Merge').item.json.calendar_id }}",
+          "mode": "id"
+        },
+        "start": "={{ $('Edit Fields2').item.json.date.toDateTime() }}",
+        "end": "={{ $('Edit Fields').item.json.date.toDateTime().plus({ minutes: $('Edit Fields2').item.json.duration }) }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $('POST appointment').item.json.body.user_email }}"
+          ],
+          "description": "=Appointment for {{ $('Merge').item.json.name}}\nVisitor: \nName: {{ $('POST appointment').item.json.body.name }}\nEmail: {{ $('POST appointment').item.json.body.user_email }}\nPhone: {{ $('POST appointment').item.json.body.phone }}\n\nServices: {{ $('Merge').item.json.appended_name }}\nDuration: {{ $('Summarize').item.json.sum_duration }} min\nPrice: {{ $('Summarize').item.json.sum_price }}€",
+          "sendUpdates": "none",
+          "summary": "={{ $('Merge').item.json.name.substring(0,1) }}. {{ $('Merge').item.json.appended_name }}. {{ $('POST appointment').item.json.body.name }}. {{ $('Summarize').item.json.sum_price }}€"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1820,
+        800
+      ],
+      "id": "34194523-07c5-4e22-b054-6b9fc7b5474c",
+      "name": "Create Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "745689c2-fc66-4ef5-8cf1-dcee1256bc41",
+              "leftValue": "={{ $json.query.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        140
+      ],
+      "id": "3dadccde-8bec-414a-ae9c-7f37645bda23",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calendar/technician/:id",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        925
+      ],
+      "id": "0f27ac16-5e88-4fb3-a1fd-1bc466f80178",
+      "name": "POST appointment",
+      "webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "RFuleBb6Rvnu63wl",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Get technician slots for specific day (Anonymized)\nGET /calendar/technician/:id \n\ndate:2025-01-31T10:00:00%2B01:00\nweekday:Friday\nslot_duration: 15",
+        "height": 120,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        1000
+      ],
+      "id": "230a5002-7ea6-4271-adbe-c1656f55f422",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        1560
+      ],
+      "id": "7c0250c4-9969-4117-bc73-cdcc2d3dc260",
+      "name": "Respond to Webhook1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.calendar_id }}",
+          "mode": "id"
+        },
+        "timeMin": "={{ $('Get Slots Trigger').item.json.query.date }}",
+        "timeMax": "={{ $('Get Slots Trigger').item.json.query.date.toDateTime().plus({ day: 1 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        60,
+        1460
+      ],
+      "id": "ef3b786b-a7a7-45b3-a18a-5bea60824361",
+      "name": "Google Calendar",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "technicians",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=id",
+              "keyValue": "={{ $json.params.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        1560
+      ],
+      "id": "307f57e2-fd99-48ff-92ec-21a9434b4ef9",
+      "name": "Get item from DB1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "didZea293JFJDLqQ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f3b03db-d1f8-4df8-acc0-aefb06dad37c",
+              "name": "start",
+              "value": "={{ $json.start.dateTime }}",
+              "type": "string"
+            },
+            {
+              "id": "57a1d9bd-7ca0-4ba8-b6ad-dbc320195010",
+              "name": "end",
+              "value": "={{ $json.end.dateTime }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        1460
+      ],
+      "id": "ec624003-4015-49a7-bd30-843421873769",
+      "name": "Edit Fields1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.calendar_id }}",
+          "mode": "id"
+        },
+        "timeMin": "={{ $json.date.toDateTime() }}",
+        "timeMax": "={{ $json.date.toDateTime().plus($json.duration, 'minutes') }}",
+        "options": {
+          "outputFormat": "availability"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1380,
+        850
+      ],
+      "id": "e2ddbef5-5c8b-4aa6-a7ca-ff5fafb95188",
+      "name": "Availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "977a52d9-3639-40b9-a4ce-92d683c6854a",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        850
+      ],
+      "id": "af37b2e0-efb8-4f3c-8b68-85bf4c424f7c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = {\n    date: $input.first().json.date,\n    weekday: $input.first().json.weekday,\n    working_hours: $input.first().json.working_hours\n};\n\n// Convert date to Luxon DateTime object\nconst dateTime = DateTime.fromISO(input.date);\nconst hour = dateTime.hour;\nconst minute = dateTime.minute;\n  \n// Get the working hours for the provided weekday\nconst workHours = input.working_hours[input.weekday] || [];\n// Function to check if the time is within a range\nconst available = workHours.some(range => {\n    const [start, end] = range.split(\"-\").map(time => {\n        const [h, m] = time.split(\":\").map(Number);\n        return { hour: h, minute: m };\n    });\n    return (\n        (hour > start.hour || (hour === start.hour && minute >= start.minute)) &&\n        (hour < end.hour || (hour === end.hour && minute <= end.minute))\n    );\n});\n\n// Return result\nreturn [{ available }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        925
+      ],
+      "id": "5340b6ca-510e-473b-a45a-7a0a898ecb52",
+      "name": "Check WorkingHours"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "52c4b756-b08a-4b21-9b38-617e5244717a",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        940,
+        925
+      ],
+      "id": "231e9ac1-ddaa-40a0-874e-d5b8cfec3aae",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e25721e4-1953-4775-8e7c-17605f1590a7",
+              "name": "date",
+              "value": "={{ $('POST appointment').item.json.body.date }}",
+              "type": "string"
+            },
+            {
+              "id": "b759a3d3-253f-4dec-af7e-4a195327d1c7",
+              "name": "calendar_id",
+              "value": "={{ $('Merge').item.json.calendar_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e1e02c54-5da0-4879-bc2d-f31d2616704c",
+              "name": "duration",
+              "value": "={{ $('Merge').item.json.sum_duration }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        850
+      ],
+      "id": "1ccfd8bf-ac89-4e46-be0a-1fb3a5c3b8c6",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 403
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1820,
+        1025
+      ],
+      "id": "70c6f5a2-7a26-4652-aadf-dc474b8e44fe",
+      "name": "Respond to Webhook4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Helper function to convert time strings into Date objects\nfunction parseTime(baseDate, timeStr) {\n    const [hours, minutes] = timeStr.split(\":\").map(Number);\n    const date = DateTime.fromISO(baseDate).set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });\n    return date;\n}\n\n// Check if a slot overlaps with a scheduled meeting\nfunction isSlotBusy(slot, meetings) {\n    return meetings.some(meeting => {\n        const meetingStart = DateTime.fromISO(meeting.json.start);\n        const meetingEnd = DateTime.fromISO(meeting.json.end);\n        return (slot.start < meetingEnd && slot.end > meetingStart);\n    });\n}\n\n// Check if the service duration can fit without overlapping busy slots\nfunction canFitServiceDuration(slot, serviceDuration, endOfDay, meetings) {\n    let serviceEnd = slot.start.plus({ minutes: serviceDuration });\n\n    // Check if service exceeds working hours\n    if (serviceEnd > endOfDay) return false;\n\n    // Check if any overlapping meetings during the service duration\n    return !meetings.some(meeting => {\n        const meetingStart = DateTime.fromISO(meeting.json.start);\n        const meetingEnd = DateTime.fromISO(meeting.json.end);\n        return (slot.start < meetingEnd && serviceEnd > meetingStart);\n    });\n}\n\n// Generate slots based on working hours\nfunction generateSlots(baseDate, workingHours, meetings, serviceDuration) {\n    let slots = [];\n    const now = DateTime.now(); // Get current timestamp\n    const bufferTime = now.plus({ hours: 2 }); // Add 2-hour buffer\n\n    workingHours.forEach(period => {\n        let startTime = parseTime(baseDate, period.split(\"-\")[0]);\n        let endTime = parseTime(baseDate, period.split(\"-\")[1]);\n\n        while (startTime < endTime) {\n            let slotEnd = startTime.plus({ minutes: 30 });\n\n            // Ensure slot starts after bufferTime and is not in the past, and fits in period\n            if (startTime > bufferTime && slotEnd <= endTime) {\n                let status = \"available\";\n\n                if (isSlotBusy({ start: startTime, end: slotEnd }, meetings) ||\n                    !canFitServiceDuration({ start: startTime, end: slotEnd }, serviceDuration, endTime, meetings)) {\n                    status = \"busy\";\n                }\n\n                slots.push({\n                    start: startTime.toISO(),\n                    end: slotEnd.toISO(),\n                    status: status\n                });\n            }\n\n            startTime = slotEnd;\n        }\n    });\n\n    return slots;\n}\n\n// Main function execution\nconst baseDate = DateTime.fromISO($('Get Slots Trigger').first().json.query.date);\nconst workingHours = $('Get item from DB1').first().json.working_hours[$('Get Slots Trigger').first().json.query.weekday];\nconst scheduledMeetings = $input.all();\nconst serviceDuration = $('Get Slots Trigger').first().json.query.slot_duration;\n\n// Generate slots\nconst slots = generateSlots(baseDate, workingHours, scheduledMeetings, serviceDuration);\n\nreturn slots;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        1560
+      ],
+      "id": "2f79629a-2a4b-4c03-bf95-80fb982f4568",
+      "name": "Make Slots",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "iCal",
+        "title": "={{ $json.summary }}",
+        "start": "={{ $json.start.dateTime }}",
+        "end": "={{ $json.end.dateTime }}",
+        "additionalFields": {
+          "attendeesUi": {
+            "attendeeValues": [
+              {
+                "name": "You",
+                "email": "={{ $json.attendees[0].email }}",
+                "rsvp": true
+              }
+            ]
+          },
+          "busyStatus": "BUSY",
+          "organizerUi": {
+            "organizerValues": {
+              "name": "={{ $json.organizer.displayName }}",
+              "email": "={{ $json.organizer.email }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2040,
+        700
+      ],
+      "id": "fd1e2eae-17b2-4f2c-a069-693d667d9466",
+      "name": "ICS file"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Create Event').item.json.attendees[0].email }}",
+        "subject": "={{ $('Create Event').item.json.summary }}. {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}.",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        :root {\n            --color-base-100: #f4f5f1;\n            --color-base-200: #e1e4d6;\n            --color-base-300: #d0d2c2;\n            --color-base-content: #2e2e2c;\n            --color-primary: #8b9687;\n            --color-primary-content: #f1f4f1;\n            --color-secondary: #6a7b8c;\n            --color-secondary-content: #f4f7f9;\n        }\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: var(--color-base-100);\n            margin: 0;\n            padding: 20px;\n            color: var(--color-base-content);\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: white;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n            text-align: center;\n        }\n        .header {\n            padding-bottom: 20px;\n            border-bottom: 2px solid var(--color-base-300);\n        }\n        .header h1 {\n            font-size: 26px;\n            color: var(--color-primary);\n            margin-bottom: 5px;\n        }\n        .header h2 {\n            font-size: 20px;\n            color: var(--color-secondary);\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.8;\n            text-align: left;\n        }\n        .highlight {\n            color: var(--color-primary);\n            font-weight: bold;\n        }\n        .info {\n            background-color: var(--color-base-200);\n            padding: 20px;\n            border-radius: 10px;\n            margin: 15px 0;\n        }\n        .duration-price {\n            font-weight: bold;\n            color: var(--color-secondary);\n        }\n        .footer {\n            margin-top: 25px;\n            font-size: 14px;\n            color: var(--color-base-content);\n        }\n        .footer a {\n            color: var(--color-primary);\n            text-decoration: none;\n            font-weight: bold;\n        }\n        .footer a:hover {\n            text-decoration: underline;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Confirmation</h1>\n        <h2>Aesthetic Lab</h2>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $('POST appointment').item.json.body.name }}</span>,</p>\n        \n        <p>We're delighted to confirm your appointment at <strong class=\"highlight\">Aesthetic Lab</strong>!</p>\n\n        <div class=\"info\">\n            <p><strong>Service(s):</strong> <span class=\"highlight\">{{ $('Merge').item.json.appended_name }}</span></p>\n\n            <p><strong>Your Nail Artist:</strong><br>\n            <span class=\"highlight\">{{ $('Merge').item.json.name }}</span> <a href=\"mailto:{{ $('Merge').item.json.email }}\" class=\"highlight\">✉️</a></p>\n            <p><strong>Address:</strong><br>\n            <span class=\"highlight\">Vital Decosterstraat 29, 3000 Leuven\nGala De Luxe</span>\n            </p>\n<p><strong>Parking available at:</strong><br>\n            <span class=\"highlight\">\nQ-Park Centrum Leuven\nVital Decosterstraat 37, 3000 Leuven</span>\n            </p>\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at \n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            <br><span class=\"duration-price\">Duration: {{ $('Summarize').item.json.sum_duration }} min</span>\n            <br><span class=\"duration-price\">Price: {{ $('Summarize').item.json.sum_price }}€</span>\n            </p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Thank you for choosing <strong>Aesthetic Lab</strong>!</p>\n        <p><a href=\"https://aestheticlab.be/\">Visit our Website</a> | <a href=\"mailto:aestheticlabbe@gmail.com\">Email Us</a> | <a href=\"https://www.instagram.com/aestheticlabbe/\">Follow us on Instagram</a></p>\n    </div>\n</div>\n\n</body>\n</html>\n\n\n\n\n",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2260,
+        700
+      ],
+      "id": "e11ff248-4d31-4201-962d-7a98f3d73a97",
+      "name": "Email to participant",
+      "webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L2umD4YWXpQ1PHFP",
+          "name": "Aesthetic Lab Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Merge').item.json.email }}",
+        "subject": "={{ $('Merge').item.json.name.substring(0,1) }}. {{ $('Merge').item.json.appended_name }}. {{ $('POST appointment').item.json.body.name }}. {{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }} - {{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: #8b9687;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Confirmation</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $('Merge').item.json.name }}</span>,</p>\n        <p>You have one new appointment:</p>\n        <div class=\"info\">\n            <p><strong>Event:</strong> <span class=\"highlight\">{{ $('Create Event').item.json.summary }}</span></p>\n\n            <p><strong>Visitor Details:</strong><br>\n            Name: <span class=\"highlight\">{{ $('POST appointment').item.json.body.name }}</span><br>\n            Phone: <span class=\"highlight\">{{ $('POST appointment').item.json.body.phone }}</span><br>\n            Email: <span class=\"highlight\">{{ $json.attendees[0].email }}</span></p>\n\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $('Create Event').item.json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            - <span class=\"highlight\">{{ $('Create Event').item.json.end.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            </p>\n\n            <p><strong>Timezone:</strong> <span class=\"highlight\">{{ $('Create Event').item.json.start.timeZone }}</span></p>\n        </div>\n\n        <p style=\"text-align: center;\">\n            <a href=\"{{ $('Create Event').item.json.htmlLink }}\" class=\"button\">View Event</a>\n        </p>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2040,
+        500
+      ],
+      "id": "4aa2d1a5-9d5a-4199-8c1f-3341a7cab95b",
+      "name": "Email to Organisator",
+      "webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L2umD4YWXpQ1PHFP",
+          "name": "Aesthetic Lab Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "calendar/technician/:id",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        1560
+      ],
+      "id": "c0593ff1-11fe-4c37-961b-a6a938a19afe",
+      "name": "Get Slots Trigger",
+      "webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "RFuleBb6Rvnu63wl",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a974a29a-0a97-4048-9800-549ccd79ed89",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2260,
+        1100
+      ],
+      "id": "fcc22bf4-a479-4524-8f5d-75a12e9587c2",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "tableId": "bookings",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "client_id",
+              "fieldValue": "={{ $json.id }}"
+            },
+            {
+              "fieldId": "technician_id",
+              "fieldValue": "={{ $('POST appointment').item.json.params.id }}"
+            },
+            {
+              "fieldId": "services",
+              "fieldValue": "={{ $('POST appointment').item.json.body.service_id }}"
+            },
+            {
+              "fieldId": "duration",
+              "fieldValue": "={{ $('Summarize').item.json.sum_duration }}"
+            },
+            {
+              "fieldId": "price",
+              "fieldValue": "={{ $('Summarize').item.json.sum_price }}"
+            },
+            {
+              "fieldId": "datetime",
+              "fieldValue": "={{ $('POST appointment').item.json.body.date.toDateTime() }}"
+            },
+            {
+              "fieldId": "calendar_id",
+              "fieldValue": "={{ $('Merge').item.json.calendar_id }}"
+            },
+            {
+              "fieldId": "event_id",
+              "fieldValue": "={{ $('Create Event').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        1100
+      ],
+      "id": "1253385a-1024-4770-bee8-4d637052b917",
+      "name": "Create Booking",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "clients",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "email",
+              "keyValue": "={{ $json.attendees[0].email }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        1100
+      ],
+      "id": "0c1a6405-2049-4e77-9fc2-d3215f39f1d9",
+      "name": "Check New Client",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "clients",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('POST appointment').item.json.body.user_email }}"
+            },
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('POST appointment').item.json.body.phone }}"
+            },
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $('POST appointment').item.json.body.name }}"
+            },
+            {
+              "fieldId": "birthdate",
+              "fieldValue": "={{ $('POST appointment').item.json.body.birthdat }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        1200
+      ],
+      "id": "1fc35bb9-4327-4c01-9a8b-47d4226de831",
+      "name": "Create New Client",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.personal_calendar_id }}",
+          "mode": "id"
+        },
+        "timeMin": "={{ $('Get Slots Trigger').item.json.query.date }}",
+        "timeMax": "={{ $('Get Slots Trigger').item.json.query.date.toDateTime().plus({ day: 1 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        60,
+        1660
+      ],
+      "id": "ced5d328-6339-4701-aa97-5d62537bd8f9",
+      "name": "Get Personal Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        500,
+        1560
+      ],
+      "id": "948ec624-d5f8-4128-b29b-ea370345c5a4",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f3b03db-d1f8-4df8-acc0-aefb06dad37c",
+              "name": "start",
+              "value": "={{ $json.start.dateTime }}",
+              "type": "string"
+            },
+            {
+              "id": "57a1d9bd-7ca0-4ba8-b6ad-dbc320195010",
+              "name": "end",
+              "value": "={{ $json.end.dateTime }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        1660
+      ],
+      "id": "847e6c86-8584-4642-9a5a-cd20ecb58d26",
+      "name": "Edit Fields3",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "httpMethod": "DELETE",
+        "path": "bookings/:id",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        2590.5
+      ],
+      "id": "fa4644f1-921b-4784-9ada-0d6a835f9b7b",
+      "name": "Remove Booking Id",
+      "webhookId": "f5856c87-6629-4338-98b2-8580c868c441",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "RFuleBb6Rvnu63wl",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "bookings",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.params.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        2590.5
+      ],
+      "id": "f9ccb843-bc66-493e-8e38-dc1f96ce8b7a",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        2200
+      ],
+      "id": "8d8c31cb-cb21-4abe-831e-2bf6ce3c7c6d",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ $json.calendar_id }}",
+          "mode": "id"
+        },
+        "eventId": "={{ $json.event_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        280,
+        2020
+      ],
+      "id": "bd4183ad-0cbd-4e48-9647-d6ded02744ed",
+      "name": "Google Calendar1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "bookings",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Remove Booking Id').item.json.params.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        280,
+        2200
+      ],
+      "id": "e5456e2c-e340-451a-be0f-967cf5cb4387",
+      "name": "RemoveRowFromSupabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "staging/healthz",
+        "options": {
+          "responseData": "OK"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        1920
+      ],
+      "id": "c46b8671-64aa-4ffa-a674-208261f3bc52",
+      "name": "Healthz",
+      "webhookId": "f847fbd1-9fca-4e22-bad9-49cc627b529c"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.tech_email }}",
+        "subject": "=Appointment Canceled. Client: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}. ",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.tech_name }}</span>,</p>\n        <p>The following appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Visitor: </strong><span class=\"highlight\">{{ $json.client_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        2580
+      ],
+      "id": "7c05d47b-2250-45bc-9955-097431b8ebef",
+      "name": "Email to Organisator1",
+      "webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L2umD4YWXpQ1PHFP",
+          "name": "Aesthetic Lab Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "services",
+        "filterType": "string",
+        "filterString": "=id=in.({{ $json.services.join(',') }})"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        2580
+      ],
+      "id": "374f7140-b700-4247-be66-33df89345000",
+      "name": "Supabase get services",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "technicians",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.technician_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        2780
+      ],
+      "id": "d8b4b0d3-5a04-4986-a60b-b5bc76063991",
+      "name": "Supabase get tech",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "clients",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.client_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        60,
+        2980
+      ],
+      "id": "747b74b1-4e02-4086-9303-cc3d83516192",
+      "name": "Supabase get client",
+      "credentials": {
+        "supabaseApi": {
+          "id": "3Qh62MphBVJLyiWj",
+          "name": "Supabase Secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "name",
+              "renameField": true,
+              "outputFieldName": "services_name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        280,
+        2580
+      ],
+      "id": "4c174a93-9590-4276-8d85-00b86305ff44",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "numberInputs": 4,
+        "query": "SELECT * FROM input1,input3,input4 LEFT JOIN input2 ON input1.name = input2.id\n"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        500,
+        2659
+      ],
+      "id": "a64e00c4-3190-4440-b1a8-acfe10ed85ac",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4da1bdcb-abff-4895-a190-478f0f9aa968",
+              "name": "tech_name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "e98a471d-e4bb-438c-b14d-237859c4f9f6",
+              "name": "tech_email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        2780
+      ],
+      "id": "f3bd4fbc-1456-4547-95c8-f83b4638e47b",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3b95d0d-7936-4268-8dcd-cd53b2de220d",
+              "name": "client_email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "e9024670-dab3-41c1-9288-094fae8385f5",
+              "name": "client_name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        2980
+      ],
+      "id": "1077dc40-8b04-44cd-8048-24995062d978",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aa24c4af-dd8b-4f07-82a2-73e0303245cc",
+              "name": "duration",
+              "value": "={{ $json.duration }}",
+              "type": "number"
+            },
+            {
+              "id": "d8114d3b-d4d4-48af-ad20-2ffa18d6ae8a",
+              "name": "price",
+              "value": "={{ $json.price }}",
+              "type": "number"
+            },
+            {
+              "id": "409f6a51-53a3-4de5-9c25-58b0e53b5e74",
+              "name": "datetime",
+              "value": "={{ $json.datetime }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        2380
+      ],
+      "id": "c1a7ecf1-a35b-409b-a50f-89e5bf60cc7f",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.client_email }}",
+        "subject": "=Appointment Canceled. {{ $json.datetime.toDateTime().toLocal().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}.",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Canceled</title>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            background-color: #f4f6f8;\n            margin: 0;\n            padding: 20px;\n            color: #343a40;\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: #ffffff;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            padding-bottom: 20px;\n            border-bottom: 2px solid #dee2e6;\n        }\n        .header h1 {\n            color: red;\n            font-size: 26px;\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.6;\n        }\n        .highlight {\n            color: #8b9687;\n            font-weight: bold;\n        }\n        .info {\n            background-color: #f1f3f5;\n            padding: 15px;\n            border-radius: 8px;\n            margin: 10px 0;\n        }\n        .footer {\n            text-align: center;\n            margin-top: 20px;\n            font-size: 14px;\n            color: #6c757d;\n        }\n        .button {\n            display: inline-block;\n            background: #8b9687;\n            color: #ffffff !important;\n            padding: 12px 25px;\n            border-radius: 8px;\n            text-decoration: none;\n            font-weight: bold;\n            transition: background 0.3s;\n        }\n        .button:hover {\n            background: #7a8577;\n        }\n        @media (max-width: 600px) {\n            .container {\n                padding: 20px;\n            }\n            .button {\n                padding: 10px 20px;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Canceled</h1>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello <span class=\"highlight\">{{ $json.client_name }}</span>,</p>\n        <p>We confirm that your appointment has been canceled:</p>\n        <div class=\"info\">\n            <p><strong>Date:</strong> <span class=\"highlight\">{{ $json.datetime.toDateTime().toLocaleString({ timeStyle: 'short', dateStyle:'medium', hourCycle: 'h24' }) }}</span></p>\n            <p><strong>Services:</strong> <span class=\"highlight\">{{ $json.services_name.join(\", \") }}</span></p>\n            <p><strong>Nail Artist:</strong> <span class=\"highlight\">{{ $json.tech_name }}</span></p>\n<p><strong>Duration:</strong> <span class=\"highlight\">{{ $json.duration }}\"</span></p>\n<p><strong>Price:</strong> <span class=\"highlight\">{{ $json.price }} euro</span></p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Kind regards,<br><strong>Your Scheduling Assistant</strong></p>\n    </div>\n</div>\n\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        2780
+      ],
+      "id": "83da4da5-1356-40ef-9e53-922a3f08a748",
+      "name": "Email to Visitor Canceled",
+      "webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L2umD4YWXpQ1PHFP",
+          "name": "Aesthetic Lab Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "={{ $json.summary }}\nDate: {{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM/yyyy HH:mm\") }}\n\n{{ $json.description }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_notification": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2040,
+        320
+      ],
+      "id": "fe0e9505-4433-4640-9401-42a266b18c06",
+      "name": "Telegram",
+      "webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "=Appointment Canceled. \nNail Artist: {{ $json.tech_name }}\nClient: {{ $json.client_name }} on {{ $json.datetime.toDateTime().toLocal().toLocaleString({ dateStyle: 'medium', timeStyle: 'short', hourCycle: 'h24' }) }}\n\nServices:{{ $json.services_name.join(\", \") }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_notification": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        2400
+      ],
+      "id": "94188401-a619-4b38-99b6-04fd9b1a624d",
+      "name": "Telegram1",
+      "webhookId": "0eeead27-1fe7-48b0-988e-a19484b490e3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aestheticlabbe@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aestheticlabbe@gmail.com"
+        },
+        "timeMin": "={{ $now.plus({hour: 10}) }}",
+        "timeMax": "={{ $now.plus({ day: 1 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -140,
+        3400
+      ],
+      "id": "ec9e3066-e3b6-4b9a-af74-f1fceb7f27a7",
+      "name": "Get Tomorow events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "attendees",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        80,
+        3400
+      ],
+      "id": "d7368d9c-02e9-4d53-8e6c-319de470a384",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.attendees.email }}",
+        "subject": "=Aestheticlab Reminder! {{ $json.summary.split('. ')[1] }}. {{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}.",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Appointment Confirmation</title>\n    <style>\n        :root {\n            --color-base-100: #f4f5f1;\n            --color-base-200: #e1e4d6;\n            --color-base-300: #d0d2c2;\n            --color-base-content: #2e2e2c;\n            --color-primary: #8b9687;\n            --color-primary-content: #f1f4f1;\n            --color-secondary: #6a7b8c;\n            --color-secondary-content: #f4f7f9;\n        }\n        body {\n            font-family: 'Inter', sans-serif;\n            background-color: var(--color-base-100);\n            margin: 0;\n            padding: 20px;\n            color: var(--color-base-content);\n        }\n        .container {\n            max-width: 600px;\n            margin: auto;\n            background: white;\n            padding: 30px;\n            border-radius: 12px;\n            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);\n            text-align: center;\n        }\n        .header {\n            padding-bottom: 20px;\n            border-bottom: 2px solid var(--color-base-300);\n        }\n        .header h1 {\n            font-size: 26px;\n            color: var(--color-primary);\n            margin-bottom: 5px;\n        }\n        .header h2 {\n            font-size: 20px;\n            color: var(--color-secondary);\n            margin: 0;\n        }\n        .content {\n            padding: 20px 0;\n            font-size: 16px;\n            line-height: 1.8;\n            text-align: left;\n        }\n        .highlight {\n            color: var(--color-primary);\n            font-weight: bold;\n        }\n        .info {\n            background-color: var(--color-base-200);\n            padding: 20px;\n            border-radius: 10px;\n            margin: 15px 0;\n        }\n        .duration-price {\n            font-weight: bold;\n            color: var(--color-secondary);\n        }\n        .footer {\n            margin-top: 25px;\n            font-size: 14px;\n            color: var(--color-base-content);\n        }\n        .footer a {\n            color: var(--color-primary);\n            text-decoration: none;\n            font-weight: bold;\n        }\n        .footer a:hover {\n            text-decoration: underline;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>📅 Appointment Reminder!</h1>\n        <h2>Aesthetic Lab</h2>\n    </div>\n\n    <div class=\"content\">\n        <p>Hello!</p>\n        \n        <p>This is a reminder that you have an appointment at <strong class=\"highlight\">Aesthetic Lab</strong>!</p>\n\n        <div class=\"info\">\n            <p> <span class=\"highlight\">{{ $json.summary.split('. ')[1] }}. {{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }} at {{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span></p>\n\n<p><span class=\"highlight\">{{ $json.description.replaceAll('Appointment for ', 'Nail Artist: ').split('Visitor')[0] }}</span></p>\n            <p><strong>Address:</strong><br>\n            <span class=\"highlight\">Vital Decosterstraat 29, 3000 Leuven\nGala De Luxe</span>\n            </p>\n<p><strong>Parking available at:</strong><br>\n            <span class=\"highlight\">\nQ-Park Centrum Leuven\nVital Decosterstraat 37, 3000 Leuven</span>\n            </p>\n            <p><strong>Date & Time:</strong><br>\n            <span class=\"highlight\">{{ $json.start.dateTime.toDateTime().toLocaleString({ dateStyle: 'medium' }) }}</span> at \n            <span class=\"highlight\">{{ $json.start.dateTime.toDateTime().toLocaleString({ timeStyle: 'short', hourCycle: 'h24' }) }}</span>\n            </p>\n        </div>\n    </div>\n\n    <div class=\"footer\">\n        <p>Thank you for choosing <strong>Aesthetic Lab</strong>!</p>\n        <p><a href=\"https://aestheticlab.be/\">Visit our Website</a> | <a href=\"mailto:aestheticlabbe@gmail.com\">Email Us</a> | <a href=\"https://www.instagram.com/aestheticlabbe/\">Follow us on Instagram</a></p>\n    </div>\n</div>\n\n</body>\n</html>\n\n\n\n\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        300,
+        3400
+      ],
+      "id": "ff1c11e4-0884-4c6c-9574-d27ffd4fed8c",
+      "name": "Reminder to participant",
+      "webhookId": "b18710ac-3c2c-4546-a451-505d0a91c946",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L2umD4YWXpQ1PHFP",
+          "name": "Aesthetic Lab Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 19,
+              "triggerAtMinute": 44
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -380,
+        3400
+      ],
+      "id": "fc29dc91-b4bf-4f5e-8473-501302f5cc11",
+      "name": "Schedule Trigger at 19:44"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "value": "aestheticlabbe@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aestheticlabbe@gmail.com"
+        },
+        "triggerOn": "eventCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        3720
+      ],
+      "id": "5741e40a-a15f-41ee-85b9-32cf125dddae",
+      "name": "Google Calendar Trigger",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "value": "aestheticlabbe@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aestheticlabbe@gmail.com"
+        },
+        "triggerOn": "eventCancelled",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        4000
+      ],
+      "id": "accbbcaf-b3af-4425-8161-191823a7592d",
+      "name": "Google Calendar Trigger1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5XoRF0JTWpWTiljA",
+          "name": "Google Calendar Aethstetic Scheduler"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "=Event CANCELED:\n{{ $json.summary }}\nDate: {{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM/yyyy HH:mm\") }}\n\n{{ $json.description }}\n\n{{ $json.attendees && `Attendees: ${$json.attendees.map(item => item.email)}`  }}\n\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        4000
+      ],
+      "id": "babcf480-5ebb-4c26-9f5e-f92ec31310e9",
+      "name": "Canceled Message",
+      "webhookId": "95020c9e-211c-47dc-b34f-e5fe9cb72707",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-4805287164",
+        "text": "={{ $json.summary }}\nDate: {{ DateTime.fromISO($json.start.dateTime).toFormat(\"dd/MM/yyyy HH:mm\") }}\n\n{{ $json.description }}\n\n{{ $json.attendees && `Attendees: ${$json.attendees.map(item => item.email)}`  }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        3720
+      ],
+      "id": "bb502f20-7c33-4bb0-b498-294376c6f5d1",
+      "name": "Event Created Message",
+      "webhookId": "d54b0fcc-756c-49d9-8084-8b6461b1dfa5",
+      "credentials": {
+        "telegramApi": {
+          "id": "ExdnBRlXc4V62U3f",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get All": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get item from DB": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET item form DB": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get item by ID": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get item by ID1": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Check WorkingHours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Event": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ICS file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email to Organisator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check New Client",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get item from DB",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST appointment": {
+      "main": [
+        [
+          {
+            "node": "Get item by ID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get item by ID1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get item from DB1": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Personal Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Availability": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Create Event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check WorkingHours": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Availability",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make Slots": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ICS file": {
+      "main": [
+        [
+          {
+            "node": "Email to participant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Slots Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get item from DB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Create Booking",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create New Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check New Client": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New Client": {
+      "main": [
+        [
+          {
+            "node": "Create Booking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Personal Events": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Make Slots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Remove Booking Id": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Supabase get services",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Supabase get tech",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Supabase get client",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RemoveRowFromSupabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "main": [
+        []
+      ]
+    },
+    "RemoveRowFromSupabase": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase get services": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase get tech": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase get client": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Email to Organisator1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email to Visitor Canceled",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tomorow events": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Reminder to participant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reminder to participant": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger at 19:44": {
+      "main": [
+        [
+          {
+            "node": "Get Tomorow events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar Trigger": {
+      "main": [
+        [
+          {
+            "node": "Event Created Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Canceled Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Brussels",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "8752bd89-5c05-4ce4-a6ec-159353bc1333",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8c0938987d8992d621cd065e6731681d2792477bd9113b1da05dc9241d4ebcd7"
+  },
+  "id": "PgnuLOJDGJgX1OeB",
+  "tags": []
 }
