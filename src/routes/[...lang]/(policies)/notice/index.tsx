@@ -1,7 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
-import { ChangeLocale } from "~/components/change-locale";
 
 export default component$(() => {
 	const t = inlineTranslate();

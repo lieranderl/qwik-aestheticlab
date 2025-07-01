@@ -39,5 +39,5 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 });
 
 export default component$(() => {
-	return <></>;
+	return;
 });
