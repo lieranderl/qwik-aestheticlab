@@ -79,7 +79,7 @@ export default component$(() => {
 					</div>
 					<div class="hidden lg:block">
 						<BookingBtn
-							additionalClasses="btn-md text-nowrap ms-4"
+							additionalClasses="btn-md text-nowrap ms-4 me-2"
 							myText={t("app.book.book_now@@Book Now")}
 						/>
 					</div>
