@@ -39,5 +39,7 @@ export const useSupabaseAuthConfirm = routeLoader$(async (req) => {
 });
 
 export default component$(() => {
-	return;
+	// no biome error here, this is a Qwik City route handler
+	// biome-ignore lint/complexity/noUselessFragments: intentionally returning empty fragment
+	return <></>;
 });
