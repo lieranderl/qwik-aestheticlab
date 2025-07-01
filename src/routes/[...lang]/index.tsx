@@ -5,6 +5,7 @@ import Header from "~/components/header/header";
 import About from "~/components/sections/about";
 import Contact from "~/components/sections/contact";
 import Hero from "~/components/sections/hero";
+import { PolicySection } from "~/components/sections/policy";
 import { ServicesSection } from "~/components/sections/services";
 import { TeamSection } from "~/components/sections/team";
 import Work from "~/components/sections/work";
@@ -38,6 +39,7 @@ export default component$(() => {
 				services={servicesSignal.value}
 				serviceCategories={serviceCategoriesSig.value}
 			/>
+			<PolicySection />
 			<TeamSection technicians={techniciansSignal.value} />
 			<Work />
 			<About />

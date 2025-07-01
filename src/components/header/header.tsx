@@ -17,6 +17,10 @@ const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 			href: getPath("/#services", locale.lang),
 			text: t("app.nav.services@@Services"),
 		},
+		{
+			href: getPath("/#policy", locale.lang),
+			text: t("app.nav.policy@@Policy"),
+		},
 		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
 		{ href: getPath("/#work", locale.lang), text: t("app.nav.work@@Work") },
 		{ href: getPath("/#about", locale.lang), text: t("app.nav.about@@About") },
@@ -75,7 +79,7 @@ export default component$(() => {
 					</div>
 					<div class="hidden lg:block">
 						<BookingBtn
-							additionalClasses="btn-md text-nowrap ms-4"
+							additionalClasses="btn-md text-nowrap ms-4 me-2"
 							myText={t("app.book.book_now@@Book Now")}
 						/>
 					</div>

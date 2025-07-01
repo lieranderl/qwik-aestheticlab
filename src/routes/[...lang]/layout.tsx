@@ -146,10 +146,8 @@ export const useServicesLoader = routeLoader$(async ({ env, locale }) => {
 
 export default component$(() => {
 	return (
-		<>
-			<main>
-				<Slot />
-			</main>
-		</>
+		<main>
+			<Slot />
+		</main>
 	);
 });
