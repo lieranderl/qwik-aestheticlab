@@ -44,7 +44,8 @@
 				"useHookAtTopLevel": "error",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
-				"useYield": "error"
+				"useYield": "error",
+				"noUnknownProperty": "warn"
 			},
 			"style": {
 				"noNamespace": "error",
@@ -80,7 +81,8 @@
 				"noSkippedTests": "warn",
 				"noUnsafeDeclarationMerging": "error",
 				"noUnsafeNegation": "error",
-				"useGetterReturn": "error"
+				"useGetterReturn": "error",
+				"noUnknownAtRules": "warn"
 			}
 		}
 	},
