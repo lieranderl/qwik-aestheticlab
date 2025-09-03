@@ -41,7 +41,7 @@ export default component$(() => {
 								<li class="flex items-center gap-2">
 									<HiMapPinOutline />
 									<a
-										href="https://maps.app.goo.gl/2B2nWjVD2muZm5ic9"
+										href="https://maps.app.goo.gl/hvNjHQWBUe8kEPwCA"
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
