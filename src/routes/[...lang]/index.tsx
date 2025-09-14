@@ -16,6 +16,7 @@ import {
 	useServicesCategoryLoader,
 	useServicesLoader,
 	useTechniciansLoader,
+	useContactLoader,
 } from "./layout";
 
 export default component$(() => {
@@ -31,6 +32,7 @@ export default component$(() => {
 	const techniciansSignal = useTechniciansLoader();
 	const servicesSignal = useServicesLoader();
 	const serviceCategoriesSig = useServicesCategoryLoader();
+	const contactSignal = useContactLoader();
 	return (
 		<>
 			<Header />
@@ -43,7 +45,7 @@ export default component$(() => {
 			<TeamSection technicians={techniciansSignal.value} />
 			<Work />
 			<About />
-			<Contact />
+			<Contact contact={contactSignal.value} />
 			<Footer />
 		</>
 	);

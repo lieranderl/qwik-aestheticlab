@@ -5,7 +5,7 @@ import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
 export const Footer = component$(() => {
 	const t = inlineTranslate();
 	return (
-		<footer class="footer sm:footer-horizontal bg-primary text-neutral-content items-center px-4 md:px-8 pb-24">
+		<footer class="footer sm:footer-horizontal bg-primary text-neutral-content items-center px-4 md:px-8 pb-16">
 			<aside class="grid-flow-col items-center">
 				<ImgAestheticlab class="w-16 h-16" />
 				<p>

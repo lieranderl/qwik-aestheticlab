@@ -38,6 +38,8 @@ export default component$(() => {
 					}
 					`}</script>
 
+					<script id="timelyScript" src="//book.gettimely.com/widget/book-button-v1.5.js"></script>
+
 				{!isDev && (
 					<link
 						rel="manifest"

@@ -21,6 +21,27 @@ export interface Service extends ServiceFiltered {
 	active: boolean;
 }
 
+export interface Contact {
+  id: number;
+  created_at: string;
+  email: string;
+  open_hours: {
+    start_week_day: string;
+    end_week_day: string;
+    from: string;
+    to: string;
+  };
+  location: {
+    name: string;
+	address: string;
+    link: string;
+  };
+  parking: {
+    name: string;
+    link: string;
+  };
+}
+
 export interface ServiceCategoryFiltered {
 	id: string;
 	name: string;

@@ -2,8 +2,13 @@ import { component$ } from "@builder.io/qwik";
 import { HiEnvelopeOutline, HiMapPinOutline } from "@qwikest/icons/heroicons";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
+import type { Contact } from "~/types";
 
-export default component$(() => {
+export interface ContactSectionProps {
+	contact: Contact | null;
+}
+
+export default component$(({ contact }: ContactSectionProps) => {
 	const t = inlineTranslate();
 	return (
 		<section id="contact" class="py-20 bg-base-300">
@@ -19,8 +24,8 @@ export default component$(() => {
 							</h3>
 							<ul class="space-y-2 list-disc pl-6">
 								<li>
-									{t("app.contact.monday@@Monday")} -{" "}
-									{t("app.contact.saturday@@Saturday")}: 10:00 - 18:00
+									{t("app.contact.monday@@{Monday}")} -{" "}
+									{t("app.contact.saturday@@{Saturday}")}: {contact?.open_hours.from} - {contact?.open_hours.to}
 								</li>
 							</ul>
 						</div>
@@ -35,32 +40,31 @@ export default component$(() => {
 										href="mailto:aestheticlabbe@gmail.com"
 										class="link link-hover"
 									>
-										aestheticlabbe@gmail.com
+										{contact?.email}
 									</a>
 								</li>
 								<li class="flex items-center gap-2">
 									<HiMapPinOutline />
 									<a
-										href="https://maps.app.goo.gl/hvNjHQWBUe8kEPwCA"
+										href={contact?.location.link}
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
-									>
-										<div>Vital Decosterstraat 29, 3000 Leuven</div>
-										<div>Gala De Luxe</div>
+									>	
+										<div>{contact?.location.address}</div>
+										<div>{contact?.location.name}</div>
 									</a>
 								</li>
 								<li class="flex items-center gap-2">
 									<HiMapPinOutline />
 									<a
-										href="https://maps.app.goo.gl/Tr3hdD81eHZ6sQ997"
+										href={contact?.parking.link}
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
 									>
 										<div>{t("app.contact.parking@@Parking available at")}</div>
-										<div>Q-Park Centrum Leuven</div>
-										<div>Vital Decosterstraat 37, 3000 Leuven</div>
+										<div>{contact?.parking.name}</div>
 									</a>
 								</li>
 							</ul>
