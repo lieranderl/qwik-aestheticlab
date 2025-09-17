@@ -1,7 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { localizePath, useSpeakLocale } from "qwik-speak";
-import { ChangeLocale } from "~/components/change-locale";
 
 export default component$(() => {
 	const locale = useSpeakLocale();

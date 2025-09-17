@@ -25,7 +25,8 @@ export default component$(({ contact }: ContactSectionProps) => {
 							<ul class="space-y-2 list-disc pl-6">
 								<li>
 									{t("app.contact.monday@@{Monday}")} -{" "}
-									{t("app.contact.saturday@@{Saturday}")}: {contact?.open_hours.from} - {contact?.open_hours.to}
+									{t("app.contact.saturday@@{Saturday}")}:{" "}
+									{contact?.open_hours.from} - {contact?.open_hours.to}
 								</li>
 							</ul>
 						</div>
@@ -50,7 +51,7 @@ export default component$(({ contact }: ContactSectionProps) => {
 										target="_blank"
 										class="link link-hover"
 										rel="noreferrer"
-									>	
+									>
 										<div>{contact?.location.address}</div>
 										<div>{contact?.location.name}</div>
 									</a>

@@ -13,10 +13,10 @@ import "aos/dist/aos.css";
 import { Footer } from "~/components/sections/footer";
 import { ga } from "~/consts";
 import {
+	useContactLoader,
 	useServicesCategoryLoader,
 	useServicesLoader,
 	useTechniciansLoader,
-	useContactLoader,
 } from "./layout";
 
 export default component$(() => {
