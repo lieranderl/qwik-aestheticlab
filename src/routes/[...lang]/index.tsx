@@ -14,7 +14,7 @@ import { Footer } from "~/components/sections/footer";
 import { ga } from "~/consts";
 import {
 	useContactLoader,
-	useServicesCategoryLoader,
+	useServiceGroupsLoader,
 	useServicesLoader,
 	useTechniciansLoader,
 } from "./layout";
@@ -31,7 +31,7 @@ export default component$(() => {
 
 	const techniciansSignal = useTechniciansLoader();
 	const servicesSignal = useServicesLoader();
-	const serviceCategoriesSig = useServicesCategoryLoader();
+	const serviceCategoriesSig = useServiceGroupsLoader();
 	const contactSignal = useContactLoader();
 	return (
 		<>
@@ -41,8 +41,9 @@ export default component$(() => {
 				services={servicesSignal.value}
 				serviceCategories={serviceCategoriesSig.value}
 			/>
-			<PolicySection />
+			
 			<TeamSection technicians={techniciansSignal.value} />
+			<PolicySection />
 			<Work />
 			<About />
 			<Contact contact={contactSignal.value} />

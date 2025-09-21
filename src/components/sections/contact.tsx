@@ -28,6 +28,11 @@ export default component$(({ contact }: ContactSectionProps) => {
 									{t("app.contact.saturday@@{Saturday}")}:{" "}
 									{contact?.open_hours.from} - {contact?.open_hours.to}
 								</li>
+								<li>
+									{t(
+										"app.contact.appointment_only@@{Visits are by appointment only}",
+									)}
+								</li>
 							</ul>
 						</div>
 						<div>
@@ -56,18 +61,22 @@ export default component$(({ contact }: ContactSectionProps) => {
 										<div>{contact?.location.name}</div>
 									</a>
 								</li>
-								<li class="flex items-center gap-2">
-									<HiMapPinOutline />
-									<a
-										href={contact?.parking.link}
-										target="_blank"
-										class="link link-hover"
-										rel="noreferrer"
-									>
-										<div>{t("app.contact.parking@@Parking available at")}</div>
-										<div>{contact?.parking.name}</div>
-									</a>
-								</li>
+								{contact?.parking?.map((p) => (
+									<li key={p.link} class="flex items-center gap-2">
+										<HiMapPinOutline />
+										<a
+											href={p.link}
+											target="_blank"
+											class="link link-hover"
+											rel="noreferrer"
+										>
+											<div>
+												{t("app.contact.parking@@Parking available at")}
+											</div>
+											<div>{p.name}</div>
+										</a>
+									</li>
+								))}
 							</ul>
 						</div>
 					</div>

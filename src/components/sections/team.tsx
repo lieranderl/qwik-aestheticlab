@@ -2,10 +2,11 @@ import { component$ } from "@builder.io/qwik";
 import { inlineTranslate, useSpeakLocale } from "qwik-speak";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
-import type { Technician } from "~/types";
+import type { Staff } from "~/types";
+import { Booking } from "../booking-modal";
 
 export interface TeamSectionProps {
-	technicians: Technician[];
+	technicians: Staff[];
 }
 export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 	const t = inlineTranslate();
@@ -18,7 +19,7 @@ export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 					{t("app.team.title@@Meet Our Team")}
 				</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-8 ">
-					{technicians.map((tech: Technician) => (
+					{technicians.map((tech: Staff) => (
 						<div key={tech.id} class="card bg-base-100" data-aos="fade-up">
 							<div class="card-body">
 								<div class="avatar justify-center">
@@ -27,6 +28,16 @@ export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 										{tech.photo_url === "zara" && <ImgZara />}
 									</div>
 								</div>
+								<div class="text-center mt-2">
+									<Booking
+										id={`modal_${tech.id}`}
+										text={t("app.book.book_now@@Book Now")}
+										location="372146"
+										staff={String(tech.id)}
+										classes="btn  btn-primary btn-outline"
+									/>
+								</div>
+
 								{tech.about && (
 									<div
 										class="collapse collapse-arrow bg-base-100 "

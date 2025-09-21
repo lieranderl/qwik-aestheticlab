@@ -75,7 +75,8 @@
       "parking": "Parkeren beschikbaar bij",
       "saturday": "Zaterdag",
       "sunday": "Zondag",
-      "visit_us": "Bezoek ons"
+      "visit_us": "Bezoek ons",
+      "appointment_only": "Bezoeken zijn alleen op afspraak"
     },
     "footer": {
       "all_rights": "Alle rechten voorbehouden",

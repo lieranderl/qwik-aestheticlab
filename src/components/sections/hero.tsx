@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
-import { BookingBtn } from "../booking-button";
+import { Booking } from "../booking-modal";
 
 export default component$(() => {
 	const isMobile = useSignal(false);
@@ -63,9 +63,11 @@ export default component$(() => {
 						: ""
 				}`}
 			>
-				<BookingBtn
-					additionalClasses="btn-xl w-fit mx-auto"
-					myText={t("app.hero.book_visit@@Book Your Visit")}
+				<Booking
+					id="modal_location"
+					text={t("app.hero.book_visit@@Book Your Visit")}
+					classes="btn btn-xl w-fit mx-auto"
+					location="372146"
 				/>
 			</div>
 		</section>
