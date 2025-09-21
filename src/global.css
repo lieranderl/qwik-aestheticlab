@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"); */
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 @import "tailwindcss";
@@ -27,7 +27,7 @@ html {
 	scroll-behavior: smooth;
 }
 
-calendar-month {
+/* calendar-month {
 	&::part(button) {
 		border-radius: 0.5rem;
 	}
@@ -43,7 +43,7 @@ calendar-month {
 		background-color: #6a7b8c;
 		color: #f4f5f1;
 	}
-}
+} */
 
 @keyframes colorPulse {
 	0%,

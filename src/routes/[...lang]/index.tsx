@@ -41,7 +41,7 @@ export default component$(() => {
 				services={servicesSignal.value}
 				serviceCategories={serviceCategoriesSig.value}
 			/>
-			
+
 			<TeamSection technicians={techniciansSignal.value} />
 			<PolicySection />
 			<Work />
