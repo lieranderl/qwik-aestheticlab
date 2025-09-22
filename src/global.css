@@ -60,21 +60,37 @@ html {
 	animation: colorPulse 5s infinite;
 }
 
-@keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(100px); /* start 100px lower */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* final position */
-  }
+/* Updated CSS for global.css */
+.fade-up-hidden {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: none;
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.8s ease-out forwards;
+.fade-up-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 
+    opacity var(--fade-duration, 800ms) ease-out var(--fade-delay, 0ms),
+    transform var(--fade-duration, 800ms) ease-out var(--fade-delay, 0ms);
 }
 
+.fade-up-immediate {
+  opacity: 1;
+  transform: translateY(0);
+  transition: none; /* No animation - show immediately */
+}
+
+/* Optional: Add reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up-hidden {
+    transform: translateY(0);
+  }
+  
+  .fade-up-visible {
+    transition-duration: 0.01ms !important;
+  }
+}
 
 
 
