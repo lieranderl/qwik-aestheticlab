@@ -58,6 +58,14 @@ export const Booking = component$<BookingProps>(
 				{/* Modal with iframe */}
 				<dialog id={id} class="modal">
 					<div class="modal-box w-11/12 max-w-5xl">
+						<form method="dialog">
+							<button
+								type="submit"
+								class="btn btn-sm btn-circle btn-ghost absolute right-0 top-0"
+							>
+								✕
+							</button>
+						</form>
 						{isOpen.value && (
 							<iframe
 								title="Booking Widget"

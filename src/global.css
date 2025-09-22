@@ -63,7 +63,7 @@ html {
 /* Updated CSS for global.css */
 .fade-up-hidden {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(var(--fade-distance, 60px));
   transition: none;
 }
 
@@ -71,24 +71,39 @@ html {
   opacity: 1;
   transform: translateY(0);
   transition: 
-    opacity var(--fade-duration, 800ms) ease-out var(--fade-delay, 0ms),
-    transform var(--fade-duration, 800ms) ease-out var(--fade-delay, 0ms);
+    opacity var(--fade-duration, 800ms) var(--fade-easing, ease-out) var(--fade-delay, 0ms),
+    transform var(--fade-duration, 800ms) var(--fade-easing, ease-out) var(--fade-delay, 0ms);
 }
 
 .fade-up-immediate {
   opacity: 1;
   transform: translateY(0);
-  transition: none; /* No animation - show immediately */
+  transition: none;
 }
 
-/* Optional: Add reduced motion support */
+.fade-up-disabled {
+  opacity: 1;
+  transform: translateY(0);
+  transition: none;
+}
+
+/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .fade-up-hidden {
+    opacity: 1;
     transform: translateY(0);
   }
   
   .fade-up-visible {
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .fade-up-hidden {
+    opacity: 1;
   }
 }
 
