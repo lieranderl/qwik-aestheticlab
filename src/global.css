@@ -60,7 +60,6 @@ html {
 	animation: colorPulse 5s infinite;
 }
 
-/* Updated CSS for global.css */
 .fade-up-hidden {
   opacity: 0;
   transform: translateY(var(--fade-distance, 60px));
@@ -70,42 +69,45 @@ html {
 .fade-up-visible {
   opacity: 1;
   transform: translateY(0);
-  transition: 
-    opacity var(--fade-duration, 800ms) var(--fade-easing, ease-out) var(--fade-delay, 0ms),
-    transform var(--fade-duration, 800ms) var(--fade-easing, ease-out) var(--fade-delay, 0ms);
+  transition: all var(--fade-duration, 800ms) var(--fade-easing, ease-out)
+    var(--fade-delay, 0ms);
 }
 
-.fade-up-immediate {
-  opacity: 1;
-  transform: translateY(0);
-  transition: none;
-}
-
+.fade-up-immediate,
 .fade-up-disabled {
   opacity: 1;
   transform: translateY(0);
   transition: none;
 }
 
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
+/* Mobile tweaks */
+@media (max-width: 768px) {
   .fade-up-hidden {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(calc(var(--fade-distance, 60px) * 0.7));
   }
-  
   .fade-up-visible {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
+    transition-duration: calc(var(--fade-duration, 800ms) * 0.8);
   }
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .fade-up-hidden {
-    opacity: 1;
+/* Touch devices faster */
+@media (pointer: coarse) {
+  .fade-up-visible {
+    transition-duration: calc(var(--fade-duration, 800ms) * 0.7);
   }
 }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up-hidden,
+  .fade-up-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: none !important;
+  }
+}
+
+
 
 
 

@@ -20,10 +20,10 @@ export default component$(({ contact }: ContactSectionProps) => {
 						{t("app.contact.visit_us@@Visit Us")}
 					</h2>
 
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4  md:gap-8">
 						{/* Opening Hours */}
 						<FadeUp>
-							<div class="bg-base-100 rounded-xl p-6">
+							<div class="bg-base-100 rounded-xl p-6 h-full">
 								<h3 class="text-2xl mb-6 font-semibold">
 									{t("app.contact.opening_hours@@Opening Hours")}
 								</h3>
@@ -46,7 +46,7 @@ export default component$(({ contact }: ContactSectionProps) => {
 
 						{/* Contact Details */}
 						<FadeUp>
-							<div class="bg-base-100 rounded-xl p-6">
+							<div class="bg-base-100 rounded-xl p-6 h-full">
 								<h3 class="text-2xl mb-6 font-semibold">
 									{t("app.contact.contact@@Contact")}
 								</h3>
@@ -106,7 +106,7 @@ export default component$(({ contact }: ContactSectionProps) => {
 
 					{/* Map below details */}
 					<FadeUp>
-						<div class="mt-12" data-aos="fade-up">
+						<div class="mt-4  md:mt-8" data-aos="fade-up">
 							<MapEmbed />
 						</div>
 					</FadeUp>

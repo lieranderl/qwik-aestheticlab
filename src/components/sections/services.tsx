@@ -22,7 +22,7 @@ export const ServicesSection = component$(
 						{t("app.services.title@@Our Services")}
 					</h2>
 
-					<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-4  md:gap-8">
 						{Object.entries(
 							services.reduce(
 								(groups, service) => {
@@ -61,7 +61,7 @@ export const ServicesSection = component$(
 											</h2>
 										</FadeUp>
 
-										<div class="flex flex-col gap-8">
+										<div class="flex flex-col gap-4">
 											{groupedServices
 												.sort((a, b) => a.price - b.price)
 												.map((service: Service) => (

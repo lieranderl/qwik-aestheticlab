@@ -5,7 +5,11 @@ interface FadeUpProps {
 	duration?: number;
 	threshold?: number;
 	runOnce?: boolean;
-	offset?: number; // Distance in pixels before element becomes visible
+	rootMargin?: number;
+	easing?: "ease" | "ease-in" | "ease-out" | "ease-in-out" | "linear";
+	distance?: number;
+	disable?: boolean;
+	className?: string;
 }
 
 export const FadeUp = component$(
@@ -14,105 +18,78 @@ export const FadeUp = component$(
 		duration = 800,
 		threshold = 0.1,
 		runOnce = true,
-		offset = 50,
+		rootMargin = 50,
+		easing = "ease-out",
+		distance = 60,
+		disable = false,
+		className = "",
 	}: FadeUpProps) => {
-		const visible = useSignal(false);
-		const elSig = useSignal<HTMLElement>();
-		const hasAnimated = useSignal(false);
-		const shouldAnimate = useSignal(true); // Controls whether to animate or show immediately
+		const elRef = useSignal<HTMLElement>();
+		const state = useSignal<"hidden" | "visible" | "immediate" | "disabled">(
+			disable ? "disabled" : "hidden",
+		);
 
 		useVisibleTask$(({ cleanup }) => {
-			const el = elSig.value;
+			const el = elRef.value;
 			if (!el) return;
 
-			let initialElementTop: number;
+			if (disable) {
+				state.value = "disabled";
+				return;
+			}
 
-			// Check initial state on mount
-			const checkInitialState = () => {
-				const rect = el.getBoundingClientRect();
-				initialElementTop = rect.top + window.scrollY;
-				const currentScrollTop = window.scrollY;
-				const isInViewport =
-					rect.top < window.innerHeight - offset && rect.bottom > offset;
+			const rect = el.getBoundingClientRect();
 
-				// If element is above current scroll position, show immediately without animation
-				if (initialElementTop < currentScrollTop - 100) {
-					// Small buffer to be sure
-					shouldAnimate.value = false;
-					visible.value = true;
-					hasAnimated.value = true;
-					return;
-				}
+			// Above viewport on load → show immediately
+			if (rect.top + window.scrollY < window.scrollY) {
+				state.value = "immediate";
+				return;
+			}
 
-				// If element is currently in viewport and should animate
-				if (isInViewport) {
-					setTimeout(() => {
-						visible.value = true;
-						hasAnimated.value = true;
-					}, delay);
-				}
-			};
+			// Already visible on load
+			if (
+				rect.top < window.innerHeight - rootMargin &&
+				rect.bottom > rootMargin
+			) {
+				state.value = delay > 0 ? "visible" : "immediate";
+			}
 
 			const observer = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting && !hasAnimated.value) {
-							if (shouldAnimate.value) {
-								// Animate the element
-								setTimeout(() => {
-									visible.value = true;
-									hasAnimated.value = true;
-								}, delay);
-							} else {
-								// Show immediately without animation
-								visible.value = true;
-								hasAnimated.value = true;
-							}
-
-							if (runOnce) {
-								observer.unobserve(el);
-							}
-						} else if (
-							!runOnce &&
-							!entry.isIntersecting &&
-							hasAnimated.value &&
-							shouldAnimate.value
-						) {
-							// Only reset if it was originally set to animate
-							visible.value = false;
-							hasAnimated.value = false;
-						}
-					});
+				([entry]) => {
+					if (entry.isIntersecting) {
+						state.value = "visible";
+						if (runOnce) observer.disconnect();
+					} else if (!runOnce) {
+						state.value = "hidden";
+					}
 				},
 				{
 					threshold,
-					rootMargin: `${offset}px 0px -${offset}px 0px`,
+					rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
 				},
 			);
 
-			// Check initial state first
-			checkInitialState();
-
-			// Start observing
 			observer.observe(el);
-
 			cleanup(() => observer.disconnect());
 		});
 
+		const classMap = {
+			hidden: "fade-up-hidden",
+			visible: "fade-up-visible",
+			immediate: "fade-up-immediate",
+			disabled: "fade-up-disabled",
+		};
+
 		return (
 			<div
-				ref={elSig}
+				ref={elRef}
 				style={{
 					"--fade-duration": `${duration}ms`,
-					"--fade-delay": visible.value ? `${delay}ms` : "0ms",
+					"--fade-delay": `${delay}ms`,
+					"--fade-distance": `${distance}px`,
+					"--fade-easing": easing,
 				}}
-				class={
-					visible.value
-						? shouldAnimate.value
-							? "fade-up-visible"
-							: "fade-up-immediate"
-						: "fade-up-hidden"
-				}
+				class={`${classMap[state.value]} ${className}`.trim()}
 			>
 				<Slot />
 			</div>

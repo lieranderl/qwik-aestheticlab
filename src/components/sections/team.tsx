@@ -19,7 +19,7 @@ export const TeamSection = component$(({ technicians }: TeamSectionProps) => {
 				<h2 class="text-4xl font-qestero text-center mb-12 font-bold">
 					{t("app.team.title@@Meet Our Team")}
 				</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-8 ">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4  md:gap-8">
 					{technicians.map((tech: Staff) => (
 						<FadeUp key={tech.id}>
 							<div class="card bg-base-100">
