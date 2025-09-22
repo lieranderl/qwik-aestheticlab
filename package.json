@@ -62,9 +62,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.57.4",
     "@tailwindcss/vite": "^4.1.13",
-    "@types/aos": "^3.0.7",
     "@types/luxon": "^3.7.1",
-    "aos": "^3.0.0-beta.6",
     "cally": "^0.8.0",
     "tailwindcss": "^4.1.13",
     "tailwindcss-animate": "^1.0.7"
