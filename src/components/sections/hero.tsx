@@ -15,14 +15,15 @@ export default component$(() => {
 	useOnDocument(
 		"DOMContentLoaded",
 		$(() => {
-			isMobile.value = window.innerWidth < 1024;
+			isMobile.value = window.outerWidth < 1024 || window.innerWidth < 1024;
+			console.log(isMobile.value);
 		}),
 	);
 
 	useOnWindow(
 		"resize",
 		$(() => {
-			isMobile.value = window.innerWidth < 1024;
+			isMobile.value = window.innerWidth < 1024 || window.outerWidth < 1024;
 		}),
 	);
 
