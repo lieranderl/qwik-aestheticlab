@@ -59,7 +59,7 @@ export default component$(() => {
 			<div
 				class={`w-full text-center transition-all ${
 					isMobile.value
-						? "fixed bottom-0 left-0 w-full bg-primary py-4 shadow-lg z-10"
+						? "fixed bottom-0 left-0 w-full py-2  bg-primary/90 backdrop-blur-sm z-10"
 						: ""
 				}`}
 			>
