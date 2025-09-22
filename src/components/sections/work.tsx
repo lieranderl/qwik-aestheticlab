@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { FadeUp } from "../fade-up";
 import { InstagramCard } from "./instagram-card";
 
 const INSTAGRAM_LINKS = [
@@ -18,15 +19,17 @@ export default component$(() => {
 				<h2 class="text-4xl font-qestero text-center mb-12 font-bold">
 					{t("app.work.title@@Our Work")}
 				</h2>
-				<div class="carousel w-full gap-8" data-aos="fade-up">
-					{INSTAGRAM_LINKS.map((post_id) => {
-						return (
-							<div class="carousel-item" key={post_id}>
-								<InstagramCard post_id={post_id} />
-							</div>
-						);
-					})}
-				</div>
+				<FadeUp>
+					<div class="carousel w-full gap-8">
+						{INSTAGRAM_LINKS.map((post_id) => {
+							return (
+								<div class="carousel-item" key={post_id}>
+									<InstagramCard post_id={post_id} />
+								</div>
+							);
+						})}
+					</div>
+				</FadeUp>
 			</div>
 		</section>
 	);

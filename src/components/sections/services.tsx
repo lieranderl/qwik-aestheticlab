@@ -4,6 +4,7 @@ import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Service, ServiceGroup } from "~/types";
 import { Booking } from "../booking-modal";
+import { FadeUp } from "../fade-up";
 
 export interface ServicesSectionProps {
 	services: Service[];
@@ -53,58 +54,61 @@ export const ServicesSection = component$(
 
 								return (
 									<div key={groupId}>
-										<h2 class="text-2xl font-bold my-4" data-aos="fade-up">
-											{categoryName.charAt(0).toUpperCase() +
-												categoryName.substring(1)}
-										</h2>
+										<FadeUp>
+											<h2 class="text-2xl font-bold my-4">
+												{categoryName.charAt(0).toUpperCase() +
+													categoryName.substring(1)}
+											</h2>
+										</FadeUp>
 
 										<div class="flex flex-col gap-8">
 											{groupedServices
 												.sort((a, b) => a.price - b.price)
 												.map((service: Service) => (
-													<div
-														key={`${groupId}_${service.id}`}
-														class="p-4 rounded-lg bg-base-100"
-														data-aos="fade-up"
-													>
-														{/* Expandable description */}
-														<div class="collapse collapse-arrow">
-															<input type="checkbox" />
-															<div class="collapse-title">
-																<div class="flex justify-between items-top mb-4">
-																	<h3 class="text-lg lg:text-xl">
-																		{service.name}
-																	</h3>
-																	<div class="ms-2 font-semibold">
-																		{formatPrice(service.price)}
+													<FadeUp key={`${groupId}_${service.id}`}>
+														<div
+															key={`${groupId}_${service.id}`}
+															class="p-4 rounded-lg bg-base-100"
+														>
+															{/* Expandable description */}
+															<div class="collapse collapse-arrow">
+																<input type="checkbox" />
+																<div class="collapse-title">
+																	<div class="flex justify-between items-top mb-4">
+																		<h3 class="text-lg lg:text-xl">
+																			{service.name}
+																		</h3>
+																		<div class="ms-2 font-semibold">
+																			{formatPrice(service.price)}
+																		</div>
+																	</div>
+																</div>
+																<div class="collapse-content text-sm">
+																	{service.description}
+																</div>
+															</div>
+
+															{/* Booking button + duration */}
+															<div class="flex justify-between items-center">
+																<Booking
+																	id={`modal_${groupId}_${service.id}`}
+																	text={t("app.book.book_now@@Book Now")}
+																	location="372146"
+																	category={String(groupId)}
+																	product={`${service.id}:SV`}
+																	classes="btn btn-sm btn-primary btn-outline"
+																/>
+
+																<div class="flex justify-end items-center">
+																	<HiClockOutline class="mr-1" />
+																	<div class="font-normal italic font-inter text-sm">
+																		{service.duration}{" "}
+																		{t("app.services.minutes@@minutes")}
 																	</div>
 																</div>
 															</div>
-															<div class="collapse-content text-sm">
-																{service.description}
-															</div>
 														</div>
-
-														{/* Booking button + duration */}
-														<div class="flex justify-between items-center">
-															<Booking
-																id={`modal_${groupId}_${service.id}`}
-																text={t("app.book.book_now@@Book Now")}
-																location="372146"
-																category={String(groupId)}
-																product={`${service.id}:SV`}
-																classes="btn btn-sm btn-primary btn-outline"
-															/>
-
-															<div class="flex justify-end items-center">
-																<HiClockOutline class="mr-1" />
-																<div class="font-normal italic font-inter text-sm">
-																	{service.duration}{" "}
-																	{t("app.services.minutes@@minutes")}
-																</div>
-															</div>
-														</div>
-													</div>
+													</FadeUp>
 												))}
 										</div>
 									</div>
