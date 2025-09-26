@@ -1,2 +1,5 @@
-[![Release to production](https://github.com/lieranderl/qwik-aestheticlab/actions/workflows/release-production.yml/badge.svg)](https://github.com/lieranderl/qwik-aestheticlab/actions/workflows/release-production.yml)
+## License
+MIT — see LICENSE file for details
 
+## Contact
+Project repository: add your repo URL here
