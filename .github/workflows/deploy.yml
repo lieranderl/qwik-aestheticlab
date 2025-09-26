@@ -10,9 +10,9 @@ on:
 env:
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   GCP_REGION: ${{ secrets.GCP_REGION }}
-  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }} 
-  STAGE_SERVICE: ${{ secrets.STAGE_SERVICE }} 
-  PROD_SERVICE: ${{ secrets.PROD_SERVICE }} 
+  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
+  STAGE_SERVICE: ${{ secrets.STAGE_SERVICE }}
+  PROD_SERVICE: ${{ secrets.PROD_SERVICE }}
 
 jobs:
   # 🧹 Linting job
@@ -53,9 +53,18 @@ jobs:
         id: set_tag
         run: |
           if [ "${{ github.event_name }}" = "release" ]; then
-            echo "TAG=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            RELEASE_TAG="${{ github.ref_name }}"
+            # Enforce semantic versioning vX.Y.Z
+            if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "❌ Error: Release tag '$RELEASE_TAG' is not in semantic version format (vX.Y.Z)."
+              exit 1
+            fi
+            echo "✅ Using release tag: $RELEASE_TAG"
+            echo "TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           else
-            echo "TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
+            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+            echo "✅ Using short SHA: $SHORT_SHA"
+            echo "TAG=${SHORT_SHA}" >> $GITHUB_OUTPUT
           fi
 
       - name: Build and push image with cache
@@ -92,15 +101,23 @@ jobs:
       - name: Deploy to Cloud Run (staging)
         if: github.ref == 'refs/heads/staging'
         run: |
+          echo "🚀 Deploying staging build: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
           gcloud run deploy $STAGE_SERVICE \
             --image=$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
             --region=$GCP_REGION \
-            --project=$GCP_PROJECT
+            --project=$GCP_PROJECT \
+            --min-instances=0 \
+            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
 
       - name: Deploy to Cloud Run (prod)
         if: github.event_name == 'release'
         run: |
+          echo "🚀 Deploying production release: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
           gcloud run deploy $PROD_SERVICE \
             --image=$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
             --region=$GCP_REGION \
-            --project=$GCP_PROJECT
+            --project=$GCP_PROJECT \
+            --min-instances=1 \
+            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
