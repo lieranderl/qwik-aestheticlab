@@ -26,10 +26,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 🔧 Install Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
       # 🧹 Run Biome check
       - name: Run Biome check
         run: |
-          corepack enable
           bunx @biomejs/biome check --fix
 
       # 🔑 Authenticate to DockerHub
