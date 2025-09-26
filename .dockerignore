@@ -11,6 +11,7 @@ Makefile
 helm-charts
 .env
 .env.local
+.env.production
 .editorconfig
 .idea
 coverage*
@@ -18,3 +19,4 @@ server
 dist
 infra
 email-templates
+.github

@@ -1,190 +1,46 @@
-# Ensure that Make uses bash
 SHELL := /bin/bash
 
-# Check environment variables
-check-env-vars:
-	@echo "Checking environment variables..."
-	@for var in SUPABASE_URL SUPABASE_KEY API_TOKEN WEBHOOK N8N_ENCRYPTION_KEY GENERIC_TIMEZONE DOMAIN_NAME KUBECONFIG EMAIL TAG VOLUME_ID; do \
+# Required environment variables
+REQUIRED_ENV_VARS := SUPABASE_URL SUPABASE_KEY
+
+# Default tag if not set externally
+TAG ?= latest
+
+# Helper function to check env vars
+define check-env
+	@for var in $(REQUIRED_ENV_VARS); do \
 		if [ -z "$${!var}" ]; then \
-			echo "$${var} is not set."; \
+			echo "❌ Missing required environment variable: $$var"; \
 			exit 1; \
+		else \
+			echo "✅ $$var is set"; \
 		fi \
 	done
-	@echo "All variables are set."
+endef
 
-# Check if the command "helm" is available
-check-helm:
-	@which helm > /dev/null || (echo "'helm' command is not available. Please install Helm." && exit 1)
-
-# Default target
-.PHONY: all
-all: check-env-vars check-helm init apply build push delay helm-upgrade
-
-# Delay execution to allow for resources to settle (useful for async tasks)
-.PHONY: delay
-delay:
-	@sleep 25
-
-# Build the Docker image using nerdctl
-.PHONY: build
-build:
-	@echo "Building Docker image for ARM64..."
-	@bunx @biomejs/biome check --fix
-	@docker buildx create --use
-	@docker buildx build --platform linux/arm64 --load -t docker.io/furlingene/qwik-aesthetic:$(TAG) -f Dockerfile --build-arg SUPABASE_URL=$(SUPABASE_URL) --build-arg SUPABASE_KEY=$(SUPABASE_KEY) --build-arg VITE_SUPABASE_URL=$(SUPABASE_URL) --build-arg VITE_SUPABASE_KEY=$(SUPABASE_KEY)  .
-
-# Push the Docker image to Docker Hub
-.PHONY: push
-push:
-	@echo "Pushing Docker image to Docker Hub..."
-	@docker push docker.io/furlingene/qwik-aesthetic:$(TAG)
-
-# Run the Helm upgrade
-.PHONY: helm-upgrade
-helm-upgrade:
-	@echo "Running Helm upgrade..."
-	helm ls
-	helm upgrade -i aesthetic-app ./infra/helm-chart \
-	--set bun.env.API_TOKEN="$(API_TOKEN)" \
-    --set bun.env.SUPABASE_URL=$(SUPABASE_URL) \
-    --set bun.env.SUPABASE_KEY=$(SUPABASE_KEY) \
-	--set bun.env.WEBHOOK=$(WEBHOOK) \
-    --set n8n.env.N8N_ENCRYPTION_KEY=$(N8N_ENCRYPTION_KEY) \
-    --set n8n.env.GENERIC_TIMEZONE=$(GENERIC_TIMEZONE) \
-    --set domain=$(DOMAIN_NAME) \
-	--set bun.tag=$(TAG) \
-	--set email=$(EMAIL) \
-	--set volume_id=$(VOLUME_ID)
-	@echo "Helm upgrade completed."
-
-#
-.PHONY: release
-release: check-env-vars check-helm build push helm-upgrade
-
-# Terraform variables
-TERRAFORM_DIR := infra/terraform
-# ANSIBLE_DIR := infra/ansible
-
-# Initialize Terraform
-.PHONY: init
-init:
-	@cd $(TERRAFORM_DIR) && \
-	if terraform workspace show | grep -q "^$(ENV)$$"; then \
-		echo "Already in workspace $(ENV)."; \
-	else \
-		if terraform workspace list | grep -q "[[:space:]]$(ENV)$$"; then \
-			echo "Switching to existing workspace $(ENV)..."; \
-			terraform workspace select $(ENV); \
-		else \
-			echo "Creating new workspace $(ENV)..."; \
-			terraform workspace new $(ENV); \
-		fi \
-	fi && \
-	terraform init -var="env=$(ENV)"
-
-
-# Plan Terraform infrastructure
-.PHONY: plan
-plan: init
-	@cd $(TERRAFORM_DIR) && terraform workspace select $(ENV) && terraform plan -var="env=$(ENV)"
-
-# Apply Terraform infrastructure
-.PHONY: apply
-apply: init
-	@cd $(TERRAFORM_DIR) && \
-	echo "Current workspace: $(ENV). Are you sure you want to apply changes? (yes/no)" && \
-	read confirm && \
-	if [ "$$confirm" = "yes" ]; then \
-		terraform workspace select $(ENV) && \
-		terraform apply -var="env=$(ENV)" -auto-approve; \
-	else \
-		echo "Apply cancelled."; \
-	fi
-
-# Destroy Terraform infrastructure
-.PHONY: destroy
-destroy:
-	@cd $(TERRAFORM_DIR) && \
-	echo "Current workspace: $(ENV). Are you sure you want to destroy it? (yes/no)" && \
-	read confirm && \
-	if [ "$$confirm" = "yes" ]; then \
-		terraform workspace select $(ENV) && \
-		terraform destroy -var="env=$(ENV)" -auto-approve; \
-	else \
-		echo "Destroy cancelled."; \
-	fi
-
-# Clean up Terraform state and temporary files
-.PHONY: clean
-clean:
-	@cd $(TERRAFORM_DIR) && \
-		rm -f terraform.tfstate terraform.tfstate.backup && \
-		rm -rf .terraform .terraform.lock.hcl
-	# @rm -f $(ANSIBLE_DIR)/inventory/hosts
-
-# Run Ansible playbooks
-# .PHONY: playbook
-# playbook:
-# 	@cd $(ANSIBLE_DIR) && \
-# 		ansible-playbook -i inventory/hosts.ini playbook.yaml
-
-# Run a specific role with tags
-# .PHONY: playbook-role
-# playbook-role:
-# 	@cd $(ANSIBLE_DIR) && \
-# 		ansible-playbook -i inventory/hosts.ini playbook.yaml --tags $(ROLE)
-
-# Help target to show available commands
+# Help target (default)
 .PHONY: help
-help:
-	@echo "Available commands:"
-	@echo "  make all               - Check env vars, initialize, apply, build, push and upgrade Helm chart"
-	@echo "  make release           - Check env vars, build, push and upgrade Helm chart"
-	@echo "  make build             - Build the Docker image"
-	@echo "  make push              - Push the Docker image to Docker Hub"
-	@echo "  make helm-upgrade      - Run the Helm upgrade"
-	@echo "  make init              - Initialize Terraform"
-	@echo "  make plan              - Show Terraform execution plan"
-	@echo "  make apply             - Create infrastructure"
-	@echo "  make destroy           - Terminate infrastructure"
-	@echo "  make clean             - Remove Terraform state files"
-	@echo "  make help              - Show this help message"
-	@echo "  make check-env-vars    - Check environment variables"
-	@echo "  make check-deployment  - Check Kubernetes deployment"
-	@echo "  make start-dashboard   - Start Kubernetes dashboard"
+help: ## Show available targets and usage
+	@echo "Usage: make <target> [TAG=your-tag]"
+	@echo
+	@echo "Targets:"
+	@grep -E '^[a-zA-Z0-9._-]+:.*?##' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?##"}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-# Check k8s deplpoyment
-.PHONY: check-deployment
-check-deployment:
-	@echo "Checking k8s deployment..."
-	@kubectl get pods -A
-	@kubectl get svc -A
-	@kubectl get ingressroutes -A
-	@echo "k8s deployment check completed."
+.PHONY: docker-build-push
+docker-build-push: ## Build and push Docker image to DockerHub (requires TAG)
+	$(call check-env)
+	docker buildx build \
+		--platform linux/amd64 \
+		--provenance=false \
+		--sbom=false \
+		-t furlingene/qwik-aesthetic:$(TAG) \
+		--push .
 
-# Start k8s dashboard
-.PHONY: start-dashboard
-start-dashboard:
-	@echo "Generating Kubernetes dashboard token..."
-	@kubectl create token default -n kube-system
-	@echo "Starting Kubernetes dashboard..."
-	@kubectl -n kube-system port-forward svc/kubernetes-dashboard 8443:443
-
-
-# make git-push. Lint eslint, biome, git add ., commit, and Push
-.PHONY: git-push
-git-push:
-	@echo "Linting code..."
-	@bun run lint
-	@bun run biome
-	@echo "Adding changes..."
-	@git add .
-	@echo "Committing changes..."
-	@git commit -m "Update code"
-	@echo "Pushing changes..."
-	@git push
-
-
-# make terraform infra
-.PHONY: terraform-infra
-terraform-infra: check-env-vars init apply
+.PHONY: gcloud-deploy
+gcloud-deploy: ## Deploy image to Google Cloud Run (requires TAG)
+	$(call check-env)
+	gcloud run deploy aestheticlab-web \
+		--image=furlingene/qwik-aesthetic:$(TAG) \
+		--region=europe-west1 \
+		--project=nail-lab-449417

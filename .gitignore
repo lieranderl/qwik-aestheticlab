@@ -73,3 +73,6 @@ inventory
 # Ansible vault files
 *.vault
 infra/terraform/*.yaml
+
+Makefile_old
+create_gcloud.sh
