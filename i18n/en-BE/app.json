@@ -75,7 +75,8 @@
       "parking": "Parking available at",
       "saturday": "Saturday",
       "sunday": "Sunday",
-      "visit_us": "Visit Us"
+      "visit_us": "Visit Us",
+      "appointment_only": "Visits are by appointment only"
     },
     "footer": {
       "all_rights": "All right reserved",

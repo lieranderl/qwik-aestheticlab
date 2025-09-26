@@ -6,7 +6,7 @@ import {
 	type SpeakLocale,
 	useSpeakLocale,
 } from "qwik-speak";
-import { BookingBtn } from "../booking-button";
+import { Booking } from "../booking-modal";
 import { ChangeLocale } from "../change-locale";
 
 const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
@@ -17,11 +17,12 @@ const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 			href: getPath("/#services", locale.lang),
 			text: t("app.nav.services@@Services"),
 		},
+
+		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
 		{
 			href: getPath("/#policy", locale.lang),
 			text: t("app.nav.policy@@Policy"),
 		},
-		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
 		{ href: getPath("/#work", locale.lang), text: t("app.nav.work@@Work") },
 		{ href: getPath("/#about", locale.lang), text: t("app.nav.about@@About") },
 		{
@@ -62,7 +63,7 @@ export default component$(() => {
 
 	return (
 		<header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
-			<nav class="custom-container py-2">
+			<nav class="py-2 mx-4 md:mx-8">
 				<div class="flex items-center justify-between h-12">
 					<div />
 					{/* Desktop Navigation */}
@@ -71,16 +72,18 @@ export default component$(() => {
 							<a
 								key={href}
 								href={href}
-								class="link no-underline text-base-100 hover:text-base-100/80 transition-colors text-nowrap"
+								class="link no-underline text-base-100 hover:text-base-100/50 transition-colors text-nowrap"
 							>
 								{text}
 							</a>
 						))}
 					</div>
 					<div class="hidden lg:block">
-						<BookingBtn
-							additionalClasses="btn-md text-nowrap ms-4 me-2"
-							myText={t("app.book.book_now@@Book Now")}
+						<Booking
+							id="modal_location_header"
+							text={t("app.book.book_now@@Book Now")}
+							classes="btn w-fit mx-auto mr-2"
+							location="372146"
 						/>
 					</div>
 					<ChangeLocale />
@@ -89,7 +92,7 @@ export default component$(() => {
 						type="button"
 						ref={buttonRef}
 						onClick$={toggleMenu}
-						class="lg:hidden"
+						class="lg:hidden cursor-pointer"
 						aria-label="Toggle menu"
 					>
 						<div class="w-6 h-5 relative flex flex-col justify-between">
@@ -123,7 +126,7 @@ export default component$(() => {
 								key={href}
 								href={href}
 								onClick$={toggleMenu}
-								class="link no-underline text-base-100 text-right hover:text-base-100/80 transition-colors text-nowrap"
+								class="link no-underline text-base-100 text-right hover:text-base-100/50 transition-colors text-nowrap"
 							>
 								{text}
 							</a>

@@ -1,5 +1,5 @@
 # Stage 1: Building the application
-FROM --platform=$BUILDPLATFORM node:23-bookworm-slim AS build
+FROM --platform=$BUILDPLATFORM node:24-bookworm-slim AS build
 
 # Set the working directory
 WORKDIR /app
@@ -20,19 +20,14 @@ RUN bun install
 COPY . .
 ARG SUPABASE_URL
 ARG SUPABASE_KEY
-ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_KEY
 ENV SUPABASE_URL=${SUPABASE_URL}
 ENV SUPABASE_KEY=${SUPABASE_KEY}
-ENV VITE_SUPABASE_URL=${SUPABASE_URL}
-ENV VITE_SUPABASE_KEY=${SUPABASE_KEY}
-
 
 # Build the application
 RUN bun run build
 
 # Stage 2: Setup the runtime environment
-FROM oven/bun
+FROM oven/bun:distroless
 
 # Set the working directory for the runtime environment
 WORKDIR /app
@@ -46,12 +41,12 @@ COPY --from=build /app/public ./public
 COPY --from=build /app/server ./server
 
 # Adjust permissions for the user that will run the app
-RUN chown -R 1001:0 /app && chmod -R 777 /app
+# RUN chown -R 1001:0 /app && chmod -R 777 /app
 
-USER 1001
+# USER 1001
 
 # Expose the server port
 EXPOSE 3000
 
 # Start the application using Bun
-# CMD ["bun", "run", "serve"]
+CMD ["server/entry.bun.js"]

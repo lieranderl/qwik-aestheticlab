@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { FadeUp } from "../fade-up";
 
 export const PolicySection = component$(() => {
 	const t = inlineTranslate();
@@ -10,20 +11,22 @@ export const PolicySection = component$(() => {
 					{t("app.policy.title@@Complimentary Fix Policy")}
 				</h2>
 				<div class="max-w-4xl mx-auto">
-					<div class="bg-base-200" data-aos="fade-up">
-						<div class="text-center">
-							<p class="text-lg mb-6 leading-relaxed">
-								{t(
-									"app.notice.policy_description@@If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
-								)}
-							</p>
-							<p class="text-base text-base-content/80 italic">
-								{t(
-									"app.policy.care@@We care about your satisfaction and will be happy to fix any problems that may arise.",
-								)}
-							</p>
+					<FadeUp>
+						<div class="bg-base-200">
+							<div class="text-center">
+								<p class="text-lg mb-6 leading-relaxed">
+									{t(
+										"app.notice.policy_description@@If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
+									)}
+								</p>
+								<p class="text-base text-base-content/80 italic">
+									{t(
+										"app.policy.care@@We care about your satisfaction and will be happy to fix any problems that may arise.",
+									)}
+								</p>
+							</div>
 						</div>
-					</div>
+					</FadeUp>
 				</div>
 			</div>
 		</section>

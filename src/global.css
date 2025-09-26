@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"); */
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 @import "tailwindcss";
@@ -27,7 +27,7 @@ html {
 	scroll-behavior: smooth;
 }
 
-calendar-month {
+/* calendar-month {
 	&::part(button) {
 		border-radius: 0.5rem;
 	}
@@ -43,7 +43,7 @@ calendar-month {
 		background-color: #6a7b8c;
 		color: #f4f5f1;
 	}
-}
+} */
 
 @keyframes colorPulse {
 	0%,
@@ -59,6 +59,57 @@ calendar-month {
 .animate-color-pulse {
 	animation: colorPulse 5s infinite;
 }
+
+.fade-up-hidden {
+  opacity: 0;
+  transform: translateY(var(--fade-distance, 60px));
+  transition: none;
+}
+
+.fade-up-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all var(--fade-duration, 800ms) var(--fade-easing, ease-out)
+    var(--fade-delay, 0ms);
+}
+
+.fade-up-immediate,
+.fade-up-disabled {
+  opacity: 1;
+  transform: translateY(0);
+  transition: none;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .fade-up-hidden {
+    transform: translateY(calc(var(--fade-distance, 60px) * 0.7));
+  }
+  .fade-up-visible {
+    transition-duration: calc(var(--fade-duration, 800ms) * 0.8);
+  }
+}
+
+/* Touch devices faster */
+@media (pointer: coarse) {
+  .fade-up-visible {
+    transition-duration: calc(var(--fade-duration, 800ms) * 0.7);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up-hidden,
+  .fade-up-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: none !important;
+  }
+}
+
+
+
+
 
 @plugin "daisyui";
 

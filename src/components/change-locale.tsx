@@ -42,6 +42,7 @@ export const ChangeLocale = component$(() => {
 							href={getPath(pathname, value.lang)}
 							class="w-full text-left"
 							role="menuitem"
+							target="_self"
 						>
 							{humanreadble_lang(value.lang)}
 						</a>

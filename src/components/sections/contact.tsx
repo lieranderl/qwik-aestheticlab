@@ -2,73 +2,117 @@ import { component$ } from "@builder.io/qwik";
 import { HiEnvelopeOutline, HiMapPinOutline } from "@qwikest/icons/heroicons";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
+import type { Contact } from "~/types";
+import { FadeUp } from "../fade-up";
+import { MapEmbed } from "../google-map";
 
-export default component$(() => {
+export interface ContactSectionProps {
+	contact: Contact | null;
+}
+
+export default component$(({ contact }: ContactSectionProps) => {
 	const t = inlineTranslate();
 	return (
-		<section id="contact" class="py-20 bg-base-300">
-			<div class="container mx-auto px-4 md:px-16 ">
-				<div class="max-w-4xl mx-auto">
+		<section id="contact" class="py-20 bg-base-200">
+			<div class="container mx-auto px-4 md:px-16">
+				<div class="max-w-5xl mx-auto">
 					<h2 class="text-4xl font-qestero text-center mb-12 font-bold">
 						{t("app.contact.visit_us@@Visit Us")}
 					</h2>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-						<div>
-							<h3 class="text-2xl mb-6 font-semibold">
-								{t("app.contact.opening_hours@@Opening Hours")}
-							</h3>
-							<ul class="space-y-2 list-disc pl-6">
-								<li>
-									{t("app.contact.monday@@Monday")} -{" "}
-									{t("app.contact.saturday@@Saturday")}: 10:00 - 18:00
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h3 class="text-2xl mb-6 font-semibold ">
-								{t("app.contact.contact@@Contact")}
-							</h3>
-							<ul class="space-y-2 list-none pl-6">
-								<li class="flex items-center gap-2">
-									<HiEnvelopeOutline />
-									<a
-										href="mailto:aestheticlabbe@gmail.com"
-										class="link link-hover"
-									>
-										aestheticlabbe@gmail.com
-									</a>
-								</li>
-								<li class="flex items-center gap-2">
-									<HiMapPinOutline />
-									<a
-										href="https://maps.app.goo.gl/hvNjHQWBUe8kEPwCA"
-										target="_blank"
-										class="link link-hover"
-										rel="noreferrer"
-									>
-										<div>Vital Decosterstraat 29, 3000 Leuven</div>
-										<div>Gala De Luxe</div>
-									</a>
-								</li>
-								<li class="flex items-center gap-2">
-									<HiMapPinOutline />
-									<a
-										href="https://maps.app.goo.gl/Tr3hdD81eHZ6sQ997"
-										target="_blank"
-										class="link link-hover"
-										rel="noreferrer"
-									>
-										<div>{t("app.contact.parking@@Parking available at")}</div>
-										<div>Q-Park Centrum Leuven</div>
-										<div>Vital Decosterstraat 37, 3000 Leuven</div>
-									</a>
-								</li>
-							</ul>
-						</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4  md:gap-8">
+						{/* Opening Hours */}
+						<FadeUp>
+							<div class="bg-base-100 rounded-xl p-6 h-full">
+								<h3 class="text-2xl mb-6 font-semibold">
+									{t("app.contact.opening_hours@@Opening Hours")}
+								</h3>
+								<ul class="space-y-3">
+									<li>
+										<span class="font-medium">
+											{t("app.contact.monday@@{Monday}")} –{" "}
+											{t("app.contact.saturday@@{Saturday}")}:
+										</span>{" "}
+										{contact?.open_hours.from} – {contact?.open_hours.to}
+									</li>
+									<li class="text-base-content/70">
+										{t(
+											"app.contact.appointment_only@@{Visits are by appointment only}",
+										)}
+									</li>
+								</ul>
+							</div>
+						</FadeUp>
+
+						{/* Contact Details */}
+						<FadeUp>
+							<div class="bg-base-100 rounded-xl p-6 h-full">
+								<h3 class="text-2xl mb-6 font-semibold">
+									{t("app.contact.contact@@Contact")}
+								</h3>
+								<ul class="space-y-4">
+									<li class="flex items-center gap-3">
+										<HiEnvelopeOutline class="w-5 h-5 text-primary" />
+										<a
+											href={`mailto:${contact?.email}`}
+											class="link link-hover break-all"
+										>
+											{contact?.email}
+										</a>
+									</li>
+									<li class="flex items-start gap-3">
+										<HiMapPinOutline class="w-5 h-5 text-primary mt-1" />
+										<a
+											href={contact?.location.link}
+											target="_blank"
+											rel="noreferrer"
+											class="link link-hover"
+										>
+											<div>{contact?.location.address}</div>
+											<div class="text-base-content/70">
+												{contact?.location.name}
+											</div>
+										</a>
+									</li>
+
+									{contact?.parking?.length ? (
+										<li class="flex items-start gap-3">
+											<HiMapPinOutline class="w-5 h-5 text-primary mt-1" />
+											<div>
+												<div class="font-medium">
+													{t("app.contact.parking@@Parking available at")}
+												</div>
+												<ul class="list-disc ml-5">
+													{contact.parking.map((p) => (
+														<li key={p.link}>
+															<a
+																href={p.link}
+																target="_blank"
+																rel="noreferrer"
+																class="link link-hover"
+															>
+																{p.name}
+															</a>
+														</li>
+													))}
+												</ul>
+											</div>
+										</li>
+									) : null}
+								</ul>
+							</div>
+						</FadeUp>
 					</div>
 
-					{/* Centered Instagram Section */}
-					<div class="my-12 flex justify-center">
+					{/* Map below details */}
+					<FadeUp>
+						<div class="mt-4  md:mt-8" data-aos="fade-up">
+							<MapEmbed />
+						</div>
+					</FadeUp>
+
+					{/* Instagram CTA */}
+					<div class="mt-12 flex justify-center">
 						<a
 							rel="noopener noreferrer"
 							target="_blank"

@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
-import { BookingBtn } from "../booking-button";
+import { Booking } from "../booking-modal";
 
 export default component$(() => {
 	const isMobile = useSignal(false);
@@ -15,14 +15,15 @@ export default component$(() => {
 	useOnDocument(
 		"DOMContentLoaded",
 		$(() => {
-			isMobile.value = window.innerWidth < 768;
+			isMobile.value = window.outerWidth < 1024 || window.innerWidth < 1024;
+			console.log(isMobile.value);
 		}),
 	);
 
 	useOnWindow(
 		"resize",
 		$(() => {
-			isMobile.value = window.innerWidth < 768;
+			isMobile.value = window.innerWidth < 1024 || window.outerWidth < 1024;
 		}),
 	);
 
@@ -59,13 +60,15 @@ export default component$(() => {
 			<div
 				class={`w-full text-center transition-all ${
 					isMobile.value
-						? "fixed bottom-0 left-0 w-full bg-primary py-4 shadow-lg z-10"
+						? "fixed bottom-0 left-0 w-full py-2  bg-primary/90 backdrop-blur-sm z-10"
 						: ""
 				}`}
 			>
-				<BookingBtn
-					additionalClasses="btn-xl w-fit mx-auto"
-					myText={t("app.hero.book_visit@@Book Your Visit")}
+				<Booking
+					id="modal_location"
+					text={t("app.hero.book_visit@@Book Your Visit")}
+					classes="btn btn-xl w-fit mx-auto"
+					location="372146"
 				/>
 			</div>
 		</section>

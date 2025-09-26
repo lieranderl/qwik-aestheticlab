@@ -1,65 +1,47 @@
-export interface ServiceFiltered {
-	id: string;
-	name: string;
-	duration: number;
-	price: number;
-	description: string;
-	created_at: string;
-	priority: number;
-	category_id: ServiceCategory["id"];
-}
+// export interface ServiceFiltered {
+// 	id: string;
+// 	name: string;
+// 	duration: number;
+// 	price: number;
+// 	description: string;
+// 	created_at: string;
+// 	priority: number;
+// 	category_id: ServiceCategory["id"];
+// 	gettimely_ids: ServiceCategory["gettimely_id"][];
+// }
 
-export interface Service extends ServiceFiltered {
-	name_ru: string;
-	name_nl: string;
-	name_fr: string;
-	name_uk: string;
-	description_ru: string;
-	description_nl: string;
-	description_fr: string;
-	description_uk: string;
-	active: boolean;
-}
+// export interface Service extends ServiceFiltered {
+// 	name_ru: string;
+// 	name_nl: string;
+// 	name_fr: string;
+// 	name_uk: string;
+// 	description_ru: string;
+// 	description_nl: string;
+// 	description_fr: string;
+// 	description_uk: string;
+// 	active: boolean;
+// }
 
-export interface ServiceCategoryFiltered {
-	id: string;
-	name: string;
-	priority: number;
-}
+// export interface ServiceCategoryFiltered {
+// 	id: string;
+// 	name: string;
+// 	priority: number;
+// 	gettimely_id: number;
+// }
 
-export interface ServiceCategory extends ServiceCategoryFiltered {
-	name_ru: string;
-	name_nl: string;
-	name_fr: string;
-	name_uk: string;
-	active: boolean;
-}
+// export interface ServiceCategory extends ServiceCategoryFiltered {
+// 	name_ru: string;
+// 	name_nl: string;
+// 	name_fr: string;
+// 	name_uk: string;
+// 	active: boolean;
+// }
 
-export interface TimeSlot {
-	start: string;
-	end: string;
-	status: "available" | "busy";
-}
-
-export interface WorkingHours {
-	monday: string[];
-	tuesday: string[];
-	wednesday: string[];
-	thursday: string[];
-	friday: string[];
-	saturday: string[];
-	sunday: string[];
-}
-
-export interface Technician {
+export interface Staff {
 	id: string;
 	name: string;
 	photo_url: string;
 	email: string;
-	calendar_id: string;
-	services: string[];
-	working_hours: WorkingHours;
-	created_at: string;
 	active: boolean;
 	about: string;
 	about_ru: string;
@@ -69,28 +51,54 @@ export interface Technician {
 	role: string;
 }
 
-export interface TechnicianSlots {
-	tech: Technician;
-	slots: TimeSlot[];
+export interface Contact {
+	id: number;
+	created_at: string;
+	email: string;
+	open_hours: {
+		start_week_day: string;
+		end_week_day: string;
+		from: string;
+		to: string;
+	};
+	location: {
+		name: string;
+		address: string;
+		link: string;
+	};
+	parking: {
+		name: string;
+		link: string;
+	}[];
 }
 
-export interface Booking {
-	id: string;
-	technician_id: Technician["id"];
-	client_id: string;
-	services: string[];
-	services_names: string[];
-	duration: number;
-	price: number;
-	datetime: string;
-	calendar_id: string;
-	event_id: string;
-	technician_name: string;
-}
-
-export interface Admin {
+export interface ServiceGroup {
 	id: string;
 	name: string;
-	email: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	name_uk: string;
+	active: boolean;
+	priority: number;
+}
+
+export interface Service {
+	id: string;
+	group_id: ServiceGroup["id"];
+	category: ServiceGroup["name"];
+	name: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	name_uk: string;
+	description: string;
+	description_ru: string;
+	description_nl: string;
+	description_fr: string;
+	description_uk: string;
+	duration: number;
+	price: number;
+	priority: number;
 	active: boolean;
 }

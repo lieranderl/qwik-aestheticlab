@@ -1,0 +1,90 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - staging
+  release:
+    types: [created]
+
+env:
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+  GCP_REGION: ${{ secrets.GCP_REGION }}
+  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }} 
+  STAGE_SERVICE: ${{ secrets.STAGE_SERVICE }} 
+  PROD_SERVICE: ${{ secrets.PROD_SERVICE }} 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 🧹 Run Biome check
+      - name: Run Biome check
+        run: |
+          corepack enable
+          bunx @biomejs/biome check --fix
+
+      # 🔑 Authenticate to DockerHub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 🔨 Enable buildx (multi-arch builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 🏗️ Build & push image
+      - name: Build and push image
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG=${{ github.ref_name }}
+          else
+            TAG=${{ github.sha }}
+          fi
+
+          docker buildx build \
+            --platform linux/amd64 \
+            --provenance=false \
+            --sbom=false \
+            -t $DOCKER_IMAGE:$TAG \
+            --push .
+
+      # ☁️ Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      # 🚀 Deploy to staging
+      - name: Deploy to Cloud Run (staging)
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          gcloud run deploy $STAGE_SERVICE \
+            --image=$DOCKER_IMAGE:${{ github.sha }} \
+            --region=$GCP_REGION \
+            --project=$GCP_PROJECT
+
+      # 🚀 Deploy to production
+      - name: Deploy to Cloud Run (prod)
+        if: github.event_name == 'release'
+        run: |
+          gcloud run deploy $PROD_SERVICE \
+            --image=$DOCKER_IMAGE:${{ github.ref_name }} \
+            --region=$GCP_REGION \
+            --project=$GCP_PROJECT

@@ -2,7 +2,7 @@ import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { supabase } from "~/shared/supabase-client";
-import type { Service, ServiceCategory, Technician } from "~/types";
+import type { Contact, Service, ServiceGroup, Staff } from "~/types";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({
@@ -11,137 +11,149 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 	});
 };
 
-export const useEnvLoader = routeLoader$(({ env }) => {
-	const API_BASE_URL = env.get("API_BASE_URL") || "";
-	const API_TOKEN = env.get("API_TOKEN") || "";
-	return {
-		API_BASE_URL,
-		API_TOKEN,
-	};
-});
+export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
+	console.log("Fetching contact info from Supabase…");
 
-export const useServerTimeLoader = routeLoader$(() => {
-	return {
-		date: new Date().toISOString(),
-	};
-});
+	const client = supabase(event);
 
-export const useServicesCategoryLoader = routeLoader$(async (requestEv) => {
-	console.log("Fetching categories from Supabase");
-	const response = await supabase(requestEv)
-		.from("category_service")
-		.select("*");
-	const data = response.data as ServiceCategory[];
-	if (response.error) {
-		console.error("Error fetching categories:", response.error);
-		return [];
+	const { data, error } = await client
+		.schema("gettimely")
+		.from("contacts")
+		.select("*")
+		.eq("id", 1)
+		.single();
+
+	if (error) {
+		console.error("Error fetching contact:", error);
+		return null;
 	}
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (!data) {
-		return [];
-	}
-	// use local and return correct name based on locale
-	const locale = requestEv.locale().split("-")[0];
-	const shortlang = locale === "en" ? "en" : locale;
 
-	const categories = data.map((category) => ({
-		id: category.id,
-		priority: category.priority,
-		name:
-			shortlang === "en"
-				? category.name
-				: shortlang === "ru"
-					? category.name_ru
-					: shortlang === "nl"
-						? category.name_nl
-						: shortlang === "fr"
-							? category.name_fr
-							: shortlang === "uk"
-								? category.name_uk
-								: category.name,
-	}));
-
-	return categories;
+	return data as Contact;
 });
 
-export const useTechniciansLoader = routeLoader$<Technician[]>(
-	async ({ env }) => {
-		const API_BASE_URL = env.get("API_BASE_URL");
-		const API_TOKEN = env.get("API_TOKEN");
-		console.log(`Sending request to: ${API_BASE_URL}/technicians`);
-		try {
-			const response = await fetch(`${API_BASE_URL}/technicians`, {
-				headers: {
-					Authorization: `${API_TOKEN}`,
-					"Content-Type": "application/json",
-				},
-			});
-			const data: Technician[] = await response.json();
-			return data.filter((technician) => technician.active);
-		} catch (error) {
-			console.error("Error fetching technicians:", error);
+export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
+	async (requestEv) => {
+		console.log("Fetching service groups from Supabase");
+
+		const client = supabase(requestEv);
+		const { data, error } = await client
+			.schema("gettimely")
+			.from("service_groups")
+			.select("*")
+			.order("priority", { ascending: true });
+
+		if (error) {
+			console.error("Error fetching service groups:", error);
 			return [];
 		}
+		if (!data) return [];
+
+		const locale = requestEv.locale().split("-")[0];
+		const shortlang = locale === "en" ? "en" : locale;
+
+		return data.map((group) => ({
+			id: group.id,
+			priority: group.priority,
+			active: group.active,
+			name:
+				shortlang === "ru"
+					? group.name_ru
+					: shortlang === "nl"
+						? group.name_nl
+						: shortlang === "fr"
+							? group.name_fr
+							: shortlang === "uk"
+								? group.name_uk
+								: group.name,
+			name_ru: group.name_ru,
+			name_nl: group.name_nl,
+			name_fr: group.name_fr,
+			name_uk: group.name_uk,
+		})) as ServiceGroup[];
 	},
 );
 
-export const useServicesLoader = routeLoader$(async ({ env, locale }) => {
-	const API_BASE_URL = env.get("API_BASE_URL");
-	const API_TOKEN = env.get("API_TOKEN");
-	console.log(`Sending request to: ${API_BASE_URL}/services`);
-	try {
-		const response = await fetch(`${API_BASE_URL}/services`, {
-			headers: {
-				Authorization: `${API_TOKEN}`,
-				"Content-Type": "application/json",
-			},
-		});
-		const data: Service[] = await response.json();
-		// set name based on locale
-		const shortlocal = locale().split("-")[0];
-		for (const service of data) {
-			if (shortlocal === "ru") {
-				service.name = service.name_ru;
-			} else if (shortlocal === "nl") {
-				service.name = service.name_nl;
-			} else if (shortlocal === "fr") {
-				service.name = service.name_fr;
-			} else if (shortlocal === "uk") {
-				service.name = service.name_uk;
-			}
-		}
-		for (const service of data) {
-			if (shortlocal === "ru") {
-				service.description = service.description_ru;
-			} else if (shortlocal === "nl") {
-				service.description = service.description_nl;
-			} else if (shortlocal === "fr") {
-				service.description = service.description_fr;
-			} else if (shortlocal === "uk") {
-				service.description = service.description_uk;
-			}
-		}
-		// map Service to ServiceFiltered
-		data
-			.filter((service) => service.active)
-			.sort((a, b) => a.priority - b.priority)
-			.map((service) => {
-				return {
-					id: service.id,
-					name: service.name,
-					duration: service.duration,
-					price: service.price,
-					description: service.description,
-					created_at: service.created_at,
-					priority: service.priority,
-					category_id: service.category_id,
-				};
-			});
-		return data as Service[];
-	} catch (error) {
+export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
+	console.log("Fetching staff from Supabase");
+
+	const client = supabase(requestEv);
+	const { data, error } = await client
+		.schema("gettimely")
+		.from("staff")
+		.select("*")
+		.eq("active", true);
+
+	if (error) {
+		console.error("Error fetching staff:", error);
+		return [];
+	}
+	return (data ?? []) as Staff[];
+});
+
+export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
+	console.log("Fetching services from Supabase");
+
+	const client = supabase(requestEv);
+	const { data, error } = await client
+		.schema("gettimely")
+		.from("services")
+		.select("*")
+		.eq("active", true)
+		.order("priority", { ascending: true });
+
+	if (error) {
 		console.error("Error fetching services:", error);
 		return [];
 	}
+	if (!data) return [];
+
+	const shortlocal = requestEv.locale().split("-")[0];
+
+	const localizedServices = data.map((service) => {
+		const localizedName =
+			shortlocal === "ru"
+				? service.name_ru
+				: shortlocal === "nl"
+					? service.name_nl
+					: shortlocal === "fr"
+						? service.name_fr
+						: shortlocal === "uk"
+							? service.name_uk
+							: service.name;
+
+		const localizedDescription =
+			shortlocal === "ru"
+				? service.description_ru
+				: shortlocal === "nl"
+					? service.description_nl
+					: shortlocal === "fr"
+						? service.description_fr
+						: shortlocal === "uk"
+							? service.description_uk
+							: service.description;
+
+		return {
+			id: service.id,
+			group_id: service.group_id, // 🔑 match ServiceGroup
+			category: service.category, // human-readable fallback
+			name: localizedName,
+			name_ru: service.name_ru,
+			name_nl: service.name_nl,
+			name_fr: service.name_fr,
+			name_uk: service.name_uk,
+			description: localizedDescription,
+			description_ru: service.description_ru,
+			description_nl: service.description_nl,
+			description_fr: service.description_fr,
+			description_uk: service.description_uk,
+			duration: service.duration,
+			price: service.price,
+			priority: service.priority,
+			active: service.active,
+		} as Service;
+	});
+
+	return localizedServices;
 });
 
 export default component$(() => {
