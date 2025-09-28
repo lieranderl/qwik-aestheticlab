@@ -24,19 +24,54 @@ export default component$(() => {
 		<QwikCityProvider>
 			<head>
 				<meta charset="utf-8" />
-				<script type="application/ld+json">{`
-					{
-					"@context": "https://schema.org",
-					"@type": "BeautySalon",
-					"name": "Aesthetic Lab",
-					"address": {
-						"@type": "PostalAddress",
-						"addressLocality": "Leuven",
-						"addressCountry": "BE"
-					},
-					"url": "https://aestheticlab.be"
-					}
-					`}</script>
+
+				{!isDev && (
+					<script
+						type="application/ld+json"
+						// biome-ignore lint: JSON-LD needs raw injection
+						dangerouslySetInnerHTML={JSON.stringify({
+							"@context": "https://schema.org",
+							"@type": "BeautySalon",
+							"@id": "https://aestheticlab.be#salon",
+							name: "Aesthetic Lab",
+							image:
+								"https://lh3.googleusercontent.com/p/AF1QipOpUazRD7FPPGNWPbIYA8Fyf7vn0fUdm2bBkQDx",
+							url: "https://aestheticlab.be",
+							email: "aestheticlabbe@gmail.com",
+							address: {
+								"@type": "PostalAddress",
+								streetAddress: "Diestsestraat 174",
+								addressLocality: "Leuven",
+								postalCode: "3000",
+								addressCountry: "BE",
+							},
+							geo: {
+								"@type": "GeoCoordinates",
+								latitude: 50.88148,
+								longitude: 4.71053,
+							},
+							hasMap:
+								"https://maps.google.com/?q=Diestsestraat+174,+3000+Leuven,+Belgium",
+							openingHoursSpecification: [
+								{
+									"@type": "OpeningHoursSpecification",
+									dayOfWeek: [
+										"Monday",
+										"Tuesday",
+										"Wednesday",
+										"Thursday",
+										"Friday",
+										"Saturday",
+									],
+									opens: "10:00",
+									closes: "18:00",
+								},
+							],
+							priceRange: "€€",
+							sameAs: ["https://www.instagram.com/aestheticlabbe"],
+						})}
+					/>
+				)}
 
 				{!isDev && (
 					<link
