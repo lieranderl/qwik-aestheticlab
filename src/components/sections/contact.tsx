@@ -30,14 +30,14 @@ export default component$(({ contact }: ContactSectionProps) => {
 								<ul class="space-y-3">
 									<li>
 										<span class="font-medium">
-											{t("app.contact.monday@@{Monday}")} –{" "}
-											{t("app.contact.saturday@@{Saturday}")}:
+											{t("app.contact.monday@@Monday")} –{" "}
+											{t("app.contact.saturday@@Saturday")}:
 										</span>{" "}
 										{contact?.open_hours.from} – {contact?.open_hours.to}
 									</li>
 									<li class="text-base-content/70">
 										{t(
-											"app.contact.appointment_only@@{Visits are by appointment only}",
+											"app.contact.appointment_only@@Visits are by appointment only",
 										)}
 									</li>
 								</ul>
