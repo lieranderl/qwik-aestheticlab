@@ -91,11 +91,11 @@ export default component$(() => {
 						</div>
 						<ul
 							tabIndex={0}
-							class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100/98 rounded-box w-52"
+							class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100/96 rounded-box w-52"
 						>
 							{NAV_LINKS(t, locale).map(({ href, text }) => (
 								<li key={href}>
-									<a href={href} class="no-underline ">
+									<a href={href} class="no-underline">
 										{text}
 									</a>
 								</li>
