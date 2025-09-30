@@ -89,7 +89,7 @@ export const ServicesSection = component$(
 															</div>
 
 															{/* Booking button + duration */}
-															<div class="flex justify-between items-center">
+															<div class="flex justify-end items-center">
 																{/* <Booking
 																	id={`modal_${groupId}_${service.id}`}
 																	text={t("app.book.book_now@@Book Now")}
