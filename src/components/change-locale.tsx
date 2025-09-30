@@ -31,12 +31,12 @@ export const ChangeLocale = component$(() => {
 			<button
 				tabIndex={0}
 				type="button"
-				class="btn btn-primary  btn-md"
+				class="btn btn-primary btn-ghost text-base-100"
 			>
-				<HiLanguageSolid class="text-lg" /> 
+				<HiLanguageSolid class="text-xl" />
 				<span class="sm:block hidden">{humanreadble_lang(locale.lang)}</span>
 			</button>
-			<ul class="dropdown-content menu p-2 m-1 shadow bg-base-100 rounded-box w-36 z-[1]">
+			<ul class="dropdown-content menu p-2 mt-2 shadow bg-base-100 rounded-box w-36 z-[1]">
 				{config.supportedLocales.map((value) => (
 					<li key={value.lang}>
 						<a

@@ -1,32 +1,10 @@
-import {
-	$,
-	component$,
-	useOnDocument,
-	useOnWindow,
-	useSignal,
-} from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
 import { Booking } from "../booking-modal";
 
 export default component$(() => {
-	// const isMobile = useSignal(false);
 	const t = inlineTranslate();
-	// useOnDocument(
-	// 	"DOMContentLoaded",
-	// 	$(() => {
-	// 		isMobile.value = window.outerWidth < 1024 || window.innerWidth < 1024;
-	// 		console.log(isMobile.value);
-	// 	}),
-	// );
-
-	// useOnWindow(
-	// 	"resize",
-	// 	$(() => {
-	// 		isMobile.value = window.innerWidth < 1024 || window.outerWidth < 1024;
-	// 	}),
-	// );
-
 	return (
 		<section
 			id="home"
@@ -55,22 +33,12 @@ export default component$(() => {
 					{t("app.hero.slogan@@Where Expertise Crafts Unique Beauty")}
 				</p>
 			</div>
-
-			{/* Button Container */}
-			{/* <div
-				class={`w-full text-center transition-all ${
-					isMobile.value
-						? "fixed bottom-0 left-0 w-full py-2  bg-primary/90 backdrop-blur-sm z-10"
-						: ""
-				}`}
-			> */}
-				<Booking
-					id="modal_location"
-					text={t("app.hero.book_visit@@Book Your Visit")}
-					classes="btn btn-xl w-fit mx-auto hidden xl:block"
-					location="372146"
-				/>
-			{/* </div> */}
+			<Booking
+				id="modal_location"
+				text={t("app.hero.book_visit@@Book Your Visit")}
+				classes="btn btn-xl w-fit mx-auto hidden xl:block"
+				location="372146"
+			/>
 		</section>
 	);
 });

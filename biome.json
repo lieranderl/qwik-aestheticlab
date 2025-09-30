@@ -83,6 +83,10 @@
 				"noUnsafeNegation": "error",
 				"useGetterReturn": "error",
 				"noUnknownAtRules": "warn"
+			},
+			"a11y": {
+				"noNoninteractiveTabindex": "info",
+				"useSemanticElements": "warn"
 			}
 		}
 	},
