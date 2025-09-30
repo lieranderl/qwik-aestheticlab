@@ -1,4 +1,5 @@
-import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
+import { HiBars3Outline } from "@qwikest/icons/heroicons";
 import {
 	type InlineTranslateFn,
 	inlineTranslate,
@@ -17,7 +18,6 @@ const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 			href: getPath("/#services", locale.lang),
 			text: t("app.nav.services@@Services"),
 		},
-
 		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
 		{
 			href: getPath("/#policy", locale.lang),
@@ -33,107 +33,77 @@ const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
 };
 
 export default component$(() => {
-	const isMenuOpen = useSignal(false);
-	const menuRef = useSignal<HTMLDivElement>();
-	const buttonRef = useSignal<HTMLButtonElement>();
 	const t = inlineTranslate();
 	const locale = useSpeakLocale();
 
-	// Memoized click handler
-	const toggleMenu = $(() => {
-		isMenuOpen.value = !isMenuOpen.value;
-	});
-
-	// Handle click outside
-	useOnDocument(
-		"click",
-		$((event: MouseEvent) => {
-			const target = event.target as HTMLElement;
-			if (
-				isMenuOpen.value &&
-				menuRef.value &&
-				!menuRef.value.contains(target) &&
-				buttonRef.value &&
-				!buttonRef.value.contains(target)
-			) {
-				isMenuOpen.value = false;
-			}
-		}),
-	);
-
 	return (
 		<header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
-			<nav class="py-2 mx-4 md:mx-8">
-				<div class="flex items-center justify-between h-12">
-					<div />
-					{/* Desktop Navigation */}
-					<div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
-						{NAV_LINKS(t, locale).map(({ href, text }) => (
-							<a
-								key={href}
-								href={href}
-								class="link no-underline text-base-100 hover:text-base-100/50 transition-colors text-nowrap"
-							>
-								{text}
-							</a>
-						))}
-					</div>
-					<div class="hidden lg:block">
+			<div class="navbar px-4 xl:px-8">
+				{/* --- Left (start) --- */}
+				<div class="navbar-start"></div>
+
+				{/* --- Center --- */}
+				<div class="navbar-center">
+					{/* Booking button (mobile only) */}
+					<div class="xl:hidden">
 						<Booking
-							id="modal_location_header"
+							id="modal_location_header_mobile"
 							text={t("app.book.book_now@@Book Now")}
-							classes="btn w-fit mx-auto mr-2"
+							classes="btn text-nowrap"
 							location="372146"
 						/>
 					</div>
-					<ChangeLocale />
-					{/* Mobile menu button */}
-					<button
-						type="button"
-						ref={buttonRef}
-						onClick$={toggleMenu}
-						class="lg:hidden cursor-pointer"
-						aria-label="Toggle menu"
-					>
-						<div class="w-6 h-5 relative flex flex-col justify-between">
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "rotate-45 translate-y-2" : ""
-								}`}
-							/>
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "opacity-0" : ""
-								}`}
-							/>
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""
-								}`}
-							/>
-						</div>
-					</button>
+
+					{/* Desktop nav links */}
+					<ul class="menu menu-horizontal hidden xl:flex gap-4">
+						{NAV_LINKS(t, locale).map(({ href, text }) => (
+							<li key={href}>
+								<a href={href} class="no-underline text-base-100">
+									{text}
+								</a>
+							</li>
+						))}
+					</ul>
 				</div>
 
-				{/* Mobile Navigation */}
-				<div
-					ref={menuRef}
-					class={`lg:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2`}
-				>
-					<div class="flex flex-col space-y-3 items-end">
-						{NAV_LINKS(t, locale).map(({ href, text }) => (
-							<a
-								key={href}
-								href={href}
-								onClick$={toggleMenu}
-								class="link no-underline text-base-100 text-right hover:text-base-100/50 transition-colors text-nowrap"
-							>
-								{text}
-							</a>
-						))}
+				{/* --- Right (end) --- */}
+				<div class="navbar-end gap-2">
+					{/* Booking (desktop only) */}
+					<div class="hidden xl:block">
+						<Booking
+							id="modal_location_header"
+							text={t("app.book.book_now@@Book Now")}
+							classes="btn text-nowrap"
+							location="372146"
+						/>
+					</div>
+
+					<ChangeLocale />
+
+					{/* Mobile menu (daisyUI dropdown) */}
+					<div class="dropdown dropdown-end xl:hidden">
+						<div
+							tabIndex={0}
+							role="button"
+							class="btn btn-primary btn-ghost btn-square"
+						>
+							<HiBars3Outline class="text-2xl text-base-100" />
+						</div>
+						<ul
+							tabIndex={0}
+							class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100/98 rounded-box w-52"
+						>
+							{NAV_LINKS(t, locale).map(({ href, text }) => (
+								<li key={href}>
+									<a href={href} class="no-underline ">
+										{text}
+									</a>
+								</li>
+							))}
+						</ul>
 					</div>
 				</div>
-			</nav>
+			</div>
 		</header>
 	);
 });
