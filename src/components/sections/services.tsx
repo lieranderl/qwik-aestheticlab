@@ -3,7 +3,7 @@ import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { formatPrice } from "~/consts";
 import type { Service, ServiceGroup } from "~/types";
-import { Booking } from "../booking-modal";
+// import { Booking } from "../booking-modal";
 import { FadeUp } from "../fade-up";
 
 export interface ServicesSectionProps {
@@ -90,14 +90,14 @@ export const ServicesSection = component$(
 
 															{/* Booking button + duration */}
 															<div class="flex justify-between items-center">
-																<Booking
+																{/* <Booking
 																	id={`modal_${groupId}_${service.id}`}
 																	text={t("app.book.book_now@@Book Now")}
 																	location="372146"
 																	category={String(groupId)}
 																	product={`${service.id}:SV`}
 																	classes="btn btn-sm btn-primary btn-outline"
-																/>
+																/> */}
 
 																<div class="flex justify-end items-center">
 																	<HiClockOutline class="mr-1" />
