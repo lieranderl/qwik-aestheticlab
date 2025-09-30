@@ -10,22 +10,22 @@ import ImgAestheticlab from "~/media/AestheticLab.svg?jsx";
 import { Booking } from "../booking-modal";
 
 export default component$(() => {
-	const isMobile = useSignal(false);
+	// const isMobile = useSignal(false);
 	const t = inlineTranslate();
-	useOnDocument(
-		"DOMContentLoaded",
-		$(() => {
-			isMobile.value = window.outerWidth < 1024 || window.innerWidth < 1024;
-			console.log(isMobile.value);
-		}),
-	);
+	// useOnDocument(
+	// 	"DOMContentLoaded",
+	// 	$(() => {
+	// 		isMobile.value = window.outerWidth < 1024 || window.innerWidth < 1024;
+	// 		console.log(isMobile.value);
+	// 	}),
+	// );
 
-	useOnWindow(
-		"resize",
-		$(() => {
-			isMobile.value = window.innerWidth < 1024 || window.outerWidth < 1024;
-		}),
-	);
+	// useOnWindow(
+	// 	"resize",
+	// 	$(() => {
+	// 		isMobile.value = window.innerWidth < 1024 || window.outerWidth < 1024;
+	// 	}),
+	// );
 
 	return (
 		<section
@@ -57,20 +57,20 @@ export default component$(() => {
 			</div>
 
 			{/* Button Container */}
-			<div
+			{/* <div
 				class={`w-full text-center transition-all ${
 					isMobile.value
 						? "fixed bottom-0 left-0 w-full py-2  bg-primary/90 backdrop-blur-sm z-10"
 						: ""
 				}`}
-			>
+			> */}
 				<Booking
 					id="modal_location"
 					text={t("app.hero.book_visit@@Book Your Visit")}
-					classes="btn btn-xl w-fit mx-auto"
+					classes="btn btn-xl w-fit mx-auto hidden lg:block"
 					location="372146"
 				/>
-			</div>
+			{/* </div> */}
 		</section>
 	);
 });

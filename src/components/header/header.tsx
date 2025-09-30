@@ -1,139 +1,139 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import {
-	type InlineTranslateFn,
-	inlineTranslate,
-	localizePath,
-	type SpeakLocale,
-	useSpeakLocale,
+  type InlineTranslateFn,
+  inlineTranslate,
+  localizePath,
+  type SpeakLocale,
+  useSpeakLocale,
 } from "qwik-speak";
 import { Booking } from "../booking-modal";
 import { ChangeLocale } from "../change-locale";
 
 const NAV_LINKS = (t: InlineTranslateFn, locale: SpeakLocale) => {
-	const getPath = localizePath();
-	return [
-		{ href: getPath("/#home", locale.lang), text: t("app.nav.home@@Home") },
-		{
-			href: getPath("/#services", locale.lang),
-			text: t("app.nav.services@@Services"),
-		},
+  const getPath = localizePath();
+  return [
+    { href: getPath("/#home", locale.lang), text: t("app.nav.home@@Home") },
+    {
+      href: getPath("/#services", locale.lang),
+      text: t("app.nav.services@@Services"),
+    },
 
-		{ href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
-		{
-			href: getPath("/#policy", locale.lang),
-			text: t("app.nav.policy@@Policy"),
-		},
-		{ href: getPath("/#work", locale.lang), text: t("app.nav.work@@Work") },
-		{ href: getPath("/#about", locale.lang), text: t("app.nav.about@@About") },
-		{
-			href: getPath("/#contact", locale.lang),
-			text: t("app.nav.contact@@Contact"),
-		},
-	];
+    { href: getPath("/#team", locale.lang), text: t("app.nav.team@@Team") },
+    {
+      href: getPath("/#policy", locale.lang),
+      text: t("app.nav.policy@@Policy"),
+    },
+    { href: getPath("/#work", locale.lang), text: t("app.nav.work@@Work") },
+    { href: getPath("/#about", locale.lang), text: t("app.nav.about@@About") },
+    {
+      href: getPath("/#contact", locale.lang),
+      text: t("app.nav.contact@@Contact"),
+    },
+  ];
 };
 
 export default component$(() => {
-	const isMenuOpen = useSignal(false);
-	const menuRef = useSignal<HTMLDivElement>();
-	const buttonRef = useSignal<HTMLButtonElement>();
-	const t = inlineTranslate();
-	const locale = useSpeakLocale();
+  const isMenuOpen = useSignal(false);
+  const menuRef = useSignal<HTMLDivElement>();
+  const buttonRef = useSignal<HTMLButtonElement>();
+  const t = inlineTranslate();
+  const locale = useSpeakLocale();
 
-	// Memoized click handler
-	const toggleMenu = $(() => {
-		isMenuOpen.value = !isMenuOpen.value;
-	});
+  // Memoized click handler
+  const toggleMenu = $(() => {
+    isMenuOpen.value = !isMenuOpen.value;
+  });
 
-	// Handle click outside
-	useOnDocument(
-		"click",
-		$((event: MouseEvent) => {
-			const target = event.target as HTMLElement;
-			if (
-				isMenuOpen.value &&
-				menuRef.value &&
-				!menuRef.value.contains(target) &&
-				buttonRef.value &&
-				!buttonRef.value.contains(target)
-			) {
-				isMenuOpen.value = false;
-			}
-		}),
-	);
+  // Handle click outside
+  useOnDocument(
+    "click",
+    $((event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (
+        isMenuOpen.value &&
+        menuRef.value &&
+        !menuRef.value.contains(target) &&
+        buttonRef.value &&
+        !buttonRef.value.contains(target)
+      ) {
+        isMenuOpen.value = false;
+      }
+    })
+  );
 
-	return (
-		<header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
-			<nav class="py-2 mx-4 md:mx-8">
-				<div class="flex items-center justify-between h-12">
-					<div />
-					{/* Desktop Navigation */}
-					<div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
-						{NAV_LINKS(t, locale).map(({ href, text }) => (
-							<a
-								key={href}
-								href={href}
-								class="link no-underline text-base-100 hover:text-base-100/50 transition-colors text-nowrap"
-							>
-								{text}
-							</a>
-						))}
-					</div>
-					<div class="hidden lg:block">
-						<Booking
-							id="modal_location_header"
-							text={t("app.book.book_now@@Book Now")}
-							classes="btn w-fit mx-auto mr-2"
-							location="372146"
-						/>
-					</div>
-					<ChangeLocale />
-					{/* Mobile menu button */}
-					<button
-						type="button"
-						ref={buttonRef}
-						onClick$={toggleMenu}
-						class="lg:hidden cursor-pointer"
-						aria-label="Toggle menu"
-					>
-						<div class="w-6 h-5 relative flex flex-col justify-between">
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "rotate-45 translate-y-2" : ""
-								}`}
-							/>
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "opacity-0" : ""
-								}`}
-							/>
-							<span
-								class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
-									isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""
-								}`}
-							/>
-						</div>
-					</button>
-				</div>
+  return (
+    <header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
+      <nav class="py-2 mx-4 md:mx-8">
+        <div class="flex items-center justify-between h-12">
+          <div />
+          {/* Desktop Navigation */}
+          <div class="hidden lg:flex flex-1 items-center justify-center space-x-6">
+            {NAV_LINKS(t, locale).map(({ href, text }) => (
+              <a
+                key={href}
+                href={href}
+                class="link no-underline text-base-100 hover:text-base-100/50 transition-colors text-nowrap"
+              >
+                {text}
+              </a>
+            ))}
+          </div>
 
-				{/* Mobile Navigation */}
-				<div
-					ref={menuRef}
-					class={`lg:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2`}
-				>
-					<div class="flex flex-col space-y-3 items-end">
-						{NAV_LINKS(t, locale).map(({ href, text }) => (
-							<a
-								key={href}
-								href={href}
-								onClick$={toggleMenu}
-								class="link no-underline text-base-100 text-right hover:text-base-100/50 transition-colors text-nowrap"
-							>
-								{text}
-							</a>
-						))}
-					</div>
-				</div>
-			</nav>
-		</header>
-	);
+          <Booking
+            id="modal_location_header"
+            text={t("app.book.book_now@@Book Now")}
+            classes="btn w-fit mx-auto mr-2"
+            location="372146"
+          />
+
+          <ChangeLocale />
+
+          <button
+            type="button"
+            ref={buttonRef}
+            onClick$={toggleMenu}
+            class="lg:hidden cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <div class="w-6 h-5 relative flex flex-col justify-between">
+              <span
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+                  isMenuOpen.value ? "rotate-45 translate-y-2" : ""
+                }`}
+              />
+              <span
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+                  isMenuOpen.value ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                class={`w-full h-0.5 bg-base-100 transition-all duration-300 ${
+                  isMenuOpen.value ? "-rotate-45 -translate-y-2" : ""
+                }`}
+              />
+            </div>
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div
+          ref={menuRef}
+          class={`lg:hidden ${isMenuOpen.value ? "block" : "hidden"} p-4 pb-2`}
+        >
+          <div class="flex flex-col space-y-3 items-end">
+            {NAV_LINKS(t, locale).map(({ href, text }) => (
+              <a
+                key={href}
+                href={href}
+                onClick$={toggleMenu}
+                class="link no-underline text-base-100 text-right hover:text-base-100/50 transition-colors text-nowrap"
+              >
+                {text}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 });
