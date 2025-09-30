@@ -67,7 +67,7 @@ export default component$(() => {
 				<Booking
 					id="modal_location"
 					text={t("app.hero.book_visit@@Book Your Visit")}
-					classes="btn btn-xl w-fit mx-auto hidden lg:block"
+					classes="btn btn-xl w-fit mx-auto hidden xl:block"
 					location="372146"
 				/>
 			{/* </div> */}
