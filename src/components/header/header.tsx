@@ -40,7 +40,12 @@ export default component$(() => {
 		<header class="fixed w-full bg-primary/90 backdrop-blur-sm z-50">
 			<div class="navbar px-4 xl:px-8">
 				{/* --- Left (start) --- */}
-				<div class="navbar-start"></div>
+				<div class="navbar-start gap-2">
+					{/* ChangeLocale always here, but hidden on desktop if needed */}
+					<div class="xl:hidden">
+						<ChangeLocale />
+					</div>
+				</div>
 
 				{/* --- Center --- */}
 				<div class="navbar-center">
@@ -78,7 +83,10 @@ export default component$(() => {
 						/>
 					</div>
 
-					<ChangeLocale />
+					{/* ChangeLocale on desktop (still on right) */}
+					<div class="hidden xl:block">
+						<ChangeLocale />
+					</div>
 
 					{/* Mobile menu (daisyUI dropdown) */}
 					<div class="dropdown dropdown-end xl:hidden">
@@ -87,7 +95,7 @@ export default component$(() => {
 							role="button"
 							class="btn btn-primary btn-ghost btn-square"
 						>
-							<HiBars3Outline class="text-2xl text-base-100" />
+							<HiBars3Outline class="text-3xl text-base-100" />
 						</div>
 						<ul
 							tabIndex={0}

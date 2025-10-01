@@ -54,15 +54,15 @@
     "@typescript-eslint/parser": "^8.45.0",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
-    "daisyui": "^5.1.25",
+    "daisyui": "^5.1.26",
     "luxon": "^3.7.2",
     "qwik-speak": "^0.23.2"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
-    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/vite": "^4.1.14",
     "@types/luxon": "^3.7.1",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^4.1.14",
     "tailwindcss-animate": "^1.0.7"
   }
 }
