@@ -27,7 +27,7 @@ export const ChangeLocale = component$(() => {
 	};
 
 	return (
-		<div class="dropdown dropdown-end">
+		<div class="dropdown dropdown-start xl:dropdown-end">
 			<button
 				tabIndex={0}
 				type="button"
