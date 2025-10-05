@@ -1,4 +1,4 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 
 interface BookingProps {
 	id: string; // unique per service
@@ -31,14 +31,17 @@ export const Booking = component$<BookingProps>(
 		const iframeUrl = `${baseUrl}?${params.toString()}`;
 
 		// Reset state when modal closes
-		useVisibleTask$(() => {
-			const modal = document.getElementById(id) as HTMLDialogElement;
-			if (modal) {
-				modal.addEventListener("close", () => {
-					isOpen.value = false;
-				});
-			}
-		});
+		useOnDocument(
+			"DOMContentLoaded",
+			$(() => {
+				const modal = document.getElementById(id) as HTMLDialogElement;
+				if (modal) {
+					modal.addEventListener("close", () => {
+						isOpen.value = false;
+					});
+				}
+			}),
+		);
 
 		const openModal = $(() => {
 			const modal = document.getElementById(id) as HTMLDialogElement;
