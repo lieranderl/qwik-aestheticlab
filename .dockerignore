@@ -20,3 +20,22 @@ dist
 infra
 email-templates
 .github
+# Editor configs
+.prettierrc
+.eslintrc*
+# Build artifacts (these will be generated)
+build
+.cache
+.temp
+tmp
+# Documentation
+*.md
+docs
+# Logs and temp files
+*.log
+*.log.*
+npm-debug.log*
+.DS_Store
+*.swp
+*.swo
+*~
