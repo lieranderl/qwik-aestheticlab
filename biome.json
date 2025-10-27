@@ -45,7 +45,8 @@
 				"useIsNan": "error",
 				"useValidForDirection": "error",
 				"useYield": "error",
-				"noUnknownProperty": "warn"
+				"noUnknownProperty": "warn",
+				"noQwikUseVisibleTask": "warn"
 			},
 			"style": {
 				"noNamespace": "error",
