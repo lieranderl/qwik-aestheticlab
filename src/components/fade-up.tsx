@@ -1,4 +1,10 @@
-import { component$, Slot, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	Slot,
+	useOnDocument,
+	useSignal,
+} from "@builder.io/qwik";
 
 interface FadeUpProps {
 	delay?: number;
@@ -29,49 +35,80 @@ export const FadeUp = component$(
 			disable ? "disabled" : "hidden",
 		);
 
-		useVisibleTask$(({ cleanup }) => {
-			const el = elRef.value;
-			if (!el) return;
+		useOnDocument(
+			"DOMContentLoaded",
+			$(() => {
+				// SSR safety check
+				if (typeof window === "undefined" || typeof document === "undefined") {
+					state.value = "immediate";
+					return;
+				}
 
-			if (disable) {
-				state.value = "disabled";
-				return;
-			}
+				const el = elRef.value;
+				if (!el) return;
 
-			const rect = el.getBoundingClientRect();
+				if (disable) {
+					state.value = "disabled";
+					return;
+				}
 
-			// Above viewport on load → show immediately
-			if (rect.top + window.scrollY < window.scrollY) {
-				state.value = "immediate";
-				return;
-			}
+				const rect = el.getBoundingClientRect();
 
-			// Already visible on load
-			if (
-				rect.top < window.innerHeight - rootMargin &&
-				rect.bottom > rootMargin
-			) {
-				state.value = delay > 0 ? "visible" : "immediate";
-			}
+				// Above viewport on load → show immediately
+				if (rect.top < 0) {
+					state.value = "immediate";
+					return;
+				}
 
-			const observer = new IntersectionObserver(
-				([entry]) => {
-					if (entry.isIntersecting) {
-						state.value = "visible";
-						if (runOnce) observer.disconnect();
-					} else if (!runOnce) {
-						state.value = "hidden";
+				// Already visible on load
+				if (
+					rect.top < window.innerHeight - rootMargin &&
+					rect.bottom > rootMargin
+				) {
+					state.value = delay > 0 ? "visible" : "immediate";
+				}
+
+				// Check if IntersectionObserver is supported
+				if (!("IntersectionObserver" in window)) {
+					state.value = "immediate";
+					return;
+				}
+
+				let observer: IntersectionObserver | null = null;
+
+				try {
+					observer = new IntersectionObserver(
+						([entry]) => {
+							if (entry?.isIntersecting) {
+								state.value = "visible";
+								if (runOnce && observer) observer.disconnect();
+							} else if (!runOnce) {
+								state.value = "hidden";
+							}
+						},
+						{
+							threshold,
+							rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
+						},
+					);
+					observer.observe(el);
+				} catch (error) {
+					// Fallback for any IntersectionObserver errors
+					console.warn(
+						"IntersectionObserver error, showing content immediately",
+						error,
+					);
+					state.value = "immediate";
+				}
+
+				// Return cleanup function
+				return () => {
+					if (observer) {
+						observer.disconnect();
 					}
-				},
-				{
-					threshold,
-					rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
-				},
-			);
-
-			observer.observe(el);
-			cleanup(() => observer.disconnect());
-		});
+				};
+			}),
+		);
 
 		const classMap = {
 			hidden: "fade-up-hidden",

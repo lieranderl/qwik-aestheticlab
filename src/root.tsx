@@ -28,7 +28,6 @@ export default component$(() => {
 				{!isDev && (
 					<script
 						type="application/ld+json"
-						// biome-ignore lint: JSON-LD needs raw injection
 						dangerouslySetInnerHTML={JSON.stringify({
 							"@context": "https://schema.org",
 							"@type": "BeautySalon",
