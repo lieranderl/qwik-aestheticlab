@@ -30,6 +30,7 @@ export const FadeUp = component$(
 		);
 
 		// eslint-disable-next-line qwik/no-use-visible-task
+		// biome-ignore lint/correctness/noQwikUseVisibleTask: <reason>
 		useVisibleTask$(({ cleanup }) => {
 			const el = elRef.value;
 			if (!el) return;

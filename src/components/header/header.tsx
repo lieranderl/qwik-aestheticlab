@@ -90,6 +90,7 @@ export default component$(() => {
 
 					{/* Mobile menu (daisyUI dropdown) */}
 					<div class="dropdown dropdown-end xl:hidden">
+						{/* biome-ignore lint/a11y/useSemanticElements: <reason> */}
 						<div
 							tabIndex={0}
 							role="button"
@@ -98,6 +99,7 @@ export default component$(() => {
 							<HiBars3Outline class="text-3xl text-base-100" />
 						</div>
 						<ul
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: <reason>
 							tabIndex={0}
 							class="menu menu-compact dropdown-content mt-2 p-2 shadow bg-base-100/96 rounded-box w-52"
 						>
