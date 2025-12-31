@@ -1,4 +1,5 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { baseUrlBooking } from "~/consts";
 
 interface BookingProps {
 	id: string; // unique per service
@@ -23,12 +24,11 @@ export const Booking = component$<BookingProps>(
 		const isOpen = useSignal(false);
 
 		// Build iframe URL
-		const baseUrl = "https://bookings.gettimely.com/aestheticlab2/bb/book";
 		const params = new URLSearchParams({ location });
 		if (category) params.set("category", category);
 		if (product) params.set("product", product);
 		if (staff) params.set("staff", staff);
-		const iframeUrl = `${baseUrl}?${params.toString()}`;
+		const iframeUrl = `${baseUrlBooking}?${params.toString()}`;
 
 		// Reset state when modal closes
 		useOnDocument(

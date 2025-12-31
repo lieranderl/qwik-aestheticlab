@@ -26,3 +26,6 @@ export const ga = [
       `,
 	},
 ];
+
+export const baseUrlBooking =
+	"https://bookings.gettimely.com/aestheticlab2/bb/book";
