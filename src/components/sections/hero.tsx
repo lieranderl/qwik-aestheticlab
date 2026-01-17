@@ -12,18 +12,25 @@ export default component$(() => {
 		>
 			<div class="custom-container text-center">
 				<ImgAestheticlab class="w-64 h-64 md:w-96 md:h-96 mx-auto" />
-				<h1 class="text-3xl md:text-5xl font-bold font-montserrat text-center text-base-100">
-					{t("app.hero.the_best@@The best")}
-					<span class="font-extrabold animate-color-pulse">
-						{" "}
-						{t("app.hero.manicure@@manicure")}{" "}
+				<h1 class="text-3xl md:text-5xl font-bold font-montserrat text-center text-base-100 flex flex-col md:flex-row items-center justify-center gap-2 md:flex-wrap">
+					<span>{t("app.hero.the_best@@The best")}</span>
+					<span class="text-rotate text-left">
+						<span class="justify-items-center text-left">
+							<span class="px-2 text-pink-500">
+								{t("app.hero.manicure@@manicure")}
+							</span>
+							<span class="px-2 text-rose-500">
+								{t("app.hero.pedicure@@pedicure")}
+							</span>
+							<span class="px-2 text-fuchsia-600">
+								{t("app.hero.brows@@brows")}
+							</span>
+							<span class="px-2 text-violet-600">
+								{t("app.hero.laser@@laser")}
+							</span>
+						</span>
 					</span>
-					{t("app.hero.and@@and")}
-					<span class="font-extrabold animate-color-pulse">
-						{" "}
-						{t("app.hero.pedicure@@pedicure")}{" "}
-					</span>
-					{t("app.hero.in_leuven@@in Leuven")}
+					<span>{t("app.hero.in_leuven@@in Leuven")}</span>
 				</h1>
 				<p class="text-center font-extralight text-xs italic text-base-300 mb-8">
 					{t("app.hero.according@@*according to our clients")}
