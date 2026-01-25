@@ -130,7 +130,7 @@ export default component$(() => {
 						</div>
 
 						{/* Thank You Footer */}
-						<div class="text-center p-8 mt-16 animate-pulse-slow">
+						<div class="text-center p-8 mt-16">
 							<p class="text-xl font-qestero text-primary">
 								{t(
 									"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting. 💅✨",
