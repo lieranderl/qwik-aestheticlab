@@ -5,12 +5,8 @@ import { FadeUp } from "~/components/ui/fade-up";
 export default component$(() => {
 	const t = inlineTranslate();
 	return (
-		<section class="relative min-h-screen w-full overflow-hidden bg-base-100 py-24">
-			{/* Decorative Background Elements (Hero Style) */}
-			<div class="absolute -left-20 top-0 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[100px]" />
-			<div class="absolute -right-20 bottom-0 h-[600px] w-[600px] rounded-full bg-secondary/5 blur-[120px]" />
-
-			<div class="container mx-auto px-4 md:px-8 max-w-6xl relative z-10">
+		<section class=" min-h-screen w-full overflow-hidden bg-base-100 py-24 z-0">
+			<div class="container mx-auto px-2 md:px-8 max-w-6xl relative z-10">
 				<FadeUp>
 					<div class="text-center mb-16">
 						<h1 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
