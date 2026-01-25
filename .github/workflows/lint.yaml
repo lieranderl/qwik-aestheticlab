@@ -22,7 +22,6 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Run Linter (Biome, ESLint)
+      - name: Run Linter (Biome)
         run: |
           bun run biome
-          bun run lint

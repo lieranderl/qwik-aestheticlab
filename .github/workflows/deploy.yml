@@ -28,7 +28,7 @@ jobs:
           bun-version: latest
 
       - name: Run Biome check
-        run: bunx @biomejs/biome check --fix
+        run: bun run biome
 
   # 🏗️ Build & Push job with caching
   build:

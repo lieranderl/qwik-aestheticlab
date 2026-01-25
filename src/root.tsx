@@ -8,7 +8,8 @@ import {
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
-import { useQwikSpeak } from "qwik-speak";
+import { useQwikSpeak, useSpeakLocale } from "qwik-speak";
+import { JSON_LD } from "./constants/metadata";
 import { config } from "./speak-config";
 import { translationFn } from "./speak-functions";
 
@@ -20,57 +21,21 @@ export default component$(() => {
 	 * Don't remove the `<head>` and `<body>` elements.
 	 */
 	useQwikSpeak({ config, translationFn });
+	const locale = useSpeakLocale();
 	return (
 		<QwikCityProvider>
 			<head>
 				<meta charset="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 				{!isDev && (
 					<script
 						type="application/ld+json"
-						dangerouslySetInnerHTML={JSON.stringify({
-							"@context": "https://schema.org",
-							"@type": "BeautySalon",
-							"@id": "https://aestheticlab.be#salon",
-							name: "Aesthetic Lab",
-							image:
-								"https://lh3.googleusercontent.com/p/AF1QipOpUazRD7FPPGNWPbIYA8Fyf7vn0fUdm2bBkQDx",
-							url: "https://aestheticlab.be",
-							email: "aestheticlabbe@gmail.com",
-							address: {
-								"@type": "PostalAddress",
-								streetAddress: "Diestsestraat 174",
-								addressLocality: "Leuven",
-								postalCode: "3000",
-								addressCountry: "BE",
-							},
-							geo: {
-								"@type": "GeoCoordinates",
-								latitude: 50.88148,
-								longitude: 4.71053,
-							},
-							hasMap:
-								"https://maps.google.com/?q=Diestsestraat+174,+3000+Leuven,+Belgium",
-							openingHoursSpecification: [
-								{
-									"@type": "OpeningHoursSpecification",
-									dayOfWeek: [
-										"Monday",
-										"Tuesday",
-										"Wednesday",
-										"Thursday",
-										"Friday",
-										"Saturday",
-									],
-									opens: "10:00",
-									closes: "18:00",
-								},
-							],
-							priceRange: "€€",
-							sameAs: ["https://www.instagram.com/aestheticlabbe"],
-						})}
+						dangerouslySetInnerHTML={JSON.stringify(JSON_LD)}
 					/>
 				)}
+
+				<script async src="//www.instagram.com/embed.js" />
 
 				{!isDev && (
 					<link
@@ -81,7 +46,7 @@ export default component$(() => {
 				<RouterHead />
 				{!isDev && <ServiceWorkerRegister />}
 			</head>
-			<body lang="en" class="font-montserrat">
+			<body lang={locale.lang} class="font-montserrat">
 				<RouterOutlet />
 			</body>
 		</QwikCityProvider>

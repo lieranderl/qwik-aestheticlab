@@ -5,7 +5,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 COPY . .
 RUN bun run build
@@ -17,7 +17,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile --production && \
+RUN bun install --production && \
     rm -rf node_modules/**/*.md \
     node_modules/**/test \
     node_modules/**/tests \

@@ -1,14 +1,14 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import Header from "~/components/header/header";
-import About from "~/components/sections/about";
-import Contact from "~/components/sections/contact";
-import { Footer } from "~/components/sections/footer";
-import Hero from "~/components/sections/hero";
-import { PolicySection } from "~/components/sections/policy";
-import { ServicesSection } from "~/components/sections/services";
-import { TeamSection } from "~/components/sections/team";
-import Work from "~/components/sections/work";
+import { AboutSection } from "~/components/ui/about-section";
+import { ContactSection } from "~/components/ui/contact-section";
+import { Footer } from "~/components/ui/footer";
+import { GalleryGrid } from "~/components/ui/gallery-grid";
+import { HeroSection } from "~/components/ui/hero-section";
+import { Navigation } from "~/components/ui/navigation";
+import { ReviewsSection } from "~/components/ui/reviews-section";
+import { ServiceGrid } from "~/components/ui/service-grid";
+import { TeamSection } from "~/components/ui/team-section";
 import { ga } from "~/consts";
 import {
 	useContactLoader,
@@ -18,36 +18,47 @@ import {
 } from "./layout";
 
 export default component$(() => {
-	const techniciansSignal = useTechniciansLoader();
 	const servicesSignal = useServicesLoader();
 	const serviceCategoriesSig = useServiceGroupsLoader();
+	const techniciansSignal = useTechniciansLoader();
 	const contactSignal = useContactLoader();
-	return (
-		<>
-			<Header />
-			<Hero />
-			<ServicesSection
-				services={servicesSignal.value}
-				serviceCategories={serviceCategoriesSig.value}
-			/>
 
-			<TeamSection technicians={techniciansSignal.value} />
-			<PolicySection />
-			<Work />
-			<About />
-			<Contact contact={contactSignal.value} />
+	return (
+		<div class="min-h-screen bg-[#f4f5f1] text-[#2e2e2c]">
+			<Navigation />
+
+			<main>
+				<HeroSection />
+
+				<AboutSection />
+
+				<ServiceGrid
+					services={servicesSignal.value}
+					serviceCategories={serviceCategoriesSig.value}
+					location={contactSignal.value?.location.name || ""}
+				/>
+
+				<TeamSection technicians={techniciansSignal.value} />
+
+				<ReviewsSection />
+
+				<GalleryGrid />
+
+				<ContactSection contact={contactSignal.value} />
+			</main>
+
 			<Footer />
-		</>
+		</div>
 	);
 });
 
 export const head: DocumentHead = {
-	title: "Best Manicure in Leuven | Aesthetic Lab",
+	title: "Aesthetic Lab | Nail Design, Brows & Laser",
 	meta: [
 		{
 			name: "description",
 			content:
-				"Looking for expert nails and manicure in Leuven? Visit Aesthetic Lab for top-tier beauty & nail care.",
+				"Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
 		},
 	],
 	scripts: ga,

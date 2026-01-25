@@ -1,15 +1,27 @@
 {
   "app": {
+    "about": {
+      "extra_text": "We are dedicated to providing the highest quality treatments in a relaxing environment. Every detail is curated to ensure your comfort and satisfaction, making your visit a truly rejuvenating experience.",
+      "philosophy": "& Philosophy",
+      "subtitle": "Since 2025"
+    },
     "book": {
       "book_app": "Book Appointment",
+      "book_appointment": "Book Appointment",
       "book_new_app": "Book New Appointment",
       "book_now": "Book Now"
+    },
+    "booking": {
+      "widget_title": "Booking Widget"
     },
     "changeLocale": "Change language",
     "contact": {
       "appointment_only": "Visits are by appointment only",
       "contact": "Contact",
+      "directions": "Get Directions",
       "instagram": "Follow us on Instagram",
+      "location": "Location",
+      "map_location": "Location map",
       "monday": "Monday",
       "opening_hours": "Opening Hours",
       "parking": "Parking available at",
@@ -21,23 +33,36 @@
       "all_rights": "All right reserved",
       "copyright": "Copyright"
     },
+    "generic": {
+      "view": "View"
+    },
     "head": {
       "home": {
         "description": "Localized routing",
-        "title": "{{name}}"
+        "title": "Aesthetic Lab"
       }
     },
     "hero": {
       "according": "*according to our clients",
       "and": "and",
+      "book_appointment": "Book Appointment",
       "book_visit": "Book Your Visit",
       "brows": "brows",
+      "description": "A sanctuary for refined beauty. Specializing in bespoke nail artistry, precision brows, and advanced laser treatments.",
       "in_leuven": "in Leuven",
       "laser": "laser",
       "manicure": "manicure",
       "pedicure": "pedicure",
-      "slogan": "Where Expertise Crafts Unique Beauty",
-      "the_best": "The best"
+      "slogan": "The Art of Natural Beauty",
+      "the_best": "The best",
+      "view_services": "View Services"
+    },
+    "instagram": {
+      "shared_by": "A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "view_post": "View this post on Instagram"
+    },
+    "modal": {
+      "close": "close"
     },
     "nav": {
       "about": "About",
@@ -104,14 +129,33 @@
       "use": "2. How We Use Your Information",
       "use_text": "we use your information to:"
     },
+    "reviews": {
+      "google_link": "Read all reviews on Google",
+      "title": "Kind Words"
+    },
     "services": {
+      "back": "Back to Overview",
+      "brows_desc": "Shaping, tinting, and lamination for the perfect arch.",
+      "brows_lashes_title": "Brows & Lashes",
+      "default_category": "Services",
       "duration": "Duration:",
+      "general_desc": "Professional beauty treatments for your refined look.",
+      "laser_desc": "Safe, effective, and painless technology for smooth skin.",
+      "manicure_desc": "Expert gel artistry and precision Russian techniques for naturally flawless nails.",
       "minutes": "minutes",
-      "title": "Our Services"
+      "pedicure_desc": "Professional therapeutic care and aesthetic refinement for healthy, radiant feet.",
+      "pricing_title": "Services & Pricing",
+      "subtitle": "Comprehensive beauty treatments delivered with precision and care.",
+      "title": "Our Services",
+      "view_full": "View full price list",
+      "view_treatments": "View Treatments"
     },
     "story": "Our Story",
     "story_text": "At Aesthetic Lab, we believe in the transformative power of beauty. Our approach combines artistry with expertise, creating a sanctuary where you can discover your most radiant self.",
     "team": {
+      "role": {
+        "technician": "Technician"
+      },
       "title": "Meet Our Team"
     },
     "title": "{{name}} demo",
