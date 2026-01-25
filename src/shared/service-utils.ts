@@ -60,6 +60,8 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 	brows_lashes: {
 		keywords: ["brow", "lash", "eye", "брови", "ресни"],
 		coverImage: "/media/gallery/eyebrows1.jpg",
+		galleryBase: "/media/gallery/eyebrows",
+		imageCount: 2,
 		displayInfo: {
 			titleKey: "app.services.brows_lashes_title@@Brows & Lashes",
 			titleDefault: "Brows & Lashes",

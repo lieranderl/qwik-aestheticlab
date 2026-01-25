@@ -65,7 +65,7 @@ export const HeroSection = component$(() => {
 
 								<span>{t("app.hero.in_leuven@@in Leuven")}</span>
 							</div>
-							<p class="text-xs uppercase tracking-[0.2em] opacity-60">
+							<p class="text-xs  tracking-[0.2em] opacity-60">
 								{t("app.hero.according@@*voted by our clients")}
 							</p>
 						</div>

@@ -37,7 +37,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
 					{technicians.map((tech, index) => (
 						<FadeUp key={tech.id} delay={index * 150} class="group">
-							<div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 text-center border border-white/50 h-full flex flex-col">
+							<div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
 								<div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-base-100 ring-2 ring-primary/20 shrink-0 transition-transform duration-500 group-hover:ring-4 group-hover:ring-primary/40">
 									{tech.photo_url === "rubina" && (
 										<ImgRubina class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />

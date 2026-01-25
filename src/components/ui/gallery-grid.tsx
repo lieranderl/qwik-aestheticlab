@@ -21,7 +21,33 @@ export const GalleryGrid = component$(() => {
 					</FadeUp>
 				</div>
 
-				{/* Static Gallery Removed to focus on Instagram Feed as 'Our Work' */}
+				{/* Static Gallery */}
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+					{[
+						"/media/gallery/manicure1.jpg",
+						"/media/gallery/pedicure5.jpg",
+						"/media/gallery/pedicure1.jpg",
+						"/media/gallery/manicure4.jpg",
+						"/media/gallery/manicure2.jpg",
+						"/media/gallery/pedicure2.jpg",
+						"/media/gallery/manicure3.jpg",
+						"/media/gallery/pedicure3.jpg",
+					].map((src, i) => (
+						<FadeUp
+							key={src}
+							delay={i * 100}
+							class="overflow-hidden rounded-xl"
+						>
+							<img
+								src={src}
+								alt="Aesthetic Lab Work"
+								class="h-full w-full object-cover transition-transform duration-700 hover:scale-110 aspect-square"
+								width="400"
+								height="400"
+							/>
+						</FadeUp>
+					))}
+				</div>
 
 				{/* Instagram Feed Section */}
 				<div class="mt-8">
