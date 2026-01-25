@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/fade-up";
-import { MapEmbed } from "~/components/google-map";
+import { FadeUp } from "~/components/ui/fade-up";
+import { MapEmbed } from "~/components/ui/google-map";
 import type { Contact } from "~/types";
 
 interface ContactSectionProps {

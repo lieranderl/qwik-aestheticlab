@@ -1,8 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Footer } from "~/components/sections/footer";
 import { AboutSection } from "~/components/ui/about-section";
 import { ContactSection } from "~/components/ui/contact-section";
+import { Footer } from "~/components/ui/footer";
 import { GalleryGrid } from "~/components/ui/gallery-grid";
 import { HeroSection } from "~/components/ui/hero-section";
 import { Navigation } from "~/components/ui/navigation";

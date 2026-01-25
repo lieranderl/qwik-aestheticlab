@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { Booking } from "~/components/booking-modal";
-import { FadeUp } from "~/components/fade-up";
+import { Booking } from "~/components/ui/booking-modal";
+import { FadeUp } from "~/components/ui/fade-up";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
 import type { Staff } from "~/types";

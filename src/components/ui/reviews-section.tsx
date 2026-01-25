@@ -1,6 +1,6 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/fade-up";
+import { FadeUp } from "./fade-up";
 
 interface Review {
 	author: string;

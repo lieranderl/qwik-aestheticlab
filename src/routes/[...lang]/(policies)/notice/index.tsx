@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/fade-up";
+import { FadeUp } from "~/components/ui/fade-up";
 
 export default component$(() => {
 	const t = inlineTranslate();

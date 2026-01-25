@@ -1,14 +1,13 @@
 import {
 	$,
 	component$,
-	useOnDocument,
 	useOnWindow,
 	useSignal,
 	useTask$,
 } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
-import { Booking } from "~/components/booking-modal";
+import { Booking } from "~/components/ui/booking-modal";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 import { LanguageSwitcher } from "./language-switcher";
 

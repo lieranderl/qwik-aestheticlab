@@ -7,13 +7,13 @@ import {
 	useTask$,
 } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/fade-up";
-import { ServiceCard } from "~/components/ui/service-card";
 import {
 	getServiceItemImage,
 	groupServicesAndCategories,
 } from "~/shared/service-utils";
 import type { Service, ServiceGroup } from "~/types";
+import { FadeUp } from "./fade-up";
+import { ServiceCard } from "./service-card";
 
 interface ServiceGridProps {
 	services: Service[];
