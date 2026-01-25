@@ -1,5 +1,10 @@
 {
   "app": {
+    "about": {
+      "extra_text": "Nous nous engageons à fournir des soins de la plus haute qualité dans un environnement relaxant. Chaque détail est soigné pour assurer votre confort et votre satisfaction, faisant de votre visite une expérience véritablement régénérante.",
+      "philosophy": "& Philosophie",
+      "subtitle": "Depuis 2025"
+    },
     "book": {
       "book_app": "Rendez-vous",
       "book_appointment": "Prendre rendez-vous",
@@ -16,7 +21,7 @@
       "directions": "Obtenir l'itinéraire",
       "instagram": "Suivez-nous sur Instagram",
       "location": "Lieu",
-      "map_location": "Location map",
+      "map_location": "Carte de localisation",
       "monday": "Lundi",
       "opening_hours": "Heures d'ouverture",
       "parking": "Parking disponible à",
@@ -135,7 +140,10 @@
       "default_category": "Services",
       "duration": "Durée :",
       "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
+      "laser_body_title": "Épilation laser CORPS",
+      "laser_combo_title": "Épilation laser COMBO",
       "laser_desc": "Technologie sûre, efficace et indolore pour une peau lisse.",
+      "laser_face_title": "Épilation laser VISAGE",
       "manicure_desc": "Art du gel haut de gamme et techniques russes de précision pour des ongles naturellement parfaits.",
       "minutes": "minutes",
       "pedicure_desc": "Soins thérapeutiques professionnels et raffinement esthétique pour des pieds sains et éclatants.",

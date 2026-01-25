@@ -54,7 +54,7 @@ export default component$(() => {
 							alt="Services Background"
 							width="1920"
 							height="400"
-							class="h-full w-full object-cover brightness-50"
+							class="h-full w-full object-cover brightness-80"
 						/>
 					</div>
 					<div class="relative z-10 text-center text-white p-6">
@@ -67,14 +67,6 @@ export default component$(() => {
 									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
 								)}
 							</p>
-							<div class="mt-8">
-								<Booking
-									id="hero_pricelist_book"
-									text={t("app.hero.book_appointment@@Book Appointment")}
-									location={contact?.location.name || ""}
-									classes="hidden md:inline-flex btn btn-primary text-white rounded-full px-8 border-none"
-								/>
-							</div>
 						</FadeUp>
 					</div>
 				</div>

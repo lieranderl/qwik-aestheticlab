@@ -1,5 +1,10 @@
 {
   "app": {
+    "about": {
+      "extra_text": "We are dedicated to providing the highest quality treatments in a relaxing environment. Every detail is curated to ensure your comfort and satisfaction, making your visit a truly rejuvenating experience.",
+      "philosophy": "& Philosophy",
+      "subtitle": "Since 2025"
+    },
     "book": {
       "book_app": "Book Appointment",
       "book_appointment": "Book Appointment",

@@ -14,11 +14,15 @@ export type ServiceTheme =
 	| "laser-combo"
 	| "universal";
 
+// ... (imports)
+
 interface ThemeConfig {
 	keywords: string[];
 	coverImage: string;
 	// If defined, uses this base for gallery items (e.g. "pedicure" -> "pedicure1.jpg")
 	galleryBase?: string;
+	// Number of available variant images for this theme. Defaults to 1.
+	imageCount?: number;
 	displayInfo: {
 		titleKey?: string;
 		titleDefault?: string;
@@ -30,8 +34,9 @@ interface ThemeConfig {
 const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 	pedicure: {
 		keywords: ["pedicure", "pédicure", "педикюр", "педи"],
-		coverImage: "/media/services/pedicure.png",
+		coverImage: "/media/gallery/pedicure1.jpg",
 		galleryBase: "/media/gallery/pedicure",
+		imageCount: 6, // We have pedicure1..6
 		displayInfo: {
 			descKey:
 				"app.services.pedicure_desc@@Professional therapeutic care and aesthetic refinement for healthy, radiant feet.",
@@ -41,8 +46,9 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 	},
 	manicure: {
 		keywords: ["manicure", "manucure", "маникюр", "nails", "nail"],
-		coverImage: "/media/services/manicure.png",
+		coverImage: "/media/gallery/manicure1.jpg",
 		galleryBase: "/media/gallery/manicure",
+		imageCount: 6, // We have manicure1..6
 		displayInfo: {
 			descKey:
 				"app.services.manicure_desc@@Expert gel artistry and precision Russian techniques for naturally flawless nails.",
@@ -50,9 +56,10 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 				"Expert gel artistry and precision Russian techniques for naturally flawless nails.",
 		},
 	},
+	// ... [other definitions remain similar, ensuring simple ones don't need imageCount if not using galleryBase]
 	brows_lashes: {
 		keywords: ["brow", "lash", "eye", "брови", "ресни"],
-		coverImage: "/media/services/brows.png",
+		coverImage: "/media/gallery/eyebrows1.jpg",
 		displayInfo: {
 			titleKey: "app.services.brows_lashes_title@@Brows & Lashes",
 			titleDefault: "Brows & Lashes",
@@ -64,7 +71,7 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 	removal: {
 		keywords: ["removal", "dépose", "снятие"],
 		coverImage: "/media/gallery/removal1.jpg",
-		galleryBase: "/media/gallery/removal1.jpg", // Static image
+		galleryBase: "/media/gallery/removal1.jpg",
 		displayInfo: {
 			descKey:
 				"app.services.general_desc@@Professional beauty treatments for your refined look.",
@@ -109,7 +116,7 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 		},
 	},
 	"laser-body": {
-		keywords: [], // Default fallback
+		keywords: [], // Default fallback for Laser
 		coverImage: "/media/services/laser-body.png",
 		displayInfo: {
 			titleKey: "app.services.laser_body_title@@Laser hair removal BODY",
@@ -253,18 +260,20 @@ export function getServiceItemImage(
 ): string {
 	const def = THEME_DEFINITIONS[theme] || THEME_DEFINITIONS.universal;
 
-	// If no dynamic gallery base, fallback to cover image (mostly for Lasers/Removal)
+	// If no dynamic gallery base, fallback to cover image
 	if (!def.galleryBase) {
 		return def.coverImage;
 	}
 
-	// Handle static single images mapped as galleryBase
+	// Handle static single images mapped as galleryBase (legacy support or explicit single file)
 	if (def.galleryBase.endsWith(".jpg") || def.galleryBase.endsWith(".png")) {
 		return def.galleryBase;
 	}
 
 	// Dynamic variant
-	const variant = (index % 5) + 1;
+	// Use the configured imageCount or default to 5 (legacy default)
+	const count = def.imageCount ?? 5;
+	const variant = (index % count) + 1;
 	return `${def.galleryBase}${variant}.jpg`;
 }
 

@@ -1,8 +1,8 @@
 import type { PropFunction } from "@builder.io/qwik";
 import { component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { Booking } from "~/components/ui/booking-modal";
-import { FadeUp } from "~/components/ui/fade-up";
+import { Booking } from "./booking-modal";
+import { FadeUp } from "./fade-up";
 
 interface ServiceCardProps {
 	title: string;

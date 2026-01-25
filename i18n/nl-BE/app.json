@@ -1,5 +1,10 @@
 {
   "app": {
+    "about": {
+      "extra_text": "We streven ernaar behandelingen van de hoogste kwaliteit te bieden in een ontspannen omgeving. Elk detail is curatie om uw comfort en tevredenheid te garanderen.",
+      "philosophy": "& Filosofie",
+      "subtitle": "Sinds 2025"
+    },
     "book": {
       "book_app": "Afspraak maken",
       "book_appointment": "Afspraak maken",
@@ -16,7 +21,7 @@
       "directions": "Routebeschrijving",
       "instagram": "Volg ons op Instagram",
       "location": "Locatie",
-      "map_location": "Location map",
+      "map_location": "Locatiekaart",
       "monday": "Maandag",
       "opening_hours": "Openingstijden",
       "parking": "Parkeren beschikbaar bij",
@@ -135,7 +140,10 @@
       "default_category": "Diensten",
       "duration": "Duur:",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
+      "laser_body_title": "Laserontharing LICHAAM",
+      "laser_combo_title": "Laserontharing COMBO",
       "laser_desc": "Veilige, effectieve en pijnloze technologie voor een gladde huid.",
+      "laser_face_title": "Laserontharing GEZICHT",
       "manicure_desc": "Hoogwaardige gel-behandelingen en verfijnde Russische technieken voor natuurlijk mooie nagels.",
       "minutes": "minuten",
       "pedicure_desc": "Professionele verzorging en esthetische perfectie voor gezonde, stralende voeten.",
