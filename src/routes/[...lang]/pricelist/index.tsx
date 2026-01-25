@@ -54,10 +54,10 @@ export default component$(() => {
 							alt="Services Background"
 							width="1920"
 							height="400"
-							class="h-full w-full object-cover brightness-80"
+							class="h-full w-full object-cover brightness-90"
 						/>
 					</div>
-					<div class="relative z-10 text-center text-white p-6">
+					<div class="relative z-10 text-center p-6">
 						<FadeUp>
 							<h1 class="font-qestero text-4xl md:text-6xl mb-6">
 								{t("app.services.pricing_title@@Services & Pricing")}
@@ -72,7 +72,7 @@ export default component$(() => {
 				</div>
 
 				{/* Pricing List */}
-				<div class="custom-container py-24 max-w-4xl mx-auto">
+				<div class="custom-container py-24 max-w-6xl mx-auto">
 					<div class="space-y-20">
 						{groupedServices.map(
 							({ groupId, category, groupServices }, index) => {
