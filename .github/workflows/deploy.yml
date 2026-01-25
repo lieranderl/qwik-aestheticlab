@@ -106,7 +106,7 @@ jobs:
         run: |
           echo "🚀 Deploying staging build: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
           gcloud run deploy $STAGE_SERVICE \
-            --image=$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
+            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
             --region=$GCP_REGION \
             --project=$GCP_PROJECT \
             --min-instances=0 \
@@ -119,7 +119,7 @@ jobs:
         run: |
           echo "🚀 Deploying production release: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
           gcloud run deploy $PROD_SERVICE \
-            --image=$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
+            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
             --region=$GCP_REGION \
             --project=$GCP_PROJECT \
             --min-instances=1 \
