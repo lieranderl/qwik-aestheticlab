@@ -24,8 +24,25 @@ help: ## Show available targets and usage
 	@echo "Usage: make <target> [TAG=your-tag]"
 	@echo
 	@echo "Targets:"
-	@grep -E '^[a-zA-Z0-9._-]+:.*?##' $(MAKEFILE_LIST) | \
+	@grep -E '^[a-zA-Z1-9._-]+:.*?##' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?##"}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: dev
+dev: ## Run the development server
+	bun run dev
+
+.PHONY: build
+build: ## Build the project for production
+	bun run build
+
+.PHONY: lint
+lint: ## Run linting and formatting (biome)
+	bun run biome
+
+.PHONY: clean
+clean: ## Remove build artifacts and node_modules
+	rm -rf dist server node_modules
+	bun install
 
 .PHONY: docker-build-push
 docker-build-push: ## Build and push Docker image to DockerHub (requires TAG)

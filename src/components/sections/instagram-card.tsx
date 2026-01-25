@@ -1,9 +1,11 @@
 import { component$ } from "@builder.io/qwik";
+import { inlineTranslate } from "qwik-speak";
 
 export interface InstagramCardProps {
 	post_id: string;
 }
 export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
+	const t = inlineTranslate();
 	return (
 		<>
 			<blockquote
@@ -53,7 +55,7 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 						</div>
 						<div class="pt-2">
 							<div class="text-blue-500 text-sm font-semibold">
-								View this post on Instagram
+								{t("app.instagram.view_post@@View this post on Instagram")}
 							</div>
 						</div>
 						<div class="py-[12.5%]" />
@@ -85,7 +87,9 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 							target="_blank"
 							rel="noreferrer"
 						>
-							A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN
+							{t(
+								"app.instagram.shared_by@@A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+							)}
 							(@aestheticlabbe)
 						</a>
 					</p>

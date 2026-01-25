@@ -1,10 +1,8 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"); */
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-qestero: "qestero", "sans-serif";
+  --font-qestero: "qestero", "Cormorant Garamond", serif;
   --font-montserrat: "Montserrat", "sans-serif";
   --font-inter: "Inter", "sans-serif";
 }
@@ -25,6 +23,25 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+}
+
+/* Global Grain/Noise Texture */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: overlay;
 }
 
 /* calendar-month {
@@ -60,49 +77,48 @@ html {
   animation: colorPulse 5s infinite;
 }
 
-.fade-up-hidden {
-  opacity: 0;
-  transform: translateY(var(--fade-distance, 60px));
-  transition: none;
+/* Animation Base */
+[class*='fade-'] {
+  transition-property: opacity, transform;
+  transition-duration: var(--fade-duration, 800ms);
+  transition-timing-function: var(--fade-easing, ease-out);
+  transition-delay: var(--fade-delay, 0ms);
 }
 
-.fade-up-visible {
+/* Directional Variants */
+.fade-up-hidden { opacity: 0; transform: translateY(var(--fade-distance, 40px)); }
+.fade-down-hidden { opacity: 0; transform: translateY(calc(var(--fade-distance, 40px) * -1)); }
+.fade-left-hidden { opacity: 0; transform: translateX(var(--fade-distance, 40px)); }
+.fade-right-hidden { opacity: 0; transform: translateX(calc(var(--fade-distance, 40px) * -1)); }
+
+.fade-up-visible, .fade-down-visible, .fade-left-visible, .fade-right-visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all var(--fade-duration, 800ms) var(--fade-easing, ease-out)
-    var(--fade-delay, 0ms);
+  transform: translate(0, 0);
 }
 
-.fade-up-immediate,
-.fade-up-disabled {
+.fade-up-immediate, .fade-down-immediate, .fade-left-immediate, .fade-right-immediate,
+.fade-up-disabled, .fade-down-disabled, .fade-left-disabled, .fade-right-disabled {
   opacity: 1;
-  transform: translateY(0);
-  transition: none;
+  transform: translate(0, 0);
+  transition: none !important;
 }
 
-/* Mobile tweaks */
-@media (max-width: 768px) {
-  .fade-up-hidden {
-    transform: translateY(calc(var(--fade-distance, 60px) * 0.7));
-  }
-  .fade-up-visible {
+/* Mobile & Touch Tweaks */
+@media (max-width: 768px), (pointer: coarse) {
+  [class*='fade-'] {
     transition-duration: calc(var(--fade-duration, 800ms) * 0.8);
   }
+  .fade-up-hidden { transform: translateY(calc(var(--fade-distance, 40px) * 0.7)); }
+  .fade-down-hidden { transform: translateY(calc(var(--fade-distance, 40px) * -0.7)); }
+  .fade-left-hidden { transform: translateX(calc(var(--fade-distance, 40px) * 0.7)); }
+  .fade-right-hidden { transform: translateX(calc(var(--fade-distance, 40px) * -0.7)); }
 }
 
-/* Touch devices faster */
-@media (pointer: coarse) {
-  .fade-up-visible {
-    transition-duration: calc(var(--fade-duration, 800ms) * 0.7);
-  }
-}
-
-/* Accessibility */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .fade-up-hidden,
-  .fade-up-visible {
-    opacity: 1;
-    transform: translateY(0);
+  [class*='fade-'] {
+    opacity: 1 !important;
+    transform: none !important;
     transition: none !important;
   }
 }

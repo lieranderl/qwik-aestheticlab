@@ -1,43 +1,63 @@
 {
   "app": {
     "book": {
-      "book_app": "Réserver un rendez-vous",
-      "book_new_app": "Réserver un nouveau rendez-vous",
-      "book_now": "Réservez maintenant"
+      "book_app": "Rendez-vous",
+      "book_appointment": "Prendre rendez-vous",
+      "book_new_app": "Prendre un nouveau rendez-vous",
+      "book_now": "Réserver"
     },
-    "changeLocale": "Changer la langue",
+    "booking": {
+      "widget_title": "Widget de réservation"
+    },
+    "changeLocale": "Changer de langue",
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
       "contact": "Contact",
+      "directions": "Obtenir l'itinéraire",
       "instagram": "Suivez-nous sur Instagram",
+      "location": "Lieu",
+      "map_location": "Location map",
       "monday": "Lundi",
       "opening_hours": "Heures d'ouverture",
       "parking": "Parking disponible à",
       "saturday": "Samedi",
       "sunday": "Dimanche",
-      "visit_us": "Visitez-nous"
+      "visit_us": "Rendez-nous visite"
     },
     "footer": {
       "all_rights": "Tous droits réservés",
-      "copyright": "Droits d'auteur"
+      "copyright": "Copyright"
+    },
+    "generic": {
+      "view": "Voir"
     },
     "head": {
       "home": {
-        "description": "Localized routing",
-        "title": "{{name}}"
+        "description": "Routage localisé",
+        "title": "Aesthetic Lab"
       }
     },
     "hero": {
-      "according": "*selon nos clientes",
+      "according": "*selon nos clients",
       "and": "et",
+      "book_appointment": "Prendre rendez-vous",
       "book_visit": "Réservez votre visite",
       "brows": "sourcils",
+      "description": "Un sanctuaire pour une beauté raffinée. Spécialisé dans l'art des ongles sur mesure, la précision des sourcils et les traitements laser avancés.",
       "in_leuven": "à Louvain",
       "laser": "laser",
       "manicure": "manucure",
       "pedicure": "pédicure",
-      "slogan": "Là où l'expertise façonne une beauté unique",
-      "the_best": "La meilleure"
+      "slogan": "L'art de la beauté naturelle",
+      "the_best": "Le meilleur",
+      "view_services": "Voir les services"
+    },
+    "instagram": {
+      "shared_by": "Une publication partagée par AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "view_post": "Voir cette publication sur Instagram"
+    },
+    "modal": {
+      "close": "fermer"
     },
     "nav": {
       "about": "À propos",
@@ -49,32 +69,32 @@
       "work": "Travaux"
     },
     "notice": {
-      "durability_intro": "Notre salon utilise exclusivement des matériaux professionnels, y compris des vernis en gel, des gels de construction et des gels durs de marques de confiance. Selon les fabricants, ces produits sont conçus pour durer jusqu'à 3 semaines avec une application et un entretien appropriés.",
-      "durability_title": "Avertissement sur la durabilité des produits",
-      "factor1": "La durabilité annoncée dépend non seulement de la qualité des produits, mais aussi des caractéristiques individuelles des ongles et des soins apportés après la pose.",
-      "factor2": "Des facteurs externes tels qu’une exposition fréquente à l’eau, des produits chimiques agressifs et des dommages mécaniques peuvent réduire la durée de tenue.",
-      "factor3": "La physiologie personnelle, y compris les variations hormonales, peut également influencer l’adhérence et la durabilité du produit.",
-      "guarantee": "Le salon garantit une application correcte et professionnelle des matériaux, mais nous ne pouvons pas garantir une tenue maximale si des facteurs externes ou individuels interviennent.",
-      "hormonal_intro": "La durabilité des revêtements pour ongles peut varier en fonction des caractéristiques individuelles, y compris les fluctuations hormonales. Veuillez noter que pendant les périodes de changements hormonaux (tels que le SPM, la grossesse, l’allaitement, la prise de médicaments hormonaux ou des niveaux de stress élevés), l’adhérence du produit à la plaque de l’ongle peut diminuer, ce qui peut affecter la longévité du revêtement.",
+      "durability_intro": "Notre salon travaille exclusivement avec des matériaux professionnels, y compris des vernis gels, des gels de construction et des gels durs de marques de confiance. Selon les fabricants, ces produits sont conçus pour durer jusqu'à 3 semaines avec une application et des soins appropriés.",
+      "durability_title": "Avis de non-responsabilité sur la durabilité des produits",
+      "factor1": "La durabilité déclarée dépend non seulement de la qualité des produits, mais aussi des caractéristiques individuelles des ongles et des soins après.",
+      "factor2": "Des facteurs externes tels qu'une exposition fréquente à l'eau, des produits chimiques agressifs et des dommages mécaniques peuvent réduire la durée de tenue.",
+      "factor3": "La physiologie personnelle, y compris les changements hormonaux, peut également affecter l'adhérence et la durabilité du produit.",
+      "guarantee": "Le salon garantit une application correcte et professionnelle des matériaux, mais nous ne pouvons garantir une durée de tenue maximale si des facteurs externes ou individuels interfèrent.",
+      "hormonal_intro": "La durabilité des revêtements d'ongles peut varier en fonction des caractéristiques individuelles, y compris les fluctuations hormonales. Veuillez noter que pendant les périodes de changements hormonaux (tels que le SPM, la grossesse, l'allaitement, la prise de médicaments hormonaux ou des niveaux de stress élevés), l'adhérence du produit à la plaque de l'ongle peut diminuer, ce qui peut affecter la longévité du revêtement.",
       "hormonal_title": "Avis important",
       "however": "Cependant, veuillez noter :",
-      "important_info": "✨ Informations importantes pour la clientèle ✨",
-      "individual_features": "Caractéristiques individuelles des ongles (telles qu’humidité accrue, fragilité ou tendance à la desquamation)",
-      "intro": "Dans notre salon, nous nous efforçons de fournir des services ongulaires de haute qualité et longue tenue, en utilisant uniquement des produits et des techniques professionnels. Pour garantir la transparence et gérer les attentes, veuillez lire attentivement les informations suivantes :",
+      "important_info": "✨ Informations importantes pour les clients ✨",
+      "individual_features": "Caractéristiques individuelles des ongles (telles qu'une humidité accrue, une fragilité ou une tendance au décollement)",
+      "intro": "Dans notre salon, nous nous efforçons de fournir des services d'ongles de haute qualité et durables en utilisant uniquement des produits et des techniques professionnels. Pour assurer la transparence et gérer les attentes, veuillez lire attentivement les informations suivantes :",
       "last_update": "Dernière mise à jour :",
       "mechanical_damage": "Dommages mécaniques aux ongles",
       "other_factors": "Autres facteurs pouvant affecter la durabilité :",
-      "policy_care": "Nous tenons à votre satisfaction et serons ravis de corriger tout problème survenu pendant cette période.",
-      "policy_description": "Si vous rencontrez un problème avec votre manucure dans les 5 jours suivant votre rendez-vous, vous pouvez revenir pour une correction gratuite.",
-      "policy_title": "Politique de retouche gratuite",
-      "thank_you": "Merci pour votre compréhension, votre confiance et votre coopération ! Nous avons hâte de rendre vos ongles beaux et durables. 💅✨",
-      "understanding": "Veuillez comprendre qu’en présence de ces facteurs, le salon ne peut garantir la durée standard de tenue du revêtement.",
-      "water_contact": "Contact fréquent avec l’eau ou des produits chimiques agressifs sans gants"
+      "policy_care": "Nous nous soucions de votre satisfaction et serons heureux de résoudre tout problème pouvant survenir au cours de cette période.",
+      "policy_description": "Si vous rencontrez des problèmes avec votre manucure dans les 5 jours suivant votre rendez-vous, vous êtes invités à revenir pour une correction gratuite.",
+      "policy_title": "Politique de correction gratuite",
+      "thank_you": "Merci de votre compréhension, de votre confiance et de votre coopération ! Nous avons hâte de rendre vos ongles beaux et durables. 💅✨",
+      "understanding": "Veuillez comprendre qu'en présence de ces facteurs, le salon ne peut garantir la durée de tenue standard du revêtement.",
+      "water_contact": "Contact fréquent avec l'eau ou des produits chimiques agressifs sans gants"
     },
     "policy": {
-      "care": "Nous tenons à votre satisfaction et serons heureux de corriger tout problème qui pourrait survenir.",
-      "description": "Si vous rencontrez un problème avec votre manucure dans les 3 jours suivant votre rendez-vous, vous pouvez revenir pour une correction gratuite.",
-      "title": "Politique de retouche gratuite"
+      "care": "Nous nous soucions de votre satisfaction et serons heureux de résoudre tout problème qui pourrait survenir.",
+      "description": "Si vous rencontrez des problèmes avec votre manucure dans les 3 premiers jours suivant votre rendez-vous, vous êtes invités à revenir pour une correction gratuite.",
+      "title": "Politique de correction gratuite"
     },
     "privacy": {
       "changes": "7. Modifications de cette politique",
@@ -87,39 +107,57 @@
       "info": "1. Informations que nous collectons",
       "info_text": "Nous collectons les informations personnelles suivantes lorsque vous prenez rendez-vous ou nous contactez :",
       "last_update": "Dernière mise à jour :",
-      "legal": "Autorités légales si requis par la loi",
+      "legal": "Autorités légales si la loi l'exige",
       "name": "Nom",
       "phone": "Numéro de téléphone",
       "privacy_title": "Politique de confidentialité",
       "respond": "Répondre à vos demandes",
       "rights": "5. Vos droits",
-      "rights_text": "Vous pouvez demander à accéder, mettre à jour ou supprimer vos données personnelles. Pour faire une demande, contactez-nous à :",
-      "schedule": "Planifier et confirmer des rendez-vous",
-      "security": "3. Protection et sécurité des données",
-      "security_text": "Nous prenons des mesures raisonnables pour protéger vos données personnelles contre tout accès non autorisé, perte ou abus.",
-      "send": "Envoyer des rappels et des mises à jour de rendez-vous",
-      "service": "Fournisseurs de services (par exemple, plateformes de réservation)",
+      "rights_text": "Vous pouvez demander l'accès, la mise à jour ou la suppression de vos données personnelles. Pour faire une demande, contactez-nous à :",
+      "schedule": "Planifier et confirmer les rendez-vous",
+      "security": "3. Protection des données et sécurité",
+      "security_text": "Nous prenons des mesures raisonnables pour protéger vos données personnelles contre l'accès non autorisé, la perte ou l'utilisation abusive.",
+      "send": "Envoyer des rappels de rendez-vous et des mises à jour",
+      "service": "Prestataires de services (par ex., plateformes de réservation)",
       "sharing": "4. Partage de vos informations",
       "sharing_text": "Nous ne vendons ni ne louons vos informations personnelles. Nous pouvons les partager avec :",
       "use": "2. Comment nous utilisons vos informations",
       "use_text": "nous utilisons vos informations pour :"
     },
+    "reviews": {
+      "google_link": "Lire tous les avis sur Google",
+      "title": "Mots gentils"
+    },
     "services": {
+      "back": "Retour à l'aperçu",
+      "brows_desc": "Épilation au fil, coloration et lamination pour un arc parfait.",
+      "brows_lashes_title": "Sourcils & Cils",
+      "default_category": "Services",
       "duration": "Durée :",
+      "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
+      "laser_desc": "Technologie sûre, efficace et indolore pour une peau lisse.",
+      "manicure_desc": "Art du gel haut de gamme et techniques russes de précision pour des ongles naturellement parfaits.",
       "minutes": "minutes",
-      "title": "Nos services"
+      "pedicure_desc": "Soins thérapeutiques professionnels et raffinement esthétique pour des pieds sains et éclatants.",
+      "pricing_title": "Services et Tarifs",
+      "subtitle": "Soins de beauté complets dispensés avec précision et attention.",
+      "title": "Nos services",
+      "view_full": "Voir la liste complète des prix",
+      "view_treatments": "Voir les traitements"
     },
     "story": "Notre histoire",
-    "story_text": "Chez Aesthetic Lab, nous croyons au pouvoir transformateur de la beauté. Notre approche allie art et expertise, créant un sanctuaire où vous pouvez découvrir votre moi le plus radieux.",
+    "story_text": "Chez Aesthetic Lab, nous croyons au pouvoir transformateur de la beauté. Notre approche combine art et expertise, créant un sanctuaire où vous pouvez découvrir votre moi le plus radieux.",
     "team": {
-      "title": "Notre équipe"
+      "role": {
+        "technician": "Technicienne"
+      },
+      "title": "Rencontrez notre équipe"
     },
-    "test": "TEST FRENCH",
-    "title": "{{name}} demo",
+    "title": "{{name}} démo",
     "work": {
-      "title": "Notre travail"
+      "title": "Nos réalisations"
     }
   },
   "dates": "Dates",
-  "numbers": "Numbers"
+  "numbers": "Nombres"
 }

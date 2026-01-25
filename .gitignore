@@ -76,3 +76,4 @@ infra/terraform/*.yaml
 
 Makefile_old
 create_gcloud.sh
+.agent/

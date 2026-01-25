@@ -1,4 +1,12 @@
-import { component$, Slot, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	type PropFunction,
+	Slot,
+	useOnDocument,
+	useSignal,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 
 interface FadeUpProps {
 	delay?: number;
@@ -8,8 +16,10 @@ interface FadeUpProps {
 	rootMargin?: number;
 	easing?: "ease" | "ease-in" | "ease-out" | "ease-in-out" | "linear";
 	distance?: number;
+	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
-	className?: string;
+	class?: string;
+	onClick$?: PropFunction<() => void>;
 }
 
 export const FadeUp = component$(
@@ -21,8 +31,10 @@ export const FadeUp = component$(
 		rootMargin = 50,
 		easing = "ease-out",
 		distance = 60,
+		direction = "up",
 		disable = false,
-		className = "",
+		class: className = "",
+		onClick$,
 	}: FadeUpProps) => {
 		const elRef = useSignal<HTMLElement>();
 		const state = useSignal<"hidden" | "visible" | "immediate" | "disabled">(
@@ -30,56 +42,57 @@ export const FadeUp = component$(
 		);
 
 		// eslint-disable-next-line qwik/no-use-visible-task
-		// biome-ignore lint/correctness/noQwikUseVisibleTask: <reason>
-		useVisibleTask$(({ cleanup }) => {
-			const el = elRef.value;
-			if (!el) return;
+		useOnDocument(
+			"DOMContentLoaded",
+			$(() => {
+				const el = elRef.value;
+				if (!el) return;
 
-			if (disable) {
-				state.value = "disabled";
-				return;
-			}
+				if (disable) {
+					state.value = "disabled";
+					return;
+				}
 
-			const rect = el.getBoundingClientRect();
+				const rect = el.getBoundingClientRect();
 
-			// Above viewport on load → show immediately
-			if (rect.top + window.scrollY < window.scrollY) {
-				state.value = "immediate";
-				return;
-			}
+				// Above viewport on load → show immediately
+				if (rect.top + window.scrollY < window.scrollY) {
+					state.value = "immediate";
+					return;
+				}
 
-			// Already visible on load
-			if (
-				rect.top < window.innerHeight - rootMargin &&
-				rect.bottom > rootMargin
-			) {
-				state.value = delay > 0 ? "visible" : "immediate";
-			}
+				// Already visible on load
+				if (
+					rect.top < window.innerHeight - rootMargin &&
+					rect.bottom > rootMargin
+				) {
+					state.value = delay > 0 ? "visible" : "immediate";
+				}
 
-			const observer = new IntersectionObserver(
-				([entry]) => {
-					if (entry.isIntersecting) {
-						state.value = "visible";
-						if (runOnce) observer.disconnect();
-					} else if (!runOnce) {
-						state.value = "hidden";
-					}
-				},
-				{
-					threshold,
-					rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
-				},
-			);
+				const observer = new IntersectionObserver(
+					([entry]) => {
+						if (entry.isIntersecting) {
+							state.value = "visible";
+							if (runOnce) observer.disconnect();
+						} else if (!runOnce) {
+							state.value = "hidden";
+						}
+					},
+					{
+						threshold,
+						rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
+					},
+				);
 
-			observer.observe(el);
-			cleanup(() => observer.disconnect());
-		});
+				observer.observe(el);
+			}),
+		);
 
 		const classMap = {
-			hidden: "fade-up-hidden",
-			visible: "fade-up-visible",
-			immediate: "fade-up-immediate",
-			disabled: "fade-up-disabled",
+			hidden: `fade-${direction}-hidden`,
+			visible: `fade-${direction}-visible`,
+			immediate: `fade-${direction}-immediate`,
+			disabled: `fade-${direction}-disabled`,
 		};
 
 		return (
@@ -92,6 +105,7 @@ export const FadeUp = component$(
 					"--fade-easing": easing,
 				}}
 				class={`${classMap[state.value]} ${className}`.trim()}
+				onClick$={onClick$}
 			>
 				<Slot />
 			</div>

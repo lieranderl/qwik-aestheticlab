@@ -1,4 +1,5 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { inlineTranslate } from "qwik-speak";
 import { baseUrlBooking } from "~/consts";
 
 interface BookingProps {
@@ -21,6 +22,7 @@ export const Booking = component$<BookingProps>(
 		product,
 		staff,
 	}) => {
+		const t = inlineTranslate();
 		const isOpen = useSignal(false);
 
 		// Build iframe URL
@@ -71,14 +73,14 @@ export const Booking = component$<BookingProps>(
 						</form>
 						{isOpen.value && (
 							<iframe
-								title="Booking Widget"
+								title={t("app.booking.widget_title@@Booking Widget")}
 								src={iframeUrl}
 								class="w-full h-[75vh] rounded-lg border-0"
 							/>
 						)}
 					</div>
 					<form method="dialog" class="modal-backdrop">
-						<button type="submit">close</button>
+						<button type="submit">{t("app.modal.close@@close")}</button>
 					</form>
 				</dialog>
 			</>

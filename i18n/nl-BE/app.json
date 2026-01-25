@@ -1,15 +1,22 @@
 {
   "app": {
     "book": {
-      "book_app": "Boek afspraak",
-      "book_new_app": "Boek nieuwe afspraak",
-      "book_now": "Boek nu"
+      "book_app": "Afspraak maken",
+      "book_appointment": "Afspraak maken",
+      "book_new_app": "Nieuwe afspraak maken",
+      "book_now": "Nu boeken"
+    },
+    "booking": {
+      "widget_title": "Boekingswidget"
     },
     "changeLocale": "Verander taal",
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
       "contact": "Contact",
+      "directions": "Routebeschrijving",
       "instagram": "Volg ons op Instagram",
+      "location": "Locatie",
+      "map_location": "Location map",
       "monday": "Maandag",
       "opening_hours": "Openingstijden",
       "parking": "Parkeren beschikbaar bij",
@@ -21,105 +28,136 @@
       "all_rights": "Alle rechten voorbehouden",
       "copyright": "Copyright"
     },
+    "generic": {
+      "view": "Bekijken"
+    },
     "head": {
       "home": {
-        "description": "Localized routing",
-        "title": "{{name}}"
+        "description": "Gelokaliseerde routing",
+        "title": "Aesthetic Lab"
       }
     },
     "hero": {
       "according": "*volgens onze klanten",
       "and": "en",
+      "book_appointment": "Afspraak maken",
       "book_visit": "Boek uw bezoek",
       "brows": "wenkbrauwen",
+      "description": "Een toevluchtsoord voor verfijnde schoonheid. Gespecialiseerd in nagelkunst op maat, precisie wenkbrauwen en geavanceerde laserbehandelingen.",
       "in_leuven": "in Leuven",
       "laser": "laser",
       "manicure": "manicure",
       "pedicure": "pedicure",
-      "slogan": "Waar expertise unieke schoonheid creëert",
-      "the_best": "De beste"
+      "slogan": "De kunst van natuurlijke schoonheid",
+      "the_best": "De beste",
+      "view_services": "Bekijk diensten"
+    },
+    "instagram": {
+      "shared_by": "Een bericht gedeeld door AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "view_post": "Bekijk dit bericht op Instagram"
+    },
+    "modal": {
+      "close": "sluiten"
     },
     "nav": {
-      "about": "Over",
+      "about": "Over ons",
       "contact": "Contact",
       "home": "Home",
       "policy": "Beleid",
       "services": "Diensten",
       "team": "Team",
-      "work": "Werken"
+      "work": "Werk"
     },
     "notice": {
-      "durability_intro": "Ons salon werkt uitsluitend met professionele materialen, waaronder gellakken, builder gels en hard gels van betrouwbare merken. Volgens de fabrikanten zijn deze producten ontworpen om tot 3 weken mee te gaan bij correcte applicatie en nazorg.",
-      "durability_title": "Disclaimer over productduurzaamheid",
-      "factor1": "De opgegeven duurzaamheid hangt niet alleen af van de kwaliteit van de producten, maar ook van de individuele nagelkenmerken en de nazorg.",
-      "factor2": "Externe factoren zoals veelvuldig contact met water, agressieve chemicaliën en mechanische schade kunnen de draagtijd verkorten.",
-      "factor3": "Persoonlijke fysiologie, waaronder hormonale veranderingen, kan ook de hechting en duurzaamheid van het product beïnvloeden.",
-      "guarantee": "Het salon garandeert een correcte en professionele applicatie van de materialen, maar we kunnen geen maximale draagtijd garanderen als externe of individuele factoren een rol spelen.",
-      "hormonal_intro": "De duurzaamheid van nagelcoatings kan variëren afhankelijk van individuele kenmerken, waaronder hormonale schommelingen. Wees ervan bewust dat tijdens periodes van hormonale veranderingen (zoals PMS, zwangerschap, borstvoeding, het innemen van hormonale medicatie of hoge stressniveaus) de hechting van het product aan de nagelplaat kan afnemen, wat de levensduur van de coating kan beïnvloeden.",
+      "durability_intro": "Onze salon werkt uitsluitend met professionele materialen, waaronder gellakken, buildergels en harde gels van vertrouwde merken. Volgens de fabrikanten zijn deze producten ontworpen om tot 3 weken mee te gaan bij de juiste toepassing en nazorg.",
+      "durability_title": "Disclaimer productduurzaamheid",
+      "factor1": "De aangegeven duurzaamheid hangt niet alleen af van de kwaliteit van de producten, maar ook van individuele nageleigenschappen en nazorg.",
+      "factor2": "Externe factoren zoals frequente blootstelling aan water, agressieve chemicaliën en mechanische schade kunnen de draagtijd verkorten.",
+      "factor3": "Persoonlijke fysiologie, inclusief hormonale veranderingen, kan ook de hechting en duurzaamheid van het product beïnvloeden.",
+      "guarantee": "De salon garandeert een juiste en professionele toepassing van materialen, maar we kunnen geen maximale draagtijd garanderen als externe of individuele factoren interfereren.",
+      "hormonal_intro": "De duurzaamheid van nagelcoatings kan variëren afhankelijk van individuele kenmerken, waaronder hormonale schommelingen. Houd er rekening mee dat tijdens periodes van hormonale veranderingen (zoals PMS, zwangerschap, borstvoeding, het nemen van hormonale medicatie of het ervaren van hoge stressniveaus), de hechting van het product aan de nagelplaat kan afnemen, wat de levensduur van de coating kan beïnvloeden.",
       "hormonal_title": "Belangrijke mededeling",
       "however": "Let echter op:",
-      "important_info": "✨ Belangrijke informatie voor de klant ✨",
-      "individual_features": "Individuele nagelkenmerken (zoals verhoogde vochtigheid, broosheid of neiging tot splijten)",
-      "intro": "In ons salon streven we ernaar om hoogwaardige, langdurige nagelbehandelingen te leveren, uitsluitend met professionele producten en technieken. Om transparantie te waarborgen en verwachtingen te managen, vragen we u onderstaande informatie aandachtig te lezen:",
+      "important_info": "✨ Belangrijke klantinformatie ✨",
+      "individual_features": "Individuele nagelkenmerken (zoals verhoogd vochtgehalte, broosheid of neiging tot afbladderen)",
+      "intro": "In onze salon streven we ernaar om nageldiensten van hoge kwaliteit en lange duurzaamheid te leveren met uitsluitend professionele producten en technieken. Om transparantie te waarborgen en verwachtingen te managen, lees de volgende informatie zorgvuldig door:",
       "last_update": "Laatst bijgewerkt:",
       "mechanical_damage": "Mechanische schade aan de nagels",
       "other_factors": "Andere factoren die de duurzaamheid kunnen beïnvloeden:",
-      "policy_care": "Uw tevredenheid is belangrijk voor ons en we lossen graag eventuele problemen binnen deze periode voor u op.",
-      "policy_description": "Als u binnen 5 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
+      "policy_care": "We geven om uw tevredenheid en lossen eventuele problemen die zich binnen deze periode voordoen graag op.",
+      "policy_description": "Als u binnen de eerste 5 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
       "policy_title": "Gratis herstelbeleid",
-      "thank_you": "Bedankt voor uw begrip, vertrouwen en samenwerking! We kijken ernaar uit om uw nagels mooi en langdurig te maken. 💅✨",
-      "understanding": "Houd er rekening mee dat het salon bij aanwezigheid van deze factoren geen standaard draagtijd van de coating kan garanderen.",
+      "thank_you": "Dank u voor uw begrip, vertrouwen en samenwerking! We kijken ernaar uit om uw nagels mooi en langdurig te maken. 💅✨",
+      "understanding": "Begrijp alstublieft dat in aanwezigheid van deze factoren de salon de standaard draagtijd van de coating niet kan garanderen.",
       "water_contact": "Frequent contact met water of agressieve chemicaliën zonder handschoenen"
     },
     "policy": {
-      "care": "Uw tevredenheid is belangrijk voor ons en we lossen graag eventuele problemen voor u op.",
-      "description": "Als u binnen 3 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
+      "care": "We geven om uw tevredenheid en lossen eventuele problemen graag op.",
+      "description": "Als u binnen de eerste 3 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
       "title": "Gratis herstelbeleid"
     },
     "privacy": {
       "changes": "7. Wijzigingen in dit beleid",
-      "changes_text": "We kunnen deze privacyverklaring van tijd tot tijd bijwerken. De laatste versie is altijd beschikbaar op onze website.",
-      "cookies": "6. Cookies en trackingtechnologieën",
-      "cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in de instellingen van uw browser.",
+      "changes_text": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. De nieuwste versie is altijd beschikbaar op onze website.",
+      "cookies": "6. Cookies & Traceertechnologieën",
+      "cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in uw browserinstellingen.",
       "email": "E-mailadres",
       "important_info": "Belangrijke informatie",
-      "improve": "Verbeter onze diensten",
+      "improve": "Onze diensten verbeteren",
       "info": "1. Informatie die we verzamelen",
-      "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak maakt of contact met ons opneemt:",
-      "last_update": "Laatste update:",
+      "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak boekt of contact met ons opneemt:",
+      "last_update": "Laatst bijgewerkt:",
       "legal": "Wettelijke autoriteiten indien vereist door de wet",
       "name": "Naam",
       "phone": "Telefoonnummer",
       "privacy_title": "Privacybeleid",
-      "respond": "Beantwoorden van uw vragen",
+      "respond": "Reageren op uw vragen",
       "rights": "5. Uw rechten",
-      "rights_text": "U kunt verzoeken om toegang tot, bijwerking of verwijdering van uw persoonlijke gegevens. Om een verzoek in te dienen, kunt u contact met ons opnemen via:",
-      "schedule": "Afspraak plannen en bevestigen",
-      "security": "3. Gegevensbescherming en beveiliging",
+      "rights_text": "U kunt verzoeken om uw persoonlijke gegevens in te zien, bij te werken of te verwijderen. Om een verzoek in te dienen, neem contact met ons op via:",
+      "schedule": "Afspraken plannen en bevestigen",
+      "security": "3. Gegevensbescherming & Beveiliging",
       "security_text": "We nemen redelijke maatregelen om uw persoonlijke gegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
-      "send": "Stuur herinneringen en updates voor afspraken",
-      "service": "Dienstenaanbieders (bijv. boekingsplatforms)",
-      "sharing": "4. Delen van uw informatie",
+      "send": "Afspraakherinneringen en updates sturen",
+      "service": "Dienstverleners (bijv. boekingsplatforms)",
+      "sharing": "4. Uw informatie delen",
       "sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
       "use": "2. Hoe we uw informatie gebruiken",
       "use_text": "we gebruiken uw informatie om:"
     },
+    "reviews": {
+      "google_link": "Lees alle beoordelingen op Google",
+      "title": "Vriendelijke woorden"
+    },
     "services": {
+      "back": "Terug naar overzicht",
+      "brows_desc": "Threaden, verven en lamineren voor de perfecte oogopslag.",
+      "brows_lashes_title": "Wenkbrauwen & Wimpers",
+      "default_category": "Diensten",
       "duration": "Duur:",
+      "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
+      "laser_desc": "Veilige, effectieve en pijnloze technologie voor een gladde huid.",
+      "manicure_desc": "Hoogwaardige gel-behandelingen en verfijnde Russische technieken voor natuurlijk mooie nagels.",
       "minutes": "minuten",
-      "title": "Onze diensten"
+      "pedicure_desc": "Professionele verzorging en esthetische perfectie voor gezonde, stralende voeten.",
+      "pricing_title": "Diensten & Prijzen",
+      "subtitle": "Uitgebreide schoonheidsbehandelingen geleverd met precisie en zorg.",
+      "title": "Onze diensten",
+      "view_full": "Bekijk volledige prijslijst",
+      "view_treatments": "Bekijk behandelingen"
     },
     "story": "Ons verhaal",
-    "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunst en expertise, waardoor een toevluchtsoord ontstaat waar je je meest stralende zelf kunt ontdekken.",
+    "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
-      "title": "Ons Team"
+      "role": {
+        "technician": "Technicus"
+      },
+      "title": "Ontmoet ons team"
     },
-    "test": "TEST DUTCH",
     "title": "{{name}} demo",
     "work": {
       "title": "Ons werk"
     }
   },
-  "dates": "Dates",
-  "numbers": "Numbers"
+  "dates": "Data",
+  "numbers": "Cijfers"
 }

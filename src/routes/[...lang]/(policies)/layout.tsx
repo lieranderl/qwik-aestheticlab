@@ -1,7 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
 import { localizePath, useSpeakLocale } from "qwik-speak";
-import { ChangeLocale } from "~/components/change-locale";
+import { LanguageSwitcher } from "~/components/ui/language-switcher";
 
 export default component$(() => {
 	const locale = useSpeakLocale();
@@ -14,7 +14,7 @@ export default component$(() => {
 					<a href={pathtohome} class="link">
 						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
 					</a>
-					<ChangeLocale classes="btn btn-primary btn-outline " />
+					<LanguageSwitcher buttonClass="btn btn-primary btn-outline" />
 				</div>
 				<Slot />
 			</div>
