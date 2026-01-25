@@ -20,8 +20,8 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 		>
 			{/* Background Decor */}
 			<div class="absolute top-0 left-0 w-full h-full opacity-30 pointer-events-none">
-				<div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-				<div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px]" />
+				<div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-2xl blur-[120px]" />
+				<div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-2xl blur-[100px]" />
 			</div>
 
 			<div class="custom-container relative z-10">
@@ -34,8 +34,8 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 				<FadeUp delay={200}>
 					{/* Main Card Container */}
-					<div class="card lg:card-side bg-base-100 overflow-hidden min-h-[600px] border border-base-300/50">
-						<div class="card-body p-6 md:p-12 lg:w-5/12 order-2 lg:order-1 flex flex-col justify-start gap-8 md:gap-12">
+					<div class="card lg:card-side bg-white/90 backdrop-blur-md overflow-hidden min-h-[600px] border border-white/50 shadow-xl rounded-2xl">
+						<div class="card-body p-8 md:p-12 lg:w-5/12 order-2 lg:order-1 flex flex-col justify-start gap-8 md:gap-12">
 							<div>
 								<div class="flex flex-col gap-8">
 									{/* Location */}
@@ -54,7 +54,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 												href={contact.location.link}
 												target="_blank"
 												rel="noreferrer"
-												class="btn btn-primary btn-sm rounded-full px-6 font-montserrat tracking-wide text-white border-none"
+												class="btn btn-primary btn-sm rounded-2xl px-6 font-montserrat tracking-wide text-white border-none shadow-lg hover:shadow-primary/30"
 											>
 												{t("app.contact.directions@@Get Directions")}
 											</a>
@@ -75,7 +75,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 																rel="noreferrer"
 																class="flex items-center gap-2 group"
 															>
-																<span class="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
+																<span class="w-1.5 h-1.5 rounded-2xl bg-primary/40 group-hover:bg-primary transition-colors" />
 																<span class="font-montserrat text-xs text-neutral-content group-hover:text-primary transition-colors underline-offset-4 decoration-primary/30 group-hover:underline">
 																	{p.name}
 																</span>
@@ -104,23 +104,10 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 											{t("app.contact.saturday@@Sat")}
 										</p>
 
-										<div class="alert alert-info bg-primary/10 border-none shadow-xs text-primary text-xs py-2.5 px-4 rounded-lg flex items-center gap-3 mt-4 w-fit">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="2"
-												stroke="currentColor"
-												class="w-4 h-4"
-												aria-hidden="true"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-												/>
-											</svg>
-											<span class="font-montserrat font-semibold italic">
+										{/* Refined Appointment Badge */}
+										<div class="flex items-center gap-2 mt-4 text-primary">
+											<div class="w-2 h-2 rounded-2xl bg-primary animate-pulse" />
+											<span class="font-montserrat text-xs font-semibold tracking-wide uppercase">
 												{t("app.contact.appointment_only@@By appointment only")}
 											</span>
 										</div>
@@ -146,14 +133,14 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 						{/* Right Map Panel */}
 						<figure
-							class="lg:w-7/12 h-[300px] lg:h-auto lg:min-h-[450px] relative order-1 lg:order-2"
+							class="lg:w-7/12 h-[300px] lg:h-auto lg:min-h-[450px] relative order-1 lg:order-2 bg-neutral-100"
 							aria-label={t("app.contact.map_location@@Location map")}
 						>
 							<div class="absolute inset-0 w-full h-full lg:grayscale lg:hover:grayscale-0 transition-all duration-1000">
 								<MapEmbed />
 							</div>
 							{/* Mobile Overlay Gradient */}
-							<div class="absolute inset-0 bg-linear-to-b from-transparent to-base-100/10 lg:hidden pointer-events-none" />
+							<div class="absolute inset-0 bg-linear-to-b from-transparent to-white/10 lg:hidden pointer-events-none" />
 						</figure>
 					</div>
 				</FadeUp>
