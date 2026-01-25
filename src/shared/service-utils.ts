@@ -107,6 +107,9 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 			"WANGEN",
 			"NEUS",
 			"OREN",
+			"ЛИЦА",
+			"ОБЛИЧЧЯ",
+			"GEZICHT",
 		],
 		coverImage: "/media/services/laser-face.png",
 		displayInfo: {
@@ -118,7 +121,7 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 		},
 	},
 	"laser-body": {
-		keywords: [], // Default fallback for Laser
+		keywords: ["BODY", "КОРПУС", "ТІЛА", "LICHAAM"], // Default fallback for Laser
 		coverImage: "/media/services/laser-body.png",
 		displayInfo: {
 			titleKey: "app.services.laser_body_title@@Laser hair removal BODY",
@@ -137,6 +140,9 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 			"PACKAGE",
 			"PAQUET",
 			"PAK",
+			"ПАКЕТ",
+			"КОМПЛЕКСИ",
+			"КОМПЛЕКСЫ",
 		],
 		coverImage: "/media/services/laser-combo.png",
 		displayInfo: {
