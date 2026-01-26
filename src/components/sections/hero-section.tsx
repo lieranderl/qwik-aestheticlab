@@ -3,12 +3,15 @@ import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
 import { RotatingText } from "~/components/ui/rotating-text";
+import AestheticLabLogo from "~/media/AestheticLab.svg?jsx";
+import ImgManicure1 from "~/media/gallery/manicure1.jpg?jsx";
+import ImgPedicure1 from "~/media/gallery/pedicure1.jpg?jsx";
 
 export const HeroSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section class="relative min-h-screen w-full overflow-hidden bg-base-100 flex items-center justify-center">
+		<section class="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
 			{/* Decorative Background Elements - Enhanced Atmosphere */}
 			<div class="absolute -left-20 top-0 h-[600px] w-[600px] rounded-full bg-primary/20 blur-[120px] animate-pulse-slow" />
 			<div
@@ -20,7 +23,7 @@ export const HeroSection = component$(() => {
 				{/* Main Headline Group */}
 				<div class="mb-12 relative flex flex-col items-center">
 					<FadeUp delay={100} duration={1000} direction="down">
-						<span class="font-montserrat mb-4 block text-sm uppercase tracking-[0.2em] text-secondary">
+						<span class="font-montserrat mb-4 block text-sm uppercase tracking-[0.2em] text-primary font-semibold">
 							{t("app.hero.slogan@@The Art of Natural Beauty")}
 						</span>
 					</FadeUp>
@@ -32,12 +35,9 @@ export const HeroSection = component$(() => {
 						direction="up"
 						distance={40}
 					>
-						<img
-							src="/media/AestheticLab.svg"
-							alt="Aesthetic Lab"
-							width="600"
-							height="180"
-							class="w-[80vw] max-w-[600px] h-auto text-primary"
+						<AestheticLabLogo
+							class="w-[60vw] max-w-[600px] h-auto text-primary"
+							aria-label="Aesthetic Lab"
 						/>
 					</FadeUp>
 
@@ -57,12 +57,12 @@ export const HeroSection = component$(() => {
 						id="hero-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
 						location="372146"
-						classes="hidden md:inline-flex btn btn-primary btn-lg rounded-full text-white font-montserrat font-medium tracking-widest uppercase shadow-lg hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300 border-none px-8"
+						classes="hidden md:inline-flex btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 					/>
 
 					<a
 						href="#services"
-						class="btn btn-outline border-base-content/20 text-base-content btn-lg rounded-full font-montserrat font-medium tracking-widest uppercase hover:bg-base-content hover:text-base-100 hover:-translate-y-1 transition-all duration-300 px-8"
+						class="btn btn-primary btn-lg btn-outline font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 					>
 						<span class="text-xs md:text-sm">
 							{t("app.hero.view_services@@View Services")}
@@ -82,12 +82,9 @@ export const HeroSection = component$(() => {
 						>
 							<div class="animate-float-reverse relative">
 								<div class="w-42 lg:w-56 aspect-3/4 rounded-2xl overflow-hidden border border-white/40 shadow-2xl -rotate-6 backdrop-blur-sm bg-white/5">
-									<img
-										src="/media/gallery/manicure1.jpg"
+									<ImgManicure1
 										class="h-full w-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
 										alt="Manicure Art"
-										width="300"
-										height="400"
 									/>
 									{/* Glossy Overlay */}
 									<div class="absolute inset-0 bg-linear-to-tr from-white/0 via-white/20 to-white/0 opacity-50" />
@@ -101,12 +98,9 @@ export const HeroSection = component$(() => {
 						<FadeUp delay={1200} duration={1500} direction="left" distance={80}>
 							<div class="animate-float relative">
 								<div class="w-40 lg:w-48 aspect-3/4 rounded-2xl overflow-hidden border border-white/40 shadow-2xl rotate-6 backdrop-blur-sm bg-white/5">
-									<img
-										src="/media/gallery/pedicure1.jpg"
+									<ImgPedicure1
 										class="h-full w-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
 										alt="Aesthetic Detail"
-										width="300"
-										height="400"
 									/>
 									<div class="absolute inset-0 bg-linear-to-bl from-white/0 via-white/20 to-white/0 opacity-50" />
 								</div>

@@ -5,7 +5,7 @@ import { FadeUp } from "~/components/ui/fade-up";
 export default component$(() => {
 	const t = inlineTranslate();
 	return (
-		<section class=" min-h-screen w-full overflow-hidden bg-base-100 py-24 z-0">
+		<section class=" min-h-screen w-full overflow-hidden bg-base-200 py-24 z-0">
 			<div class="container mx-auto px-2 md:px-8 max-w-6xl relative z-10">
 				<FadeUp>
 					<div class="text-center mb-16">

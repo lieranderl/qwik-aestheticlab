@@ -5,25 +5,25 @@ export const RotatingText = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<div class="font-montserrat mx-auto max-w-xl text-neutral-content/80">
-			<div class="text-lg md:text-xl font-normal tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
+		<div class="font-montserrat mx-auto max-w-xl">
+			<div class="text-xl md:text-2xl font-medium text-primary-content tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
 				<span>{t("app.hero.the_best@@The best")}</span>
 
 				<span class="text-rotate text-left overflow-hidden inline-flex flex-col">
 					<span class="font-bold justify-items-center">
-						<span class="block px-2 text-warning ">
+						<span class="block px-2 text-pink-500 ">
 							{t("app.hero.manicure@@manicure")}
 						</span>
-						<span class="block px-2 text-secondary ">
+						<span class="block px-2 text-rose-500 ">
 							{t("app.hero.pedicure@@pedicure")}
 						</span>
-						<span class="block px-2 text-accent ">
+						<span class="block px-2 text-fuchsia-600 ">
 							{t("app.hero.brows@@brows")}
 						</span>
-						<span class="block px-2 text-info">
+						<span class="block px-2 text-violet-600">
 							{t("app.hero.lashes@@lashes")}
 						</span>
-						<span class="block px-2 text-success">
+						<span class="block px-2 text-indigo-600">
 							{t("app.hero.laser@@laser")}
 						</span>
 					</span>
@@ -31,7 +31,7 @@ export const RotatingText = component$(() => {
 
 				<span>{t("app.hero.in_leuven@@in Leuven")}</span>
 			</div>
-			<p class="text-xs  tracking-[0.2em] opacity-60">
+			<p class="text-xs opacity-60">
 				{t("app.hero.according@@*voted by our clients")}
 			</p>
 		</div>

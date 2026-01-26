@@ -8,7 +8,8 @@ interface ServiceCardProps {
 	title: string;
 	description: string;
 	price?: string;
-	image: string;
+	// biome-ignore lint/suspicious/noExplicitAny: Generic component prop
+	image: any;
 	delay?: number;
 	serviceId: string;
 	location: string;
@@ -23,7 +24,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 		title,
 		description,
 		price,
-		image,
+		image: ImageComp,
 		delay = 0,
 		serviceId,
 		location,
@@ -45,13 +46,20 @@ export const ServiceCard = component$<ServiceCardProps>(
 				>
 					{/* Background Image */}
 					<div class="absolute inset-0 w-full h-full">
-						<img
-							src={image}
-							alt={title}
-							class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-							width="400"
-							height="500"
-						/>
+						{typeof ImageComp === "string" ? (
+							<img
+								src={ImageComp}
+								alt={title}
+								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+								width="400"
+								height="500"
+							/>
+						) : (
+							<ImageComp
+								alt={title}
+								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+							/>
+						)}
 						{/* Gradient Overlay */}
 						<div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black group-hover:via-black/50" />
 					</div>
@@ -103,7 +111,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 										e.stopPropagation();
 										customAction$();
 									}}
-									class="btn btn-sm btn-ghost border border-white/30 bg-white/10 text-white rounded-full hover:bg-white hover:text-primary hover:border-white font-montserrat uppercase tracking-wider text-xs"
+									class="btn btn-sm btn-outline font-montserrat uppercase hover:bg-base-100"
 								>
 									{buttonLabel || t("app.generic.view@@View")}
 								</button>
@@ -112,7 +120,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									id={`modal_service_${serviceId}`}
 									text={t("app.book.book_now@@Book Now")}
 									location={location}
-									classes="btn btn-sm btn-ghost border border-white/30 bg-white/10 text-white rounded-full hover:bg-white hover:text-primary hover:border-white font-montserrat uppercase tracking-wider text-xs"
+									classes="btn btn-sm btn-outline font-montserrat uppercase hover:bg-base-100"
 								/>
 							) : null}
 						</div>

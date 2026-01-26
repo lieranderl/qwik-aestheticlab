@@ -5,6 +5,7 @@ import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
+import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import type { Service } from "~/types";
 import {
 	useContactLoader,
@@ -40,24 +41,21 @@ export default component$(() => {
 			};
 		})
 		.sort((a, b) => b.priority - a.priority);
-
 	return (
-		<div class="min-h-screen bg-[#f4f5f1] text-[#2e2e2c]">
+		<div class="min-h-screen">
 			<Navigation />
 
 			<main>
 				{/* Simple Hero */}
 				<div class="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
 					<div class="absolute inset-0">
-						<img
-							src="/media/pricelist-hero.png"
+						<ImgPricelistHero
 							alt="Services Background"
-							width="1920"
-							height="400"
 							class="h-full w-full object-cover brightness-90"
 						/>
+						<div class="absolute inset-0 bg-black/40" />
 					</div>
-					<div class="relative z-10 text-center p-6">
+					<div class="relative z-10 text-center p-6 text-white">
 						<FadeUp>
 							<h1 class="font-qestero text-4xl md:text-6xl mb-6">
 								{t("app.services.pricing_title@@Services & Pricing")}
@@ -98,7 +96,7 @@ export default component$(() => {
 								return (
 									<FadeUp key={groupId} delay={index * 100}>
 										<div class="mb-8 flex items-center gap-4">
-											<span class="text-xl md:text-2xl bg-white p-3 rounded-full shadow-sm">
+											<span class="text-xl md:text-2xl bg-base-100 p-3 rounded-full shadow-sm">
 												{icon}
 											</span>
 											<h2 class="font-qestero text-2xl md:text-4xl text-base-content">
@@ -106,7 +104,7 @@ export default component$(() => {
 											</h2>
 										</div>
 
-										<div class="bg-white rounded-3xl p-6 md:p-10 shadow-sm space-y-8">
+										<div class="bg-base-100 rounded-3xl p-6 md:p-10 shadow-sm space-y-8">
 											{groupServices
 												.sort((a, b) => a.price - b.price)
 												.map((service) => {
@@ -133,7 +131,7 @@ export default component$(() => {
 															{/* Description with expand/collapse on mobile */}
 															<div class="mb-2">
 																<p
-																	class={`font-montserrat text-sm text-neutral-content/80 max-w-2xl ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
+																	class={`font-montserrat text-sm text-base-content/80 max-w-2xl ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
 																>
 																	{service.description}
 																</p>
