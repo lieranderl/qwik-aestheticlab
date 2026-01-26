@@ -23,7 +23,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 				<button
 					type="button"
 					tabIndex={0}
-					class={`flex items-center gap-1 text-sm font-medium tracking-wide uppercase transition-colors hover:text-secondary/70 ${buttonClass || ""}`}
+					class={`flex items-center gap-1 text-sm font-medium tracking-wide uppercase transition-colors hover:text-secondary/70 cursor-pointer ${buttonClass || ""}`}
 				>
 					{currentLangShort}
 					<svg

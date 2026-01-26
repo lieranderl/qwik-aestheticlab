@@ -162,11 +162,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 															description={service.description}
 															price={`€${service.price}`}
 															duration={service.duration}
-															image={getServiceItemImage(
-																service,
-																category,
-																index,
-															)} // Pass service, category, and index
+															image={getServiceItemImage(category, index)} // Pass service, category, and index
 															delay={100 + index * 50}
 															serviceId={service.id}
 															location={location}

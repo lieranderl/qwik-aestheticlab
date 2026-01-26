@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
+import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 
 export const Footer = component$(() => {
@@ -15,13 +16,7 @@ export const Footer = component$(() => {
 				<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
 					{/* Left: Brand & Copyright */}
 					<div class="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
-						<img
-							src="/media/AestheticLab.svg"
-							alt="Aesthetic Lab"
-							width="200"
-							height="60"
-							class="h-10 w-auto"
-						/>
+						<BirdLogo class="h-10 w-auto" />
 						<p class="font-montserrat text-xs tracking-wide opacity-80">
 							{t("app.footer.copyright@@Copyright")} ©{" "}
 							{new Date().getFullYear()} -{" "}

@@ -14,7 +14,7 @@ export default component$(() => {
 					<a href={pathtohome} class="link">
 						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
 					</a>
-					<LanguageSwitcher buttonClass="btn btn-primary btn-outline" />
+					<LanguageSwitcher />
 				</div>
 				<Slot />
 			</div>
