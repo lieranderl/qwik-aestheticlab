@@ -40,6 +40,7 @@ export interface ServiceGroup {
 	name_nl: string;
 	name_fr: string;
 	name_uk: string;
+	name_en: string;
 	active: boolean;
 	priority: number;
 }

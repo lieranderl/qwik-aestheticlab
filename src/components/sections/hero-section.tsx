@@ -3,6 +3,9 @@ import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
 import { RotatingText } from "~/components/ui/rotating-text";
+import AestheticLabLogo from "~/media/AestheticLab.svg?jsx";
+import ImgManicure1 from "~/media/gallery/manicure1.jpg?jsx";
+import ImgPedicure1 from "~/media/gallery/pedicure1.jpg?jsx";
 
 export const HeroSection = component$(() => {
 	const t = inlineTranslate();
@@ -32,12 +35,9 @@ export const HeroSection = component$(() => {
 						direction="up"
 						distance={40}
 					>
-						<img
-							src="/media/AestheticLab.svg"
-							alt="Aesthetic Lab"
-							width="600"
-							height="180"
+						<AestheticLabLogo
 							class="w-[60vw] max-w-[600px] h-auto text-primary"
+							aria-label="Aesthetic Lab"
 						/>
 					</FadeUp>
 
@@ -82,12 +82,9 @@ export const HeroSection = component$(() => {
 						>
 							<div class="animate-float-reverse relative">
 								<div class="w-42 lg:w-56 aspect-3/4 rounded-2xl overflow-hidden border border-white/40 shadow-2xl -rotate-6 backdrop-blur-sm bg-white/5">
-									<img
-										src="/media/gallery/manicure1.jpg"
+									<ImgManicure1
 										class="h-full w-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
 										alt="Manicure Art"
-										width="300"
-										height="400"
 									/>
 									{/* Glossy Overlay */}
 									<div class="absolute inset-0 bg-linear-to-tr from-white/0 via-white/20 to-white/0 opacity-50" />
@@ -101,12 +98,9 @@ export const HeroSection = component$(() => {
 						<FadeUp delay={1200} duration={1500} direction="left" distance={80}>
 							<div class="animate-float relative">
 								<div class="w-40 lg:w-48 aspect-3/4 rounded-2xl overflow-hidden border border-white/40 shadow-2xl rotate-6 backdrop-blur-sm bg-white/5">
-									<img
-										src="/media/gallery/pedicure1.jpg"
+									<ImgPedicure1
 										class="h-full w-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105"
 										alt="Aesthetic Detail"
-										width="300"
-										height="400"
 									/>
 									<div class="absolute inset-0 bg-linear-to-bl from-white/0 via-white/20 to-white/0 opacity-50" />
 								</div>

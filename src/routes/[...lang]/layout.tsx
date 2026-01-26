@@ -69,6 +69,7 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 			name_nl: group.name_nl,
 			name_fr: group.name_fr,
 			name_uk: group.name_uk,
+			name_en: group.name,
 		})) as ServiceGroup[];
 	},
 );

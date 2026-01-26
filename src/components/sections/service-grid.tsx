@@ -12,6 +12,7 @@ import { ServiceCard } from "~/components/ui/service-card";
 import {
 	getServiceItemImage,
 	groupServicesAndCategories,
+	resolveCoverImage,
 } from "~/shared/service-utils";
 import type { Service, ServiceGroup } from "~/types";
 
@@ -125,9 +126,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										groupId,
 										groupServices,
 										category,
-										variant,
-										theme,
-										displayTitleKey,
 										displayTitleDefault,
 									} = group;
 
@@ -137,19 +135,9 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										t("app.services.default_category@@Services");
 
 									// Override for special keys
-									if (displayTitleKey && displayTitleDefault) {
-										if (variant === "face")
-											displayCategoryName = "Laser hair removal FACE";
-										else if (variant === "body")
-											displayCategoryName = "Laser hair removal BODY";
-										else if (variant === "combo")
-											displayCategoryName = "Laser hair removal COMBO";
-										else if (theme === "laser-male")
-											displayCategoryName = "Laser hair removal MALE";
-										else
-											displayCategoryName = t(
-												`${displayTitleKey}@@${displayTitleDefault}`,
-											);
+									if (displayTitleDefault) {
+										// Simple translation lookup using the key provided by config
+										displayCategoryName = t(`${displayTitleDefault}`);
 									} else {
 										// Capitalize default name
 										displayCategoryName =
@@ -167,7 +155,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 
 											<div class="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
 												{groupServices.map((service, index) => {
-													// const itemTheme = getServiceTheme(category?.name || "", service.name); // Removed this line
 													return (
 														<ServiceCard
 															key={service.id}
@@ -175,7 +162,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 															description={service.description}
 															price={`€${service.price}`}
 															duration={service.duration}
-															image={getServiceItemImage(theme, index)} // Used theme from group
+															image={getServiceItemImage(
+																service,
+																category,
+																index,
+															)} // Pass service, category, and index
 															delay={100 + index * 50}
 															serviceId={service.id}
 															location={location}
@@ -193,9 +184,8 @@ export const ServiceGrid = component$<ServiceGridProps>(
 								const {
 									groupId,
 									category,
-									displayDescriptionKey,
 									displayDescriptionDefault,
-									coverImage,
+									coverImageName,
 								} = group;
 
 								// Resolve Title
@@ -207,21 +197,18 @@ export const ServiceGrid = component$<ServiceGridProps>(
 									categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
 								// Use Theme Display Info for description or fallback
-								const description =
-									displayDescriptionKey && displayDescriptionDefault
-										? t(
-												`${displayDescriptionKey}@@${displayDescriptionDefault}`,
-											)
-										: t(
-												"app.services.general_desc@@Professional beauty treatments for your refined look.",
-											);
+								const description = displayDescriptionDefault
+									? t(`${displayDescriptionDefault}`)
+									: t(
+											"app.services.general_desc@@Professional beauty treatments for your refined look.",
+										);
 
 								return (
 									<ServiceCard
 										key={groupId}
 										title={displayCategoryName}
 										description={description}
-										image={coverImage}
+										image={resolveCoverImage(coverImageName)}
 										customAction$={() => {
 											selectedCategoryId.value = groupId;
 											showFullList.value = true;

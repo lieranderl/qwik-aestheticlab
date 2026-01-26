@@ -1,6 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
+import ImgManicure5 from "~/media/gallery/manicure5.jpg?jsx";
+import ImgWork1 from "~/media/gallery/work1.jpg?jsx";
 
 export const AboutSection = component$(() => {
 	const t = inlineTranslate();
@@ -62,11 +64,8 @@ export const AboutSection = component$(() => {
 							class="relative z-10"
 						>
 							<div class="w-72 md:w-80 lg:w-96 aspect-3/4 overflow-hidden rounded-t-[10rem] rounded-b-3xl border border-white/50 shadow-2xl relative">
-								<img
-									src="/media/gallery/work1.jpg"
+								<ImgWork1
 									alt="Artists at Work"
-									width="400"
-									height="600"
 									class="object-cover w-full h-full hover:scale-105 transition-transform duration-1000"
 								/>
 							</div>
@@ -81,11 +80,8 @@ export const AboutSection = component$(() => {
 						>
 							<div class="animate-float">
 								<div class="w-48 md:w-56 aspect-square rounded-full border-4 border-white shadow-xl overflow-hidden">
-									<img
-										src="/media/gallery/manicure5.jpg"
+									<ImgManicure5
 										alt="Detail Shot"
-										width="300"
-										height="300"
 										class="object-cover w-full h-full"
 									/>
 								</div>

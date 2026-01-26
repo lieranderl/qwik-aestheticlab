@@ -5,6 +5,7 @@ import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
+import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import type { Service } from "~/types";
 import {
 	useContactLoader,
@@ -40,7 +41,6 @@ export default component$(() => {
 			};
 		})
 		.sort((a, b) => b.priority - a.priority);
-
 	return (
 		<div class="min-h-screen">
 			<Navigation />
@@ -49,11 +49,8 @@ export default component$(() => {
 				{/* Simple Hero */}
 				<div class="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
 					<div class="absolute inset-0">
-						<img
-							src="/media/pricelist-hero.png"
+						<ImgPricelistHero
 							alt="Services Background"
-							width="1920"
-							height="400"
 							class="h-full w-full object-cover brightness-90"
 						/>
 						<div class="absolute inset-0 bg-black/40" />
