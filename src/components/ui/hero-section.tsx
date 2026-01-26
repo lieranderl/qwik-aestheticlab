@@ -42,22 +42,25 @@ export const HeroSection = component$(() => {
 
 					<FadeUp delay={400} duration={1000} direction="up">
 						<div class="font-montserrat mx-auto max-w-xl text-neutral-content/80">
-							<div class="text-lg md:text-xl font-light tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
+							<div class="text-lg md:text-xl font-normal tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
 								<span>{t("app.hero.the_best@@The best")}</span>
 
 								{/* Restored Text Rotation */}
-								<span class="text-rotate text-left h-[1.5em] overflow-hidden inline-flex flex-col">
+								<span class="text-rotate text-left overflow-hidden inline-flex flex-col">
 									<span class="font-bold justify-items-center">
-										<span class="block px-2 text-primary ">
+										<span class="block text-warning ">
 											{t("app.hero.manicure@@manicure")}
 										</span>
-										<span class="block px-2 text-secondary ">
+										<span class="block  text-secondary ">
 											{t("app.hero.pedicure@@pedicure")}
 										</span>
-										<span class="block px-2 text-accent ">
+										<span class="block  text-accent ">
 											{t("app.hero.brows@@brows")}
 										</span>
-										<span class="block px-2 text-success">
+										<span class="block text-info">
+											{t("app.hero.lashes@@lashes")}
+										</span>
+										<span class="block text-success">
 											{t("app.hero.laser@@laser")}
 										</span>
 									</span>

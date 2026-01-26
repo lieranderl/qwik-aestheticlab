@@ -23,7 +23,7 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 					>
 						<div class="flex items-center">
 							<div class="bg-gray-200 rounded-full h-10 w-10 mr-4" />
-							<div class="flex flex-col justify-center flex-grow">
+							<div class="flex flex-col justify-center grow">
 								<div class="bg-gray-200 rounded-md h-3 mb-2 w-24" />
 								<div class="bg-gray-200 rounded-md h-3 w-16" />
 							</div>
@@ -62,17 +62,17 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 						<div class="flex items-center mb-3">
 							<div>
 								<div class="bg-gray-200 rounded-full h-3 w-3 transform translate-x-0 translate-y-1.5" />
-								<div class="bg-gray-200 h-3 w-3 rotate-[-45deg] translate-x-0 translate-y-0.5 ml-2 mr-4" />
+								<div class="bg-gray-200 h-3 w-3 -rotate-45 translate-x-0 translate-y-0.5 ml-2 mr-4" />
 								<div class="bg-gray-200 rounded-full h-3 w-3 transform translate-x-2.5 translate-y-[-4.5]" />
 							</div>
 							<div class="ml-2">
 								<div class="bg-gray-200 rounded-full h-5 w-5" />
-								<div class="h-0 w-0 border-t-2 border-l-6 border-b-2 border-gray-200 transform translate-x-4 translate-y-[-1rem] rotate-30" />
+								<div class="h-0 w-0 border-t-2 border-l-6 border-b-2 border-gray-200 transform translate-x-4 -translate-y-4 rotate-30" />
 							</div>
 							<div class="ml-auto">
 								<div class="h-2 w-2 border-t-8 border-r-8 border-transparent transform translate-y-4" />
-								<div class="bg-gray-200 h-3 w-4 transform translate-y-[-1rem]" />
-								<div class="h-0 w-0 border-t-8 border-l-8 border-transparent transform translate-y-[-1rem] translate-x-2" />
+								<div class="bg-gray-200 h-3 w-4 transform -translate-y-4" />
+								<div class="h-0 w-0 border-t-8 border-l-8 border-transparent transform -translate-y-4 translate-x-2" />
 							</div>
 						</div>
 						<div class="flex flex-col justify-center mb-6">

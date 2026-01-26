@@ -24,7 +24,7 @@ export default component$(() => {
 	const contactSignal = useContactLoader();
 
 	return (
-		<div class="min-h-screen bg-[#f4f5f1] text-[#2e2e2c]">
+		<div class="min-h-screen">
 			<Navigation />
 
 			<main>
