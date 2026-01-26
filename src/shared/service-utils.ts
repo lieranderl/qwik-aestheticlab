@@ -174,7 +174,7 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 			"МУЖСКОЙ",
 			"МУЖЧИН",
 			"ЧОЛОВІЧИЙ",
-			"ЧОЛОВІКІВ",
+			"ЧОЛОВІКИ",
 		],
 		coverImage: "/media/services/laser-male.png",
 		displayInfo: {
