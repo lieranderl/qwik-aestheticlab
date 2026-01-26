@@ -144,6 +144,8 @@ export const ServiceGrid = component$<ServiceGridProps>(
 											displayCategoryName = "Laser hair removal BODY";
 										else if (variant === "combo")
 											displayCategoryName = "Laser hair removal COMBO";
+										else if (theme === "laser-male")
+											displayCategoryName = "Laser hair removal MALE";
 										else
 											displayCategoryName = t(
 												`${displayTitleKey}@@${displayTitleDefault}`,

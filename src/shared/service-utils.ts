@@ -12,6 +12,7 @@ export type ServiceTheme =
 	| "laser-face"
 	| "laser-body"
 	| "laser-combo"
+	| "laser-male"
 	| "universal";
 
 // ... (imports)
@@ -45,7 +46,7 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 		},
 	},
 	manicure: {
-		keywords: ["manicure", "manucure", "маникюр", "nails", "nail"],
+		keywords: ["manicure", "manucure", "маникюр", "nails", "nail", "манікюр"],
 		coverImage: "/media/gallery/manicure1.jpg",
 		galleryBase: "/media/gallery/manicure",
 		imageCount: 6, // We have manicure1..6
@@ -58,7 +59,15 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 	},
 	// ... [other definitions remain similar, ensuring simple ones don't need imageCount if not using galleryBase]
 	brows_lashes: {
-		keywords: ["brow", "lash", "eye", "брови", "ресни"],
+		keywords: [
+			"brow",
+			"lash",
+			"eye",
+			"брови",
+			"ресни",
+			"wenkbrauwen",
+			"sourcils",
+		],
 		coverImage: "/media/gallery/eyebrows1.jpg",
 		galleryBase: "/media/gallery/eyebrows",
 		imageCount: 2,
@@ -148,6 +157,29 @@ const THEME_DEFINITIONS: Record<ServiceTheme, ThemeConfig> = {
 		displayInfo: {
 			titleKey: "app.services.laser_combo_title@@Laser hair removal COMBO",
 			titleDefault: "Laser hair removal COMBO",
+			descKey:
+				"app.services.laser_desc@@Safe, effective, and painless technology for smooth skin.",
+			descDefault: "Safe, effective, and painless technology for smooth skin.",
+		},
+	},
+	"laser-male": {
+		keywords: [
+			"MALE",
+			"MEN",
+			"MAN",
+			"HOMME",
+			"MASCULIN",
+			"MANNEN",
+			"HEREN",
+			"МУЖСКОЙ",
+			"МУЖЧИН",
+			"ЧОЛОВІЧИЙ",
+			"ЧОЛОВІКІВ",
+		],
+		coverImage: "/media/services/laser-male.png",
+		displayInfo: {
+			titleKey: "app.services.laser_male_title@@Laser hair removal MALE",
+			titleDefault: "Laser hair removal MALE",
 			descKey:
 				"app.services.laser_desc@@Safe, effective, and painless technology for smooth skin.",
 			descDefault: "Safe, effective, and painless technology for smooth skin.",
@@ -245,6 +277,14 @@ export function getServiceTheme(
 			)
 		)
 			return "laser-combo";
+		if (
+			matchesKeywords(
+				THEME_DEFINITIONS["laser-male"].keywords,
+				cNameUpper,
+				sNameUpper,
+			)
+		)
+			return "laser-male";
 		return "laser-body";
 	}
 
