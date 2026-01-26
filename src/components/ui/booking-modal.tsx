@@ -62,7 +62,7 @@ export const Booking = component$<BookingProps>(
 
 				{/* Modal with iframe */}
 				<dialog id={id} class="modal">
-					<div class="modal-box w-full max-w-5xl p-2 pt-10">
+					<div class="modal-box w-full max-w-5xl p-2 pt-10 bg-base-200 rounded-2xl">
 						<form method="dialog">
 							<button
 								type="submit"

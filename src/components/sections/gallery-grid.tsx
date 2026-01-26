@@ -7,15 +7,15 @@ export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="gallery" class="bg-white py-24">
+		<section id="gallery" class="py-24">
 			<div class="custom-container">
 				<div class="mb-16 text-center">
 					<FadeUp>
-						<h2 class="font-qestero mb-4 text-4xl text-base-content md:text-5xl">
+						<h2 class="font-qestero mb-4 text-4xl md:text-5xl">
 							{t("app.work.title@@Our Work")}
 						</h2>
 						<div class="mx-auto h-px w-20 bg-primary" />
-						<p class="font-montserrat mx-auto mt-6 max-w-2xl text-neutral-content">
+						<p class="font-montserrat mx-auto mt-6 max-w-2xl">
 							{t("app.hero.slogan@@The Art of Natural Beauty")}
 						</p>
 					</FadeUp>
@@ -54,14 +54,14 @@ export const GalleryGrid = component$(() => {
 					{" "}
 					{/* Reduced margin since static grid is gone */}
 					<FadeUp delay={400} class="mb-10 text-center">
-						<h3 class="font-qestero mb-2 text-2xl text-base-content">
+						<h3 class="font-qestero mb-2 text-2xl">
 							{t("app.contact.instagram@@Follow us on Instagram")}
 						</h3>
 						<a
 							href="https://www.instagram.com/aestheticlabbe"
 							target="_blank"
 							rel="noreferrer"
-							class="font-montserrat text-sm tracking-widest text-primary hover:underline"
+							class="font-montserrat text-sm tracking-widest text-secondary hover:underline"
 						>
 							@aestheticlabbe
 						</a>

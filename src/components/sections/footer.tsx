@@ -10,19 +10,19 @@ export const Footer = component$(() => {
 	/* Shared navigation logic imported from shared/locale-navigation.ts */
 
 	return (
-		<footer class="bg-neutral-900 text-white border-t border-white/5 pt-8 pb-8">
+		<footer class="bg-base-200 text-base-content border-t border-base-content/10 pt-8 pb-8">
 			<div class="custom-container">
 				<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
 					{/* Left: Brand & Copyright */}
 					<div class="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
 						<img
-							src="/media/AestheticLabWhite.svg"
+							src="/media/AestheticLab.svg"
 							alt="Aesthetic Lab"
 							width="200"
 							height="60"
 							class="h-10 w-auto"
 						/>
-						<p class="font-montserrat text-xs tracking-wide opacity-40">
+						<p class="font-montserrat text-xs tracking-wide opacity-80">
 							{t("app.footer.copyright@@Copyright")} ©{" "}
 							{new Date().getFullYear()} -{" "}
 							{t("app.footer.all_rights@@All right reserved")}
@@ -32,13 +32,13 @@ export const Footer = component$(() => {
 					{/* Right: Navigation */}
 					<nav class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 font-montserrat text-sm tracking-wider">
 						<a
-							class="text-white/60 hover:text-primary transition-colors duration-300"
+							class="link link-primary"
 							href={getLocaleNavLink(location.url.pathname, "privacy-policy")}
 						>
 							{t("app.privacy.privacy_title@@Privacy Policy")}
 						</a>
 						<a
-							class="text-white/60 hover:text-primary transition-colors duration-300"
+							class="link link-primary"
 							href={getLocaleNavLink(location.url.pathname, "notice")}
 						>
 							{t("app.privacy.important_info@@Important Information")}

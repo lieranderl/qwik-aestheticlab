@@ -15,7 +15,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="team" class="py-24 bg-base-100 relative overflow-hidden">
+		<section id="team" class="py-24 bg-base-200 relative overflow-hidden">
 			<div class="custom-container mb-12 text-center">
 				<FadeUp>
 					<h2 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
@@ -55,7 +55,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	};
 
 	return (
-		<div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
+		<div class="bg-base-100/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
 			<div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-base-100 ring-2 ring-primary/20 shrink-0 transition-transform duration-500 group-hover:ring-4 group-hover:ring-primary/40">
 				{tech.photo_url === "rubina" && (
 					<ImgRubina class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
@@ -74,7 +74,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 			<div class="mb-8 grow flex flex-col items-center">
 				<div
 					class={[
-						"font-montserrat text-sm text-neutral-content/80 leading-relaxed transition-all duration-300 relative",
+						"font-montserrat text-sm  leading-relaxed transition-all duration-300 relative",
 						isExpanded.value
 							? "max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
 							: "line-clamp-4",

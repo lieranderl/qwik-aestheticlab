@@ -30,8 +30,6 @@ export default component$(() => {
 			<main>
 				<HeroSection />
 
-				<AboutSection />
-
 				<ServiceGrid
 					services={servicesSignal.value}
 					serviceCategories={serviceCategoriesSig.value}
@@ -43,6 +41,8 @@ export default component$(() => {
 				<ReviewsSection />
 
 				<GalleryGrid />
+
+				<AboutSection />
 
 				<ContactSection contact={contactSignal.value} />
 			</main>

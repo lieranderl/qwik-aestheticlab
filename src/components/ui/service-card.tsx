@@ -103,7 +103,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 										e.stopPropagation();
 										customAction$();
 									}}
-									class="btn btn-sm btn-ghost border border-white/30 bg-white/10 text-white rounded-full hover:bg-white hover:text-primary hover:border-white font-montserrat uppercase tracking-wider text-xs"
+									class="btn btn-sm btn-outline font-montserrat uppercase hover:bg-base-100"
 								>
 									{buttonLabel || t("app.generic.view@@View")}
 								</button>
@@ -112,7 +112,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									id={`modal_service_${serviceId}`}
 									text={t("app.book.book_now@@Book Now")}
 									location={location}
-									classes="btn btn-sm btn-ghost border border-white/30 bg-white/10 text-white rounded-full hover:bg-white hover:text-primary hover:border-white font-montserrat uppercase tracking-wider text-xs"
+									classes="btn btn-sm btn-outline font-montserrat uppercase hover:bg-base-100"
 								/>
 							) : null}
 						</div>

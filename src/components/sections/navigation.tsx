@@ -25,10 +25,10 @@ export const Navigation = component$<NavigationProps>(
 		// Inline nav links to avoid Qwik serialization issues with t function
 		const navLinks = [
 			{ label: t("app.nav.home@@Home"), href: "#" },
-			{ label: t("app.nav.about@@About"), href: "#about" },
 			{ label: t("app.nav.services@@Services"), href: "#services" },
 			{ label: t("app.nav.team@@Team"), href: "#team" },
 			{ label: t("app.work.title@@Gallery"), href: "#gallery" },
+			{ label: t("app.nav.about@@About"), href: "#about" },
 			{ label: t("app.nav.contact@@Contact"), href: "#contact" },
 		];
 
@@ -51,14 +51,14 @@ export const Navigation = component$<NavigationProps>(
 			}
 		});
 
-		const navTextColorClass = "text-black";
+		const navTextColorClass = "text-primary";
 
 		return (
 			<>
 				<header
 					class={`fixed left-0 right-0 top-0 z-100 transition-all duration-300 ${
 						isScrolled.value
-							? "bg-base-100/90 py-2 shadow-sm backdrop-blur-md"
+							? "bg-base-200/90 py-2 shadow-sm backdrop-blur-md"
 							: "bg-transparent py-3 md:py-5"
 					}`}
 				>
@@ -86,7 +86,7 @@ export const Navigation = component$<NavigationProps>(
 									<a
 										key={item.label}
 										href={getLocaleNavLink(location.url.pathname, item.href)}
-										class={`font-montserrat text-sm font-medium tracking-wide transition-colors hover:text-primary whitespace-nowrap ${navTextColorClass}`}
+										class={`font-montserrat text-sm font-medium tracking-wide transition-colors hover:text-secondary/70 whitespace-nowrap ${navTextColorClass}`}
 									>
 										{item.label}
 									</a>
@@ -99,12 +99,10 @@ export const Navigation = component$<NavigationProps>(
 									id="mobile-nav-book-btn"
 									text={t("app.book.book_now@@Book Now")}
 									location="372146"
-									classes={`rounded-full border px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest shadow-md transition-all whitespace-nowrap ${
+									classes={` ${
 										isScrolled.value
-											? "border-primary bg-primary text-white"
-											: lightOnTransparent
-												? "border-white text-white hover:bg-white hover:text-primary backdrop-blur-sm"
-												: "border-base-content text-base-content hover:bg-base-content hover:text-white backdrop-blur-sm"
+											? "btn btn-primary uppercase tracking-wider font-medium"
+											: "btn btn-primary btn-outline uppercase tracking-wider font-medium "
 									}`}
 								/>
 							</div>
@@ -118,12 +116,10 @@ export const Navigation = component$<NavigationProps>(
 									id="nav-book-btn"
 									text={t("app.book.book_now@@Book Now")}
 									location="372146"
-									classes={`rounded-full border px-6 py-2 text-xs font-semibold uppercase tracking-widest transition-all whitespace-nowrap ${
+									classes={` ${
 										isScrolled.value
-											? "border-primary bg-primary text-white hover:bg-[#7a8876]"
-											: lightOnTransparent
-												? "border-white text-white hover:bg-white hover:text-primary"
-												: "border-base-content text-base-content hover:bg-base-content hover:text-white"
+											? "btn btn-primary uppercase tracking-wider font-medium"
+											: "btn btn-primary btn-outline uppercase tracking-wider font-medium"
 									}`}
 								/>
 								<LanguageSwitcher buttonClass={navTextColorClass} />
@@ -134,7 +130,7 @@ export const Navigation = component$<NavigationProps>(
 								<LanguageSwitcher buttonClass={navTextColorClass} />
 								<button
 									type="button"
-									class={`text-black p-2 transition-transform hover:scale-110 ${
+									class={`p-2 transition-transform hover:scale-110 ${
 										isMobileMenuOpen.value ? "hidden" : "block"
 									}`}
 									onClick$={() => {
@@ -165,12 +161,12 @@ export const Navigation = component$<NavigationProps>(
 
 				{/* Mobile Menu Overlay */}
 				<div
-					class={`fixed inset-0 z-110 bg-[#f4f5f1] flex flex-col items-center justify-center gap-8 transition-transform duration-300 overflow-y-auto lg:hidden ${isMobileMenuOpen.value ? "translate-x-0" : "translate-x-full"}`}
+					class={`fixed inset-0 z-110 bg-base-200 flex flex-col items-center justify-center gap-8 transition-transform duration-300 overflow-y-auto lg:hidden ${isMobileMenuOpen.value ? "translate-x-0" : "translate-x-full"}`}
 				>
 					{/* Close Button inside Menu */}
 					<button
 						type="button"
-						class="absolute top-6 right-6 p-2 text-base-content hover:scale-110 transition-transform"
+						class="absolute top-6 right-6 p-2 hover:scale-110 transition-transform"
 						onClick$={() => {
 							isMobileMenuOpen.value = false;
 						}}
@@ -198,7 +194,7 @@ export const Navigation = component$<NavigationProps>(
 							<li key={item.label}>
 								<a
 									href={getLocaleNavLink(location.url.pathname, item.href)}
-									class="font-qestero text-3xl text-base-content"
+									class="font-qestero text-3xl"
 									onClick$={() => {
 										isMobileMenuOpen.value = false;
 									}}

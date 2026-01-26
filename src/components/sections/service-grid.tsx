@@ -62,7 +62,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		});
 
 		return (
-			<section id="services" class="bg-base-100 py-24">
+			<section id="services" class="bg-base-200 py-24">
 				<div class="custom-container">
 					<div class="mb-16 text-center">
 						<FadeUp>
@@ -70,7 +70,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 								{t("app.services.title@@Our Services")}
 							</h2>
 							<div class="h-px w-20 bg-primary mx-auto" />
-							<p class="font-montserrat mt-6 max-w-lg mx-auto text-neutral-content">
+							<p class="font-montserrat mt-6 max-w-lg mx-auto text-base-content">
 								{t(
 									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
 								)}

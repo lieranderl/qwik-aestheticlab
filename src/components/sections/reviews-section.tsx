@@ -74,44 +74,35 @@ export const ReviewsSection = component$(() => {
 	});
 
 	return (
-		<section class="py-24 bg-base-100 overflow-hidden relative">
-			{/* Background Grain/Noise is global now */}
-
+		<section class="py-24 bg-base-200 overflow-hidden relative">
 			<div class="custom-container mb-12 text-center">
 				<FadeUp>
-					<h2 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
+					<h2 class="font-qestero text-4xl md:text-5xl  mb-4">
 						{t("app.reviews.title@@Kind Words")}
 					</h2>
 					<div class="mx-auto h-px w-20 bg-primary mb-6" />
 					<div class="flex items-center justify-center gap-2 mb-2">
 						{/* 5 Stars SVG */}
-						<div class="flex text-warning">
+						{/* 5 Stars DaisyUI */}
+						<div class="rating rating-md gap-1">
 							{[1, 2, 3, 4, 5].map((i) => (
-								<svg
+								<input
 									key={i}
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									class="w-6 h-6"
-									aria-hidden="true"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-										clip-rule="evenodd"
-									/>
-								</svg>
+									type="radio"
+									name="rating-header"
+									class="mask mask-star-2 bg-warning"
+									checked
+									disabled
+								/>
 							))}
 						</div>
-						<span class="font-montserrat font-medium text-base-content">
-							5.0
-						</span>
+						<span class="font-montserrat font-medium">5.0</span>
 					</div>
 					<a
 						href="https://maps.app.goo.gl/bsdNssGY4YTJeR7j6"
 						target="_blank"
 						rel="noreferrer"
-						class="text-sm font-montserrat text-neutral-content hover:text-primary underline underline-offset-4"
+						class="link link-primary"
 					>
 						{t("app.reviews.google_link@@Read all reviews on Google")}
 					</a>
@@ -134,28 +125,22 @@ export const ReviewsSection = component$(() => {
 					{allReviews.map((review, index) => (
 						<div
 							key={`${review.author}-${index}`}
-							class="w-[300px] md:w-[400px] bg-white p-8 rounded-2xl shadow-sm border border-base-200 flex flex-col justify-between shrink-0"
+							class="w-[300px] md:w-[400px] bg-base-100 p-8 rounded-2xl shadow-sm border border-base-200 flex flex-col justify-between shrink-0"
 						>
 							<div>
-								<div class="flex text-warning mb-4">
+								<div class="rating rating-sm gap-0.5 mb-4">
 									{[1, 2, 3, 4, 5].map((i) => (
-										<svg
+										<input
 											key={i}
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-											class="w-4 h-4"
-											aria-hidden="true"
-										>
-											<path
-												fill-rule="evenodd"
-												d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+											type="radio"
+											name={`rating-${index}`}
+											class="mask mask-star-2 bg-warning"
+											checked
+											disabled
+										/>
 									))}
 								</div>
-								<p class="font-montserrat text-sm text-neutral-content leading-relaxed italic line-clamp-6">
+								<p class="font-montserrat text-sm  leading-relaxed italic line-clamp-6">
 									"{review.text}"
 								</p>
 							</div>
@@ -164,10 +149,10 @@ export const ReviewsSection = component$(() => {
 									{review.author.charAt(0)}
 								</div>
 								<div>
-									<p class="font-montserrat font-semibold text-sm text-base-content">
+									<p class="font-montserrat font-semibold text-sm">
 										{review.author}
 									</p>
-									<p class="text-xs text-neutral-content/60">Google Review</p>
+									<p class="text-xs text-base-content/60">Google Review</p>
 								</div>
 							</div>
 						</div>

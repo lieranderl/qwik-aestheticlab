@@ -8,8 +8,8 @@ export default component$(() => {
 	const getPath = localizePath();
 	const pathtohome = getPath("/", locale.lang);
 	return (
-		<div class="min-h-screen bg-[#f4f5f1] text-base-content px-1 md:px-8">
-			<div class="max-w-3xl mx-auto bg-[#f4f5f1] p-8 rounded-2xl">
+		<div class="min-h-screen bg-base-200 text-base-content px-1 md:px-8">
+			<div class="max-w-3xl mx-auto bg-transparent p-8 rounded-2xl">
 				<div class="flex justify-between items-center mb-12 p-8">
 					<a href={pathtohome} class="link">
 						<HiHomeOutline class="text-xl md:text-3xl text-primary" />

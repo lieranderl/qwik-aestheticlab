@@ -8,7 +8,7 @@ export const HeroSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section class="relative min-h-screen w-full overflow-hidden bg-base-100 flex items-center justify-center">
+		<section class="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
 			{/* Decorative Background Elements - Enhanced Atmosphere */}
 			<div class="absolute -left-20 top-0 h-[600px] w-[600px] rounded-full bg-primary/20 blur-[120px] animate-pulse-slow" />
 			<div
@@ -20,7 +20,7 @@ export const HeroSection = component$(() => {
 				{/* Main Headline Group */}
 				<div class="mb-12 relative flex flex-col items-center">
 					<FadeUp delay={100} duration={1000} direction="down">
-						<span class="font-montserrat mb-4 block text-sm uppercase tracking-[0.2em] text-secondary">
+						<span class="font-montserrat mb-4 block text-sm uppercase tracking-[0.2em] text-primary font-semibold">
 							{t("app.hero.slogan@@The Art of Natural Beauty")}
 						</span>
 					</FadeUp>
@@ -37,7 +37,7 @@ export const HeroSection = component$(() => {
 							alt="Aesthetic Lab"
 							width="600"
 							height="180"
-							class="w-[80vw] max-w-[600px] h-auto text-primary"
+							class="w-[60vw] max-w-[600px] h-auto text-primary"
 						/>
 					</FadeUp>
 
@@ -57,12 +57,12 @@ export const HeroSection = component$(() => {
 						id="hero-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
 						location="372146"
-						classes="hidden md:inline-flex btn btn-primary btn-lg rounded-full text-white font-montserrat font-medium tracking-widest uppercase shadow-lg hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300 border-none px-8"
+						classes="hidden md:inline-flex btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 					/>
 
 					<a
 						href="#services"
-						class="btn btn-outline border-base-content/20 text-base-content btn-lg rounded-full font-montserrat font-medium tracking-widest uppercase hover:bg-base-content hover:text-base-100 hover:-translate-y-1 transition-all duration-300 px-8"
+						class="btn btn-primary btn-lg btn-outline font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 					>
 						<span class="text-xs md:text-sm">
 							{t("app.hero.view_services@@View Services")}

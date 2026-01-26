@@ -23,7 +23,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 				<button
 					type="button"
 					tabIndex={0}
-					class={`flex items-center gap-1 text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${buttonClass || "text-neutral-content"}`}
+					class={`flex items-center gap-1 text-sm font-medium tracking-wide uppercase transition-colors hover:text-secondary/70`}
 				>
 					{currentLangShort}
 					<svg
@@ -45,7 +45,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 
 				<ul
 					tabIndex={-1}
-					class="dropdown-content menu bg-base-100 rounded-box z-10 w-32 p-2 shadow"
+					class="dropdown-content menu bg-base-200 rounded-3xl z-10 w-32 p-2 shadow"
 				>
 					{config.supportedLocales.map((locale) => {
 						// Compute correct path for this locale
@@ -71,8 +71,8 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 									href={locale.lang === currentLang ? "#" : newPath}
 									class={`text-sm ${
 										locale.lang === currentLang
-											? "font-bold text-base-content"
-											: "text-neutral-content"
+											? "font-bold text-primary"
+											: "text-primary-accent/70"
 									}`}
 								>
 									{locale.lang.split("-")[0].toUpperCase()}

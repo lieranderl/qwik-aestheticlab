@@ -6,12 +6,9 @@ export const AboutSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section
-			id="about"
-			class="relative py-32 bg-white text-base-content overflow-hidden"
-		>
+		<section id="about" class="relative py-32 overflow-hidden">
 			{/* Background Decor - Watermark & Blobs */}
-			<div class="absolute top-10 left-10 text-[12vw] md:text-[8vw] font-qestero leading-none text-base-200/40 select-none pointer-events-none z-0">
+			<div class="absolute top-10 left-0 w-full text-center md:text-left md:w-auto md:left-10 text-[12vw] md:text-[8vw] font-qestero leading-none text-secondary/40 select-none pointer-events-none z-0">
 				Aesthetic Lab
 			</div>
 			<div class="absolute -right-20 top-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[100px] animate-pulse-slow" />
@@ -36,7 +33,7 @@ export const AboutSection = component$(() => {
 						</FadeUp>
 
 						<FadeUp delay={200}>
-							<div class="prose prose-lg text-neutral-content font-montserrat leading-relaxed relative">
+							<div class="prose prose-lg text-base-content font-montserrat leading-relaxed relative">
 								{/* Decorative Quote Mark */}
 								<span class="absolute -top-8 -left-8 text-8xl text-primary/10 font-serif leading-none hidden lg:block">
 									“
