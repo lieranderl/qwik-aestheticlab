@@ -26,10 +26,6 @@ export const RotatingText = component$(() => {
 						<span class="block px-2 text-success">
 							{t("app.hero.laser@@laser")}
 						</span>
-						{/* Duplicate first item for seamless loop */}
-						<span class="block px-2 text-warning ">
-							{t("app.hero.manicure@@manicure")}
-						</span>
 					</span>
 				</span>
 

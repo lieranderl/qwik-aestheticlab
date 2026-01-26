@@ -1,14 +1,14 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { AboutSection } from "~/components/ui/about-section";
-import { ContactSection } from "~/components/ui/contact-section";
-import { Footer } from "~/components/ui/footer";
-import { GalleryGrid } from "~/components/ui/gallery-grid";
-import { HeroSection } from "~/components/ui/hero-section";
-import { Navigation } from "~/components/ui/navigation";
-import { ReviewsSection } from "~/components/ui/reviews-section";
-import { ServiceGrid } from "~/components/ui/service-grid";
-import { TeamSection } from "~/components/ui/team-section";
+import { AboutSection } from "~/components/sections/about-section";
+import { ContactSection } from "~/components/sections/contact-section";
+import { Footer } from "~/components/sections/footer";
+import { GalleryGrid } from "~/components/sections/gallery-grid";
+import { HeroSection } from "~/components/sections/hero-section";
+import { Navigation } from "~/components/sections/navigation";
+import { ReviewsSection } from "~/components/sections/reviews-section";
+import { ServiceGrid } from "~/components/sections/service-grid";
+import { TeamSection } from "~/components/sections/team-section";
 import { ga } from "~/consts";
 import {
 	useContactLoader,

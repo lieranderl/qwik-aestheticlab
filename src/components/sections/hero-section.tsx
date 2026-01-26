@@ -1,8 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { Booking } from "./booking-modal";
-import { FadeUp } from "./fade-up";
-import { RotatingText } from "./rotating-text";
+import { Booking } from "~/components/ui/booking-modal";
+import { FadeUp } from "~/components/ui/fade-up";
+import { RotatingText } from "~/components/ui/rotating-text";
 
 export const HeroSection = component$(() => {
 	const t = inlineTranslate();

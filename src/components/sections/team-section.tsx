@@ -1,11 +1,11 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
+import { Booking } from "~/components/ui/booking-modal";
+import { FadeUp } from "~/components/ui/fade-up";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
 import type { Staff } from "~/types";
-import { Booking } from "./booking-modal";
-import { FadeUp } from "./fade-up";
 
 interface TeamSectionProps {
 	technicians: Staff[];
