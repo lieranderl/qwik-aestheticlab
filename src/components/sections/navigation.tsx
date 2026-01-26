@@ -8,8 +8,8 @@ import {
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
+import { LanguageSwitcher } from "~/components/ui/language-switcher";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
-import { LanguageSwitcher } from "./language-switcher";
 
 interface NavigationProps {
 	lightOnTransparent?: boolean;

@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { FadeUp } from "~/components/ui/fade-up";
 import { InstagramCard } from "~/components/ui/instagram-card";
-import { FadeUp } from "./fade-up";
 
 export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();

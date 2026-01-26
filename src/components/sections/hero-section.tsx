@@ -1,7 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { Booking } from "./booking-modal";
-import { FadeUp } from "./fade-up";
+import { Booking } from "~/components/ui/booking-modal";
+import { FadeUp } from "~/components/ui/fade-up";
+import { RotatingText } from "~/components/ui/rotating-text";
 
 export const HeroSection = component$(() => {
 	const t = inlineTranslate();
@@ -41,34 +42,7 @@ export const HeroSection = component$(() => {
 					</FadeUp>
 
 					<FadeUp delay={400} duration={1000} direction="up">
-						<div class="font-montserrat mx-auto max-w-xl text-neutral-content/80">
-							<div class="text-lg md:text-xl font-light tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
-								<span>{t("app.hero.the_best@@The best")}</span>
-
-								{/* Restored Text Rotation */}
-								<span class="text-rotate text-left h-[1.5em] overflow-hidden inline-flex flex-col">
-									<span class="font-bold justify-items-center">
-										<span class="block px-2 text-primary ">
-											{t("app.hero.manicure@@manicure")}
-										</span>
-										<span class="block px-2 text-secondary ">
-											{t("app.hero.pedicure@@pedicure")}
-										</span>
-										<span class="block px-2 text-accent ">
-											{t("app.hero.brows@@brows")}
-										</span>
-										<span class="block px-2 text-success">
-											{t("app.hero.laser@@laser")}
-										</span>
-									</span>
-								</span>
-
-								<span>{t("app.hero.in_leuven@@in Leuven")}</span>
-							</div>
-							<p class="text-xs  tracking-[0.2em] opacity-60">
-								{t("app.hero.according@@*voted by our clients")}
-							</p>
-						</div>
+						<RotatingText />
 					</FadeUp>
 				</div>
 
