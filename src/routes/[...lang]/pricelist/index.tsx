@@ -1,10 +1,10 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
+import { Footer } from "~/components/sections/footer";
+import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
-import { Footer } from "~/components/ui/footer";
-import { Navigation } from "~/components/ui/navigation";
 import type { Service } from "~/types";
 import {
 	useContactLoader,
