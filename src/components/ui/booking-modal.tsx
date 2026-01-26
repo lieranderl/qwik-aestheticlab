@@ -62,11 +62,11 @@ export const Booking = component$<BookingProps>(
 
 				{/* Modal with iframe */}
 				<dialog id={id} class="modal">
-					<div class="modal-box w-full max-w-5xl p-2 pt-7">
+					<div class="modal-box w-full max-w-5xl p-2 pt-10">
 						<form method="dialog">
 							<button
 								type="submit"
-								class="btn btn-sm btn-square  absolute right-0 top-0"
+								class="btn btn-sm btn-square btn-ghost absolute right-1 top-1"
 							>
 								✕
 							</button>
@@ -79,9 +79,6 @@ export const Booking = component$<BookingProps>(
 							/>
 						)}
 					</div>
-					<form method="dialog" class="modal-backdrop">
-						<button type="submit">{t("app.modal.close@@close")}</button>
-					</form>
 				</dialog>
 			</>
 		);
