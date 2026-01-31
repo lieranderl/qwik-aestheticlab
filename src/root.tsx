@@ -35,7 +35,7 @@ export default component$(() => {
 					/>
 				)}
 
-				<script async src="//www.instagram.com/embed.js" />
+				<script async src="https://www.instagram.com/embed.js" />
 
 				{!isDev && (
 					<link
