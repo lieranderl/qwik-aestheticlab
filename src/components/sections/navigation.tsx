@@ -60,7 +60,7 @@ export const Navigation = component$(() => {
 			>
 				<div class="custom-container relative flex items-center justify-between">
 					{/* Logo - Left Section (Bird Only) */}
-					<div class="flex items-center min-w-[120px]">
+					<div class="flex items-center min-w-30">
 						<a
 							href={getLocaleNavLink(location.url.pathname, "#")}
 							class="flex items-center gap-2 transition-opacity hover:opacity-80"
@@ -102,7 +102,7 @@ export const Navigation = component$(() => {
 					</div>
 
 					{/* Right Section: Desktop Actions / Mobile Hamburger */}
-					<div class="flex items-center justify-end gap-3 min-w-[120px]">
+					<div class="flex items-center justify-end gap-3 min-w-30">
 						{/* Desktop Actions */}
 						<div class="hidden lg:flex items-center gap-4">
 							<Booking

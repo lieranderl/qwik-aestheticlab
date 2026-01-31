@@ -47,7 +47,7 @@ export default component$(() => {
 
 			<main>
 				{/* Simple Hero */}
-				<div class="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+				<div class="relative h-[40vh] min-h-100 flex items-center justify-center overflow-hidden">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
 							alt="Services Background"
@@ -116,12 +116,12 @@ export default component$(() => {
 															{/* Header Row: Title --- Price */}
 															<div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-2 gap-1 md:gap-0">
 																<div class="flex items-baseline grow min-w-0">
-																	<h3 class="font-qestero text-lg md:text-2xl text-base-content pr-4">
+																	<h3 class="font-qestero font-semibold tracking-wide text-lg md:text-2xl text-base-content pr-4">
 																		{service.name.charAt(0).toUpperCase() +
 																			service.name.slice(1)}
 																	</h3>
 																	{/* Dotted Leader - Visible only on Desktop/Tablet when row layout */}
-																	<div class="hidden md:block grow border-b-2 border-dotted border-base-200 mx-2 relative top-[-6px] opacity-50 min-w-[20px]"></div>
+																	<div class="hidden md:block grow border-b-2 border-dotted border-base-200 mx-2 relative -top-1.5 opacity-50 `min-w-5"></div>
 																</div>
 																<span class="font-montserrat text-base md:text-lg font-semibold shrink-0 md:pl-4 self-end md:self-auto">
 																	€{service.price}
