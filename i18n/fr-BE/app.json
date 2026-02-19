@@ -15,6 +15,10 @@
       "widget_title": "Widget de réservation"
     },
     "changeLocale": "Changer de langue",
+    "common": {
+      "read_less": "Read Less",
+      "read_more": "Read More"
+    },
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
       "contact": "Contact",
@@ -28,6 +32,15 @@
       "saturday": "Samedi",
       "sunday": "Dimanche",
       "visit_us": "Rendez-nous visite"
+    },
+    "cookies": {
+      "accept": "Accepter l'analyse",
+      "description": "Nous utilisons des cookies strictement nécessaires pour faire fonctionner ce site. Avec votre autorisation, nous utilisons également des cookies d'analyse (Google Analytics) pour comprendre le trafic et améliorer nos services.",
+      "necessary": "Les cookies strictement nécessaires sont toujours actifs.",
+      "privacy_link": "Lire notre politique de confidentialité",
+      "reject": "Refuser l'analyse",
+      "settings": "Paramètres des cookies",
+      "title": "Paramètres des cookies"
     },
     "footer": {
       "all_rights": "Tous droits réservés",
@@ -48,10 +61,10 @@
       "book_appointment": "Prendre rendez-vous",
       "book_visit": "Réservez votre visite",
       "brows": "sourcils",
-      "lashes": "cils",
       "description": "Un sanctuaire pour une beauté raffinée. Spécialisé dans l'art des ongles sur mesure, la précision des sourcils et les traitements laser avancés.",
       "in_leuven": "à Louvain",
       "laser": "laser",
+      "lashes": "cils",
       "manicure": "manucure",
       "pedicure": "pédicure",
       "slogan": "L'art de la beauté naturelle",
@@ -106,7 +119,9 @@
       "changes": "7. Modifications de cette politique",
       "changes_text": "Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. La dernière version sera toujours disponible sur notre site Web.",
       "cookies": "6. Cookies et technologies de suivi",
-      "cookies_text": "Nous pouvons utiliser des cookies ou des outils d'analyse pour améliorer l'expérience utilisateur. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur.",
+      "cookies_analytics": "Cookies d'analyse : facultatifs et activés uniquement après votre consentement.",
+      "cookies_necessary": "Cookies strictement nécessaires : toujours actifs pour le fonctionnement de base du site.",
+      "cookies_text": "Nous utilisons des cookies strictement nécessaires pour faire fonctionner le site. Avec votre consentement explicite, nous utilisons également des cookies d'analyse (Google Analytics) afin de comprendre l'utilisation du site et d'améliorer nos services. Vous pouvez accepter ou refuser les cookies d'analyse dans la bannière de cookies et modifier votre choix à tout moment via les paramètres des cookies.",
       "email": "Adresse e-mail",
       "important_info": "Informations importantes",
       "improve": "Améliorer nos services",

@@ -15,6 +15,10 @@
       "widget_title": "Boekingswidget"
     },
     "changeLocale": "Verander taal",
+    "common": {
+      "read_less": "Read Less",
+      "read_more": "Read More"
+    },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
       "contact": "Contact",
@@ -28,6 +32,15 @@
       "saturday": "Zaterdag",
       "sunday": "Zondag",
       "visit_us": "Bezoek ons"
+    },
+    "cookies": {
+      "accept": "Analyse accepteren",
+      "description": "We gebruiken strikt noodzakelijke cookies om deze website te laten werken. Met jouw toestemming gebruiken we ook analysecookies (Google Analytics) om verkeer te begrijpen en onze diensten te verbeteren.",
+      "necessary": "Strikt noodzakelijke cookies zijn altijd actief.",
+      "privacy_link": "Lees ons privacybeleid",
+      "reject": "Analyse weigeren",
+      "settings": "Cookie-instellingen",
+      "title": "Cookie-instellingen"
     },
     "footer": {
       "all_rights": "Alle rechten voorbehouden",
@@ -48,10 +61,10 @@
       "book_appointment": "Afspraak maken",
       "book_visit": "Boek uw bezoek",
       "brows": "wenkbrauwen",
-      "lashes": "wimpers",
       "description": "Een toevluchtsoord voor verfijnde schoonheid. Gespecialiseerd in nagelkunst op maat, precisie wenkbrauwen en geavanceerde laserbehandelingen.",
       "in_leuven": "in Leuven",
       "laser": "laser",
+      "lashes": "wimpers",
       "manicure": "manicure",
       "pedicure": "pedicure",
       "slogan": "De kunst van natuurlijke schoonheid",
@@ -106,7 +119,9 @@
       "changes": "7. Wijzigingen in dit beleid",
       "changes_text": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. De nieuwste versie is altijd beschikbaar op onze website.",
       "cookies": "6. Cookies & Traceertechnologieën",
-      "cookies_text": "We kunnen cookies of analysetools gebruiken om de gebruikerservaring te verbeteren. U kunt cookies uitschakelen in uw browserinstellingen.",
+      "cookies_analytics": "Analysecookies: optioneel en alleen geactiveerd na jouw toestemming.",
+      "cookies_necessary": "Strikt noodzakelijke cookies: altijd actief voor basisfunctionaliteit van de website.",
+      "cookies_text": "We gebruiken strikt noodzakelijke cookies om de website te laten functioneren. Met jouw uitdrukkelijke toestemming gebruiken we ook analysecookies (Google Analytics) om het websitegebruik te begrijpen en onze diensten te verbeteren. Je kunt analysecookies accepteren of weigeren in de cookiebanner en je keuze op elk moment wijzigen via Cookie-instellingen.",
       "email": "E-mailadres",
       "important_info": "Belangrijke informatie",
       "improve": "Onze diensten verbeteren",

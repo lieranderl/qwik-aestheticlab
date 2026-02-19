@@ -15,6 +15,10 @@
       "widget_title": "Booking Widget"
     },
     "changeLocale": "Change language",
+    "common": {
+      "read_less": "Read Less",
+      "read_more": "Read More"
+    },
     "contact": {
       "appointment_only": "Visits are by appointment only",
       "contact": "Contact",
@@ -28,6 +32,15 @@
       "saturday": "Saturday",
       "sunday": "Sunday",
       "visit_us": "Visit Us"
+    },
+    "cookies": {
+      "accept": "Accept analytics",
+      "description": "We use strictly necessary cookies to run this site. With your permission, we also use analytics cookies (Google Analytics) to understand traffic and improve our services.",
+      "necessary": "Strictly necessary cookies are always active.",
+      "privacy_link": "Read our Privacy Policy",
+      "reject": "Reject analytics",
+      "settings": "Cookie settings",
+      "title": "Cookie settings"
     },
     "footer": {
       "all_rights": "All right reserved",
@@ -48,10 +61,10 @@
       "book_appointment": "Book Appointment",
       "book_visit": "Book Your Visit",
       "brows": "brows",
-      "lashes": "lashes",
       "description": "A sanctuary for refined beauty. Specializing in bespoke nail artistry, precision brows, and advanced laser treatments.",
       "in_leuven": "in Leuven",
       "laser": "laser",
+      "lashes": "lashes",
       "manicure": "manicure",
       "pedicure": "pedicure",
       "slogan": "The Art of Natural Beauty",
@@ -106,7 +119,9 @@
       "changes": "7. Changes to This Policy",
       "changes_text": "We may update this Privacy Policy from time to time. The latest version will always be available on our website.",
       "cookies": "6. Cookies & Tracking Technologies",
-      "cookies_text": "We may use cookies or analytics tools to enhance user experience. You can disable cookies in your browser settings.",
+      "cookies_analytics": "Analytics cookies: optional and only activated after your consent.",
+      "cookies_necessary": "Strictly necessary cookies: always active for basic website functionality.",
+      "cookies_text": "We use strictly necessary cookies to operate the website. With your explicit consent, we also use analytics cookies (Google Analytics) to understand website usage and improve our services. You can accept or reject analytics cookies in the cookie banner and change your choice at any time via Cookie settings.",
       "email": "Email address",
       "important_info": "Important Information",
       "improve": "Improve our services",
