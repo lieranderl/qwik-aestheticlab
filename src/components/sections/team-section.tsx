@@ -40,19 +40,19 @@ interface TeamMemberCardProps {
 	tech: Staff;
 }
 
+function getBioForLang(lang: string, tech: Staff) {
+	if (lang.includes("nl")) return tech.about_nl || tech.about;
+	if (lang.includes("fr")) return tech.about_fr || tech.about;
+	if (lang.includes("ru")) return tech.about_ru || tech.about;
+	if (lang.includes("uk")) return tech.about_uk || tech.about;
+	return tech.about;
+}
+
 export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	const t = inlineTranslate();
 	const loc = useLocation();
 	const lang = loc.params.lang || "en-BE";
 	const isExpanded = useSignal(false);
-
-	const getBio = (tech: Staff) => {
-		if (lang.includes("nl")) return tech.about_nl || tech.about;
-		if (lang.includes("fr")) return tech.about_fr || tech.about;
-		if (lang.includes("ru")) return tech.about_ru || tech.about;
-		if (lang.includes("uk")) return tech.about_uk || tech.about;
-		return tech.about;
-	};
 
 	return (
 		<div class="bg-base-100/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
@@ -80,7 +80,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 							: "line-clamp-4",
 					]}
 				>
-					{getBio(tech)}
+					{getBioForLang(lang, tech)}
 				</div>
 				<button
 					type="button"

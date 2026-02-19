@@ -22,18 +22,18 @@ interface ServiceGridProps {
 	location: string;
 }
 
+function toTitleCase(str: string) {
+	return str.replace(
+		/\w\S*/g,
+		(txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+	);
+}
+
 export const ServiceGrid = component$<ServiceGridProps>(
 	({ services, serviceCategories, location }) => {
 		const t = inlineTranslate();
 		const showFullList = useSignal(false);
 		const selectedCategoryId = useSignal<string | null>(null);
-
-		const toTitleCase = (str: string) => {
-			return str.replace(
-				/\w\S*/g,
-				(txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
-			);
-		};
 
 		// Memoize the grouping calculation
 		const groupedServices = useComputed$(() => {
