@@ -7,25 +7,7 @@ export const formatPrice = (price: number) => {
 	}).format(price);
 };
 
-export const ga = [
-	// Google Analytics Script (External)
-	{
-		props: {
-			type: "text/javascript",
-			src: "https://www.googletagmanager.com/gtag/js?id=G-95QF984DPQ",
-			async: true,
-		},
-	},
-	// Inline Google Analytics Setup Script
-	{
-		script: `
-       	window.dataLayer = window.dataLayer || [];
-  	 	function gtag(){dataLayer.push(arguments);}
-  		gtag('js', new Date());
-  		gtag('config', 'G-95QF984DPQ');
-      `,
-	},
-];
+export const gaMeasurementId = "G-95QF984DPQ";
 
 export const baseUrlBooking =
 	"https://bookings.gettimely.com/aestheticlab2/bb/book";

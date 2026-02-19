@@ -13,10 +13,6 @@ const { router, notFound, staticFile } = createQwikCity({
 // Allow for dynamic port
 const port = Number(Bun.env.PORT) || 3000;
 
-// Trust proxy headers (Important for CSRF fix)
-const trustProxy = (headers: Headers) =>
-	headers.get("x-forwarded-proto") === "https";
-
 console.log(`🚀 Server started: http://localhost:${port}/`);
 
 Bun.serve({
@@ -30,7 +26,7 @@ Bun.serve({
 		const { headers, url } = request;
 		let adjustedRequest = request;
 
-		if (trustProxy(headers)) {
+		if (headers.get("x-forwarded-proto") === "https") {
 			const httpsUrl = new URL(url);
 			httpsUrl.protocol = "https:";
 			adjustedRequest = new Request(httpsUrl.toString(), request);

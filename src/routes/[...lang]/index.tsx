@@ -9,7 +9,6 @@ import { Navigation } from "~/components/sections/navigation";
 import { ReviewsSection } from "~/components/sections/reviews-section";
 import { ServiceGrid } from "~/components/sections/service-grid";
 import { TeamSection } from "~/components/sections/team-section";
-import { ga } from "~/consts";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -61,5 +60,4 @@ export const head: DocumentHead = {
 				"Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
 		},
 	],
-	scripts: ga,
 };

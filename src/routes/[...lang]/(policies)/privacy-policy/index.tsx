@@ -15,7 +15,7 @@ export default component$(() => {
 						</h1>
 						<div class="h-px w-20 bg-primary mx-auto mb-6" />
 						<p class="font-montserrat text-sm text-neutral-content uppercase tracking-widest">
-							{t("app.privacy.last_update@@Last updated:")} 11.04.2025
+							{t("app.privacy.last_update@@Last updated:")} 19.02.2026
 						</p>
 					</div>
 
@@ -75,8 +75,16 @@ export default component$(() => {
 									"app.privacy.cookies@@6. Cookies & Tracking Technologies",
 								),
 								text: t(
-									"app.privacy.cookies_text@@We may use cookies or analytics tools to enhance user experience. You can disable cookies in your browser settings.",
+									"app.privacy.cookies_text@@We use strictly necessary cookies to operate the website. With your explicit consent, we also use analytics cookies (Google Analytics) to understand website usage and improve our services. You can accept or reject analytics cookies in the cookie banner and change your choice at any time via Cookie settings.",
 								),
+								list: [
+									t(
+										"app.privacy.cookies_necessary@@Strictly necessary cookies: always active for basic website functionality.",
+									),
+									t(
+										"app.privacy.cookies_analytics@@Analytics cookies: optional and only activated after your consent.",
+									),
+								],
 							},
 							{
 								title: t("app.privacy.changes@@7. Changes to This Policy"),

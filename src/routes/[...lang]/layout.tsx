@@ -1,6 +1,7 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
+import { CookieBanner } from "~/components/ui/cookie-banner";
 import { supabase } from "~/shared/supabase-client";
 import type { Contact, Service, ServiceGroup, Staff } from "~/types";
 
@@ -161,6 +162,7 @@ export default component$(() => {
 	return (
 		<main>
 			<Slot />
+			<CookieBanner />
 		</main>
 	);
 });
