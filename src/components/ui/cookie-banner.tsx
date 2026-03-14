@@ -56,7 +56,7 @@ export const CookieBanner = component$(() => {
 	return (
 		<>
 			{showBanner.value && (
-				<div class="fixed inset-x-0 bottom-0 z-[120] p-3 md:p-6">
+				<div class="fixed inset-x-0 bottom-0 z-120 p-3 md:p-6">
 					<div class="mx-auto max-w-4xl rounded-2xl border border-base-content/15 bg-base-100/96 p-4 shadow-xl backdrop-blur md:p-6">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
@@ -100,7 +100,7 @@ export const CookieBanner = component$(() => {
 			)}
 
 			{hasChoice.value && !showBanner.value && (
-				<div class="fixed bottom-4 left-4 z-[110]">
+				<div class="fixed bottom-4 left-4 z-110">
 					<button
 						type="button"
 						class="btn btn-xs btn-ghost rounded-full border border-base-content/20 bg-base-100/85 backdrop-blur"
