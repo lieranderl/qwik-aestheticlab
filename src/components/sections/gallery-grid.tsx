@@ -77,7 +77,7 @@ export const GalleryGrid = component$(() => {
 							"DFIQUnssMp9",
 							"DFU_S0EsHsb",
 						].map((post_id) => (
-							<div key={post_id} class="carousel-item w-[326px] shrink-0">
+							<div key={post_id} class="carousel-item w-81.5 shrink-0">
 								<InstagramCard post_id={post_id} />
 							</div>
 						))}

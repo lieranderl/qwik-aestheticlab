@@ -128,7 +128,7 @@ export default component$(() => {
 							alt="Services Background"
 							class="h-full w-full object-cover brightness-[0.85] saturate-90"
 						/>
-						<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
+						<div class="absolute inset-0 bg-linear-to-b from-black/60 via-black/30 to-black/60" />
 					</div>
 					<div class="relative z-10 text-center p-5 md:p-6 text-white max-w-2xl">
 						<FadeUp>

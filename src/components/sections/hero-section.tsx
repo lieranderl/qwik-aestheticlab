@@ -11,11 +11,11 @@ export const HeroSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section class="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+		<section class="relative flex `min-h-svh w-full items-center justify-center overflow-hidden pt-[calc(env(safe-area-inset-top)+6rem)] pb-16 md:pt-[calc(env(safe-area-inset-top)+7rem)] md:pb-20">
 			{/* Decorative Background Elements - Enhanced Atmosphere */}
-			<div class="absolute -left-20 top-0 h-[600px] w-[600px] rounded-full bg-primary/20 blur-[120px] animate-pulse-slow" />
+			<div class="absolute -left-20 top-0 h-150 w-150 rounded-full bg-primary/20 blur-[120px] animate-pulse-slow" />
 			<div
-				class="absolute -right-20 bottom-0 h-[700px] w-[700px] rounded-full bg-secondary/10 blur-[130px] animate-pulse-slow"
+				class="absolute -right-20 bottom-0 h-175 w-175 rounded-full bg-secondary/10 blur-[130px] animate-pulse-slow"
 				style={{ animationDelay: "4s" }}
 			/>
 
@@ -36,7 +36,7 @@ export const HeroSection = component$(() => {
 						distance={40}
 					>
 						<AestheticLabLogo
-							class="w-[60vw] max-w-[600px] h-auto text-primary"
+							class="w-[60vw] max-w-150 h-auto text-primary"
 							aria-label="Aesthetic Lab"
 						/>
 					</FadeUp>
