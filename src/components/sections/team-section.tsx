@@ -3,6 +3,7 @@ import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
+import ImgJulia from "~/media/julia.jpg?jsx";
 import ImgRubina from "~/media/rubina.jpg?jsx";
 import ImgZara from "~/media/zara.jpg?jsx";
 import type { Staff } from "~/types";
@@ -62,6 +63,9 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 				)}
 				{tech.photo_url === "zara" && (
 					<ImgZara class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+				)}
+				{tech.photo_url === "julia" && (
+					<ImgJulia class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
 				)}
 			</div>
 
