@@ -1,51 +1,193 @@
 # AGENTS.md
 
 ## Project Snapshot
-Aesthetic Lab is a Qwik-based marketing site for a nail/beauty studio. It uses Qwik City routing, Qwik Speak for i18n, Supabase for content data, and DaisyUI + Tailwind v4 for styling. Runtime is Bun (local) with Vite for dev/build.
 
-## Key Commands
-- `bun install`
-- `bun run dev` or `make dev`
-- `bun run build`
-- `bun run biome`
-- `bun run qwik-speak-extract`
+Aesthetic Lab — Qwik City marketing site for a nail/beauty studio in Leuven, Belgium. Multi-language (en/ru/nl/fr/uk), Supabase-backed content, DaisyUI 5 + Tailwind v4 styling, deployed via Docker to Google Cloud Run.
 
-## Architecture Map
-- Routes
-- `src/routes/[...lang]/index.tsx`: Main home page composition.
-- `src/routes/[...lang]/layout.tsx`: Data loaders (Supabase) + caching; locale-aware content mapping.
-- `src/routes/[...lang]/(policies)/...`: Legal pages.
-- Components
-- `src/components/sections/*`: Page sections (hero, services, gallery, etc.).
-- `src/components/ui/*`: Reusable UI elements (booking modal, fade animation, cards).
-- Data + Types
-- `src/shared/supabase-client.ts`: Server-side Supabase client.
-- `src/types.ts`: Shared data contracts for services, staff, contact, groups.
-- i18n
-- `src/speak-config.ts`, `src/speak-functions.ts`: Qwik Speak config and loader.
-- `i18n/*/app.json`: Translations for UI strings.
+## Commands
 
-## i18n Rules (Qwik Speak)
-- Use `inlineTranslate()` for UI strings in components.
-- Prefer the `key@@Default English` pattern already used in the codebase.
-- When adding new strings, update `i18n/<lang>/app.json` and run `bun run qwik-speak-extract` if needed.
+| Action | Command |
+|--------|---------|
+| Install | `bun install` |
+| Dev server | `bun run dev` or `make dev` |
+| Production build | `bun run build` |
+| Lint/format | `bun run biome` |
+| Extract i18n keys | `bun run qwik-speak-extract` |
+| Docker build+push | `make docker-build-push TAG=<tag>` |
+| Deploy Cloud Run | `make gcloud-deploy TAG=<tag>` |
 
-## Styling Rules
-- Tailwind v4 + DaisyUI are configured via `src/global.css`.
-- Theme tokens live in the `@plugin "daisyui/theme"` block; avoid inline colors unless needed.
-- Use `custom-container` for section widths.
-- Animations are standardized via `FadeUp` + CSS utilities in `src/global.css`.
+## Tech Stack & Versions
 
-## Data Loading Rules
-- Server data comes from Supabase in `src/routes/[...lang]/layout.tsx` via `routeLoader$`.
-- Locale-specific fields are mapped in loaders, not in UI components.
-- Keep loaders resilient: return empty arrays or `null` on error.
+| Dependency | Version | Notes |
+|------------|---------|-------|
+| Qwik / Qwik City | ^1.19.x | Framework — always use latest 1.x |
+| Tailwind CSS | v4.x | CSS-first config via `src/global.css` |
+| DaisyUI | v5.x | Component library — **mandatory for all UI** |
+| Bun | latest | Runtime + package manager |
+| Vite | 7.x | Build tool |
+| Biome | ^2.x | Linter/formatter — replaces ESLint+Prettier |
+| qwik-speak | ^0.23.x | i18n |
+| Supabase SSR | ^0.6.x | Server-side data |
+| TypeScript | 5.4.x | Strict mode on |
 
-## SEO + Analytics
-- Head metadata is set in route files via `DocumentHead`.
-- Google Analytics configuration is in `src/consts.ts` (`ga` export).
+> **Rule:** When adding or upgrading dependencies, always target the latest stable version. Check changelogs for breaking changes before bumping majors.
 
-## Conventions
-- Prefer `component$` + Qwik signals/hooks.
-- Keep section composition in page routes, not inside sections.
-- Reuse existing UI components before adding new ones.
+## Architecture
+
+```
+src/
+├── routes/
+│   ├── plugin.ts                     # Locale middleware (runs on every request)
+│   ├── index.tsx                     # Root redirect
+│   └── [...lang]/
+│       ├── layout.tsx                # routeLoader$ for Supabase data + CookieBanner
+│       ├── index.tsx                 # Home page — composes section components
+│       ├── pricelist/index.tsx       # Dedicated price list page
+│       └── (policies)/              # Legal pages (privacy, notice)
+├── components/
+│   ├── sections/                     # Full page sections (hero, services, team, etc.)
+│   └── ui/                           # Reusable UI primitives (FadeUp, Booking, etc.)
+├── shared/                           # Utilities (Supabase client, cookie consent, etc.)
+├── constants/                        # Static metadata, nav config
+├── media/                            # Images and SVGs (vite ?jsx imports)
+├── types.ts                          # Shared TypeScript interfaces
+├── consts.ts                         # Formatting helpers, GA ID, booking URL
+├── global.css                        # Tailwind + DaisyUI theme + animations
+├── speak-config.ts                   # Qwik Speak locale config
+├── speak-functions.ts                # Translation loader (server$)
+└── root.tsx                          # App shell, QwikCityProvider, QwikSpeak
+```
+
+## File Ownership Rules
+
+| File/Directory | Responsibility |
+|----------------|---------------|
+| `routes/[...lang]/layout.tsx` | ALL Supabase data loading via `routeLoader$` |
+| `routes/[...lang]/index.tsx` | Home page section composition only |
+| `components/sections/*` | Self-contained page sections — receive data via props |
+| `components/ui/*` | Reusable, stateless-ish UI components |
+| `shared/supabase-client.ts` | Single Supabase client factory |
+| `global.css` | Theme tokens, animations, DaisyUI plugin config |
+| `types.ts` | All shared data interfaces |
+| `speak-config.ts` | Locale definitions (add new locales here) |
+
+## Critical Conventions
+
+### Qwik Patterns
+
+- **Always** use `component$` for components.
+- Use `useSignal` / `useComputed$` / `useTask$` for state — never `useState` or React patterns.
+- Closures passed to JSX event handlers must use `$()` (e.g., `onClick$={$(() => { ... })}`).
+- Avoid `useVisibleTask$` unless client-only APIs (DOM, localStorage, IntersectionObserver) are absolutely required. Prefer `useTask$` with `isServer` guards when possible.
+- Keep `routeLoader$` in layout/route files only, never in components.
+- Use `~/*` path aliases (mapped to `src/*`).
+
+### DaisyUI — Mandatory UI Library
+
+**All UI must use DaisyUI 5 components.** Reference: https://daisyui.com/components/
+
+Key rules:
+- Use DaisyUI class names (`btn`, `card`, `modal`, `dropdown`, `rating`, `badge`, `divider`, `link`, `carousel`, etc.) before writing custom CSS.
+- Use DaisyUI color tokens (`bg-base-100`, `text-base-content`, `btn-primary`, `bg-primary`, etc.) — **never** hardcode hex colors unless the design system demands a one-off accent.
+- Use DaisyUI size modifiers (`btn-sm`, `btn-lg`, `card-body`, etc.) for consistent sizing.
+- `<dialog>` elements use DaisyUI's `modal` pattern: `<dialog class="modal">` + `<div class="modal-box">`.
+- Theme is defined via `@plugin "daisyui/theme"` block in `global.css` — all color overrides go there.
+- When a DaisyUI component exists for the use case, **use it**. Do not rebuild buttons, modals, cards, dropdowns, ratings, or other primitives from scratch.
+
+### Styling
+
+- Tailwind v4 CSS-first config — no `tailwind.config.js`.
+- Theme tokens live in the `@plugin "daisyui/theme"` block in `global.css`.
+- Use `custom-container` class for section max-width + horizontal padding.
+- Fonts: `font-qestero` (display/headings), `font-montserrat` (body).
+- Animations: use the `FadeUp` component for scroll-triggered reveals. Custom keyframe animations are defined in `global.css`.
+- Respect `prefers-reduced-motion` — `global.css` already handles this.
+- Mobile-first responsive design: start with base styles, add `md:` and `lg:` breakpoints.
+
+### i18n (Qwik Speak)
+
+- **Always** use `inlineTranslate()` inside components: `const t = inlineTranslate();`
+- String pattern: `t("app.section.key@@Default English Text")`
+- The `@@` separator provides the fallback — do not omit it.
+- Supported locales: `en-BE`, `ru-BE`, `nl-BE`, `fr-BE`, `uk-BE` (Belgian variants).
+- After adding new translation keys, run `bun run qwik-speak-extract`.
+- Translation files live in `i18n/<locale>/app.json`.
+- Locale-specific Supabase fields are mapped in `layout.tsx` loaders, NOT in UI components.
+
+### Data Loading
+
+- All server data flows through `routeLoader$` in `routes/[...lang]/layout.tsx`.
+- Supabase client is created per-request via `supabase(event)` from `shared/supabase-client.ts`.
+- Env vars `SUPABASE_URL` and `SUPABASE_KEY` are required — accessed via `event.env.get()`.
+- Loaders must be resilient: catch errors, log them, and return empty arrays or `null`.
+- Locale-specific field mapping (e.g., `name_ru`, `description_fr`) happens in loaders using `requestEv.locale().split("-")[0]`.
+
+### Component Design
+
+- **Sections** (`components/sections/*`): Full-width page blocks. Receive data via props. Each owns its own `id` for anchor navigation.
+- **UI** (`components/ui/*`): Reusable, composable elements. Accept configuration via typed props.
+- Section composition happens in route page files (e.g., `index.tsx`), not inside other sections.
+- Before creating a new UI component, check existing ones in `components/ui/`.
+
+### Images
+
+- Use Vite `?jsx` import for local images: `import Img from "~/media/photo.jpg?jsx";` → `<Img class="..." alt="..." />`
+- For dynamic/Supabase images, use `<img>` with explicit `width`/`height` or `aspect-*` classes.
+- Always provide meaningful `alt` text.
+
+### SEO
+
+- `DocumentHead` export in route files for title + meta description.
+- JSON-LD structured data defined in `constants/metadata.ts`, injected in `root.tsx`.
+- Canonical URLs derive from locale-prefixed routes.
+
+### Code Quality
+
+- Biome handles linting and formatting (not ESLint/Prettier).
+- Indentation: tabs (Biome config).
+- Semicolons: always.
+- Trailing commas: always.
+- Quotes: double.
+- Run `bun run biome` before committing.
+- Husky + lint-staged auto-run Biome on staged files.
+- `biome-ignore` comments require justification.
+
+### Accessibility
+
+- All interactive elements need accessible labels (`aria-label`, visible text, or `title`).
+- Decorative icons use `aria-hidden="true"`.
+- Color contrast must meet WCAG AA against the theme palette.
+- Keyboard navigation must work for modals, dropdowns, and mobile menu.
+
+### Performance
+
+- Qwik's lazy-loading is automatic — don't eagerly import components.
+- Images use `loading="lazy"` for below-fold content.
+- Iframes (booking widget, map) only render when needed (conditional `isOpen` signal).
+- Cache headers are set in `layout.tsx` `onGet` handler.
+
+## Anti-Patterns — Do NOT
+
+- ❌ Import React or use React hooks/patterns.
+- ❌ Use `useEffect`, `useState`, or `useRef` — these are React, not Qwik.
+- ❌ Hardcode hex/rgb colors — use DaisyUI theme tokens.
+- ❌ Build custom buttons, modals, cards, dropdowns when DaisyUI has a component for it.
+- ❌ Add `tailwind.config.js` — Tailwind v4 uses CSS-first configuration.
+- ❌ Put `routeLoader$` inside components — they belong in route/layout files.
+- ❌ Skip `alt` attributes on images.
+- ❌ Use `eslint` or `prettier` — this project uses Biome exclusively.
+- ❌ Install outdated or deprecated packages — always use latest stable versions.
+- ❌ Create translation strings without the `@@Default Text` fallback pattern.
+- ❌ Map locale-specific DB fields inside UI components — do it in loaders.
+
+## Self-Updating Rules for AI Agents
+
+When working on this project, AI agents should:
+
+1. **Before generating code:** Re-read the relevant section of this file to confirm patterns.
+2. **After adding a dependency:** Verify it's the latest stable version. Update the Tech Stack table above if it's a significant addition.
+3. **After adding new components:** If the component introduces a new pattern or convention, append it to the relevant section of this file.
+4. **After encountering a bug caused by a violated convention:** Add the violation to the Anti-Patterns section with a brief explanation.
+5. **After learning project-specific DaisyUI patterns:** Document them in a `.github/DAISYUI_PATTERNS.md` file for reference.
+6. **After significant refactors:** Update the Architecture section and File Ownership Rules to reflect the new structure.
+7. **Periodically:** Check `package.json` dependency versions against latest releases and flag outdated packages.
