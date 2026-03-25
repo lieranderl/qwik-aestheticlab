@@ -29,12 +29,12 @@
 		"prepare": "husky || true"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.7",
+		"@biomejs/biome": "^2.4.9",
 		"@builder.io/qwik": "^1.19.2",
 		"@builder.io/qwik-city": "^1.19.2",
 		"@ditadi/qwik-hooks": "^0.1.6",
 		"@qwikest/icons": "^0.0.13",
-		"@types/bun": "^1.3.10",
+		"@types/bun": "^1.3.11",
 		"@types/node": "20.19.0",
 		"autoprefixer": "^10.4.27",
 		"class-variance-authority": "^0.7.1",
@@ -46,15 +46,15 @@
 		"qwik-speak": "^0.23.2",
 		"typescript": "5.4.5",
 		"typescript-plugin-css-modules": "latest",
-		"undici": "^7.24.4",
+		"undici": "^7.24.5",
 		"vite": "7.1.11",
 		"vite-tsconfig-paths": "^4.3.2"
 	},
 	"dependencies": {
 		"@supabase/ssr": "^0.6.1",
-		"@tailwindcss/vite": "^4.2.1",
+		"@tailwindcss/vite": "^4.2.2",
 		"@types/luxon": "^3.7.1",
-		"tailwindcss": "^4.2.1",
+		"tailwindcss": "^4.2.2",
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"lint-staged": {
