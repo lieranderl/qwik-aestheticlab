@@ -142,10 +142,10 @@ export const ServiceCard = component$<ServiceCardProps>(
 										customAction$();
 									}}
 									class={[
-										"btn btn-sm rounded-full w-full max-w-full font-montserrat uppercase tracking-[0.12em]",
+										"btn rounded-full w-full max-w-full font-montserrat uppercase tracking-[0.12em] text-sm",
 										variant === "category"
-											? "btn-primary"
-											: "btn-outline btn-primary",
+											? "btn-primary min-h-14 px-6 py-3 leading-tight"
+											: "btn-sm btn-outline btn-primary",
 									]}
 								>
 									{buttonLabel || t("app.generic.view@@View")}
