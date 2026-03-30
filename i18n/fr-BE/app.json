@@ -151,12 +151,14 @@
     },
     "services": {
       "back": "Retour à l'aperçu",
+      "back_laser": "Retour au laser",
       "brows_desc": "Épilation, teinture et lamination pour une arche parfaite.",
       "brows_lashes_title": "Sourcils & Cils",
       "default_category": "Services",
       "duration": "Durée :",
       "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
       "laser_body_title": "Épilation laser CORPS",
+      "laser_category": "Laser",
       "laser_combo_title": "Épilation laser COMBO",
       "laser_desc": "Technologie sûre, efficace et indolore pour une peau lisse.",
       "laser_face_title": "Épilation laser VISAGE",
@@ -166,6 +168,7 @@
       "pricing_title": "Services et Tarifs",
       "subtitle": "Soins de beauté complets dispensés avec précision et attention.",
       "title": "Nos services",
+      "treatments": "Soins",
       "view_full": "Voir la liste complète des prix",
       "view_treatments": "Voir les traitements"
     },

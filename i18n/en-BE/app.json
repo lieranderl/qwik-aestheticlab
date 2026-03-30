@@ -151,11 +151,13 @@
     },
     "services": {
       "back": "Back to Overview",
+      "back_laser": "Back to Laser",
       "brows_desc": "Shaping, tinting, and lamination for the perfect arch.",
       "brows_lashes_title": "Brows & Lashes",
       "default_category": "Services",
       "duration": "Duration:",
       "general_desc": "Professional beauty treatments for your refined look.",
+      "laser_category": "Laser",
       "laser_desc": "Safe, effective, and painless technology for smooth skin.",
       "manicure_desc": "Expert gel artistry and precision Russian techniques for naturally flawless nails.",
       "minutes": "minutes",
@@ -163,6 +165,7 @@
       "pricing_title": "Services & Pricing",
       "subtitle": "Comprehensive beauty treatments delivered with precision and care.",
       "title": "Our Services",
+      "treatments": "Treatments",
       "view_full": "View full price list",
       "view_treatments": "View Treatments"
     },

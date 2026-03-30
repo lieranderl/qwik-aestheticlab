@@ -134,6 +134,7 @@ These use the DaisyUI `card` component:
 ### Convention
 
 - Cards use `rounded-2xl` consistently (matches `--radius-box: 2rem` theme token).
+- Controls and badges use pill radius via DaisyUI selector/field tokens plus `rounded-full` where explicit styling is needed.
 - Glass/frosted effect: `bg-base-100/90 backdrop-blur-sm border border-white/50`.
 - Hover: `hover:shadow-xl` + optional `hover:scale-102` or `hover:scale-105`.
 

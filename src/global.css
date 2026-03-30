@@ -46,7 +46,7 @@ body::before {
 }
 
 /* Animation Base */
-[class*='fade-'] {
+[class*="fade-"] {
   transition-property: opacity, transform;
   transition-duration: var(--fade-duration, 800ms);
   transition-timing-function: var(--fade-easing, ease-out);
@@ -54,18 +54,39 @@ body::before {
 }
 
 /* Directional Variants */
-.fade-up-hidden { opacity: 0; transform: translateY(var(--fade-distance, 40px)); }
-.fade-down-hidden { opacity: 0; transform: translateY(calc(var(--fade-distance, 40px) * -1)); }
-.fade-left-hidden { opacity: 0; transform: translateX(var(--fade-distance, 40px)); }
-.fade-right-hidden { opacity: 0; transform: translateX(calc(var(--fade-distance, 40px) * -1)); }
+.fade-up-hidden {
+  opacity: 0;
+  transform: translateY(var(--fade-distance, 40px));
+}
+.fade-down-hidden {
+  opacity: 0;
+  transform: translateY(calc(var(--fade-distance, 40px) * -1));
+}
+.fade-left-hidden {
+  opacity: 0;
+  transform: translateX(var(--fade-distance, 40px));
+}
+.fade-right-hidden {
+  opacity: 0;
+  transform: translateX(calc(var(--fade-distance, 40px) * -1));
+}
 
-.fade-up-visible, .fade-down-visible, .fade-left-visible, .fade-right-visible {
+.fade-up-visible,
+.fade-down-visible,
+.fade-left-visible,
+.fade-right-visible {
   opacity: 1;
   transform: translate(0, 0);
 }
 
-.fade-up-immediate, .fade-down-immediate, .fade-left-immediate, .fade-right-immediate,
-.fade-up-disabled, .fade-down-disabled, .fade-left-disabled, .fade-right-disabled {
+.fade-up-immediate,
+.fade-down-immediate,
+.fade-left-immediate,
+.fade-right-immediate,
+.fade-up-disabled,
+.fade-down-disabled,
+.fade-left-disabled,
+.fade-right-disabled {
   opacity: 1;
   transform: translate(0, 0);
   transition: none !important;
@@ -73,18 +94,26 @@ body::before {
 
 /* Mobile & Touch Tweaks */
 @media (max-width: 768px), (pointer: coarse) {
-  [class*='fade-'] {
+  [class*="fade-"] {
     transition-duration: calc(var(--fade-duration, 800ms) * 0.8);
   }
-  .fade-up-hidden { transform: translateY(calc(var(--fade-distance, 40px) * 0.7)); }
-  .fade-down-hidden { transform: translateY(calc(var(--fade-distance, 40px) * -0.7)); }
-  .fade-left-hidden { transform: translateX(calc(var(--fade-distance, 40px) * 0.7)); }
-  .fade-right-hidden { transform: translateX(calc(var(--fade-distance, 40px) * -0.7)); }
+  .fade-up-hidden {
+    transform: translateY(calc(var(--fade-distance, 40px) * 0.7));
+  }
+  .fade-down-hidden {
+    transform: translateY(calc(var(--fade-distance, 40px) * -0.7));
+  }
+  .fade-left-hidden {
+    transform: translateX(calc(var(--fade-distance, 40px) * 0.7));
+  }
+  .fade-right-hidden {
+    transform: translateX(calc(var(--fade-distance, 40px) * -0.7));
+  }
 }
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  [class*='fade-'] {
+  [class*="fade-"] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -92,22 +121,40 @@ body::before {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px) rotate(3deg); }
-  50% { transform: translateY(-20px) rotate(3deg); }
-  100% { transform: translateY(0px) rotate(3deg); }
+  0% {
+    transform: translateY(0px) rotate(3deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(3deg);
+  }
 }
 
 @keyframes float-reverse {
-  0% { transform: translateY(0px) rotate(-2deg); }
-  50% { transform: translateY(-15px) rotate(-2deg); }
-  100% { transform: translateY(0px) rotate(-2deg); }
+  0% {
+    transform: translateY(0px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-2deg);
+  }
 }
 
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.1; transform: scale(1); }
-  50% { opacity: 0.15; transform: scale(1.05); }
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(1.05);
+  }
 }
-
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -148,8 +195,8 @@ body::before {
   --color-warning-content: #fff9f0;
   --color-error: #9e3a3a;
   --color-error-content: #fce9e8;
-  --radius-selector: 2rem;
-  --radius-field: 2rem;
+  --radius-selector: 9999px;
+  --radius-field: 9999px;
   --radius-box: 2rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
