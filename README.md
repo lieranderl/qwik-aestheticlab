@@ -1,11 +1,11 @@
 # Aesthetic Lab | Qwik + DaisyUI
 
-A premium web application for Aesthetic Lab, built with Qwik and styled with modern Vanilla CSS and DaisyUI.
+A multilingual marketing site for Aesthetic Lab, built with Qwik City and styled with Tailwind CSS v4 plus DaisyUI 5.
 
 ## 🚀 Tech Stack
 
 - **Framework**: [Qwik](https://qwik.dev/)
-- **Styling**: [DaisyUI](https://daisyui.com/) + TailwindCSS / Vanilla CSS
+- **Styling**: [DaisyUI](https://daisyui.com/) + Tailwind CSS v4 (CSS-first config)
 - **Data**: [Supabase](https://supabase.com/)
 - **Runtime**: [Bun](https://bun.sh/)
 - **Linter/Formatter**: [Biome](https://biomejs.dev/)
@@ -18,6 +18,8 @@ A premium web application for Aesthetic Lab, built with Qwik and styled with mod
 - **Premium Design**: Modern aesthetic with DaisyUI components.
 
 ## 🛠️ Local Development
+
+Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [CLAUDE.md](CLAUDE.md) for the AI-agent entrypoint.
 
 ### Prerequisites
 
@@ -56,6 +58,14 @@ A premium web application for Aesthetic Lab, built with Qwik and styled with mod
 - `make lint`: Run Biome checks.
 - `make clean`: Reset node_modules and build artifacts.
 
+## AI Workflow
+
+- Start non-trivial work with a plan in `plans/`.
+- Let Claude Code handle planning and implementation.
+- Let Codex handle plan review and final verification.
+
+See [CLAUDE.md](CLAUDE.md), [plans/README.md](plans/README.md), and [REVIEW.md](REVIEW.md).
+
 ## 📦 Deployment
 
 The project includes a `Dockerfile` and a `Makefile` target for deploying to Google Cloud Run:
@@ -67,4 +77,4 @@ make gcloud-deploy TAG=v1.0.0
 
 ## 📜 License
 
-MIT — see [LICENSE](file:///Users/evfedoto/Documents/Projects/qwik-aestheticlab/LICENSE) file for details.
+MIT — see [LICENSE](LICENSE) for details.
