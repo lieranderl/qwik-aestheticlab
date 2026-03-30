@@ -17,6 +17,7 @@
 		"build.preview": "vite build --ssr src/entry.preview.tsx",
 		"build.server": "vite build -c adapters/bun/vite.config.ts",
 		"build.types": "tsc --incremental --noEmit",
+		"verify": "bun run biome && bun run build.types && bun run build",
 		"deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
 		"docker.build": "docker buildx build --platform linux/amd64 -t furlingene/qwik-aesthetic:staging-newcal-v11 . --push",
 		"dev": "vite --mode ssr",
@@ -46,7 +47,7 @@
 		"qwik-speak": "^0.23.2",
 		"typescript": "5.4.5",
 		"typescript-plugin-css-modules": "latest",
-		"undici": "^7.24.5",
+		"undici": "^7.24.6",
 		"vite": "7.1.11",
 		"vite-tsconfig-paths": "^4.3.2"
 	},
@@ -58,7 +59,7 @@
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"lint-staged": {
-		"*.{js,ts,tsx,json,css}": [
+		"*.{js,ts,tsx,json,css,md,yml,yaml}": [
 			"biome check --fix"
 		]
 	}

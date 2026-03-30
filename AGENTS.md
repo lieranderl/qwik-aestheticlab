@@ -11,26 +11,20 @@ Aesthetic Lab — Qwik City marketing site for a nail/beauty studio in Leuven, B
 | Install | `bun install` |
 | Dev server | `bun run dev` or `make dev` |
 | Production build | `bun run build` |
+| Type check | `bun run build.types` |
 | Lint/format | `bun run biome` |
+| Verify | `bun run verify` |
 | Extract i18n keys | `bun run qwik-speak-extract` |
 | Docker build+push | `make docker-build-push TAG=<tag>` |
 | Deploy Cloud Run | `make gcloud-deploy TAG=<tag>` |
 
-## Tech Stack & Versions
+## Tech Stack
 
-| Dependency | Version | Notes |
-|------------|---------|-------|
-| Qwik / Qwik City | ^1.19.x | Framework — always use latest 1.x |
-| Tailwind CSS | v4.x | CSS-first config via `src/global.css` |
-| DaisyUI | v5.x | Component library — **mandatory for all UI** |
-| Bun | latest | Runtime + package manager |
-| Vite | 7.x | Build tool |
-| Biome | ^2.x | Linter/formatter — replaces ESLint+Prettier |
-| qwik-speak | ^0.23.x | i18n |
-| Supabase SSR | ^0.6.x | Server-side data |
-| TypeScript | 5.4.x | Strict mode on |
-
-> **Rule:** When adding or upgrading dependencies, always target the latest stable version. Check changelogs for breaking changes before bumping majors.
+- Qwik / Qwik City 1.x
+- Tailwind CSS v4 + DaisyUI 5
+- Bun + Vite 7 + Biome 2
+- qwik-speak + Supabase SSR + TypeScript strict mode
+- When adding or upgrading dependencies, use the latest stable version and check changelogs before major bumps.
 
 ## Architecture
 
@@ -49,7 +43,10 @@ src/
 │   └── ui/                           # Reusable UI primitives (FadeUp, Booking, etc.)
 ├── shared/                           # Utilities (Supabase client, cookie consent, etc.)
 ├── constants/                        # Static metadata, nav config
+├── .claude/                          # Claude Code commands, skills, agents, shared settings
+├── .codex/                           # Codex workflow docs and local configuration
 ├── media/                            # Images and SVGs (vite ?jsx imports)
+├── plans/                            # Shared planning artifacts for Claude Code + Codex workflow
 ├── types.ts                          # Shared TypeScript interfaces
 ├── consts.ts                         # Formatting helpers, GA ID, booking URL
 ├── global.css                        # Tailwind + DaisyUI theme + animations
@@ -70,6 +67,9 @@ src/
 | `global.css` | Theme tokens, animations, DaisyUI plugin config |
 | `types.ts` | All shared data interfaces |
 | `speak-config.ts` | Locale definitions (add new locales here) |
+| `.claude/settings.json` | Shared Claude Code defaults and project-local permissions |
+| `.claude/commands/*` | Claude Code workflow entrypoints for planning, execution, and verification |
+| `plans/*` | Durable task plans and implementation specs reviewed by Claude Code and Codex |
 
 ## Critical Conventions
 
@@ -151,6 +151,12 @@ Key rules:
 - Run `bun run biome` before committing.
 - Husky + lint-staged auto-run Biome on staged files.
 - `biome-ignore` comments require justification.
+
+### AI Agent Workflow
+
+- For non-trivial changes, create or update a plan in `plans/` before implementation.
+- Default loop: Claude Code plans and implements, Codex reviews and verifies.
+- Keep shared agent behavior in `.claude/`, project-local Codex guidance in `.codex/`, and workflow docs aligned.
 
 ### Accessibility
 

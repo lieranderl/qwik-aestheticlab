@@ -1,0 +1,18 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"plansDirectory": "./plans",
+	"respectGitignore": true,
+	"enableAllProjectMcpServers": true,
+	"permissions": {
+		"defaultMode": "acceptEdits",
+		"allow": [],
+		"ask": [
+			"Bash(git push*)",
+			"Bash(git reset*)",
+			"Bash(rm *)",
+			"Bash(docker *)",
+			"Bash(gcloud *)"
+		],
+		"deny": []
+	}
+}
