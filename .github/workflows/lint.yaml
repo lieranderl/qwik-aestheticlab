@@ -7,7 +7,7 @@ on:
       - "**"
 
 jobs:
-  quality:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
