@@ -151,12 +151,14 @@
     },
     "services": {
       "back": "Terug naar overzicht",
+      "back_laser": "Terug naar laser",
       "brows_desc": "Epileren, verven en lamineren voor de perfecte vorm.",
       "brows_lashes_title": "Wenkbrauwen & Wimpers",
       "default_category": "Diensten",
       "duration": "Duur:",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
       "laser_body_title": "Laserontharing LICHAAM",
+      "laser_category": "Laser",
       "laser_combo_title": "Laserontharing COMBO",
       "laser_desc": "Veilige, effectieve en pijnloze technologie voor een gladde huid.",
       "laser_face_title": "Laserontharing GEZICHT",
@@ -166,6 +168,7 @@
       "pricing_title": "Diensten & Prijzen",
       "subtitle": "Uitgebreide schoonheidsbehandelingen geleverd met precisie en zorg.",
       "title": "Onze diensten",
+      "treatments": "Behandelingen",
       "view_full": "Bekijk volledige prijslijst",
       "view_treatments": "Bekijk behandelingen"
     },
