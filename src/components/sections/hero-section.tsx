@@ -58,6 +58,7 @@ export const HeroSection = component$(() => {
 						text={t("app.book.book_app@@Book Appointment")}
 						location="372146"
 						classes="hidden md:inline-flex btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
+						analyticsPlacement="hero"
 					/>
 
 					<a

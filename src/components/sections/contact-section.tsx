@@ -1,7 +1,8 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { MapEmbed } from "~/components/ui/google-map";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import type { Contact } from "~/types";
 
 interface ContactSectionProps {
@@ -48,6 +49,12 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 												href={contact.location.link}
 												target="_blank"
 												rel="noreferrer"
+												onClick$={$(() => {
+													trackGoogleAnalyticsEvent("directions_clicked", {
+														placement: "contact_section",
+														link_url: contact.location.link,
+													});
+												})}
 												class="btn btn-primary btn-sm btn-outline"
 											>
 												{t("app.contact.directions@@Get Directions")}
@@ -67,6 +74,13 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 																href={p.link}
 																target="_blank"
 																rel="noreferrer"
+																onClick$={$(() => {
+																	trackGoogleAnalyticsEvent("parking_clicked", {
+																		placement: "contact_section",
+																		parking_name: p.name,
+																		link_url: p.link,
+																	});
+																})}
 																class="flex items-center gap-2 group"
 															>
 																<span class="w-1.5 h-1.5 rounded-2xl bg-primary/40 group-hover:bg-primary transition-colors" />
@@ -116,6 +130,12 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 										</span>
 										<a
 											href={`mailto:${contact.email}`}
+											onClick$={$(() => {
+												trackGoogleAnalyticsEvent("contact_email_clicked", {
+													placement: "contact_section",
+													contact_method: "email",
+												});
+											})}
 											class="font-montserrat text-lg text-base-content hover:text-primary transition-colors w-fit border-b border-base-200 hover:border-primary pb-0.5"
 										>
 											{contact.email}

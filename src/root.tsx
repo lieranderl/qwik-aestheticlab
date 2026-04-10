@@ -9,7 +9,10 @@ import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
 import { useQwikSpeak, useSpeakLocale } from "qwik-speak";
+import { GoogleAnalytics } from "./components/ui/google-analytics";
 import { JSON_LD } from "./constants/metadata";
+import { gaMeasurementId } from "./consts";
+import { getGoogleAnalyticsBootstrapScript } from "./shared/cookie-consent";
 import { config } from "./speak-config";
 import { translationFn } from "./speak-functions";
 
@@ -38,6 +41,18 @@ export default component$(() => {
 				<script async src="https://www.instagram.com/embed.js" />
 
 				{!isDev && (
+					<>
+						<script
+							dangerouslySetInnerHTML={getGoogleAnalyticsBootstrapScript()}
+						/>
+						<script
+							async
+							src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+						/>
+					</>
+				)}
+
+				{!isDev && (
 					<link
 						rel="manifest"
 						href={`${import.meta.env.BASE_URL}manifest.json`}
@@ -47,6 +62,7 @@ export default component$(() => {
 				{!isDev && <ServiceWorkerRegister />}
 			</head>
 			<body lang={locale.lang} class="font-montserrat">
+				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />
 			</body>
 		</QwikCityProvider>

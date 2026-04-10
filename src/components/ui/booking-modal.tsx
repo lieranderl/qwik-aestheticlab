@@ -1,6 +1,7 @@
 import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { baseUrlBooking } from "~/consts";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 interface BookingProps {
 	id: string; // unique per service
@@ -10,6 +11,10 @@ interface BookingProps {
 	category?: string;
 	product?: string;
 	staff?: string;
+	analyticsPlacement?: string;
+	analyticsServiceId?: string;
+	analyticsServiceName?: string;
+	analyticsServiceCategory?: string;
 }
 
 export const Booking = component$<BookingProps>(
@@ -21,9 +26,23 @@ export const Booking = component$<BookingProps>(
 		category,
 		product,
 		staff,
+		analyticsPlacement,
+		analyticsServiceId,
+		analyticsServiceName,
+		analyticsServiceCategory,
 	}) => {
 		const t = inlineTranslate();
 		const isOpen = useSignal(false);
+		const eventParams = {
+			booking_id: id,
+			placement: analyticsPlacement || id,
+			booking_location: location,
+			service_id: analyticsServiceId,
+			service_name: analyticsServiceName,
+			service_category: analyticsServiceCategory || category,
+			booking_product: product,
+			staff_id: staff,
+		};
 
 		// Build iframe URL
 		const params = new URLSearchParams({ location });
@@ -50,6 +69,18 @@ export const Booking = component$<BookingProps>(
 			if (modal) {
 				isOpen.value = true;
 				modal.showModal();
+
+				trackGoogleAnalyticsEvent("booking_opened", eventParams);
+				if (
+					analyticsServiceId ||
+					analyticsServiceName ||
+					analyticsServiceCategory ||
+					category ||
+					product ||
+					staff
+				) {
+					trackGoogleAnalyticsEvent("service_booking_opened", eventParams);
+				}
 			}
 		});
 
@@ -76,6 +107,12 @@ export const Booking = component$<BookingProps>(
 								title={t("app.booking.widget_title@@Booking Widget")}
 								src={iframeUrl}
 								class="w-full h-[75vh] rounded-lg border-0"
+								onLoad$={$(() => {
+									trackGoogleAnalyticsEvent(
+										"booking_widget_loaded",
+										eventParams,
+									);
+								})}
 							/>
 						)}
 					</div>

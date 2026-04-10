@@ -40,7 +40,7 @@ src/
 │       └── (policies)/              # Legal pages (privacy, notice)
 ├── components/
 │   ├── sections/                     # Full page sections (hero, services, team, etc.)
-│   └── ui/                           # Reusable UI primitives (FadeUp, Booking, etc.)
+│   └── ui/                           # Reusable UI primitives (FadeUp, Booking, GoogleAnalytics, etc.)
 ├── shared/                           # Utilities (Supabase client, cookie consent, etc.)
 ├── constants/                        # Static metadata, nav config
 ├── .claude/                          # Claude Code commands, skills, agents, shared settings
@@ -64,6 +64,7 @@ src/
 | `components/sections/*` | Self-contained page sections — receive data via props |
 | `components/ui/*` | Reusable, stateless-ish UI components |
 | `shared/supabase-client.ts` | Single Supabase client factory |
+| `shared/cookie-consent.ts` | Cookie consent persistence + Google Consent Mode v2 helpers |
 | `global.css` | Theme tokens, animations, DaisyUI plugin config |
 | `types.ts` | All shared data interfaces |
 | `speak-config.ts` | Locale definitions (add new locales here) |
@@ -141,6 +142,15 @@ Key rules:
 - JSON-LD structured data defined in `constants/metadata.ts`, injected in `root.tsx`.
 - Canonical URLs derive from locale-prefixed routes.
 
+### Analytics & Consent
+
+- Google Analytics is implemented with Google Consent Mode v2 advanced mode in production only.
+- Consent defaults are set before any Google measurement command in `root.tsx` via `getGoogleAnalyticsBootstrapScript()`.
+- EEA-safe defaults: `analytics_storage`, `ad_storage`, `ad_user_data`, and `ad_personalization` are denied before consent.
+- The cookie banner only asks for analytics consent, so accepting analytics grants `analytics_storage` only; advertising consent remains denied.
+- Do not use `ga-disable-*` for normal reject/deny flows because advanced mode requires consent-aware cookieless pings.
+- Qwik City client-side page views are tracked by `components/ui/google-analytics.tsx`; avoid adding duplicate route tracking elsewhere.
+
 ### Code Quality
 
 - Biome handles linting and formatting (not ESLint/Prettier).
@@ -185,6 +195,7 @@ Key rules:
 - ❌ Install outdated or deprecated packages — always use latest stable versions.
 - ❌ Create translation strings without the `@@Default Text` fallback pattern.
 - ❌ Map locale-specific DB fields inside UI components — do it in loaders.
+- ❌ Use `ga-disable-*` for cookie-banner rejection — update Consent Mode state instead.
 
 ## Self-Updating Rules for AI Agents
 

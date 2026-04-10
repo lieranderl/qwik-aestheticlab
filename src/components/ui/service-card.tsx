@@ -1,5 +1,5 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "./booking-modal";
 import { FadeUp } from "./fade-up";
@@ -19,6 +19,8 @@ interface ServiceCardProps {
 	duration?: string | number;
 	variant?: "category" | "service";
 	supportingText?: string;
+	analyticsPlacement?: string;
+	analyticsServiceCategory?: string;
 }
 
 export const ServiceCard = component$<ServiceCardProps>(
@@ -36,6 +38,8 @@ export const ServiceCard = component$<ServiceCardProps>(
 		duration,
 		variant = "service",
 		supportingText,
+		analyticsPlacement,
+		analyticsServiceCategory,
 	}) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
@@ -92,9 +96,9 @@ export const ServiceCard = component$<ServiceCardProps>(
 							{variant === "service" && hasLongDescription ? (
 								<button
 									type="button"
-									onClick$={() => {
+									onClick$={$(() => {
 										isExpanded.value = !isExpanded.value;
-									}}
+									})}
 									class="btn btn-ghost btn-xs rounded-full w-fit px-0 font-montserrat uppercase tracking-wider text-primary"
 									aria-expanded={isExpanded.value}
 								>
@@ -138,9 +142,9 @@ export const ServiceCard = component$<ServiceCardProps>(
 							{customAction$ ? (
 								<button
 									type="button"
-									onClick$={() => {
+									onClick$={$(() => {
 										customAction$();
-									}}
+									})}
 									class={[
 										"btn rounded-full w-full max-w-full font-montserrat uppercase tracking-[0.12em] text-sm",
 										variant === "category"
@@ -156,6 +160,10 @@ export const ServiceCard = component$<ServiceCardProps>(
 									text={t("app.book.book_now@@Book Now")}
 									location={location}
 									classes="btn btn-sm btn-outline btn-primary rounded-full font-montserrat uppercase tracking-wider"
+									analyticsPlacement={analyticsPlacement || "service_card"}
+									analyticsServiceId={serviceId}
+									analyticsServiceName={title}
+									analyticsServiceCategory={analyticsServiceCategory}
 								/>
 							) : null}
 						</div>

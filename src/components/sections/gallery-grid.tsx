@@ -1,8 +1,7 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { InstagramCard } from "~/components/ui/instagram-card";
-
 // Import images with vite-imagetools
 import ImgManicure1 from "~/media/gallery/manicure1.jpg?jsx";
 import ImgManicure2 from "~/media/gallery/manicure2.jpg?jsx";
@@ -12,6 +11,7 @@ import ImgPedicure1 from "~/media/gallery/pedicure1.jpg?jsx";
 import ImgPedicure2 from "~/media/gallery/pedicure2.jpg?jsx";
 import ImgPedicure3 from "~/media/gallery/pedicure3.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
@@ -64,6 +64,13 @@ export const GalleryGrid = component$(() => {
 							href="https://www.instagram.com/aestheticlabbe"
 							target="_blank"
 							rel="noreferrer"
+							onClick$={$(() => {
+								trackGoogleAnalyticsEvent("instagram_clicked", {
+									placement: "gallery_section",
+									target_type: "profile",
+									link_url: "https://www.instagram.com/aestheticlabbe",
+								});
+							})}
 							class="font-montserrat text-sm tracking-widest text-secondary hover:underline"
 						>
 							@aestheticlabbe

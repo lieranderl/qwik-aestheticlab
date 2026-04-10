@@ -92,6 +92,7 @@ export const Navigation = component$(() => {
 								id="mobile-nav-book-btn"
 								text={t("app.book.book_now@@Book Now")}
 								location="372146"
+								analyticsPlacement="mobile_nav"
 								classes={` ${
 									isScrolled.value
 										? "btn btn-primary uppercase tracking-wider font-medium"
@@ -109,6 +110,7 @@ export const Navigation = component$(() => {
 								id="nav-book-btn"
 								text={t("app.book.book_now@@Book Now")}
 								location="372146"
+								analyticsPlacement="desktop_nav"
 								classes={` ${
 									isScrolled.value
 										? "btn btn-primary uppercase tracking-wider font-medium"
@@ -126,9 +128,9 @@ export const Navigation = component$(() => {
 								class={`p-2 transition-transform hover:scale-110 ${
 									isMobileMenuOpen.value ? "hidden" : "block"
 								}`}
-								onClick$={() => {
+								onClick$={$(() => {
 									isMobileMenuOpen.value = !isMobileMenuOpen.value;
-								}}
+								})}
 								aria-label="Open menu"
 							>
 								<svg
@@ -160,9 +162,9 @@ export const Navigation = component$(() => {
 				<button
 					type="button"
 					class="absolute top-6 right-6 p-2 hover:scale-110 transition-transform"
-					onClick$={() => {
+					onClick$={$(() => {
 						isMobileMenuOpen.value = false;
-					}}
+					})}
 					aria-label="Close menu"
 				>
 					<svg
@@ -188,9 +190,9 @@ export const Navigation = component$(() => {
 							<a
 								href={getLocaleNavLink(location.url.pathname, item.href)}
 								class="font-qestero text-3xl"
-								onClick$={() => {
+								onClick$={$(() => {
 									isMobileMenuOpen.value = false;
-								}}
+								})}
 							>
 								{item.label}
 							</a>

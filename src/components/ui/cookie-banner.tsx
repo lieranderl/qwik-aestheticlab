@@ -26,11 +26,11 @@ export const CookieBanner = component$(() => {
 
 		hasChoice.value = true;
 		if (stored.analytics) {
-			enableAnalytics();
+			enableAnalytics({ trackUpdate: false });
 			return;
 		}
 
-		disableAnalytics();
+		disableAnalytics({ trackUpdate: false });
 	});
 
 	const acceptAll = $(() => {
@@ -65,7 +65,7 @@ export const CookieBanner = component$(() => {
 								</p>
 								<p class="text-sm text-base-content/80">
 									{t(
-										"app.cookies.description@@We use strictly necessary cookies to run this site. With your permission, we also use analytics cookies (Google Analytics) to understand traffic and improve our services.",
+										"app.cookies.description@@We use strictly necessary cookies to run this site. Google Analytics runs in Consent Mode: analytics storage is denied unless you accept, and Google may receive cookieless consent and measurement pings before your choice.",
 									)}
 								</p>
 								<div class="text-xs text-base-content/70">

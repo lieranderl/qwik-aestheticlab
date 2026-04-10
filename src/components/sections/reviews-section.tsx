@@ -1,6 +1,7 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 interface Review {
 	author: string;
@@ -102,6 +103,12 @@ export const ReviewsSection = component$(() => {
 						href="https://maps.app.goo.gl/bsdNssGY4YTJeR7j6"
 						target="_blank"
 						rel="noreferrer"
+						onClick$={$(() => {
+							trackGoogleAnalyticsEvent("google_reviews_clicked", {
+								placement: "reviews_section",
+								link_url: "https://maps.app.goo.gl/bsdNssGY4YTJeR7j6",
+							});
+						})}
 						class="link link-primary"
 					>
 						{t("app.reviews.google_link@@Read all reviews on Google")}

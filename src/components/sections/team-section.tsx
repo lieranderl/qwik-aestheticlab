@@ -1,4 +1,4 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
@@ -88,9 +88,9 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 				</div>
 				<button
 					type="button"
-					onClick$={() => {
+					onClick$={$(() => {
 						isExpanded.value = !isExpanded.value;
-					}}
+					})}
 					class="mt-2 text-xs font-montserrat tracking-wider text-primary hover:text-primary/80 transition-colors uppercase"
 				>
 					{isExpanded.value
@@ -105,6 +105,10 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 				location="372146"
 				staff={String(tech.id)}
 				classes="btn btn-outline btn-neutral rounded-full px-8 font-montserrat uppercase tracking-wider text-xs hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform active:scale-95 w-full sm:w-auto mx-auto"
+				analyticsPlacement="team"
+				analyticsServiceCategory="staff"
+				analyticsServiceId={String(tech.id)}
+				analyticsServiceName={tech.role || "Technician"}
 			/>
 		</div>
 	);
