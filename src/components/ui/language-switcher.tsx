@@ -1,5 +1,6 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import { config } from "~/speak-config";
 
 interface LanguageSwitcherProps {
@@ -69,6 +70,13 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 							<li key={locale.lang}>
 								<a
 									href={locale.lang === currentLang ? "#" : newPath}
+									onClick$={$(() => {
+										if (locale.lang === currentLang) return;
+										trackGoogleAnalyticsEvent("language_changed", {
+											from_locale: currentLang,
+											to_locale: locale.lang,
+										});
+									})}
 									class={`text-sm ${
 										locale.lang === currentLang
 											? "font-bold text-primary"

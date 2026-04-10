@@ -30,7 +30,7 @@
 		"prepare": "husky || true"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.9",
+		"@biomejs/biome": "^2.4.11",
 		"@builder.io/qwik": "^1.19.2",
 		"@builder.io/qwik-city": "^1.19.2",
 		"@ditadi/qwik-hooks": "^0.1.6",
@@ -47,7 +47,7 @@
 		"qwik-speak": "^0.23.2",
 		"typescript": "5.4.5",
 		"typescript-plugin-css-modules": "latest",
-		"undici": "^7.24.6",
+		"undici": "^7.24.7",
 		"vite": "7.1.11",
 		"vite-tsconfig-paths": "^4.3.2"
 	},

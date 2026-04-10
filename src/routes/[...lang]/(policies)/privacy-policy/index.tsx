@@ -75,14 +75,14 @@ export default component$(() => {
 									"app.privacy.cookies@@6. Cookies & Tracking Technologies",
 								),
 								text: t(
-									"app.privacy.cookies_text@@We use strictly necessary cookies to operate the website. With your explicit consent, we also use analytics cookies (Google Analytics) to understand website usage and improve our services. You can accept or reject analytics cookies in the cookie banner and change your choice at any time via Cookie settings.",
+									"app.privacy.cookies_text@@We use strictly necessary cookies to operate the website. Google Analytics runs in Consent Mode v2. Before consent or if you reject analytics, analytics storage and advertising-related consent stay denied; Google may receive cookieless consent and measurement pings, and analytics cookies are not set. If you accept analytics, Google Analytics may use analytics cookies to understand website usage and improve our services. You can change your choice at any time via Cookie settings.",
 								),
 								list: [
 									t(
 										"app.privacy.cookies_necessary@@Strictly necessary cookies: always active for basic website functionality.",
 									),
 									t(
-										"app.privacy.cookies_analytics@@Analytics cookies: optional and only activated after your consent.",
+										"app.privacy.cookies_analytics@@Analytics cookies: optional; analytics storage is granted only after your consent.",
 									),
 								],
 							},

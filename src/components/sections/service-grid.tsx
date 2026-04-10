@@ -10,6 +10,7 @@ import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { ServiceCard } from "~/components/ui/service-card";
 import { formatPrice } from "~/consts";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import {
 	type GroupedServiceData,
 	getServiceItemImage,
@@ -227,28 +228,52 @@ export const ServiceGrid = component$<ServiceGridProps>(
 			history.replaceState(null, "", `${currentPath}#services`);
 		});
 
-		const openCategory = $((groupId: string) => {
-			selectedCategoryId.value = groupId;
-			selectedLaserSubgroupId.value = null;
-			showFullList.value = true;
+		const openCategory = $(
+			(groupId: string, categoryName?: string, serviceCount?: number) => {
+				selectedCategoryId.value = groupId;
+				selectedLaserSubgroupId.value = null;
+				showFullList.value = true;
 
-			const currentPath = `${window.location.pathname}${window.location.search}`;
-			history.replaceState(null, "", currentPath);
+				trackGoogleAnalyticsEvent("service_category_viewed", {
+					category_id: groupId,
+					service_category: categoryName,
+					service_count: serviceCount,
+					placement: "services_overview",
+				});
 
-			const servicesSection = document.getElementById("services");
-			if (servicesSection) {
-				servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
-		});
+				const currentPath = `${window.location.pathname}${window.location.search}`;
+				history.replaceState(null, "", currentPath);
 
-		const openLaserSubgroup = $((groupId: string) => {
-			selectedLaserSubgroupId.value = groupId;
+				const servicesSection = document.getElementById("services");
+				if (servicesSection) {
+					servicesSection.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+					});
+				}
+			},
+		);
 
-			const servicesSection = document.getElementById("services");
-			if (servicesSection) {
-				servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
-		});
+		const openLaserSubgroup = $(
+			(groupId: string, categoryName?: string, serviceCount?: number) => {
+				selectedLaserSubgroupId.value = groupId;
+
+				trackGoogleAnalyticsEvent("service_category_viewed", {
+					category_id: groupId,
+					service_category: categoryName,
+					service_count: serviceCount,
+					placement: "laser_subgroup",
+				});
+
+				const servicesSection = document.getElementById("services");
+				if (servicesSection) {
+					servicesSection.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+					});
+				}
+			},
+		);
 
 		const resetLaserSubgroup = $(() => {
 			selectedLaserSubgroupId.value = null;
@@ -294,6 +319,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							<div class="mt-8 flex flex-col items-center justify-center gap-3">
 								<a
 									href="pricelist"
+									onClick$={$(() => {
+										trackGoogleAnalyticsEvent("pricing_link_clicked", {
+											placement: "services_cta",
+										});
+									})}
 									class="btn btn-outline btn-primary btn-sm rounded-full font-montserrat uppercase tracking-wider"
 								>
 									{viewFullLabel}
@@ -376,7 +406,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 															key={group.groupId}
 															type="button"
 															onClick$={$(() => {
-																openCategory(group.groupId);
+																openCategory(
+																	group.groupId,
+																	displayCategoryName,
+																	group.groupServices.length,
+																);
 															})}
 															class={[
 																"btn btn-sm shrink-0 rounded-full px-4 font-montserrat uppercase tracking-wider whitespace-nowrap",
@@ -420,7 +454,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 												price={getCategoryStartingPrice(group.groupServices)}
 												supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 												customAction$={$(() => {
-													openLaserSubgroup(group.groupId);
+													openLaserSubgroup(
+														group.groupId,
+														displayCategoryName,
+														group.groupServices.length,
+													);
 												})}
 												buttonLabel={viewTreatmentsLabel}
 												delay={index * 120}
@@ -460,6 +498,10 @@ export const ServiceGrid = component$<ServiceGridProps>(
 															delay={100 + index * 50}
 															serviceId={service.id}
 															location={location}
+															analyticsServiceCategory={
+																serviceCategory?.name ||
+																renderGroup.displayTitle
+															}
 														/>
 													);
 												})}
@@ -491,7 +533,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										price={getCategoryStartingPrice(group.groupServices)}
 										supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 										customAction$={$(() => {
-											openCategory(group.groupId);
+											openCategory(
+												group.groupId,
+												displayCategoryName,
+												group.groupServices.length,
+											);
 										})}
 										buttonLabel={viewTreatmentsLabel}
 										delay={index * 120}

@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Footer } from "~/components/sections/footer";
@@ -6,6 +6,7 @@ import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import type { Service } from "~/types";
 import {
 	useContactLoader,
@@ -93,6 +94,15 @@ export default component$(() => {
 	const services = useServicesLoader().value;
 	const categories = useServiceGroupsLoader().value;
 	const contact = useContactLoader().value;
+
+	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA events require browser-only gtag state.
+	useVisibleTask$(() => {
+		trackGoogleAnalyticsEvent("pricing_viewed", {
+			placement: "pricelist_page",
+			category_count: categories.length,
+			service_count: services.length,
+		});
+	});
 
 	// Grouping Logic
 	const groupedServices = Object.entries(
@@ -216,6 +226,7 @@ export default component$(() => {
 							text={t("app.hero.book_appointment@@Book Appointment")}
 							location={contact?.location.name || ""}
 							classes="btn btn-primary text-white rounded-full px-10 py-3 text-lg"
+							analyticsPlacement="pricelist_bottom"
 						/>
 					</FadeUp>
 				</section>

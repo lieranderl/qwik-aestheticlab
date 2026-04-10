@@ -1,5 +1,6 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export interface InstagramCardProps {
 	post_id: string;
@@ -20,6 +21,13 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 						class="block bg-white text-center no-underline w-full"
 						target="_blank"
 						rel="noreferrer"
+						onClick$={$(() => {
+							trackGoogleAnalyticsEvent("instagram_clicked", {
+								placement: "instagram_card",
+								target_type: "reel",
+								instagram_post_id: post_id,
+							});
+						})}
 					>
 						<div class="flex items-center">
 							<div class="bg-gray-200 rounded-full h-10 w-10 mr-4" />
@@ -86,6 +94,13 @@ export const InstagramCard = component$<InstagramCardProps>(({ post_id }) => {
 							class="text-gray-400 text-sm no-underline"
 							target="_blank"
 							rel="noreferrer"
+							onClick$={$(() => {
+								trackGoogleAnalyticsEvent("instagram_clicked", {
+									placement: "instagram_card_caption",
+									target_type: "reel",
+									instagram_post_id: post_id,
+								});
+							})}
 						>
 							{t(
 								"app.instagram.shared_by@@A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
