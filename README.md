@@ -61,10 +61,13 @@ Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [
 ## AI Workflow
 
 - Start non-trivial work with a plan in `plans/`.
-- Let Claude Code handle planning and implementation.
-- Let Codex handle plan review and final verification.
+- Use `AGENTS.md` as the canonical shared policy.
+- Split work into planner, implementer, reviewer, and verifier roles when helpful; one agent may cover multiple roles if needed.
+- Prefer a fresh review or verification pass before claiming completion on substantial work.
+- Use `.claude/rules/` for path-scoped workflow hints instead of expanding the root docs indefinitely.
+- Use `/doctor-project` for a quick repository health check when workflow, config, or environment behavior feels off.
 
-See [CLAUDE.md](CLAUDE.md), [plans/README.md](plans/README.md), and [REVIEW.md](REVIEW.md).
+See [CLAUDE.md](CLAUDE.md), [.codex/README.md](.codex/README.md), [plans/README.md](plans/README.md), and [REVIEW.md](REVIEW.md).
 
 ## 📦 Deployment
 

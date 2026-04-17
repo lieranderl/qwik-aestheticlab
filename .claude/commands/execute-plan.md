@@ -11,3 +11,4 @@ When invoked:
 4. Update the plan when tasks or assumptions change.
 5. If the plan breaks, revise it before continuing.
 6. Run fresh verification before claiming success.
+7. Commit the changes for the phase (Atomic Commits) before moving to the next phase to maintain a clean linear history.
