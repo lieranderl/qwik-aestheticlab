@@ -1,34 +1,22 @@
+@AGENTS.md
+
 # CLAUDE.md
 
-This is the Claude Code entry point for this repository.
+Claude Code entrypoint for this repository. Shared project instructions live in `AGENTS.md`; keep Claude-specific notes here only when they are genuinely tool-specific.
 
-## Read First
-
-1. `AGENTS.md`
-2. `plans/README.md`
-3. `REVIEW.md`
-4. The relevant `.github/*.md` guide for the files you are touching
-
-## Default Workflow
+## Claude-Specific Notes
 
 - Use `plans/` for non-trivial work.
-- Claude Code plans and implements.
-- Codex reviews plans and verifies results.
+- Prefer the relevant `.github/*.md` guide for the files you are touching.
+- Treat `AGENTS.md` as canonical if workflow guidance appears in multiple places.
 - Keep `AGENTS.md`, `README.md`, `REVIEW.md`, and `plans/` aligned when workflow files change.
 
-## AI Surface
+## Claude Surface Area
 
 - `.claude/commands/`
-- `.claude/skills/`
 - `.claude/agents/`
+- `.claude/rules/`
+- `.claude/skills/`
+- `.claude/settings.json`
 - `.codex/README.md`
 - `.mcp.json`
-
-## Key Commands
-
-- `bun run dev`
-- `bun run biome`
-- `bun run build.types`
-- `bun run build`
-- `bun run verify`
-- `bun run qwik-speak-extract`

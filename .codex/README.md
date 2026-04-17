@@ -1,11 +1,10 @@
 # Codex Workflow
 
-Codex is the second-model reviewer in this repository.
+Codex is commonly used as a fresh reviewer or verifier in this repository, but the shared workflow is defined in `AGENTS.md`.
 
 ## Use Codex For
 
 - reviewing plans in `plans/` against the actual codebase
-- appending `## Codex Findings` instead of rewriting the plan
 - verifying implementation with fresh command output
 
 ## Read First

@@ -1,8 +1,8 @@
 ---
 name: docs-curator
-description: Review and align project docs when workflow, architecture, or conventions change. Use PROACTIVELY for documentation-heavy diffs.
+description: Review and align project docs when workflow, architecture, or conventions change. Use PROACTIVELY when changes occur in *.md files, .claude/ directory, or plans/ directory.
 tools: Read, Glob, Grep
-model: haiku
+model: sonnet
 memory: project
 skills:
   - cross-model-workflow
