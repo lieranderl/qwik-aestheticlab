@@ -31,6 +31,7 @@ Aesthetic Lab is a Qwik City marketing site for a nail and beauty studio in Leuv
 | Extract i18n keys | `bun run qwik-speak-extract` |
 | Build and push Docker image | `make docker-build-push TAG=<tag>` |
 | Deploy to Cloud Run | `make gcloud-deploy TAG=<tag>` |
+| Create Pull Request | `gh pr create --fill --base staging` |
 
 ## Verification Policy
 
@@ -207,6 +208,29 @@ src/
 - If a convention is repeatedly violated in reviews or fixes, record the clarified rule here.
 - Prefer rewinding (`/rewind` or `Esc Esc`) over sending a correction prompt when an attempt fails to avoid polluting the context with failed attempts.
 - Avoid context rot (intelligence drops after ~300k tokens). Use `/compact` or start fresh sessions for new tasks.
+
+## GitHub CLI (gh)
+
+This repository is configured for use with the GitHub CLI (`gh`). AI agents MUST use `gh` for managing Pull Requests and verifying repository status.
+
+| Action | Command |
+| --- | --- |
+| Check auth status | `gh auth status` |
+| List open PRs | `gh pr list` |
+| Create PR (staging) | `gh pr create --fill --base staging` |
+| Check PR status | `gh pr status` |
+| View PR in browser | `gh pr view --web` |
+| Merge PR | `gh pr merge --squash --delete-branch` |
+
+### PR Workflow for Agents
+
+1. **Verify Auth**: Run `gh auth status` to ensure you are logged in.
+2. **Feature Branch**: Always work in a feature branch: `git checkout -b <branch-name>`.
+3. **Pre-PR Validation**: Run `bun run verify` (or `bun run biome` for docs) BEFORE creating a PR.
+4. **Create PR**: Use `gh pr create --fill --base staging`.
+   - The `--fill` flag automatically uses the branch name and commit history for title/body.
+   - Always target `staging` as the base branch unless the task explicitly requires `main`.
+5. **Monitor Checks**: Use `gh pr status` to track the state of automated checks.
 
 ## Additional Repo Guides
 
