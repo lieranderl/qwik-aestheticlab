@@ -224,6 +224,8 @@ This repository is configured for use with the GitHub CLI (`gh`). AI agents MUST
 | Check PR status | `gh pr status` |
 | View PR in browser | `gh pr view --web` |
 | Merge PR | `gh pr merge --squash --delete-branch` |
+| Create Release | `gh release create v<x.y.z> --title "v<x.y.z>" --notes "Release notes"` |
+
 
 ### PR Workflow for Agents
 
@@ -245,6 +247,8 @@ Releases are semi-automated and follow this sequence:
 4. **Tagging**: Create an annotated tag for the release version: `git tag -a v2.4.2 -m "Release v2.4.2"`.
 5. **Kickstart Automation**: Push the tag: `git push origin v2.4.2`. This triggers Google Cloud Build.
 6. **Merge**: Once checks pass, merge the PR into `staging`.
+7. **Create Release**: Create a GitHub release from the tag: `gh release create v2.4.2 --title "v2.4.2" --notes "Release v2.4.2"`.
+
 
 
 ## Additional Repo Guides
