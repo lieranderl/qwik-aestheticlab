@@ -1,6 +1,7 @@
 {
 	"name": "aestheticlab",
 	"description": "AestheticLab",
+	"version": "2.4.2",
 	"engines": {
 		"node": "^20.3.0 || >=21.0.0"
 	},
