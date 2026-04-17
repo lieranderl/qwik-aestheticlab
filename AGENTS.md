@@ -29,9 +29,10 @@ Aesthetic Lab is a Qwik City marketing site for a nail and beauty studio in Leuv
 | Test unit/component | `bun run test` |
 | Test E2E | `bun run test.e2e` |
 | Extract i18n keys | `bun run qwik-speak-extract` |
-| Build and push Docker image | `make docker-build-push TAG=<tag>` |
-| Deploy to Cloud Run | `make gcloud-deploy TAG=<tag>` |
 | Create Pull Request | `gh pr create --fill --base staging` |
+| Release Tag | `git tag -a v<x.y.z> -m "Release v<x.y.z>"` |
+| Push Tag | `git push origin v<x.y.z>` |
+
 
 ## Verification Policy
 
@@ -49,8 +50,10 @@ Aesthetic Lab is a Qwik City marketing site for a nail and beauty studio in Leuv
 ## Environment Notes
 
 - Required runtime env vars: `SUPABASE_URL` and `SUPABASE_KEY`.
-- `make docker-build-push` and `make gcloud-deploy` also require the relevant local Docker and `gcloud` authentication to already be configured.
+- Build and deployment are automated via **Google Cloud Build** triggers on Git tags and merges to `staging`.
+- Manual commands (`make docker-build-push` and `make gcloud-deploy`) should only be used as a fallback and require local Docker and `gcloud` authentication.
 - If Bun install becomes corrupted, clear Bun cache or reinstall dependencies intentionally rather than editing lockfiles casually.
+
 
 ## Repository Layout
 
@@ -231,6 +234,18 @@ This repository is configured for use with the GitHub CLI (`gh`). AI agents MUST
    - The `--fill` flag automatically uses the branch name and commit history for title/body.
    - Always target `staging` as the base branch unless the task explicitly requires `main`.
 5. **Monitor Checks**: Use `gh pr status` to track the state of automated checks.
+
+## Release Workflow
+
+Releases are semi-automated and follow this sequence:
+
+1. **Version Bump**: Update the `"version"` field in `package.json` to the target version (e.g., `2.4.2`).
+2. **Verification**: Run `bun run verify` to ensure the build and tests pass locally.
+3. **PR Creation**: Push changes to a release branch (e.g., `release/v2.4.2`) and create a PR to `staging`.
+4. **Tagging**: Create an annotated tag for the release version: `git tag -a v2.4.2 -m "Release v2.4.2"`.
+5. **Kickstart Automation**: Push the tag: `git push origin v2.4.2`. This triggers Google Cloud Build.
+6. **Merge**: Once checks pass, merge the PR into `staging`.
+
 
 ## Additional Repo Guides
 
