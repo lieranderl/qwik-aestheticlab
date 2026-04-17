@@ -1,5 +1,14 @@
 # Aesthetic Lab | Qwik + DaisyUI
 
+![Release](https://img.shields.io/github/v/release/lieranderl/qwik-aestheticlab?style=flat&logo=github)
+![Qwik](https://img.shields.io/badge/Qwik-%2318B6F6.svg?style=flat&logo=qwik&logoColor=white)
+![DaisyUI](https://img.shields.io/badge/daisyUI-5A0EF8?style=flat&logo=daisyui&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-%233ECF8E.svg?style=flat&logo=supabase&logoColor=white)
+![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=flat&logo=bun&logoColor=white)
+![Biome](https://img.shields.io/badge/Biome-%23F9A42F.svg?style=flat&logo=biome&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 A multilingual marketing site for Aesthetic Lab, built with Qwik City and styled with Tailwind CSS v4 plus DaisyUI 5.
 
 ## 🚀 Tech Stack
@@ -49,6 +58,23 @@ Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [
     ```bash
     make dev
     ```
+
+### Testing
+
+The project uses Vitest for unit/component tests and Playwright for E2E testing.
+
+- **Run all unit tests**:
+  ```bash
+  bun run test
+  ```
+- **Run E2E tests**:
+  ```bash
+  bun run test.e2e
+  ```
+- **Run all verification checks** (Lint, Type check, Unit tests, Build):
+  ```bash
+  bun run verify
+  ```
 
 ### Available Commands (Makefile)
 

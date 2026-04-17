@@ -13,6 +13,20 @@ node_modules
 .codex/local.toml
 .codex/*.local.toml
 tmp/
+playwright-report/
+test-results/
+blob-report/
+coverage/
+.nyc_output/
+.parcel-cache/
+.turbo/
+.next/
+.serverless/
+.output/
+.vercel
+.netlify
+
+
 
 # Cache
 .cache
@@ -42,12 +56,21 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+*.bak
+*.tmp
+*.temp
+.history/
+*.code-workspace
+.ionide/
+
 
 # Yarn
 .yarn/*
 !.yarn/releases
 .env
-.env.production
+.env.*
+!.env.example
+
 cloud-init
 terraform.tfvars
 # Local .terraform directory
@@ -83,4 +106,5 @@ infra/terraform/*.yaml
 
 Makefile_old
 create_gcloud.sh
-.agent/
+.agents/
+

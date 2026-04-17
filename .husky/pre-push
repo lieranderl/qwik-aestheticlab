@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+export PATH="$HOME/.bun/bin:$PATH"
+
+echo "🚀 Running full verification before push..."
+bun run verify
