@@ -7,8 +7,9 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { qwikSpeakInline } from "qwik-speak/inline";
-import { defineConfig, type UserConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "vitest/config";
+
 import pkg from "./package.json";
 
 type PkgDep = Record<string, string>;
@@ -24,19 +25,27 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
 
-export default defineConfig((): UserConfig => {
+export default defineConfig(({ mode }) => {
+	const isTest = mode === "test";
+
 	return {
+		test: {
+			globals: true,
+			environment: "node",
+			include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+		},
 		plugins: [
 			tailwindcss(),
-			qwikCity(),
+			!isTest && qwikCity(),
 			qwikVite(),
 			tsconfigPaths(),
-			qwikSpeakInline({
-				supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE"],
-				defaultLang: "en-BE",
-				assetsPath: "i18n",
-			}),
-		],
+			!isTest &&
+				qwikSpeakInline({
+					supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE"],
+					defaultLang: "en-BE",
+					assetsPath: "i18n",
+				}),
+		].filter(Boolean),
 		// This tells Vite which dependencies to pre-build in dev mode.
 		optimizeDeps: {
 			// Put problematic deps that break bundling here, mostly those with binaries.

@@ -26,6 +26,8 @@ Aesthetic Lab is a Qwik City marketing site for a nail and beauty studio in Leuv
 | Type check | `bun run build.types` |
 | Lint and format | `bun run biome` |
 | Full verification | `bun run verify` |
+| Test unit/component | `bun run test` |
+| Test E2E | `bun run test.e2e` |
 | Extract i18n keys | `bun run qwik-speak-extract` |
 | Build and push Docker image | `make docker-build-push TAG=<tag>` |
 | Deploy to Cloud Run | `make gcloud-deploy TAG=<tag>` |
@@ -34,8 +36,9 @@ Aesthetic Lab is a Qwik City marketing site for a nail and beauty studio in Leuv
 
 - Run `bun run biome` for docs-only or workflow-only changes.
 - Run `bun run verify` for application code, build configuration, dependency, loader, or deployment-affecting changes.
-- `bun run verify` currently runs Biome, TypeScript, and the production build.
-- There is no dedicated automated test suite yet, so manual browser checks are still expected for UI changes. Use screenshots for visual debugging when validating DaisyUI and UI behavior.
+- `bun run verify` runs Biome, TypeScript, unit tests, and the production build.
+- Automated tests are powered by **Vitest** (unit) and **Playwright** (E2E).
+- While E2E tests check core flows, manual browser checks or screenshots are still recommended for granular DaisyUI styling verification.
 
 ### Current Non-Blocking Warnings
 
@@ -196,6 +199,7 @@ src/
 
 ## AI Workflow
 
+- Always check for the latest version of Bun and update packages in the project when starting work. Test and verify all changes made.
 - For non-trivial work, create or update a plan in `plans/` before implementation.
 - Think in responsibilities: planner, implementer, reviewer, and verifier. One agent may hold multiple roles, but a fresh review or verification pass is preferred when available.
 - Keep `AGENTS.md`, `CLAUDE.md`, `README.md`, `REVIEW.md`, and `plans/` aligned when shared workflow expectations change.
