@@ -22,6 +22,8 @@
 		"test": "vitest run",
 		"test.watch": "vitest",
 		"test.e2e": "playwright test",
+		"precommit": "lint-staged --concurrent false && bun run build.types",
+		"prepush": "bun run verify",
 		"deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
 		"docker.build": "docker buildx build --platform linux/amd64 -t furlingene/qwik-aesthetic:staging-newcal-v11 . --push",
 		"dev": "vite --mode ssr",

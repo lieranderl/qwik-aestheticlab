@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 export PATH="$HOME/.bun/bin:$PATH"
 
-echo "🧹 Running lint-staged (Biome format & lint)..."
-bun x lint-staged --concurrent false
-
-echo "🛡️  Running TypeScript type check..."
-bun run build.types
+echo "Running pre-commit checks..."
+bun run precommit
