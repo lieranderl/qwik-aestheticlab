@@ -1,6 +1,9 @@
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { trackGoogleAnalyticsPageView } from "~/shared/cookie-consent";
+import {
+	initializeGoogleAnalytics,
+	trackGoogleAnalyticsPageView,
+} from "~/shared/cookie-consent";
 
 export const GoogleAnalytics = component$(() => {
 	const location = useLocation();
@@ -8,6 +11,7 @@ export const GoogleAnalytics = component$(() => {
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA route tracking is browser-only and depends on window/document.
 	useVisibleTask$(({ track }) => {
+		initializeGoogleAnalytics();
 		const route = track(
 			() =>
 				`${location.url.pathname}${location.url.search}${location.url.hash}`,

@@ -15,6 +15,54 @@ const port = Number(Bun.env.PORT) || 3000;
 
 console.log(`🚀 Server started: http://localhost:${port}/`);
 
+function supportsCompression(response: Response) {
+	if (!response.body) return false;
+	if (response.headers.has("Content-Encoding")) return false;
+	if ([101, 204, 205, 304].includes(response.status)) return false;
+
+	const contentType = response.headers.get("Content-Type") || "";
+
+	return [
+		"text/html",
+		"text/css",
+		"text/plain",
+		"text/javascript",
+		"application/javascript",
+		"application/json",
+		"application/xml",
+		"text/xml",
+		"image/svg+xml",
+	].some((type) => contentType.includes(type));
+}
+
+function maybeCompressResponse(request: Request, response: Response) {
+	if (request.method === "HEAD" || !supportsCompression(response)) {
+		return response;
+	}
+
+	const acceptEncoding = request.headers.get("Accept-Encoding") || "";
+
+	if (!acceptEncoding.includes("gzip")) {
+		return response;
+	}
+
+	const headers = new Headers(response.headers);
+	headers.set("Content-Encoding", "gzip");
+	headers.delete("Content-Length");
+
+	const vary = headers.get("Vary");
+	headers.set("Vary", vary ? `${vary}, Accept-Encoding` : "Accept-Encoding");
+
+	return new Response(
+		response.body?.pipeThrough(new CompressionStream("gzip")),
+		{
+			status: response.status,
+			statusText: response.statusText,
+			headers,
+		},
+	);
+}
+
 Bun.serve({
 	port,
 	routes: {
@@ -36,7 +84,49 @@ Bun.serve({
 		const response =
 			(await staticFile(adjustedRequest)) ??
 			(await router(adjustedRequest)) ??
-			notFound(adjustedRequest);
+			(await notFound(adjustedRequest));
+
+		if (response) {
+			const url = new URL(adjustedRequest.url);
+			const pathname = url.pathname;
+
+			// Add cache control headers
+			if (pathname.startsWith("/build/")) {
+				// Qwik build assets are hashed, safe to cache for a long time
+				response.headers.set(
+					"Cache-Control",
+					"public, max-age=31536000, immutable",
+				);
+			} else if (pathname.startsWith("/assets/")) {
+				response.headers.set(
+					"Cache-Control",
+					"public, max-age=31536000, immutable",
+				);
+			} else if (pathname.startsWith("/fonts/")) {
+				response.headers.set(
+					"Cache-Control",
+					"public, max-age=2592000, stale-while-revalidate=604800",
+				);
+			} else if (
+				pathname.startsWith("/media/") ||
+				pathname.endsWith(".png") ||
+				pathname.endsWith(".jpg") ||
+				pathname.endsWith(".jpeg") ||
+				pathname.endsWith(".webp") ||
+				pathname.endsWith(".svg") ||
+				pathname.endsWith(".ico") ||
+				pathname.endsWith(".json") ||
+				pathname.endsWith(".xml") ||
+				pathname.endsWith(".txt")
+			) {
+				// Other static assets
+				response.headers.set(
+					"Cache-Control",
+					"public, max-age=604800, stale-while-revalidate=2592000",
+				);
+			}
+			return maybeCompressResponse(adjustedRequest, response);
+		}
 
 		return response;
 	},

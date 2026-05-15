@@ -12,7 +12,7 @@ import type { Contact, Service, ServiceGroup, Staff } from "~/types";
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({
 		staleWhileRevalidate: 60 * 60 * 24 * 7,
-		maxAge: 5,
+		maxAge: 60 * 5,
 	});
 };
 

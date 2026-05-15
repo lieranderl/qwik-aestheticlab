@@ -1,8 +1,9 @@
 import { $, component$ } from "@builder.io/qwik";
+import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
-import { InstagramCard } from "~/components/ui/instagram-card";
 // Import images with vite-imagetools
+import ImgEyebrows1 from "~/media/gallery/eyebrows1.jpg?jsx";
 import ImgManicure1 from "~/media/gallery/manicure1.jpg?jsx";
 import ImgManicure2 from "~/media/gallery/manicure2.jpg?jsx";
 import ImgManicure3 from "~/media/gallery/manicure3.jpg?jsx";
@@ -11,6 +12,7 @@ import ImgPedicure1 from "~/media/gallery/pedicure1.jpg?jsx";
 import ImgPedicure2 from "~/media/gallery/pedicure2.jpg?jsx";
 import ImgPedicure3 from "~/media/gallery/pedicure3.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
+import ImgWork2 from "~/media/gallery/work2.jpg?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export const GalleryGrid = component$(() => {
@@ -52,44 +54,92 @@ export const GalleryGrid = component$(() => {
 					))}
 				</div>
 
-				{/* Instagram Feed Section */}
-				<div class="mt-8">
-					{" "}
-					{/* Reduced margin since static grid is gone */}
-					<FadeUp delay={400} class="mb-10 text-center">
-						<h3 class="font-qestero mb-2 text-2xl">
-							{t("app.contact.instagram@@Follow us on Instagram")}
-						</h3>
-						<a
-							href="https://www.instagram.com/aestheticlabbe"
-							target="_blank"
-							rel="noreferrer"
-							onClick$={$(() => {
-								trackGoogleAnalyticsEvent("instagram_clicked", {
-									placement: "gallery_section",
-									target_type: "profile",
-									link_url: "https://www.instagram.com/aestheticlabbe",
-								});
-							})}
-							class="font-montserrat text-sm tracking-widest text-secondary hover:underline"
-						>
-							@aestheticlabbe
-						</a>
-					</FadeUp>
-					<div class="carousel w-full gap-8 overflow-x-auto pb-4 cursor-grab">
-						{[
-							"DFlEmP1OZ1W",
-							"DE-0hEWOwj0",
-							"DFFkCjRsSYP",
-							"DFIQUnssMp9",
-							"DFU_S0EsHsb",
-						].map((post_id) => (
-							<div key={post_id} class="carousel-item w-81.5 shrink-0">
-								<InstagramCard post_id={post_id} />
+				<FadeUp delay={400}>
+					<a
+						href="https://www.instagram.com/aestheticlabbe"
+						target="_blank"
+						rel="noreferrer"
+						onClick$={$(() => {
+							trackGoogleAnalyticsEvent("instagram_clicked", {
+								placement: "gallery_section",
+								target_type: "profile",
+								link_url: "https://www.instagram.com/aestheticlabbe",
+							});
+						})}
+						class="group mt-8 grid overflow-hidden rounded-[1.25rem] border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:rounded-[2rem]"
+					>
+						<div class="flex flex-col justify-between gap-4 p-5 sm:p-6 md:p-8 lg:p-12">
+							<div class="space-y-3 md:space-y-5">
+								<div class="inline-flex items-center gap-2 text-primary">
+									<SiInstagram class="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
+									<p class="font-montserrat text-[0.65rem] uppercase tracking-[0.22em] md:text-xs md:tracking-[0.28em]">
+										{t("app.instagram.eyebrow@@Instagram")}
+									</p>
+								</div>
+								<h3 class="font-qestero max-w-48 text-[1.25rem] leading-[0.98] text-base-content sm:max-w-60 sm:text-[1.7rem] md:max-w-xl md:text-5xl">
+									{t(
+										"app.instagram.title@@Follow the studio beyond the appointment",
+									)}
+								</h3>
+								<p class="font-montserrat max-w-sm text-[0.92rem] leading-relaxed text-base-content/75 md:max-w-lg md:text-base">
+									{t(
+										"app.instagram.description@@Fresh sets, quiet studio moments, and the details we keep returning to live on our Instagram profile.",
+									)}
+								</p>
 							</div>
-						))}
-					</div>
-				</div>
+
+							<div class="flex flex-col items-start gap-2 md:gap-3">
+								<span class="inline-flex items-center rounded-full border border-base-content/15 px-3 py-1.5 font-montserrat text-[0.72rem] tracking-[0.12em] text-base-content transition-colors group-hover:border-primary/30 group-hover:text-primary md:px-4 md:py-2 md:text-sm md:tracking-[0.18em]">
+									@aestheticlabbe
+								</span>
+								<span class="font-montserrat text-[0.62rem] uppercase tracking-[0.16em] text-base-content/55 md:text-xs md:tracking-[0.24em]">
+									{t("app.instagram.cta@@Open profile")}
+								</span>
+							</div>
+						</div>
+
+						<div class="grid h-[7.5rem] grid-cols-3 bg-base-200 sm:h-[9rem] lg:min-h-[20rem] lg:h-auto lg:grid-cols-[1.25fr_0.75fr]">
+							<div class="overflow-hidden bg-base-100 lg:bg-transparent">
+								<ImgWork2
+									alt={t("app.instagram.alt.studio@@Aesthetic Lab studio work")}
+									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out lg:object-cover lg:p-0 lg:group-hover:scale-105"
+								/>
+							</div>
+							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
+								<ImgEyebrows1
+									alt={t("app.instagram.alt.brows@@Aesthetic Lab brows detail")}
+									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out"
+								/>
+							</div>
+							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
+								<ImgManicure2
+									alt={t(
+										"app.instagram.alt.manicure@@Aesthetic Lab manicure detail",
+									)}
+									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out"
+								/>
+							</div>
+							<div class="hidden grid-rows-2 gap-px bg-base-300 lg:grid">
+								<div class="overflow-hidden">
+									<ImgEyebrows1
+										alt={t(
+											"app.instagram.alt.brows@@Aesthetic Lab brows detail",
+										)}
+										class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+									/>
+								</div>
+								<div class="overflow-hidden">
+									<ImgManicure2
+										alt={t(
+											"app.instagram.alt.manicure@@Aesthetic Lab manicure detail",
+										)}
+										class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+									/>
+								</div>
+							</div>
+						</div>
+					</a>
+				</FadeUp>
 			</div>
 		</section>
 	);

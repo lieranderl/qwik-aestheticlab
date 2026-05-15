@@ -16,8 +16,8 @@ export const Footer = component$(() => {
 				<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
 					{/* Left: Brand & Copyright */}
 					<div class="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
-						<BirdLogo class="h-10 w-auto" />
-						<p class="font-montserrat text-xs tracking-wide opacity-80">
+						<BirdLogo class="h-10 w-auto" aria-label="Aesthetic Lab Logo" />
+						<p class="font-montserrat text-xs tracking-wide text-base-content/90">
 							{t("app.footer.copyright@@Copyright")} ©{" "}
 							{new Date().getFullYear()} -{" "}
 							{t("app.footer.all_rights@@All right reserved")}
@@ -27,13 +27,13 @@ export const Footer = component$(() => {
 					{/* Right: Navigation */}
 					<nav class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 font-montserrat text-sm tracking-wider">
 						<a
-							class="link link-primary"
+							class="font-medium text-base-content underline decoration-base-content/30 underline-offset-4 transition-colors hover:text-primary"
 							href={getLocaleNavLink(location.url.pathname, "privacy-policy")}
 						>
 							{t("app.privacy.privacy_title@@Privacy Policy")}
 						</a>
 						<a
-							class="link link-primary"
+							class="font-medium text-base-content underline decoration-base-content/30 underline-offset-4 transition-colors hover:text-primary"
 							href={getLocaleNavLink(location.url.pathname, "notice")}
 						>
 							{t("app.privacy.important_info@@Important Information")}

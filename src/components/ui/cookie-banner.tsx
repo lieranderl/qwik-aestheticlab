@@ -4,6 +4,7 @@ import { inlineTranslate } from "qwik-speak";
 import {
 	disableAnalytics,
 	enableAnalytics,
+	initializeGoogleAnalytics,
 	readCookieConsent,
 	saveCookieConsent,
 } from "~/shared/cookie-consent";
@@ -18,6 +19,7 @@ export const CookieBanner = component$(() => {
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: Needs client-only storage/script initialization.
 	useVisibleTask$(() => {
+		initializeGoogleAnalytics();
 		const stored = readCookieConsent();
 		if (!stored) {
 			showBanner.value = true;

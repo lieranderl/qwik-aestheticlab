@@ -4,15 +4,21 @@ import type { Service, ServiceGroup } from "~/types";
 // Asset Imports
 // ============================================================================
 
-const ASSETS_GALLERY = import.meta.glob("../media/gallery/*.jpg", {
-	eager: true,
-	import: "default",
-});
+const ASSETS_GALLERY: Record<string, string> = import.meta.glob(
+	"../media/gallery/*.jpg",
+	{
+		eager: true,
+		import: "default",
+	},
+) as Record<string, string>;
 
-const ASSETS_SERVICES = import.meta.glob("../media/services/*.png", {
-	eager: true,
-	import: "default",
-});
+const ASSETS_SERVICES: Record<string, string> = import.meta.glob(
+	"../media/services/*.png",
+	{
+		eager: true,
+		import: "default",
+	},
+) as Record<string, string>;
 
 // ============================================================================
 // Image Configuration
@@ -60,25 +66,22 @@ function mapName(name: string): string {
 // ============================================================================
 
 /** Get cover image for a service group (from services/ folder) */
-export function getGroupCoverImage(
-	category: ServiceGroup | undefined,
-): unknown {
+export function getGroupCoverImage(category: ServiceGroup | undefined): string {
 	const name = category?.name_en || category?.name || "";
 	const mapped = mapName(name);
-
 	for (const path in ASSETS_SERVICES) {
 		if (path.toLowerCase().includes(mapped)) {
-			return ASSETS_SERVICES[path];
+			return `service:${mapped}.png`;
 		}
 	}
-	return ASSETS_GALLERY["../media/gallery/universal.jpg"];
+	return "gallery:universal.jpg";
 }
 
 /** Get image for individual service (from gallery/ folder with rotation) */
 export function getServiceItemImage(
 	category: ServiceGroup | undefined,
 	index = 0,
-): unknown {
+): string {
 	const categoryName = category?.name_en || category?.name || "";
 	const mapped = mapName(categoryName);
 	const config = GALLERY_CONFIG[mapped];
@@ -87,23 +90,22 @@ export function getServiceItemImage(
 		const num = (index % config.count) + 1;
 		const key = `../media/gallery/${config.prefix}${num}.jpg`;
 		if (ASSETS_GALLERY[key]) {
-			return ASSETS_GALLERY[key];
+			return `gallery:${config.prefix}${num}.jpg`;
 		}
 	}
 
 	return getGroupCoverImage(category);
 }
 
-/** Resolve cover image by name */
-export function resolveCoverImage(imageName: string): unknown {
+export function resolveCoverImage(imageName: string): string {
 	const mapped = mapName(imageName);
 
 	for (const path in ASSETS_SERVICES) {
 		if (path.toLowerCase().includes(mapped)) {
-			return ASSETS_SERVICES[path];
+			return `service:${mapped}.png`;
 		}
 	}
-	return ASSETS_GALLERY["../media/gallery/universal.jpg"];
+	return "gallery:universal.jpg";
 }
 
 // ============================================================================

@@ -72,7 +72,16 @@
       "view_services": "Bekijk diensten"
     },
     "instagram": {
+      "alt": {
+        "brows": "Detail van wenkbrauwen bij Aesthetic Lab",
+        "manicure": "Detail van manicure bij Aesthetic Lab",
+        "studio": "Studiowerk van Aesthetic Lab"
+      },
+      "cta": "Bekijk profiel",
+      "description": "Ons recente werk, de rustige sfeer in de studio en het oog voor detail krijgen een vervolg op Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "Een bericht gedeeld door AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Volg de studio ook buiten je afspraak om",
       "view_post": "Bekijk dit bericht op Instagram"
     },
     "modal": {

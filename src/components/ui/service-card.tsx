@@ -4,12 +4,49 @@ import { inlineTranslate } from "qwik-speak";
 import { Booking } from "./booking-modal";
 import { FadeUp } from "./fade-up";
 
+type ServiceImageComponent =
+	typeof import("~/media/gallery/universal.jpg?jsx").default;
+
+const GALLERY_IMAGES = import.meta.glob("../../media/gallery/*.jpg", {
+	eager: true,
+	query: "?jsx",
+	import: "default",
+}) as Record<string, ServiceImageComponent>;
+
+const SERVICE_IMAGES = import.meta.glob("../../media/services/*.png", {
+	eager: true,
+	query: "?jsx",
+	import: "default",
+}) as Record<string, ServiceImageComponent>;
+
+function resolveImageComponent(image: string) {
+	if (image.startsWith("gallery:")) {
+		const imageName = image.slice("gallery:".length).replace(/\.jpg$/i, "");
+		for (const path in GALLERY_IMAGES) {
+			if (path.endsWith(`/${imageName}.jpg`)) {
+				return GALLERY_IMAGES[path];
+			}
+		}
+		return null;
+	}
+
+	if (image.startsWith("service:")) {
+		const imageName = image.slice("service:".length).replace(/\.png$/i, "");
+		for (const path in SERVICE_IMAGES) {
+			if (path.endsWith(`/${imageName}.png`)) {
+				return SERVICE_IMAGES[path];
+			}
+		}
+	}
+
+	return null;
+}
+
 interface ServiceCardProps {
 	title: string;
 	description: string;
 	price?: string;
-	// biome-ignore lint/suspicious/noExplicitAny: Generic component prop
-	image: any;
+	image: string;
 	delay?: number;
 	serviceId: string;
 	location: string;
@@ -21,6 +58,7 @@ interface ServiceCardProps {
 	supportingText?: string;
 	analyticsPlacement?: string;
 	analyticsServiceCategory?: string;
+	eager?: boolean;
 }
 
 export const ServiceCard = component$<ServiceCardProps>(
@@ -28,7 +66,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 		title,
 		description,
 		price,
-		image: ImageComp,
+		image,
 		delay = 0,
 		serviceId,
 		location,
@@ -40,10 +78,12 @@ export const ServiceCard = component$<ServiceCardProps>(
 		supportingText,
 		analyticsPlacement,
 		analyticsServiceCategory,
+		eager = false,
 	}) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
 		const hasLongDescription = description.length > 140;
+		const ImageComp = resolveImageComponent(image);
 
 		return (
 			<FadeUp delay={delay} class="h-full">
@@ -51,21 +91,25 @@ export const ServiceCard = component$<ServiceCardProps>(
 					<figure
 						class={[
 							"group relative overflow-hidden bg-base-200",
-							variant === "category" ? "aspect-[5/4]" : "aspect-[4/3]",
+							variant === "category" ? "aspect-5/4" : "aspect-4/3",
 						]}
 					>
-						{typeof ImageComp === "string" ? (
+						{ImageComp ? (
+							<ImageComp
+								alt={title}
+								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+								loading={eager ? "eager" : "lazy"}
+								fetchPriority={eager ? "high" : "auto"}
+							/>
+						) : (
 							<img
-								src={ImageComp}
+								src={image}
 								alt={title}
 								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
 								width="400"
 								height="500"
-							/>
-						) : (
-							<ImageComp
-								alt={title}
-								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+								loading={eager ? "eager" : "lazy"}
+								fetchPriority={eager ? "high" : "auto"}
 							/>
 						)}
 						<div class="absolute inset-0 bg-linear-to-t from-base-content/75 via-base-content/10 to-transparent" />

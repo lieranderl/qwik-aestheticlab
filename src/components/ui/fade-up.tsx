@@ -6,6 +6,39 @@ import {
 	useVisibleTask$,
 } from "@builder.io/qwik";
 
+interface SharedObserverEntry {
+	callbacks: WeakMap<Element, (entry: IntersectionObserverEntry) => void>;
+	observer: IntersectionObserver;
+}
+
+const sharedObservers = new Map<string, SharedObserverEntry>();
+
+function getSharedObserver(rootMargin: number, threshold: number) {
+	const key = `${rootMargin}:${threshold}`;
+	const existing = sharedObservers.get(key);
+	if (existing) return existing;
+
+	const callbacks = new WeakMap<
+		Element,
+		(entry: IntersectionObserverEntry) => void
+	>();
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				callbacks.get(entry.target)?.(entry);
+			}
+		},
+		{
+			threshold,
+			rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
+		},
+	);
+
+	const shared = { callbacks, observer };
+	sharedObservers.set(key, shared);
+	return shared;
+}
+
 interface FadeUpProps {
 	delay?: number;
 	duration?: number;
@@ -66,24 +99,23 @@ export const FadeUp = component$(
 				state.value = delay > 0 ? "visible" : "immediate";
 			}
 
-			const observer = new IntersectionObserver(
-				([entry]) => {
-					if (entry.isIntersecting) {
-						state.value = "visible";
-						if (runOnce) observer.disconnect();
-					} else if (!runOnce) {
-						state.value = "hidden";
+			const sharedObserver = getSharedObserver(rootMargin, threshold);
+			sharedObserver.callbacks.set(el, (entry) => {
+				if (entry.isIntersecting) {
+					state.value = "visible";
+					if (runOnce) {
+						sharedObserver.observer.unobserve(el);
+						sharedObserver.callbacks.delete(el);
 					}
-				},
-				{
-					threshold,
-					rootMargin: `${rootMargin}px 0px -${rootMargin}px 0px`,
-				},
-			);
+				} else if (!runOnce) {
+					state.value = "hidden";
+				}
+			});
 
-			observer.observe(el);
+			sharedObserver.observer.observe(el);
 			cleanup(() => {
-				observer.disconnect();
+				sharedObserver.observer.unobserve(el);
+				sharedObserver.callbacks.delete(el);
 			});
 		});
 

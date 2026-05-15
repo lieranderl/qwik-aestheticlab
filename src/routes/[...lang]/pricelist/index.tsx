@@ -190,6 +190,8 @@ export default component$(() => {
 						<ImgPricelistHero
 							alt="Services Background"
 							class="h-full w-full object-cover brightness-[0.85] saturate-90"
+							loading="eager"
+							fetchPriority="high"
 						/>
 						<div class="absolute inset-0 bg-linear-to-b from-black/60 via-black/30 to-black/60" />
 					</div>

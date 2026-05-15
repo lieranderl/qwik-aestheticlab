@@ -10,7 +10,7 @@ export const AboutSection = component$(() => {
 	return (
 		<section id="about" class="relative py-32 overflow-hidden">
 			{/* Background Decor - Watermark & Blobs */}
-			<div class="absolute top-10 left-0 w-full text-center md:text-left md:w-auto md:left-10 text-[12vw] md:text-[8vw] font-qestero leading-none text-secondary/40 select-none pointer-events-none z-0">
+			<div class="absolute top-10 left-0 w-full text-center md:text-left md:w-auto md:left-10 text-[12vw] md:text-[8vw] font-qestero leading-none text-primary/55 select-none pointer-events-none z-0">
 				Aesthetic Lab
 			</div>
 			<div class="absolute -right-20 top-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[100px] animate-pulse-slow" />

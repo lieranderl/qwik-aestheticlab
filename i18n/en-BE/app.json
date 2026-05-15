@@ -72,7 +72,16 @@
       "view_services": "View Services"
     },
     "instagram": {
+      "alt": {
+        "brows": "Aesthetic Lab brows detail",
+        "manicure": "Aesthetic Lab manicure detail",
+        "studio": "Aesthetic Lab studio work"
+      },
+      "cta": "Visit profile",
+      "description": "Our latest work, quiet studio moments, and the details that shape Aesthetic Lab continue on Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Follow the studio beyond your appointment",
       "view_post": "View this post on Instagram"
     },
     "modal": {

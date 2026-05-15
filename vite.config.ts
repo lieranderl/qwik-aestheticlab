@@ -3,12 +3,15 @@
  * When building, the adapter config is used which loads this file and extends it.
  */
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { qwikSpeakInline } from "qwik-speak/inline";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import pkg from "./package.json";
 
@@ -29,6 +32,11 @@ export default defineConfig(({ mode }) => {
 	const isTest = mode === "test";
 
 	return {
+		resolve: {
+			alias: {
+				"~": path.resolve(__dirname, "./src"),
+			},
+		},
 		test: {
 			globals: true,
 			environment: "node",
@@ -38,7 +46,6 @@ export default defineConfig(({ mode }) => {
 			tailwindcss(),
 			!isTest && qwikCity(),
 			qwikVite(),
-			tsconfigPaths(),
 			!isTest &&
 				qwikSpeakInline({
 					supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE"],

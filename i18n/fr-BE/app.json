@@ -72,7 +72,16 @@
       "view_services": "Voir les services"
     },
     "instagram": {
+      "alt": {
+        "brows": "Détail des sourcils chez Aesthetic Lab",
+        "manicure": "Détail de manucure chez Aesthetic Lab",
+        "studio": "Travail en studio chez Aesthetic Lab"
+      },
+      "cta": "Voir le profil",
+      "description": "Nos réalisations récentes, l’atmosphère du studio et le sens du détail se prolongent sur Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "Une publication partagée par AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Suivez le studio au-delà de votre rendez-vous",
       "view_post": "Voir cette publication sur Instagram"
     },
     "modal": {

@@ -87,15 +87,19 @@ export const ReviewsSection = component$(() => {
 					</h2>
 					<div class="mx-auto h-px w-20 bg-primary mb-6" />
 					<div class="flex items-center justify-center gap-2 mb-2">
+						<span class="sr-only">
+							{t("app.reviews.rating_aria@@5 out of 5 stars")}
+						</span>
 						{/* 5 Stars SVG */}
 						{/* 5 Stars DaisyUI */}
-						<div class="rating rating-md gap-1">
+						<div class="rating rating-md gap-1" aria-hidden="true">
 							{[1, 2, 3, 4, 5].map((i) => (
 								<input
 									key={i}
 									type="radio"
 									name="rating-header"
 									class="mask mask-star-2 bg-warning"
+									aria-label={`${i} star${i > 1 ? "s" : ""}`}
 									checked
 									disabled
 								/>
@@ -136,21 +140,25 @@ export const ReviewsSection = component$(() => {
 					{allReviews.map((review, index) => (
 						<div
 							key={`${review.author}-${index}`}
-							class="w-[300px] md:w-[400px] bg-base-100 p-8 rounded-2xl shadow-sm border border-base-200 flex flex-col justify-between shrink-0"
+							class="w-75 md:w-100 bg-base-100 p-8 rounded-2xl shadow-sm border border-base-200 flex flex-col justify-between shrink-0"
 						>
 							<div>
-								<div class="rating rating-sm gap-0.5 mb-4">
+								<span class="sr-only">
+									{t("app.reviews.rating_aria@@5 out of 5 stars")}
+								</span>
+								<div class="rating rating-sm gap-0.5 mb-4" aria-hidden="true">
 									{[1, 2, 3, 4, 5].map((i) => (
 										<input
 											key={i}
 											type="radio"
 											name={`rating-${index}`}
 											class="mask mask-star-2 bg-warning"
+											aria-label={`${i} star${i > 1 ? "s" : ""}`}
 											checked
 											disabled
 										/>
 									))}
-								</div>
+								</div>{" "}
 								<p class="font-montserrat text-sm  leading-relaxed italic line-clamp-6">
 									"{review.text}"
 								</p>
@@ -163,7 +171,7 @@ export const ReviewsSection = component$(() => {
 									<p class="font-montserrat font-semibold text-sm">
 										{review.author}
 									</p>
-									<p class="text-xs text-base-content/60">Google Review</p>
+									<p class="text-xs text-base-content/80">Google Review</p>
 								</div>
 							</div>
 						</div>

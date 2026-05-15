@@ -11,8 +11,6 @@ import "./global.css";
 import { useQwikSpeak, useSpeakLocale } from "qwik-speak";
 import { GoogleAnalytics } from "./components/ui/google-analytics";
 import { JSON_LD } from "./constants/metadata";
-import { gaMeasurementId } from "./consts";
-import { getGoogleAnalyticsBootstrapScript } from "./shared/cookie-consent";
 import { config } from "./speak-config";
 import { translationFn } from "./speak-functions";
 
@@ -31,25 +29,18 @@ export default component$(() => {
 				<meta charset="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+				<link
+					rel="preload"
+					href="/fonts/montserrat-var.woff2"
+					as="font"
+					type="font/woff2"
+					crossOrigin="anonymous"
+				/>
 				{!isDev && (
 					<script
 						type="application/ld+json"
 						dangerouslySetInnerHTML={JSON.stringify(JSON_LD)}
 					/>
-				)}
-
-				<script async src="https://www.instagram.com/embed.js" />
-
-				{!isDev && (
-					<>
-						<script
-							dangerouslySetInnerHTML={getGoogleAnalyticsBootstrapScript()}
-						/>
-						<script
-							async
-							src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-						/>
-					</>
 				)}
 
 				{!isDev && (
