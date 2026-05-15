@@ -11,19 +11,19 @@ export const RotatingText = component$(() => {
 
 				<span class="text-rotate text-left overflow-hidden inline-flex flex-col">
 					<span class="font-bold justify-items-center">
-						<span class="block px-2 text-pink-500 ">
+						<span class="block px-2 text-accent">
 							{t("app.hero.manicure@@manicure")}
 						</span>
-						<span class="block px-2 text-rose-500 ">
+						<span class="block px-2 text-primary">
 							{t("app.hero.pedicure@@pedicure")}
 						</span>
-						<span class="block px-2 text-fuchsia-600 ">
+						<span class="block px-2 text-secondary">
 							{t("app.hero.brows@@brows")}
 						</span>
-						<span class="block px-2 text-violet-600">
+						<span class="block px-2 text-accent/85">
 							{t("app.hero.lashes@@lashes")}
 						</span>
-						<span class="block px-2 text-indigo-600">
+						<span class="block px-2 text-primary/85">
 							{t("app.hero.laser@@laser")}
 						</span>
 					</span>

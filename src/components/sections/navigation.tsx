@@ -17,6 +17,7 @@ export const Navigation = component$(() => {
 	const location = useLocation();
 	const isScrolled = useSignal(false);
 	const isMobileMenuOpen = useSignal(false);
+	const mobileMenuId = "mobile-navigation-menu";
 
 	// Inline nav links to avoid Qwik serialization issues with t function
 	const navLinks = [
@@ -32,6 +33,15 @@ export const Navigation = component$(() => {
 		"scroll",
 		$(() => {
 			isScrolled.value = window.scrollY > 50;
+		}),
+	);
+
+	useOnWindow(
+		"keydown",
+		$((event) => {
+			if ((event as KeyboardEvent).key === "Escape") {
+				isMobileMenuOpen.value = false;
+			}
 		}),
 	);
 
@@ -132,6 +142,8 @@ export const Navigation = component$(() => {
 									isMobileMenuOpen.value = !isMobileMenuOpen.value;
 								})}
 								aria-label="Open menu"
+								aria-controls={mobileMenuId}
+								aria-expanded={isMobileMenuOpen.value}
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -154,55 +166,60 @@ export const Navigation = component$(() => {
 				</div>
 			</header>
 
-			{/* Mobile Menu Overlay */}
-			<div
-				class={`fixed inset-0 z-110 bg-base-200 flex flex-col items-center justify-center gap-8 transition-transform duration-300 overflow-y-auto lg:hidden ${isMobileMenuOpen.value ? "translate-x-0" : "translate-x-full"}`}
-			>
-				{/* Close Button inside Menu */}
-				<button
-					type="button"
-					class="absolute top-6 right-6 p-2 hover:scale-110 transition-transform"
-					onClick$={$(() => {
-						isMobileMenuOpen.value = false;
-					})}
-					aria-label="Close menu"
+			{isMobileMenuOpen.value ? (
+				<div
+					id={mobileMenuId}
+					role="dialog"
+					aria-modal="true"
+					class="fixed inset-0 z-120 bg-base-200 flex flex-col items-center justify-center gap-8 overflow-y-auto lg:hidden"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width={1.5}
-						stroke="currentColor"
-						class="w-8 h-8"
-						aria-hidden="true"
+					{/* Close Button inside Menu */}
+					<button
+						type="button"
+						class="absolute top-6 right-6 p-2 hover:scale-110 transition-transform"
+						onClick$={$(() => {
+							isMobileMenuOpen.value = false;
+						})}
+						aria-label="Close menu"
+						aria-controls={mobileMenuId}
 					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</button>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width={1.5}
+							stroke="currentColor"
+							class="w-8 h-8"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</button>
 
-				<ul class="flex flex-col items-center gap-8 mt-16">
-					{navLinks.map((item) => (
-						<li key={item.label}>
-							<a
-								href={getLocaleNavLink(location.url.pathname, item.href)}
-								class="font-qestero text-3xl"
-								onClick$={$(() => {
-									isMobileMenuOpen.value = false;
-								})}
-							>
-								{item.label}
-							</a>
+					<ul class="flex flex-col items-center gap-8 mt-16">
+						{navLinks.map((item) => (
+							<li key={item.label}>
+								<a
+									href={getLocaleNavLink(location.url.pathname, item.href)}
+									class="font-qestero text-3xl"
+									onClick$={$(() => {
+										isMobileMenuOpen.value = false;
+									})}
+								>
+									{item.label}
+								</a>
+							</li>
+						))}
+						<li>
+							<LanguageSwitcher />
 						</li>
-					))}
-					<li>
-						<LanguageSwitcher />
-					</li>
-				</ul>
-			</div>
+					</ul>
+				</div>
+			) : null}
 		</>
 	);
 });

@@ -100,10 +100,10 @@ export const CookieBanner = component$(() => {
 			)}
 
 			{hasChoice.value && !showBanner.value && (
-				<div class="fixed bottom-4 left-4 z-110">
+				<div class="fixed right-2 bottom-2 z-110 md:right-auto md:bottom-4 md:left-4">
 					<button
 						type="button"
-						class="btn btn-xs btn-ghost rounded-full border border-base-content/20 bg-base-100/85 backdrop-blur"
+						class="btn btn-xs btn-ghost min-h-7 rounded-full border border-base-content/20 bg-base-100/85 px-2 text-xs backdrop-blur md:min-h-8 md:px-3"
 						onClick$={openSettings}
 					>
 						{t("app.cookies.settings@@Cookie settings")}

@@ -11,7 +11,7 @@ export const HeroSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section class="relative flex `min-h-svh w-full items-center justify-center overflow-hidden pt-[calc(env(safe-area-inset-top)+6rem)] pb-16 md:pt-[calc(env(safe-area-inset-top)+7rem)] md:pb-20">
+		<section class="relative flex min-h-svh w-full items-center justify-center overflow-hidden pt-[calc(env(safe-area-inset-top)+6rem)] pb-16 md:pt-[calc(env(safe-area-inset-top)+7rem)] md:pb-20">
 			{/* Decorative Background Elements - Enhanced Atmosphere */}
 			<div class="absolute -left-20 top-0 h-150 w-150 rounded-full bg-primary/20 blur-[120px] animate-pulse-slow" />
 			<div
@@ -57,13 +57,13 @@ export const HeroSection = component$(() => {
 						id="hero-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
 						location="372146"
-						classes="hidden md:inline-flex btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
+						classes="inline-flex w-full max-w-xs justify-center sm:w-auto btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 						analyticsPlacement="hero"
 					/>
 
 					<a
 						href="#services"
-						class="btn btn-primary btn-lg btn-outline font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
+						class="btn btn-primary btn-lg btn-outline w-full max-w-xs sm:w-auto font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300"
 					>
 						<span class="text-xs md:text-sm">
 							{t("app.hero.view_services@@View Services")}

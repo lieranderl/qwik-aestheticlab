@@ -4,7 +4,6 @@
 @theme {
   --font-qestero: "qestero", "Cormorant Garamond", serif;
   --font-montserrat: "Montserrat", "sans-serif";
-  --font-inter: "Inter", "sans-serif";
 }
 
 @layer components {
@@ -117,6 +116,12 @@ body::before {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .animate-float,
+  .animate-float-reverse,
+  .animate-pulse-slow {
+    animation: none !important;
   }
 }
 

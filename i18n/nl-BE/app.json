@@ -115,6 +115,10 @@
       "description": "Als u binnen de eerste 3 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
       "title": "Gratis herstelbeleid"
     },
+    "pricelist": {
+      "category_label": "Categorie",
+      "category_nav": "Servicecategorieën"
+    },
     "privacy": {
       "changes": "7. Wijzigingen in dit beleid",
       "changes_text": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. De nieuwste versie is altijd beschikbaar op onze website.",
@@ -156,6 +160,7 @@
       "brows_lashes_title": "Wenkbrauwen & Wimpers",
       "default_category": "Diensten",
       "duration": "Duur:",
+      "from_price": "Vanaf",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
       "laser_body_title": "Laserontharing LICHAAM",
       "laser_category": "Laser",

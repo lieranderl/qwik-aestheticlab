@@ -115,6 +115,10 @@
       "description": "If you experience any issues with your manicure within the first 3 days after your appointment, you are welcome to come back for a free correction.",
       "title": "Complimentary Fix Policy"
     },
+    "pricelist": {
+      "category_label": "Category",
+      "category_nav": "Service categories"
+    },
     "privacy": {
       "changes": "7. Changes to This Policy",
       "changes_text": "We may update this Privacy Policy from time to time. The latest version will always be available on our website.",
@@ -156,6 +160,7 @@
       "brows_lashes_title": "Brows & Lashes",
       "default_category": "Services",
       "duration": "Duration:",
+      "from_price": "From",
       "general_desc": "Professional beauty treatments for your refined look.",
       "laser_category": "Laser",
       "laser_desc": "Safe, effective, and painless technology for smooth skin.",

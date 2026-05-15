@@ -115,6 +115,10 @@
       "description": "Si vous rencontrez des problèmes avec votre manucure dans les 3 premiers jours suivant votre rendez-vous, vous êtes invités à revenir pour une correction gratuite.",
       "title": "Politique de correction gratuite"
     },
+    "pricelist": {
+      "category_label": "Catégorie",
+      "category_nav": "Catégories de services"
+    },
     "privacy": {
       "changes": "7. Modifications de cette politique",
       "changes_text": "Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. La dernière version sera toujours disponible sur notre site Web.",
@@ -156,6 +160,7 @@
       "brows_lashes_title": "Sourcils & Cils",
       "default_category": "Services",
       "duration": "Durée :",
+      "from_price": "À partir de",
       "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
       "laser_body_title": "Épilation laser CORPS",
       "laser_category": "Laser",
