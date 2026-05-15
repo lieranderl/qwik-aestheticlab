@@ -1,7 +1,22 @@
-import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { $, component$, useStyles$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
+
+const marqueeStyles = `
+@keyframes reviews-scroll {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}
+
+.reviews-animate-scroll {
+	animation: reviews-scroll var(--scroll-duration, 60s) linear infinite;
+}
+
+.reviews-animate-scroll:hover {
+	animation-play-state: paused;
+}
+`;
 
 interface Review {
 	author: string;
@@ -12,7 +27,7 @@ interface Review {
 
 export const ReviewsSection = component$(() => {
 	const t = inlineTranslate();
-	const scrollerRef = useSignal<HTMLDivElement>();
+	useStyles$(marqueeStyles);
 
 	// Extracted from Google Maps
 	const reviews: Review[] = [
@@ -62,17 +77,6 @@ export const ReviewsSection = component$(() => {
 
 	// Infinite scroll animation duplication
 	const allReviews = [...reviews, ...reviews];
-
-	// eslint-disable-next-line qwik/no-use-visible-task
-	useTask$(() => {
-		if (typeof window !== "undefined") {
-			const scroller = scrollerRef.value;
-			if (!scroller) return;
-
-			// Simple auto-scroll logic or just leave it to CSS animation
-			// Using CSS animation is smoother.
-		}
-	});
 
 	return (
 		<section class="py-24 bg-base-200 overflow-hidden relative">
@@ -124,7 +128,7 @@ export const ReviewsSection = component$(() => {
 
 				{/* Scrolling Track */}
 				<div
-					class="flex gap-6 md:gap-8 w-max animate-scroll"
+					class="flex gap-6 md:gap-8 w-max reviews-animate-scroll"
 					style={{
 						"--scroll-duration": "60s",
 					}}
@@ -166,19 +170,6 @@ export const ReviewsSection = component$(() => {
 					))}
 				</div>
 			</div>
-
-			<style>{`
-          @keyframes scroll {
-             0% { transform: translateX(0); }
-             100% { transform: translateX(-50%); }
-          }
-          .animate-scroll {
-             animation: scroll 60s linear infinite;
-          }
-          .animate-scroll:hover {
-             animation-play-state: paused;
-          }
-       `}</style>
 		</section>
 	);
 });

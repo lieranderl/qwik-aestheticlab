@@ -85,9 +85,19 @@ function getCategoryDescription(
 	return labels.general;
 }
 
-function getCategoryStartingPrice(groupServices: Service[]) {
+function formatPremiumPrice(price: number) {
+	const formattedPrice = formatPrice(price).replace(/\u00a0/g, " ");
+	const amount = formattedPrice.replace(/\s*€$/, "");
+	const englishAmount = amount.replace(/\./g, ",").replace(/,(\d{2})$/, ".$1");
+	return `€${englishAmount}`;
+}
+
+function getCategoryStartingPrice(groupServices: Service[], fromLabel: string) {
 	if (groupServices.length === 0) return undefined;
-	return `${formatPrice(groupServices[0].price)}+`;
+	const startingPrice = Math.min(
+		...groupServices.map((service) => service.price),
+	);
+	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
 }
 
 export const ServiceGrid = component$<ServiceGridProps>(
@@ -109,6 +119,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		const viewTreatmentsLabel = t(
 			"app.services.view_treatments@@View Treatments",
 		);
+		const fromPriceLabel = t("app.services.from_price@@From");
 		const laserCategoryLabel = t("app.services.laser_category@@Laser");
 		const categoryDescriptionLabels = {
 			manicure: t(
@@ -364,10 +375,12 @@ export const ServiceGrid = component$<ServiceGridProps>(
 													</span>
 													{getCategoryStartingPrice(
 														activeDetailGroup.value.groupServices,
+														fromPriceLabel,
 													) ? (
 														<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
 															{getCategoryStartingPrice(
 																activeDetailGroup.value.groupServices,
+																fromPriceLabel,
 															)}
 														</span>
 													) : null}
@@ -451,7 +464,10 @@ export const ServiceGrid = component$<ServiceGridProps>(
 													categoryDescriptionLabels,
 												)}
 												image={resolveCoverImage(group.coverImageName)}
-												price={getCategoryStartingPrice(group.groupServices)}
+												price={getCategoryStartingPrice(
+													group.groupServices,
+													fromPriceLabel,
+												)}
 												supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 												customAction$={$(() => {
 													openLaserSubgroup(
@@ -530,7 +546,10 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										title={displayCategoryName}
 										description={description}
 										image={resolveCoverImage(group.coverImageName)}
-										price={getCategoryStartingPrice(group.groupServices)}
+										price={getCategoryStartingPrice(
+											group.groupServices,
+											fromPriceLabel,
+										)}
 										supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 										customAction$={$(() => {
 											openCategory(
