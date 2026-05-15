@@ -52,7 +52,7 @@
 		"ignore": "^7.0.5",
 		"lint-staged": "^16.4.0",
 		"luxon": "^3.7.2",
-		"qwik-speak": "^0.23.2",
+		"qwik-speak": "^0.24.0",
 		"typescript": "5.4.5",
 		"typescript-plugin-css-modules": "latest",
 		"undici": "^7.25.0",

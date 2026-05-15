@@ -28,7 +28,7 @@
         "ignore": "^7.0.5",
         "lint-staged": "^16.4.0",
         "luxon": "^3.7.2",
-        "qwik-speak": "^0.23.2",
+        "qwik-speak": "^0.24.0",
         "typescript": "5.4.5",
         "typescript-plugin-css-modules": "latest",
         "undici": "^7.25.0",
@@ -778,7 +778,7 @@
 
     "prr": ["prr@1.0.1", "", {}, "sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw=="],
 
-    "qwik-speak": ["qwik-speak@0.23.2", "", { "peerDependencies": { "@builder.io/qwik": ">=1.5.5" }, "bin": { "qwik-speak-extract": "extract/cli.js" } }, "sha512-jdfSO0LTUWgwwKipJSIRuP5kE7VqjZjdpbumCaZK2/Dd8Cr/3+oTOAbekv0QPTvhzvcsHBAoSOsyzm2leFfGlw=="],
+    "qwik-speak": ["qwik-speak@0.24.0", "", { "peerDependencies": { "@builder.io/qwik": ">=1.5.5" }, "bin": { "qwik-speak-extract": "extract/cli.js" } }, "sha512-ZYhb5ZjHmLZX40xw/pTciyHvPAR0uKQKnoyD5XEYZsIfLNsJb22m/Ct3/FuGbiJQ3o2HkgRmC+mj8sd8SjdELg=="],
 
     "readdirp": ["readdirp@4.1.2", "", {}, "sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg=="],
 
