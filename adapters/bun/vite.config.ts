@@ -7,23 +7,23 @@ import baseConfig from "../../vite.config";
 globalThis.TextEncoderStream ||= _TextEncoderStream_polyfill;
 
 export default extendConfig(baseConfig, () => {
-	return {
-		build: {
-			ssr: true,
-			rollupOptions: {
-				input: ["src/entry.bun.ts", "@qwik-city-plan"],
-			},
-			minify: true,
-		},
-		plugins: [
-			bunServerAdapter({
-				ssg: {
-					include: ["/*"],
-					origin: "https://aestheticlab.be",
-					sitemapOutFile: "sitemap.xml",
-					maxWorkers: 1, // Limit Workers to 1, otherwise SSG will hang when compiling Qwik City app with `bun run --bun build`.
-				},
-			}),
-		],
-	};
+  return {
+    build: {
+      ssr: true,
+      rollupOptions: {
+        input: ["src/entry.bun.ts", "@qwik-city-plan"],
+      },
+      minify: true,
+    },
+    plugins: [
+      bunServerAdapter({
+        ssg: {
+          include: ["/*"],
+          origin: "https://aestheticlab.be",
+          sitemapOutFile: "sitemap.xml",
+          maxWorkers: 1, // Limit Workers to 1, otherwise SSG will hang when compiling Qwik City app with `bun run --bun build`.
+        },
+      }),
+    ],
+  };
 });
