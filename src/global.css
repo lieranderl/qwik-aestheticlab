@@ -9,6 +9,26 @@
   .custom-container {
     @apply container mx-auto px-4 md:px-16 lg:px-32 xl:px-48;
   }
+
+  .editorial-kicker {
+    @apply font-montserrat text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary md:text-xs md:tracking-[0.28em];
+  }
+
+  .editorial-rule {
+    @apply h-px bg-primary/60;
+  }
+
+  .scroll-fade-x {
+    mask-image: linear-gradient(90deg, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent 100%);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Montserrat - Variable Font */

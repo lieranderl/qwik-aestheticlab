@@ -61,16 +61,16 @@ const PricelistServiceItem = component$(
 		const readMoreLabel = t("app.common.read_more@@Read More");
 
 		return (
-			<div class="group rounded-2xl px-3.5 md:px-6 py-3.5 md:py-5 bg-base-100/60">
+			<div class="group rounded-2xl bg-base-100/60 px-3.5 py-3.5 md:px-6 md:py-5">
 				{/* Header Row: Title --- Price */}
-				<div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1.5 md:mb-2 gap-1.5 md:gap-0">
-					<div class="flex items-baseline grow min-w-0">
-						<h3 class="font-qestero font-semibold tracking-wide text-base md:text-2xl text-base-content pr-3 md:pr-4">
+				<div class="mb-1.5 flex flex-col gap-1.5 md:mb-2 md:flex-row md:items-baseline md:justify-between md:gap-0">
+					<div class="flex min-w-0 grow items-baseline">
+						<h3 class="pr-3 font-qestero text-base font-semibold tracking-wide text-base-content md:pr-4 md:text-2xl">
 							{service.name.charAt(0).toUpperCase() + service.name.slice(1)}
 						</h3>
 						<div class="hidden md:block grow border-b border-dotted border-base-200 mx-2 relative -top-1.5 opacity-70 min-w-5"></div>
 					</div>
-					<span class="font-montserrat text-xs md:text-base font-semibold shrink-0 md:pl-4 self-end md:self-auto bg-base-200/40 text-base-content rounded-full px-3 md:px-4 py-1">
+					<span class="self-end shrink-0 rounded-full bg-base-200/40 px-3 py-1 font-montserrat text-xs font-semibold text-base-content md:self-auto md:px-4 md:pl-4 md:text-base">
 						{formatPremiumPrice(service.price)}
 					</span>
 				</div>
@@ -78,7 +78,7 @@ const PricelistServiceItem = component$(
 				{/* Description with expand/collapse on mobile */}
 				<div class="mb-2">
 					<p
-						class={`font-montserrat text-xs md:text-sm text-base-content/80 max-w-2xl ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
+						class={`max-w-2xl font-montserrat text-xs text-base-content/80 md:text-sm ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
 					>
 						{service.description}
 					</p>
@@ -88,7 +88,7 @@ const PricelistServiceItem = component$(
 							onClick$={$(() => {
 								isExpanded.value = !isExpanded.value;
 							})}
-							class="md:hidden text-[10px] text-primary font-medium mt-1 hover:underline"
+							class="mt-1 text-[10px] font-medium text-primary hover:underline md:hidden"
 						>
 							{isExpanded.value ? readLessLabel : readMoreLabel}
 						</button>
@@ -97,8 +97,8 @@ const PricelistServiceItem = component$(
 
 				{/* Meta: Duration */}
 				{service.duration && (
-					<div class="flex items-center gap-2 text-[10px] md:text-xs font-medium text-primary uppercase tracking-wider">
-						<span class="inline-flex items-center justify-center h-6 md:h-7 px-2.5 md:px-3 rounded-full bg-primary/10 text-primary">
+					<div class="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wider text-primary md:text-xs">
+						<span class="inline-flex h-6 items-center justify-center rounded-full bg-primary/10 px-2.5 text-primary md:h-7 md:px-3">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="12"
@@ -185,7 +185,7 @@ export default component$(() => {
 
 			<main>
 				{/* Hero */}
-				<div class="relative h-[42vh] md:h-[48vh] min-h-96 md:min-h-120 flex items-center justify-center overflow-hidden">
+				<div class="relative flex h-[34vh] min-h-72 items-center justify-center overflow-hidden md:h-[48vh] md:min-h-120">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
 							alt="Services Background"
@@ -195,7 +195,7 @@ export default component$(() => {
 						/>
 						<div class="absolute inset-0 bg-linear-to-b from-black/60 via-black/30 to-black/60" />
 					</div>
-					<div class="relative z-10 text-center p-5 md:p-6 text-white max-w-2xl">
+					<div class="relative z-10 max-w-2xl p-5 text-center text-white md:p-6">
 						<FadeUp>
 							<div class="inline-flex items-center gap-2 bg-base-100/10 border border-white/20 rounded-full px-3 md:px-4 py-1 text-[10px] md:text-xs uppercase tracking-[0.25em] md:tracking-[0.3em]">
 								<span class="h-2 w-2 rounded-full bg-primary" />
@@ -214,19 +214,19 @@ export default component$(() => {
 				</div>
 
 				{/* Pricing List */}
-				<div class="custom-container py-14 md:py-24 max-w-6xl mx-auto">
+				<div class="custom-container mx-auto max-w-6xl py-10 md:py-24">
 					{groupedServices.length > 1 ? (
 						<nav
-							class="sticky top-18 md:top-20 z-20 -mx-4 mb-12 border-y border-base-300/40 bg-base-100/90 px-4 py-3 backdrop-blur-md md:rounded-full md:border md:px-5"
+							class="sticky top-16 z-20 -mx-4 mb-8 border-y border-base-300/40 bg-base-100/92 px-4 py-3 backdrop-blur-md md:top-20 md:mb-12 md:rounded-full md:border md:px-5"
 							aria-label={categoryNavLabel}
 						>
-							<div class="flex gap-2 overflow-x-auto pb-1">
+							<div class="scroll-fade-x scrollbar-none flex snap-x gap-2 overflow-x-auto pb-1">
 								{groupedServices.map(
 									({ groupId, displayCategoryName, anchorId }, index) => (
 										<a
 											key={groupId}
 											href={`#${anchorId}`}
-											class="btn btn-outline btn-primary btn-xs md:btn-sm shrink-0 rounded-full font-montserrat uppercase tracking-wider"
+											class="btn btn-outline btn-primary btn-xs shrink-0 snap-start rounded-full font-montserrat uppercase tracking-wider md:btn-sm"
 										>
 											<span class="text-primary/60">
 												{getCategoryNumber(index)}
@@ -239,7 +239,7 @@ export default component$(() => {
 						</nav>
 					) : null}
 
-					<div class="space-y-20">
+					<div class="space-y-12 md:space-y-20">
 						{groupedServices.map(
 							(
 								{
@@ -276,7 +276,7 @@ export default component$(() => {
 												</div>
 											</div>
 
-											<div class="bg-base-100 rounded-3xl p-4 md:p-10 shadow-sm border border-base-200 space-y-4 md:space-y-8">
+											<div class="space-y-3 rounded-2xl border border-base-200 bg-base-100 p-3 shadow-sm md:space-y-8 md:rounded-3xl md:p-10">
 												{groupServices.map((service) => (
 													<PricelistServiceItem
 														key={service.id}
@@ -292,17 +292,20 @@ export default component$(() => {
 					</div>
 				</div>
 
-				{/* CTO Bottom */}
-				<section class="py-24 bg-base-100 text-center border-t border-base-200">
+				{/* Bottom CTA */}
+				<section class="border-t border-base-200 bg-base-100 py-16 text-center md:py-24">
 					<FadeUp>
-						<h2 class="font-qestero text-4xl mb-6">
+						<p class="editorial-kicker mb-4">
+							{t("app.pricelist.ready@@Ready when you are")}
+						</p>
+						<h2 class="font-qestero mb-6 text-4xl">
 							{t("app.hero.book_visit@@Book Your Visit")}
 						</h2>
 						<Booking
 							id="bottom_pricelist_book"
 							text={t("app.hero.book_appointment@@Book Appointment")}
 							location={contact?.location.name || ""}
-							classes="btn btn-primary text-white rounded-full px-10 py-3 text-lg"
+							classes="btn btn-primary btn-md md:btn-lg rounded-full px-8 md:px-10 font-montserrat uppercase tracking-wider text-white"
 							analyticsPlacement="pricelist_bottom"
 						/>
 					</FadeUp>

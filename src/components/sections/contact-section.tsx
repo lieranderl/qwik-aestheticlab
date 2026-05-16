@@ -17,10 +17,10 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 	return (
 		<section
 			id="contact"
-			class="bg-base-200 py-32 relative overflow-hidden scroll-mt-24"
+			class="relative overflow-hidden scroll-mt-24 bg-base-200 py-16 md:py-32"
 		>
 			<div class="custom-container relative z-10">
-				<FadeUp class="text-center mb-16">
+				<FadeUp class="mb-9 text-center md:mb-16">
 					<h2 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
 						{t("app.contact.visit_us@@Visit Us")}
 					</h2>
@@ -29,22 +29,22 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 				<FadeUp delay={200}>
 					{/* Main Card Container */}
-					<div class="card lg:card-side bg-base-100/90 backdrop-blur-md overflow-hidden min-h-[600px] border border-white/50 shadow-xl rounded-2xl">
-						<div class="card-body p-8 md:p-12 lg:w-5/12 order-2 lg:order-1 flex flex-col justify-start gap-8 md:gap-12">
+					<div class="card overflow-hidden rounded-2xl border border-white/50 bg-base-100/90 shadow-xl backdrop-blur-md lg:card-side lg:min-h-[600px]">
+						<div class="card-body order-2 flex flex-col justify-start gap-6 p-5 md:gap-12 md:p-12 lg:order-1 lg:w-5/12">
 							<div>
-								<div class="flex flex-col gap-8">
+								<div class="flex flex-col gap-6 md:gap-8">
 									{/* Location */}
 									<div class="flex flex-col gap-1">
 										<span class="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold mb-2">
 											{t("app.contact.location@@Location")}
 										</span>
-										<p class="font-montserrat text-xl text-base-content font-medium leading-tight">
+										<p class="font-montserrat text-lg font-medium leading-tight text-base-content md:text-xl">
 											{contact.location.address}
 										</p>
 										<p class="text-base-content/70 text-sm mt-1">
 											{contact.location.name}
 										</p>
-										<div class="card-actions mt-4">
+										<div class="card-actions mt-3 md:mt-4">
 											<a
 												href={contact.location.link}
 												target="_blank"
@@ -63,7 +63,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 										{/* Parking - Moved here */}
 										{contact.parking && contact.parking.length > 0 && (
-											<div class="mt-6 flex flex-col gap-2 animate-fade-in">
+											<div class="mt-5 flex animate-fade-in flex-col gap-2 md:mt-6">
 												<span class="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold opacity-80">
 													{t("app.contact.parking@@Parking")}
 												</span>
@@ -103,7 +103,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 											{t("app.contact.opening_hours@@Hours")}
 										</span>
 										<div class="flex items-baseline gap-4">
-											<span class="font-montserrat text-2xl text-base-content">
+											<span class="font-montserrat text-xl text-base-content md:text-2xl">
 												{contact.open_hours.from} - {contact.open_hours.to}
 											</span>
 										</div>
@@ -113,7 +113,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 										</p>
 
 										{/* Refined Appointment Badge */}
-										<div class="flex items-center gap-2 mt-4 text-primary">
+										<div class="mt-3 flex items-center gap-2 text-primary md:mt-4">
 											<div class="w-2 h-2 rounded-2xl bg-primary animate-pulse" />
 											<span class="font-montserrat text-xs font-semibold tracking-wide uppercase">
 												{t("app.contact.appointment_only@@By appointment only")}
@@ -136,7 +136,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 													contact_method: "email",
 												});
 											})}
-											class="font-montserrat text-lg text-base-content hover:text-primary transition-colors w-fit border-b border-base-200 hover:border-primary pb-0.5"
+											class="w-fit border-b border-base-200 pb-0.5 font-montserrat text-base text-base-content transition-colors hover:border-primary hover:text-primary md:text-lg"
 										>
 											{contact.email}
 										</a>
@@ -147,7 +147,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 						{/* Right Map Panel */}
 						<figure
-							class="lg:w-7/12 h-[300px] lg:h-auto lg:min-h-[450px] relative order-1 lg:order-2 bg-neutral-100"
+							class="relative order-1 h-[220px] bg-neutral-100 md:h-[300px] lg:order-2 lg:h-auto lg:min-h-[450px] lg:w-7/12"
 							aria-label={t("app.contact.map_location@@Location map")}
 						>
 							<div class="absolute inset-0 w-full h-full lg:grayscale lg:hover:grayscale-0 transition-all duration-1000">

@@ -19,9 +19,9 @@ export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="gallery" class="py-24">
+		<section id="gallery" class="py-16 md:py-24">
 			<div class="custom-container">
-				<div class="mb-16 text-center">
+				<div class="mb-10 text-center md:mb-16">
 					<FadeUp>
 						<h2 class="font-qestero mb-4 text-4xl md:text-5xl">
 							{t("app.work.title@@Our Work")}
@@ -34,7 +34,7 @@ export const GalleryGrid = component$(() => {
 				</div>
 
 				{/* Static Gallery */}
-				<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+				<div class="mb-10 grid grid-cols-2 gap-3 md:mb-16 md:grid-cols-4 md:gap-4">
 					{[
 						{ Img: ImgManicure1, id: "m1" },
 						{ Img: ImgPedicure5, id: "p5" },
@@ -49,6 +49,7 @@ export const GalleryGrid = component$(() => {
 							<Img
 								alt="Aesthetic Lab Work"
 								class="h-full w-full object-cover transition-transform duration-700 hover:scale-110 aspect-square"
+								loading="lazy"
 							/>
 						</FadeUp>
 					))}
@@ -66,7 +67,7 @@ export const GalleryGrid = component$(() => {
 								link_url: "https://www.instagram.com/aestheticlabbe",
 							});
 						})}
-						class="group mt-8 grid overflow-hidden rounded-[1.25rem] border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:rounded-[2rem]"
+						class="group mt-8 grid overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:rounded-[2rem]"
 					>
 						<div class="flex flex-col justify-between gap-4 p-5 sm:p-6 md:p-8 lg:p-12">
 							<div class="space-y-3 md:space-y-5">
@@ -103,12 +104,14 @@ export const GalleryGrid = component$(() => {
 								<ImgWork2
 									alt={t("app.instagram.alt.studio@@Aesthetic Lab studio work")}
 									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out lg:object-cover lg:p-0 lg:group-hover:scale-105"
+									loading="lazy"
 								/>
 							</div>
 							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
 								<ImgEyebrows1
 									alt={t("app.instagram.alt.brows@@Aesthetic Lab brows detail")}
 									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out"
+									loading="lazy"
 								/>
 							</div>
 							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
@@ -117,6 +120,7 @@ export const GalleryGrid = component$(() => {
 										"app.instagram.alt.manicure@@Aesthetic Lab manicure detail",
 									)}
 									class="h-full w-full object-contain p-1 transition-transform duration-700 ease-out"
+									loading="lazy"
 								/>
 							</div>
 							<div class="hidden grid-rows-2 gap-px bg-base-300 lg:grid">
@@ -126,6 +130,7 @@ export const GalleryGrid = component$(() => {
 											"app.instagram.alt.brows@@Aesthetic Lab brows detail",
 										)}
 										class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+										loading="lazy"
 									/>
 								</div>
 								<div class="overflow-hidden">
@@ -134,6 +139,7 @@ export const GalleryGrid = component$(() => {
 											"app.instagram.alt.manicure@@Aesthetic Lab manicure detail",
 										)}
 										class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+										loading="lazy"
 									/>
 								</div>
 							</div>

@@ -16,16 +16,24 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="team" class="py-24 bg-base-200 relative overflow-hidden">
-			<div class="custom-container mb-12 text-center">
-				<FadeUp>
-					<h2 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
-						{t("app.team.title@@Meet Our Team")}
-					</h2>
-					<div class="mx-auto h-px w-20 bg-primary mb-8" />
+		<section
+			id="team"
+			class="relative overflow-hidden bg-base-200 py-16 md:py-24"
+		>
+			<div class="custom-container">
+				<FadeUp class="mb-9 grid gap-5 text-center md:mb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:text-left">
+					<div>
+						<p class="editorial-kicker mb-4">
+							{t("app.team.kicker@@Studio artists")}
+						</p>
+						<h2 class="font-qestero text-4xl text-base-content md:text-5xl">
+							{t("app.team.title@@Meet Our Team")}
+						</h2>
+					</div>
+					<div class="editorial-rule mx-auto w-20 lg:mx-0 lg:w-full" />
 				</FadeUp>
 
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+				<div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
 					{technicians.map((tech, index) => (
 						<FadeUp key={tech.id} delay={index * 150} class="group h-full">
 							<TeamMemberCard tech={tech} />
@@ -56,41 +64,46 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	const isExpanded = useSignal(false);
 
 	return (
-		<div class="bg-base-100/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
-			<div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 border-4 border-base-100 ring-2 ring-primary/20 shrink-0 transition-transform duration-500 group-hover:ring-4 group-hover:ring-primary/40">
+		<article class="flex h-full flex-col rounded-2xl border border-white/50 bg-base-100/90 p-4 text-left shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl md:p-6">
+			<div class="mx-auto mb-4 h-32 w-32 shrink-0 overflow-hidden rounded-full border border-base-300 bg-base-200 transition-transform duration-500 group-hover:border-primary/30 md:mb-6 md:aspect-4/5 md:h-auto md:w-full md:rounded-t-full md:rounded-b-2xl">
 				{tech.photo_url === "rubina" && (
 					<ImgRubina
 						alt={tech.name}
 						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+						loading="lazy"
 					/>
 				)}
 				{tech.photo_url === "zara" && (
 					<ImgZara
 						alt={tech.name}
 						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+						loading="lazy"
 					/>
 				)}
 				{tech.photo_url === "julia" && (
 					<ImgJulia
 						alt={tech.name}
 						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+						loading="lazy"
 					/>
 				)}
 			</div>
 
-			<h3 class="font-qestero text-2xl mb-1">{tech.name}</h3>
-			<p class="font-montserrat text-xs tracking-widest uppercase text-primary mb-6 flex items-center justify-center gap-2">
+			<h3 class="font-qestero mb-1 text-[1.65rem] leading-none md:text-3xl">
+				{tech.name}
+			</h3>
+			<p class="font-montserrat mb-4 flex items-center gap-2 text-xs uppercase tracking-widest text-primary md:mb-5">
 				{tech.role || t("app.team.role.technician@@Technician")}
 			</p>
 
 			{/* Bio Description */}
-			<div class="mb-8 grow flex flex-col items-center">
+			<div class="mb-4 flex grow flex-col md:mb-6">
 				<div
 					class={[
-						"font-montserrat text-sm  leading-relaxed transition-all duration-300 relative",
+						"font-montserrat relative text-[0.82rem] leading-relaxed transition-all duration-300 md:text-sm",
 						isExpanded.value
 							? "max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
-							: "line-clamp-4",
+							: "line-clamp-3 md:line-clamp-4",
 					]}
 				>
 					{getBioForLang(lang, tech)}
@@ -100,7 +113,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 					onClick$={$(() => {
 						isExpanded.value = !isExpanded.value;
 					})}
-					class="mt-2 text-xs font-montserrat tracking-wider text-primary hover:text-primary/80 transition-colors uppercase"
+					class="font-montserrat mt-3 w-fit text-xs uppercase tracking-wider text-primary transition-colors hover:text-primary/80"
 				>
 					{isExpanded.value
 						? t("app.common.read_less@@Read Less")
@@ -113,12 +126,12 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 				text={t("app.book.book_now@@Book Now")}
 				location="372146"
 				staff={String(tech.id)}
-				classes="btn btn-outline btn-neutral rounded-full px-8 font-montserrat uppercase tracking-wider text-xs hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform active:scale-95 w-full sm:w-auto mx-auto"
+				classes="btn btn-outline btn-neutral w-full rounded-full px-8 font-montserrat uppercase tracking-wider text-xs hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform active:scale-95"
 				analyticsPlacement="team"
 				analyticsServiceCategory="staff"
 				analyticsServiceId={String(tech.id)}
 				analyticsServiceName={tech.role || "Technician"}
 			/>
-		</div>
+		</article>
 	);
 });

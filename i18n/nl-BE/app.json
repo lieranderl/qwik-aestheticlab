@@ -126,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Categorie",
-      "category_nav": "Servicecategorieën"
+      "category_nav": "Servicecategorieën",
+      "ready": "Klaar wanneer u dat bent"
     },
     "privacy": {
       "changes": "7. Wijzigingen in dit beleid",
@@ -159,7 +160,10 @@
       "use_text": "we gebruiken uw informatie om:"
     },
     "reviews": {
+      "featured": "Uitgelichte review",
       "google_link": "Lees alle beoordelingen op Google",
+      "kicker": "Klantnotities",
+      "rating_aria": "5 van 5 sterren",
       "title": "Vriendelijke woorden"
     },
     "services": {
@@ -167,6 +171,7 @@
       "back_laser": "Terug naar laser",
       "brows_desc": "Epileren, verven en lamineren voor de perfecte vorm.",
       "brows_lashes_title": "Wenkbrauwen & Wimpers",
+      "catalogue": "Behandelcatalogus",
       "default_category": "Diensten",
       "duration": "Duur:",
       "from_price": "Vanaf",
@@ -189,6 +194,7 @@
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
+      "kicker": "Studio-artiesten",
       "role": {
         "technician": "Technicus"
       },

@@ -126,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Category",
-      "category_nav": "Service categories"
+      "category_nav": "Service categories",
+      "ready": "Ready when you are"
     },
     "privacy": {
       "changes": "7. Changes to This Policy",
@@ -159,7 +160,10 @@
       "use_text": "we use your information to:"
     },
     "reviews": {
+      "featured": "Featured review",
       "google_link": "Read all reviews on Google",
+      "kicker": "Client notes",
+      "rating_aria": "5 out of 5 stars",
       "title": "Kind Words"
     },
     "services": {
@@ -167,6 +171,7 @@
       "back_laser": "Back to Laser",
       "brows_desc": "Shaping, tinting, and lamination for the perfect arch.",
       "brows_lashes_title": "Brows & Lashes",
+      "catalogue": "Treatment catalogue",
       "default_category": "Services",
       "duration": "Duration:",
       "from_price": "From",
@@ -186,6 +191,7 @@
     "story": "Our Story",
     "story_text": "At Aesthetic Lab, we believe in the transformative power of beauty. Our approach combines artistry with expertise, creating a sanctuary where you can discover your most radiant self.",
     "team": {
+      "kicker": "Studio artists",
       "role": {
         "technician": "Technician"
       },

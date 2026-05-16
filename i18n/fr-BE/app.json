@@ -126,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Catégorie",
-      "category_nav": "Catégories de services"
+      "category_nav": "Catégories de services",
+      "ready": "Prête quand vous l’êtes"
     },
     "privacy": {
       "changes": "7. Modifications de cette politique",
@@ -159,7 +160,10 @@
       "use_text": "nous utilisons vos informations pour :"
     },
     "reviews": {
+      "featured": "Avis sélectionné",
       "google_link": "Lire tous les avis sur Google",
+      "kicker": "Notes clientes",
+      "rating_aria": "5 étoiles sur 5",
       "title": "Mots gentils"
     },
     "services": {
@@ -167,6 +171,7 @@
       "back_laser": "Retour au laser",
       "brows_desc": "Épilation, teinture et lamination pour une arche parfaite.",
       "brows_lashes_title": "Sourcils & Cils",
+      "catalogue": "Catalogue des soins",
       "default_category": "Services",
       "duration": "Durée :",
       "from_price": "À partir de",
@@ -189,6 +194,7 @@
     "story": "Notre histoire",
     "story_text": "Chez Aesthetic Lab, nous croyons au pouvoir transformateur de la beauté. Notre approche combine art et expertise, créant un sanctuaire où vous pouvez découvrir votre moi le plus radieux.",
     "team": {
+      "kicker": "Artistes du studio",
       "role": {
         "technician": "Technicienne"
       },

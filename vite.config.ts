@@ -24,6 +24,62 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
 };
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
+const immutableAssetCache = "public, max-age=31536000, immutable";
+
+interface CacheHeaderRequest {
+	url?: string;
+}
+
+interface CacheHeaderResponse {
+	setHeader: (name: string, value: string) => void;
+	writeHead: (...args: unknown[]) => unknown;
+}
+
+interface CacheHeaderServer {
+	middlewares: {
+		use: (
+			handler: (
+				req: CacheHeaderRequest,
+				res: CacheHeaderResponse,
+				next: () => void,
+			) => void,
+		) => void;
+	};
+}
+
+function setImmutableCacheHeader(
+	req: CacheHeaderRequest,
+	res: CacheHeaderResponse,
+	pathPrefix: string,
+) {
+	if (!req.url?.startsWith(pathPrefix)) return;
+
+	const writeHead = res.writeHead.bind(res);
+	res.writeHead = (...args: unknown[]) => {
+		res.setHeader("Cache-Control", immutableAssetCache);
+		return writeHead(...args);
+	};
+}
+
+function localImageCacheHeaders() {
+	return {
+		name: "local-image-cache-headers",
+		enforce: "pre",
+		configureServer(server: CacheHeaderServer) {
+			server.middlewares.use((req, res, next) => {
+				setImmutableCacheHeader(req, res, "/@imagetools/");
+				next();
+			});
+		},
+		configurePreviewServer(server: CacheHeaderServer) {
+			server.middlewares.use((req, res, next) => {
+				setImmutableCacheHeader(req, res, "/assets/");
+				next();
+			});
+		},
+	};
+}
+
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
@@ -43,6 +99,7 @@ export default defineConfig(({ mode }) => {
 			include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
 		},
 		plugins: [
+			localImageCacheHeaders(),
 			tailwindcss(),
 			!isTest && qwikCity(),
 			qwikVite(),
@@ -61,6 +118,10 @@ export default defineConfig(({ mode }) => {
 		},
 		define: {
 			"process.env": {}, // optional, for compatibility
+		},
+		build: {
+			minify: true,
+			cssMinify: "lightningcss",
 		},
 
 		/**

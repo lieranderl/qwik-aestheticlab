@@ -8,15 +8,18 @@ export const AboutSection = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="about" class="relative py-32 overflow-hidden">
+		<section
+			id="about"
+			class="relative scroll-mt-24 overflow-hidden py-16 md:py-32"
+		>
 			{/* Background Decor - Watermark & Blobs */}
-			<div class="absolute top-10 left-0 w-full text-center md:text-left md:w-auto md:left-10 text-[12vw] md:text-[8vw] font-qestero leading-none text-primary/55 select-none pointer-events-none z-0">
+			<div class="pointer-events-none absolute top-4 left-0 z-0 hidden w-full select-none text-center font-qestero text-[10vw] leading-none text-primary/20 sm:block md:top-10 md:left-10 md:w-auto md:text-left md:text-[8vw] md:text-primary/35">
 				Aesthetic Lab
 			</div>
 			<div class="absolute -right-20 top-40 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[100px] animate-pulse-slow" />
 
 			<div class="custom-container relative z-10">
-				<div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+				<div class="flex flex-col items-center gap-10 md:gap-16 lg:flex-row lg:gap-24">
 					{/* Left Column: Narrative Text */}
 					<div class="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
 						<FadeUp>
@@ -26,16 +29,16 @@ export const AboutSection = component$(() => {
 									{t("app.about.subtitle@@Since 2025")}
 								</span>
 							</div>
-							<h2 class="font-qestero text-5xl md:text-6xl lg:text-7xl mb-8 leading-[0.9]">
+							<h2 class="font-qestero mb-6 text-4xl leading-[0.9] md:mb-8 md:text-6xl lg:text-7xl">
 								{t("app.story@@Our Story")} <br />
-								<span class="italic text-secondary text-4xl md:text-5xl lg:text-6xl block mt-2">
+								<span class="mt-2 block text-3xl italic text-secondary md:text-5xl lg:text-6xl">
 									{t("app.about.philosophy@@& Philosophy")}
 								</span>
 							</h2>
 						</FadeUp>
 
 						<FadeUp delay={200}>
-							<div class="prose prose-lg text-base-content font-montserrat leading-relaxed relative">
+							<div class="prose prose-sm relative font-montserrat leading-relaxed text-base-content md:prose-lg">
 								{/* Decorative Quote Mark */}
 								<span class="absolute -top-8 -left-8 text-8xl text-primary/10 font-serif leading-none hidden lg:block">
 									“
@@ -56,17 +59,18 @@ export const AboutSection = component$(() => {
 					</div>
 
 					{/* Right Column: Photo Cluster */}
-					<div class="lg:w-1/2 relative min-h-[500px] w-full flex items-center justify-center lg:justify-end">
+					<div class="relative flex min-h-[320px] w-full items-center justify-center md:min-h-[500px] lg:w-1/2 lg:justify-end">
 						<FadeUp
 							delay={300}
 							duration={1200}
 							direction="left"
 							class="relative z-10"
 						>
-							<div class="w-72 md:w-80 lg:w-96 aspect-3/4 overflow-hidden rounded-t-[10rem] rounded-b-3xl border border-white/50 shadow-2xl relative">
+							<div class="relative aspect-3/4 w-56 overflow-hidden rounded-t-[10rem] rounded-b-3xl border border-white/50 shadow-2xl md:w-80 lg:w-96">
 								<ImgWork1
 									alt="Artists at Work"
 									class="object-cover w-full h-full hover:scale-105 transition-transform duration-1000"
+									loading="lazy"
 								/>
 							</div>
 						</FadeUp>
@@ -76,13 +80,14 @@ export const AboutSection = component$(() => {
 							delay={500}
 							duration={1200}
 							direction="up"
-							class="absolute -bottom-10 left-4 md:left-20 lg:-left-10 z-20"
+							class="absolute bottom-0 left-6 z-20 md:-bottom-10 md:left-20 lg:-left-10"
 						>
 							<div class="animate-float">
-								<div class="w-48 md:w-56 aspect-square rounded-full border-4 border-white shadow-xl overflow-hidden">
+								<div class="aspect-square w-32 overflow-hidden rounded-full border-4 border-white shadow-xl md:w-56">
 									<ImgManicure5
 										alt="Detail Shot"
 										class="object-cover w-full h-full"
+										loading="lazy"
 									/>
 								</div>
 							</div>

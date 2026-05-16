@@ -313,21 +313,24 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		});
 
 		return (
-			<section id="services" class="bg-base-200 py-24">
+			<section id="services" class="scroll-mt-20 bg-base-200 py-16 md:py-24">
 				<div class="custom-container">
-					<div class="mb-16 text-center">
-						<FadeUp>
-							<h2 class="font-qestero mb-4 text-4xl text-base-content md:text-5xl">
+					<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+						<FadeUp class="text-center lg:text-left">
+							<p class="editorial-kicker mb-4">
+								{t("app.services.catalogue@@Treatment catalogue")}
+							</p>
+							<h2 class="font-qestero mb-4 text-4xl leading-none text-base-content md:mb-5 md:text-6xl">
 								{titleLabel}
 							</h2>
-							<div class="mx-auto h-px w-20 bg-primary" />
-							<p class="font-montserrat mt-6 mx-auto max-w-lg text-base-content">
-								{subtitleLabel}
-							</p>
+							<div class="editorial-rule mx-auto w-20 lg:mx-0 lg:w-32" />
 						</FadeUp>
 
-						<FadeUp delay={200}>
-							<div class="mt-8 flex flex-col items-center justify-center gap-3">
+						<FadeUp delay={200} class="lg:justify-self-end">
+							<div class="mx-auto flex max-w-xl flex-col items-center gap-4 text-center md:gap-5 lg:mx-0 lg:items-end lg:text-right">
+								<p class="font-montserrat text-sm leading-relaxed text-base-content md:text-lg">
+									{subtitleLabel}
+								</p>
 								<a
 									href="pricelist"
 									onClick$={$(() => {
@@ -362,12 +365,12 @@ export const ServiceGrid = component$<ServiceGridProps>(
 					</div>
 
 					{showFullList.value ? (
-						<div class="animate-fade-in space-y-8">
+						<div class="animate-fade-in space-y-6 md:space-y-8">
 							{activeDetailGroup.value ? (
 								<FadeUp>
-									<div class="rounded-2xl border border-base-300 bg-base-100 p-6 shadow-sm">
-										<div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-											<div class="space-y-4">
+									<div class="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm md:p-6">
+										<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+											<div class="space-y-3 md:space-y-4">
 												<div class="flex flex-wrap gap-2">
 													<span class="badge badge-primary badge-outline rounded-full font-montserrat">
 														{activeDetailGroup.value.groupServices.length}{" "}
@@ -386,13 +389,13 @@ export const ServiceGrid = component$<ServiceGridProps>(
 													) : null}
 												</div>
 												<div>
-													<h3 class="font-qestero text-3xl text-base-content md:text-4xl">
+													<h3 class="font-qestero text-[1.75rem] leading-none text-base-content md:text-4xl">
 														{getDisplayCategoryName(
 															activeDetailGroup.value,
 															defaultCategoryLabel,
 														)}
 													</h3>
-													<p class="font-montserrat mt-3 max-w-2xl text-sm leading-relaxed text-base-content/75 md:text-base">
+													<p class="font-montserrat mt-2 max-w-2xl text-sm leading-relaxed text-base-content/75 md:mt-3 md:text-base">
 														{getCategoryDescription(
 															activeDetailGroup.value.category,
 															categoryDescriptionLabels,
@@ -403,11 +406,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										</div>
 
 										<div
-											class="mt-6 overflow-x-auto pb-1"
+											class="scrollbar-none scroll-fade-x mt-5 overflow-x-auto pb-1 md:mt-6"
 											role="toolbar"
 											aria-label={servicesAriaLabel}
 										>
-											<div class="flex w-max gap-2">
+											<div class="flex w-max gap-2 px-3 md:px-0">
 												{displayGroups.value.map((group) => {
 													const displayCategoryName = getDisplayCategoryName(
 														group,
@@ -426,7 +429,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 																);
 															})}
 															class={[
-																"btn btn-sm shrink-0 rounded-full px-4 font-montserrat uppercase tracking-wider whitespace-nowrap",
+																"btn btn-xs shrink-0 rounded-full px-3 font-montserrat uppercase tracking-wider whitespace-nowrap md:btn-sm md:px-4",
 																group.groupId === selectedCategoryId.value
 																	? "btn-primary"
 																	: "btn-outline btn-primary",
@@ -447,7 +450,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 
 							{selectedGroup.value?.groupId === "laser" &&
 							!selectedLaserSubgroup.value ? (
-								<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
 									{laserSubgroups.value.map((group, index) => {
 										const displayCategoryName = getDisplayCategoryName(
 											group,
@@ -494,7 +497,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 
 									return groupsToRender.map((renderGroup) => (
 										<div key={renderGroup.groupId} class="space-y-6">
-											<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+											<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
 												{renderGroup.groupServices.map((service, index) => {
 													const serviceCategory =
 														categoryById.get(String(service.group_id)) ||
@@ -528,7 +531,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							)}
 						</div>
 					) : (
-						<div class="grid animate-fade-in grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+						<div class="grid animate-fade-in grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
 							{displayGroups.value.map((group, index) => {
 								const displayCategoryName = getDisplayCategoryName(
 									group,
