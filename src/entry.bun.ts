@@ -36,7 +36,11 @@ function supportsCompression(response: Response) {
 }
 
 function maybeCompressResponse(request: Request, response: Response) {
-	if (request.method === "HEAD" || !supportsCompression(response)) {
+	if (
+		typeof CompressionStream === "undefined" ||
+		request.method === "HEAD" ||
+		!supportsCompression(response)
+	) {
 		return response;
 	}
 
