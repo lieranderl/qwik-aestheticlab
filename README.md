@@ -1,6 +1,7 @@
 # Aesthetic Lab | Qwik + DaisyUI
 
 ![Release](https://img.shields.io/github/v/release/lieranderl/qwik-aestheticlab?style=flat&logo=github)
+[![Deploy to Cloud Run](https://github.com/lieranderl/qwik-aestheticlab/actions/workflows/deploy.yml/badge.svg?branch=staging)](https://github.com/lieranderl/qwik-aestheticlab/actions/workflows/deploy.yml)
 ![Qwik](https://img.shields.io/badge/Qwik-%2318B6F6.svg?style=flat&logo=qwik&logoColor=white)
 ![DaisyUI](https://img.shields.io/badge/daisyUI-5A0EF8?style=flat&logo=daisyui&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)
