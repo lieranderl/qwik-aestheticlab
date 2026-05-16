@@ -72,7 +72,16 @@
       "view_services": "Bekijk diensten"
     },
     "instagram": {
+      "alt": {
+        "brows": "Detail van wenkbrauwen bij Aesthetic Lab",
+        "manicure": "Detail van manicure bij Aesthetic Lab",
+        "studio": "Studiowerk van Aesthetic Lab"
+      },
+      "cta": "Bekijk profiel",
+      "description": "Ons recente werk, de rustige sfeer in de studio en het oog voor detail krijgen een vervolg op Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "Een bericht gedeeld door AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Volg de studio ook buiten je afspraak om",
       "view_post": "Bekijk dit bericht op Instagram"
     },
     "modal": {
@@ -117,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Categorie",
-      "category_nav": "Servicecategorieën"
+      "category_nav": "Servicecategorieën",
+      "ready": "Klaar wanneer u dat bent"
     },
     "privacy": {
       "changes": "7. Wijzigingen in dit beleid",
@@ -150,7 +160,10 @@
       "use_text": "we gebruiken uw informatie om:"
     },
     "reviews": {
+      "featured": "Uitgelichte review",
       "google_link": "Lees alle beoordelingen op Google",
+      "kicker": "Klantnotities",
+      "rating_aria": "5 van 5 sterren",
       "title": "Vriendelijke woorden"
     },
     "services": {
@@ -158,6 +171,7 @@
       "back_laser": "Terug naar laser",
       "brows_desc": "Epileren, verven en lamineren voor de perfecte vorm.",
       "brows_lashes_title": "Wenkbrauwen & Wimpers",
+      "catalogue": "Behandelcatalogus",
       "default_category": "Diensten",
       "duration": "Duur:",
       "from_price": "Vanaf",
@@ -180,6 +194,7 @@
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
+      "kicker": "Studio-artiesten",
       "role": {
         "technician": "Technicus"
       },

@@ -4,6 +4,7 @@ import { inlineTranslate } from "qwik-speak";
 import {
 	disableAnalytics,
 	enableAnalytics,
+	initializeGoogleAnalytics,
 	readCookieConsent,
 	saveCookieConsent,
 } from "~/shared/cookie-consent";
@@ -18,6 +19,7 @@ export const CookieBanner = component$(() => {
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: Needs client-only storage/script initialization.
 	useVisibleTask$(() => {
+		initializeGoogleAnalytics();
 		const stored = readCookieConsent();
 		if (!stored) {
 			showBanner.value = true;
@@ -56,8 +58,8 @@ export const CookieBanner = component$(() => {
 	return (
 		<>
 			{showBanner.value && (
-				<div class="fixed inset-x-0 bottom-0 z-120 p-3 md:p-6">
-					<div class="mx-auto max-w-4xl rounded-2xl border border-base-content/15 bg-base-100/96 p-4 shadow-xl backdrop-blur md:p-6">
+				<div class="fixed top-18 right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-6 md:left-auto md:w-[min(28rem,calc(100vw-3rem))]">
+					<div class="max-h-[38svh] overflow-y-auto rounded-2xl border border-base-content/15 bg-base-100/96 p-4 shadow-xl backdrop-blur md:max-h-none md:p-5">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
 								<p class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content">
@@ -78,17 +80,17 @@ export const CookieBanner = component$(() => {
 								</div>
 							</div>
 
-							<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+							<div class="flex gap-2 sm:items-center sm:justify-end">
 								<button
 									type="button"
-									class="btn btn-outline btn-sm rounded-full"
+									class="btn btn-outline btn-sm min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={rejectOptional}
 								>
 									{t("app.cookies.reject@@Reject analytics")}
 								</button>
 								<button
 									type="button"
-									class="btn btn-primary btn-sm rounded-full"
+									class="btn btn-primary btn-sm min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={acceptAll}
 								>
 									{t("app.cookies.accept@@Accept analytics")}
@@ -100,10 +102,10 @@ export const CookieBanner = component$(() => {
 			)}
 
 			{hasChoice.value && !showBanner.value && (
-				<div class="fixed right-2 bottom-2 z-110 md:right-auto md:bottom-4 md:left-4">
+				<div class="fixed bottom-2 left-2 z-110 md:bottom-4 md:left-4">
 					<button
 						type="button"
-						class="btn btn-xs btn-ghost min-h-7 rounded-full border border-base-content/20 bg-base-100/85 px-2 text-xs backdrop-blur md:min-h-8 md:px-3"
+						class="btn btn-xs btn-ghost min-h-7 rounded-full border border-base-content/20 bg-base-100/80 px-2 text-[0.68rem] opacity-75 backdrop-blur transition-opacity hover:opacity-100 focus-visible:opacity-100 md:min-h-8 md:px-3 md:text-xs md:opacity-100"
 						onClick$={openSettings}
 					>
 						{t("app.cookies.settings@@Cookie settings")}

@@ -16,6 +16,12 @@ const marqueeStyles = `
 .reviews-animate-scroll:hover {
 	animation-play-state: paused;
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.reviews-animate-scroll {
+		animation: none;
+	}
+}
 `;
 
 interface Review {
@@ -79,91 +85,130 @@ export const ReviewsSection = component$(() => {
 	const allReviews = [...reviews, ...reviews];
 
 	return (
-		<section class="py-24 bg-base-200 overflow-hidden relative">
-			<div class="custom-container mb-12 text-center">
-				<FadeUp>
-					<h2 class="font-qestero text-4xl md:text-5xl  mb-4">
-						{t("app.reviews.title@@Kind Words")}
-					</h2>
-					<div class="mx-auto h-px w-20 bg-primary mb-6" />
-					<div class="flex items-center justify-center gap-2 mb-2">
-						{/* 5 Stars SVG */}
-						{/* 5 Stars DaisyUI */}
-						<div class="rating rating-md gap-1">
-							{[1, 2, 3, 4, 5].map((i) => (
-								<input
-									key={i}
-									type="radio"
-									name="rating-header"
-									class="mask mask-star-2 bg-warning"
-									checked
-									disabled
-								/>
-							))}
-						</div>
-						<span class="font-montserrat font-medium">5.0</span>
+		<section class="relative overflow-hidden bg-base-200 py-16 md:py-24">
+			<div class="custom-container mb-9 md:mb-12">
+				<FadeUp class="grid gap-6 text-center md:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:text-left">
+					<div>
+						<p class="editorial-kicker mb-4">
+							{t("app.reviews.kicker@@Client notes")}
+						</p>
+						<h2 class="font-qestero mb-4 text-4xl md:text-5xl">
+							{t("app.reviews.title@@Kind Words")}
+						</h2>
+						<div class="editorial-rule mx-auto mb-6 w-20 lg:mx-0 lg:w-32" />
 					</div>
-					<a
-						href="https://maps.app.goo.gl/bsdNssGY4YTJeR7j6"
-						target="_blank"
-						rel="noreferrer"
-						onClick$={$(() => {
-							trackGoogleAnalyticsEvent("google_reviews_clicked", {
-								placement: "reviews_section",
-								link_url: "https://maps.app.goo.gl/bsdNssGY4YTJeR7j6",
-							});
-						})}
-						class="link link-primary"
-					>
-						{t("app.reviews.google_link@@Read all reviews on Google")}
-					</a>
+					<div class="flex flex-col items-center gap-2 lg:items-end">
+						<div class="flex items-center justify-center gap-2">
+							<span class="sr-only">
+								{t("app.reviews.rating_aria@@5 out of 5 stars")}
+							</span>
+							{/* 5 Stars SVG */}
+							{/* 5 Stars DaisyUI */}
+							<div class="rating rating-md gap-1" aria-hidden="true">
+								{[1, 2, 3, 4, 5].map((i) => (
+									<input
+										key={i}
+										type="radio"
+										name="rating-header"
+										class="mask mask-star-2 bg-warning"
+										aria-label={`${i} star${i > 1 ? "s" : ""}`}
+										checked
+										disabled
+									/>
+								))}
+							</div>
+							<span class="font-montserrat font-medium">5.0</span>
+						</div>
+						<a
+							href="https://maps.app.goo.gl/bsdNssGY4YTJeR7j6"
+							target="_blank"
+							rel="noreferrer"
+							onClick$={$(() => {
+								trackGoogleAnalyticsEvent("google_reviews_clicked", {
+									placement: "reviews_section",
+									link_url: "https://maps.app.goo.gl/bsdNssGY4YTJeR7j6",
+								});
+							})}
+							class="link link-primary"
+						>
+							{t("app.reviews.google_link@@Read all reviews on Google")}
+						</a>
+					</div>
+				</FadeUp>
+
+				<FadeUp delay={150}>
+					<figure class="mt-8 grid gap-5 rounded-2xl border border-base-300 bg-base-100/90 p-4 shadow-sm md:mt-12 md:gap-8 md:p-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+						<div class="space-y-2 md:space-y-3">
+							<p class="editorial-kicker">
+								{t("app.reviews.featured@@Featured review")}
+							</p>
+							<figcaption>
+								<p class="font-qestero text-[1.7rem] leading-none text-base-content md:text-5xl">
+									{reviews[0].author}
+								</p>
+								<p class="font-montserrat mt-2 text-sm text-base-content/65">
+									Google Review
+								</p>
+							</figcaption>
+						</div>
+						<blockquote class="font-montserrat text-sm leading-relaxed text-base-content md:text-xl">
+							"{reviews[0].text}"
+						</blockquote>
+					</figure>
 				</FadeUp>
 			</div>
 
 			{/* Marquee Container */}
 			<div class="relative w-full overflow-hidden">
 				{/* Gradients to fade edges */}
-				<div class="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-linear-to-r from-base-100 to-transparent z-10 pointer-events-none" />
-				<div class="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-linear-to-l from-base-100 to-transparent z-10 pointer-events-none" />
+				<div class="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-8 bg-linear-to-r from-base-200 to-transparent md:w-32" />
+				<div class="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-8 bg-linear-to-l from-base-200 to-transparent md:w-32" />
 
 				{/* Scrolling Track */}
 				<div
-					class="flex gap-6 md:gap-8 w-max reviews-animate-scroll"
+					class="reviews-animate-scroll flex w-max gap-4 md:gap-8"
 					style={{
-						"--scroll-duration": "60s",
+						"--scroll-duration": "95s",
 					}}
 				>
 					{allReviews.map((review, index) => (
 						<div
 							key={`${review.author}-${index}`}
-							class="w-[300px] md:w-[400px] bg-base-100 p-8 rounded-2xl shadow-sm border border-base-200 flex flex-col justify-between shrink-0"
+							class="flex w-[17rem] shrink-0 flex-col justify-between rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm md:w-[25rem] md:p-8"
 						>
 							<div>
-								<div class="rating rating-sm gap-0.5 mb-4">
+								<span class="sr-only">
+									{t("app.reviews.rating_aria@@5 out of 5 stars")}
+								</span>
+								<div
+									class="rating rating-xs mb-3 gap-0.5 md:rating-sm md:mb-4"
+									aria-hidden="true"
+								>
 									{[1, 2, 3, 4, 5].map((i) => (
 										<input
 											key={i}
 											type="radio"
 											name={`rating-${index}`}
 											class="mask mask-star-2 bg-warning"
+											aria-label={`${i} star${i > 1 ? "s" : ""}`}
 											checked
 											disabled
 										/>
 									))}
-								</div>
-								<p class="font-montserrat text-sm  leading-relaxed italic line-clamp-6">
+								</div>{" "}
+								<p class="font-montserrat line-clamp-5 text-[0.82rem] leading-relaxed italic md:line-clamp-6 md:text-sm">
 									"{review.text}"
 								</p>
 							</div>
-							<div class="mt-6 flex items-center gap-3">
-								<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-qestero text-primary font-bold">
+							<div class="mt-4 flex items-center gap-3 md:mt-6">
+								<div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 font-qestero font-bold text-primary md:h-10 md:w-10">
 									{review.author.charAt(0)}
 								</div>
 								<div>
-									<p class="font-montserrat font-semibold text-sm">
+									<p class="font-montserrat text-sm font-semibold">
 										{review.author}
 									</p>
-									<p class="text-xs text-base-content/60">Google Review</p>
+									<p class="text-xs text-base-content/80">Google Review</p>
 								</div>
 							</div>
 						</div>

@@ -72,7 +72,16 @@
       "view_services": "Послуги"
     },
     "instagram": {
+      "alt": {
+        "brows": "Деталь брів в Aesthetic Lab",
+        "manicure": "Деталь манікюру в Aesthetic Lab",
+        "studio": "Робота студії Aesthetic Lab"
+      },
+      "cta": "Перейти до профілю",
+      "description": "Наші нові роботи, спокійна атмосфера студії та увага до деталей продовжуються в Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "Публікація від AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Стежте за життям студії й після візиту",
       "view_post": "Переглянути цей допис в Instagram"
     },
     "modal": {
@@ -117,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Категорія",
-      "category_nav": "Категорії послуг"
+      "category_nav": "Категорії послуг",
+      "ready": "Готові, коли вам зручно"
     },
     "privacy": {
       "changes": "7. Зміни в цій політиці",
@@ -150,7 +160,10 @@
       "use_text": "ми використовуємо вашу інформацію для:"
     },
     "reviews": {
+      "featured": "Обраний відгук",
       "google_link": "Читати всі відгуки в Google",
+      "kicker": "Відгуки клієнтів",
+      "rating_aria": "5 із 5 зірок",
       "title": "Теплі слова"
     },
     "services": {
@@ -158,6 +171,7 @@
       "back_laser": "Назад до лазеру",
       "brows_desc": "Корекція, фарбування та ламінування для ідеальної форми.",
       "brows_lashes_title": "Брови та вії",
+      "catalogue": "Каталог процедур",
       "default_category": "Послуги",
       "duration": "Тривалість:",
       "from_price": "Від",
@@ -180,6 +194,7 @@
     "story": "Про нас",
     "story_text": "У Aesthetic Lab ми віримо у перетворюючу силу краси. Наш підхід поєднує майстерність з досвідом, створюючи місце, де ви можете розкрити своє найсяючіше «я».",
     "team": {
+      "kicker": "Майстри студії",
       "role": {
         "technician": "Майстер"
       },

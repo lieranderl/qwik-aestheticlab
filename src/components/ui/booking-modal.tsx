@@ -1,4 +1,4 @@
-import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { baseUrlBooking } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -51,19 +51,6 @@ export const Booking = component$<BookingProps>(
 		if (staff) params.set("staff", staff);
 		const iframeUrl = `${baseUrlBooking}?${params.toString()}`;
 
-		// Reset state when modal closes
-		useOnDocument(
-			"DOMContentLoaded",
-			$(() => {
-				const modal = document.getElementById(id) as HTMLDialogElement;
-				if (modal) {
-					modal.addEventListener("close", () => {
-						isOpen.value = false;
-					});
-				}
-			}),
-		);
-
 		const openModal = $(() => {
 			const modal = document.getElementById(id) as HTMLDialogElement;
 			if (modal) {
@@ -92,7 +79,13 @@ export const Booking = component$<BookingProps>(
 				</button>
 
 				{/* Modal with iframe */}
-				<dialog id={id} class="modal">
+				<dialog
+					id={id}
+					class="modal"
+					onClose$={$(() => {
+						isOpen.value = false;
+					})}
+				>
 					<div class="modal-box w-full max-w-5xl p-2 pt-10 bg-base-200 rounded-2xl">
 						<form method="dialog">
 							<button

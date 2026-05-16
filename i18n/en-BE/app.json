@@ -72,7 +72,16 @@
       "view_services": "View Services"
     },
     "instagram": {
+      "alt": {
+        "brows": "Aesthetic Lab brows detail",
+        "manicure": "Aesthetic Lab manicure detail",
+        "studio": "Aesthetic Lab studio work"
+      },
+      "cta": "Visit profile",
+      "description": "Our latest work, quiet studio moments, and the details that shape Aesthetic Lab continue on Instagram.",
+      "eyebrow": "Instagram",
       "shared_by": "A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
+      "title": "Follow the studio beyond your appointment",
       "view_post": "View this post on Instagram"
     },
     "modal": {
@@ -117,7 +126,8 @@
     },
     "pricelist": {
       "category_label": "Category",
-      "category_nav": "Service categories"
+      "category_nav": "Service categories",
+      "ready": "Ready when you are"
     },
     "privacy": {
       "changes": "7. Changes to This Policy",
@@ -150,7 +160,10 @@
       "use_text": "we use your information to:"
     },
     "reviews": {
+      "featured": "Featured review",
       "google_link": "Read all reviews on Google",
+      "kicker": "Client notes",
+      "rating_aria": "5 out of 5 stars",
       "title": "Kind Words"
     },
     "services": {
@@ -158,6 +171,7 @@
       "back_laser": "Back to Laser",
       "brows_desc": "Shaping, tinting, and lamination for the perfect arch.",
       "brows_lashes_title": "Brows & Lashes",
+      "catalogue": "Treatment catalogue",
       "default_category": "Services",
       "duration": "Duration:",
       "from_price": "From",
@@ -177,6 +191,7 @@
     "story": "Our Story",
     "story_text": "At Aesthetic Lab, we believe in the transformative power of beauty. Our approach combines artistry with expertise, creating a sanctuary where you can discover your most radiant self.",
     "team": {
+      "kicker": "Studio artists",
       "role": {
         "technician": "Technician"
       },

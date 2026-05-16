@@ -164,13 +164,14 @@ Used for the language switcher:
 Used in the reviews section:
 
 ```tsx
-<div class="rating rating-sm gap-0.5">
+<div class="rating rating-sm gap-0.5" aria-label="5 out of 5 stars">
   {[1, 2, 3, 4, 5].map((i) => (
     <input
       key={i}
       type="radio"
       name={`rating-${uniqueIndex}`}
       class="mask mask-star-2 bg-warning"
+      aria-label={`${i} star${i > 1 ? "s" : ""}`}
       checked
       disabled
     />

@@ -3,12 +3,15 @@
  * When building, the adapter config is used which loads this file and extends it.
  */
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { qwikSpeakInline } from "qwik-speak/inline";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import pkg from "./package.json";
 
@@ -21,6 +24,62 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
 };
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
+const immutableAssetCache = "public, max-age=31536000, immutable";
+
+interface CacheHeaderRequest {
+	url?: string;
+}
+
+interface CacheHeaderResponse {
+	setHeader: (name: string, value: string) => void;
+	writeHead: (...args: unknown[]) => unknown;
+}
+
+interface CacheHeaderServer {
+	middlewares: {
+		use: (
+			handler: (
+				req: CacheHeaderRequest,
+				res: CacheHeaderResponse,
+				next: () => void,
+			) => void,
+		) => void;
+	};
+}
+
+function setImmutableCacheHeader(
+	req: CacheHeaderRequest,
+	res: CacheHeaderResponse,
+	pathPrefix: string,
+) {
+	if (!req.url?.startsWith(pathPrefix)) return;
+
+	const writeHead = res.writeHead.bind(res);
+	res.writeHead = (...args: unknown[]) => {
+		res.setHeader("Cache-Control", immutableAssetCache);
+		return writeHead(...args);
+	};
+}
+
+function localImageCacheHeaders() {
+	return {
+		name: "local-image-cache-headers",
+		enforce: "pre",
+		configureServer(server: CacheHeaderServer) {
+			server.middlewares.use((req, res, next) => {
+				setImmutableCacheHeader(req, res, "/@imagetools/");
+				next();
+			});
+		},
+		configurePreviewServer(server: CacheHeaderServer) {
+			server.middlewares.use((req, res, next) => {
+				setImmutableCacheHeader(req, res, "/assets/");
+				next();
+			});
+		},
+	};
+}
+
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
@@ -29,16 +88,21 @@ export default defineConfig(({ mode }) => {
 	const isTest = mode === "test";
 
 	return {
+		resolve: {
+			alias: {
+				"~": path.resolve(__dirname, "./src"),
+			},
+		},
 		test: {
 			globals: true,
 			environment: "node",
 			include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
 		},
 		plugins: [
+			localImageCacheHeaders(),
 			tailwindcss(),
 			!isTest && qwikCity(),
 			qwikVite(),
-			tsconfigPaths(),
 			!isTest &&
 				qwikSpeakInline({
 					supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE"],
@@ -54,6 +118,10 @@ export default defineConfig(({ mode }) => {
 		},
 		define: {
 			"process.env": {}, // optional, for compatibility
+		},
+		build: {
+			minify: true,
+			cssMinify: "lightningcss",
 		},
 
 		/**

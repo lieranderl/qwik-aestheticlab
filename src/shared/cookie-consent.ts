@@ -36,6 +36,7 @@ type AnalyticsWindow = Window & {
 	[key: `ga-disable-${string}`]: boolean | undefined;
 	dataLayer?: unknown[];
 	gtag?: (...args: unknown[]) => void;
+	__aestheticAnalyticsInitialized?: boolean;
 };
 
 const deniedConsentState: GoogleConsentState = {
@@ -107,6 +108,58 @@ function ensureGtag() {
 	analyticsWindow[`ga-disable-${gaMeasurementId}`] = false;
 
 	return gtag;
+}
+
+function loadGoogleAnalyticsScript() {
+	const globalDocument = globalThis.document;
+	if (
+		!globalDocument ||
+		typeof globalDocument.getElementById !== "function" ||
+		typeof globalDocument.createElement !== "function" ||
+		!globalDocument.head ||
+		typeof globalDocument.head.appendChild !== "function"
+	) {
+		return;
+	}
+
+	const scriptId = "google-analytics-script";
+	const existing = globalDocument.getElementById(
+		scriptId,
+	) as HTMLScriptElement | null;
+	if (existing) return;
+
+	const script = globalDocument.createElement("script");
+	script.id = scriptId;
+	script.async = true;
+	script.src = `https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`;
+	globalDocument.head.appendChild(script);
+}
+
+export function initializeGoogleAnalytics() {
+	const analyticsWindow = getAnalyticsWindow();
+	if (analyticsWindow.__aestheticAnalyticsInitialized) return;
+
+	const gtag = ensureGtag();
+	gtag("consent", "default", {
+		...deniedConsentState,
+		wait_for_update: 500,
+	});
+	gtag("set", "ads_data_redaction", true);
+	gtag("set", "allow_ad_personalization_signals", false);
+
+	const storedConsent = readCookieConsent();
+	if (storedConsent) {
+		gtag(
+			"consent",
+			"update",
+			storedConsent.analytics ? getConsentState(true) : deniedConsentState,
+		);
+	}
+
+	gtag("js", new Date());
+	gtag("config", gaMeasurementId, analyticsConfig);
+	loadGoogleAnalyticsScript();
+	analyticsWindow.__aestheticAnalyticsInitialized = true;
 }
 
 export const getGoogleAnalyticsBootstrapScript = () => {
@@ -195,6 +248,7 @@ export const disableAnalytics = (options: { trackUpdate?: boolean } = {}) => {
 };
 
 export const enableAnalytics = (options: { trackUpdate?: boolean } = {}) => {
+	loadGoogleAnalyticsScript();
 	ensureGtag()("consent", "update", getConsentState(true));
 	if (options.trackUpdate === false) return;
 
@@ -206,7 +260,11 @@ export const enableAnalytics = (options: { trackUpdate?: boolean } = {}) => {
 };
 
 export const trackGoogleAnalyticsPageView = () => {
-	const gtag = getAnalyticsWindow().gtag;
+	let gtag = getAnalyticsWindow().gtag;
+	if (!gtag) {
+		initializeGoogleAnalytics();
+		gtag = getAnalyticsWindow().gtag;
+	}
 	if (!gtag) return;
 
 	gtag("config", gaMeasurementId, {
@@ -222,7 +280,11 @@ export const trackGoogleAnalyticsEvent = (
 ) => {
 	if (options.consentRequired !== false && !hasAnalyticsConsent()) return;
 
-	const gtag = getAnalyticsWindow().gtag;
+	let gtag = getAnalyticsWindow().gtag;
+	if (!gtag) {
+		initializeGoogleAnalytics();
+		gtag = getAnalyticsWindow().gtag;
+	}
 	if (!gtag) return;
 
 	gtag("event", eventName, {

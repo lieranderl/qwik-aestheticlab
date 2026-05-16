@@ -4,12 +4,49 @@ import { inlineTranslate } from "qwik-speak";
 import { Booking } from "./booking-modal";
 import { FadeUp } from "./fade-up";
 
+type ServiceImageComponent =
+	typeof import("~/media/gallery/universal.jpg?jsx").default;
+
+const GALLERY_IMAGES = import.meta.glob("../../media/gallery/*.jpg", {
+	eager: true,
+	query: "?jsx",
+	import: "default",
+}) as Record<string, ServiceImageComponent>;
+
+const SERVICE_IMAGES = import.meta.glob("../../media/services/*.png", {
+	eager: true,
+	query: "?jsx",
+	import: "default",
+}) as Record<string, ServiceImageComponent>;
+
+function resolveImageComponent(image: string) {
+	if (image.startsWith("gallery:")) {
+		const imageName = image.slice("gallery:".length).replace(/\.jpg$/i, "");
+		for (const path in GALLERY_IMAGES) {
+			if (path.endsWith(`/${imageName}.jpg`)) {
+				return GALLERY_IMAGES[path];
+			}
+		}
+		return null;
+	}
+
+	if (image.startsWith("service:")) {
+		const imageName = image.slice("service:".length).replace(/\.png$/i, "");
+		for (const path in SERVICE_IMAGES) {
+			if (path.endsWith(`/${imageName}.png`)) {
+				return SERVICE_IMAGES[path];
+			}
+		}
+	}
+
+	return null;
+}
+
 interface ServiceCardProps {
 	title: string;
 	description: string;
 	price?: string;
-	// biome-ignore lint/suspicious/noExplicitAny: Generic component prop
-	image: any;
+	image: string;
 	delay?: number;
 	serviceId: string;
 	location: string;
@@ -21,6 +58,7 @@ interface ServiceCardProps {
 	supportingText?: string;
 	analyticsPlacement?: string;
 	analyticsServiceCategory?: string;
+	eager?: boolean;
 }
 
 export const ServiceCard = component$<ServiceCardProps>(
@@ -28,7 +66,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 		title,
 		description,
 		price,
-		image: ImageComp,
+		image,
 		delay = 0,
 		serviceId,
 		location,
@@ -40,55 +78,65 @@ export const ServiceCard = component$<ServiceCardProps>(
 		supportingText,
 		analyticsPlacement,
 		analyticsServiceCategory,
+		eager = false,
 	}) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
 		const hasLongDescription = description.length > 140;
+		const ImageComp = resolveImageComponent(image);
 
 		return (
 			<FadeUp delay={delay} class="h-full">
-				<div class="card rounded-2xl h-full overflow-hidden border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+				<article class="card h-full overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 					<figure
 						class={[
 							"group relative overflow-hidden bg-base-200",
-							variant === "category" ? "aspect-[5/4]" : "aspect-[4/3]",
+							variant === "category"
+								? "h-[9.5rem] md:h-auto md:aspect-5/4"
+								: "h-[13rem] md:h-auto md:aspect-4/3",
 						]}
 					>
-						{typeof ImageComp === "string" ? (
-							<img
-								src={ImageComp}
-								alt={title}
-								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-								width="400"
-								height="500"
-							/>
-						) : (
+						{ImageComp ? (
 							<ImageComp
 								alt={title}
-								class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+								class="h-full w-full object-cover object-center transition-transform duration-700 ease-out md:group-hover:scale-[1.03]"
+								loading={eager ? "eager" : "lazy"}
+								fetchPriority={eager ? "high" : "auto"}
+							/>
+						) : (
+							<img
+								src={image}
+								alt={title}
+								class="h-full w-full object-cover object-center transition-transform duration-700 ease-out md:group-hover:scale-[1.03]"
+								width="400"
+								height="500"
+								loading={eager ? "eager" : "lazy"}
+								fetchPriority={eager ? "high" : "auto"}
 							/>
 						)}
 						<div class="absolute inset-0 bg-linear-to-t from-base-content/75 via-base-content/10 to-transparent" />
-						<div class="absolute left-4 right-4 top-4 flex flex-wrap items-start justify-between gap-2">
+						<div class="absolute top-3 right-3 left-3 flex flex-wrap items-start justify-between gap-2 md:top-4 md:right-4 md:left-4">
 							{supportingText ? (
-								<span class="badge badge-neutral badge-sm rounded-full border-none font-montserrat uppercase tracking-wider">
+								<span class="badge badge-neutral badge-xs rounded-full border-none font-montserrat uppercase tracking-wider shadow-sm md:badge-sm">
 									{supportingText}
 								</span>
 							) : null}
 						</div>
 					</figure>
 
-					<div class="card-body gap-4 p-6">
-						<div class="space-y-3">
-							<h3 class="font-qestero text-2xl text-base-content md:text-[2rem]">
+					<div class="card-body gap-3 p-4 md:gap-4 md:p-6">
+						<div class="space-y-2.5 md:space-y-3">
+							<h3 class="font-qestero text-[1.55rem] leading-none text-base-content md:text-[2rem]">
 								{title.charAt(0).toUpperCase() + title.slice(1)}
 							</h3>
 							<p
 								class={[
-									"font-montserrat text-sm leading-relaxed text-base-content/80",
-									variant === "category" || isExpanded.value
-										? ""
-										: "line-clamp-4",
+									"font-montserrat text-[0.82rem] leading-relaxed text-base-content/80 md:text-sm",
+									variant === "category"
+										? "line-clamp-2 md:line-clamp-none"
+										: isExpanded.value
+											? ""
+											: "line-clamp-3 md:line-clamp-4",
 								]}
 							>
 								{description}
@@ -99,7 +147,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									onClick$={$(() => {
 										isExpanded.value = !isExpanded.value;
 									})}
-									class="btn btn-ghost btn-xs rounded-full w-fit px-0 font-montserrat uppercase tracking-wider text-primary"
+									class="btn btn-ghost btn-xs w-fit rounded-full px-0 font-montserrat uppercase tracking-wider text-primary"
 									aria-expanded={isExpanded.value}
 								>
 									{isExpanded.value
@@ -112,7 +160,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 						{variant === "category" ? (
 							price ? (
 								<div>
-									<span class="badge badge-primary badge-outline rounded-full font-montserrat">
+									<span class="badge badge-accent badge-outline rounded-full font-montserrat">
 										{price}
 									</span>
 								</div>
@@ -121,7 +169,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 
 						<div
 							class={[
-								"card-actions mt-auto items-center gap-3 border-t border-base-300 pt-4",
+								"card-actions mt-auto items-center gap-2 border-t border-base-300 pt-3 md:gap-3 md:pt-4",
 								variant === "service" ? "justify-between" : "justify-stretch",
 							]}
 						>
@@ -146,9 +194,9 @@ export const ServiceCard = component$<ServiceCardProps>(
 										customAction$();
 									})}
 									class={[
-										"btn rounded-full w-full max-w-full font-montserrat uppercase tracking-[0.12em] text-sm",
+										"btn w-full max-w-full rounded-full font-montserrat text-xs uppercase tracking-[0.12em] md:text-sm",
 										variant === "category"
-											? "btn-primary min-h-14 px-6 py-3 leading-tight"
+											? "btn-primary min-h-10 px-5 py-2 leading-tight md:min-h-14 md:px-6 md:py-3"
 											: "btn-sm btn-outline btn-primary",
 									]}
 								>
@@ -168,7 +216,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 							) : null}
 						</div>
 					</div>
-				</div>
+				</article>
 			</FadeUp>
 		);
 	},
