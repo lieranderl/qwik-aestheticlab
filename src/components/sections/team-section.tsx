@@ -28,6 +28,10 @@ interface TeamSectionProps {
 	technicians: Staff[];
 }
 
+function compareStaffById(a: Staff, b: Staff) {
+	return a.id - b.id;
+}
+
 export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const t = inlineTranslate();
 
@@ -49,8 +53,8 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 					<div class="editorial-rule mx-auto w-20 lg:mx-0 lg:w-full" />
 				</FadeUp>
 
-				<div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-					{technicians.map((tech, index) => (
+				<div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-6">
+					{[...technicians].sort(compareStaffById).map((tech, index) => (
 						<FadeUp key={tech.id} delay={index * 150} class="group h-full">
 							<TeamMemberCard tech={tech} />
 						</FadeUp>
