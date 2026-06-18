@@ -39,13 +39,13 @@ function resolveLocalizedField(
 ) {
 	switch (localeCode) {
 		case "ru":
-			return ru ?? defaultValue;
+			return ru || defaultValue;
 		case "nl":
-			return nl ?? defaultValue;
+			return nl || defaultValue;
 		case "fr":
-			return fr ?? defaultValue;
+			return fr || defaultValue;
 		case "uk":
-			return uk ?? defaultValue;
+			return uk || defaultValue;
 		default:
 			return defaultValue;
 	}

@@ -82,6 +82,18 @@ describe("localizeService", () => {
 		expect(localized.name).toBe("Classic manicure");
 		expect(localized.description).toBe("English description");
 	});
+
+	it("falls back to default (English) values when translation strings are empty", () => {
+		const emptyStringService: Service = {
+			...baseService,
+			name_nl: "",
+			description_nl: "",
+		};
+		const localized = localizeService(emptyStringService, "nl-BE");
+
+		expect(localized.name).toBe("Classic manicure");
+		expect(localized.description).toBe("English description");
+	});
 });
 
 describe("localizeServiceGroups", () => {
