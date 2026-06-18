@@ -3,10 +3,26 @@ import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
-import ImgJulia from "~/media/julia.jpg?jsx";
-import ImgRubina from "~/media/rubina.jpg?jsx";
-import ImgZara from "~/media/zara.jpg?jsx";
 import type { Staff } from "~/types";
+
+type TeamImageComponent = typeof import("~/media/zara.jpg?jsx").default;
+
+const TEAM_IMAGES = import.meta.glob("../../media/*.jpg", {
+	eager: true,
+	query: "?jsx",
+	import: "default",
+}) as Record<string, TeamImageComponent>;
+
+function resolveImageComponent(image: string) {
+	if (!image) return null;
+	const imageName = image.replace(/\.jpg$/i, "");
+	for (const path in TEAM_IMAGES) {
+		if (path.endsWith(`/${imageName}.jpg`)) {
+			return TEAM_IMAGES[path];
+		}
+	}
+	return null;
+}
 
 interface TeamSectionProps {
 	technicians: Staff[];
@@ -62,30 +78,28 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	const loc = useLocation();
 	const lang = loc.params.lang || "en-BE";
 	const isExpanded = useSignal(false);
+	const ImageComp = resolveImageComponent(tech.photo_url);
 
 	return (
 		<article class="flex h-full flex-col rounded-2xl border border-white/50 bg-base-100/90 p-4 text-left shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl md:p-6">
 			<div class="mx-auto mb-4 h-32 w-32 shrink-0 overflow-hidden rounded-full border border-base-300 bg-base-200 transition-transform duration-500 group-hover:border-primary/30 md:mb-6 md:aspect-4/5 md:h-auto md:w-full md:rounded-t-full md:rounded-b-2xl">
-				{tech.photo_url === "rubina" && (
-					<ImgRubina
+				{ImageComp ? (
+					<ImageComp
 						alt={tech.name}
 						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
 						loading="lazy"
 					/>
-				)}
-				{tech.photo_url === "zara" && (
-					<ImgZara
-						alt={tech.name}
-						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-						loading="lazy"
-					/>
-				)}
-				{tech.photo_url === "julia" && (
-					<ImgJulia
-						alt={tech.name}
-						class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-						loading="lazy"
-					/>
+				) : (
+					tech.photo_url && (
+						<img
+							src={tech.photo_url}
+							alt={tech.name}
+							width={640}
+							height={800}
+							class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+							loading="lazy"
+						/>
+					)
 				)}
 			</div>
 

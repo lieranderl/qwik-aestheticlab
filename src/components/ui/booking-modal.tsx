@@ -109,6 +109,9 @@ export const Booking = component$<BookingProps>(
 							/>
 						)}
 					</div>
+					<form method="dialog" class="modal-backdrop">
+						<button type="submit">close</button>
+					</form>
 				</dialog>
 			</>
 		);
