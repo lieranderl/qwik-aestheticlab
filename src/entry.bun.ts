@@ -93,19 +93,26 @@ Bun.serve({
 		if (response) {
 			const url = new URL(adjustedRequest.url);
 			const pathname = url.pathname;
+			const isSuccessfulResponse =
+				response.status >= 200 && response.status < 400;
 
 			// Add cache control headers
-			if (pathname.startsWith("/build/")) {
+			if (pathname.startsWith("/build/") && isSuccessfulResponse) {
 				// Qwik build assets are hashed, safe to cache for a long time
 				response.headers.set(
 					"Cache-Control",
 					"public, max-age=31536000, immutable",
 				);
-			} else if (pathname.startsWith("/assets/")) {
+			} else if (pathname.startsWith("/assets/") && isSuccessfulResponse) {
 				response.headers.set(
 					"Cache-Control",
 					"public, max-age=31536000, immutable",
 				);
+			} else if (
+				!isSuccessfulResponse &&
+				(pathname.startsWith("/build/") || pathname.startsWith("/assets/"))
+			) {
+				response.headers.set("Cache-Control", "no-store");
 			} else if (pathname.startsWith("/fonts/")) {
 				response.headers.set(
 					"Cache-Control",
