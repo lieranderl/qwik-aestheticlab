@@ -1,141 +1,473 @@
-name: Deploy to Cloud Run
+name: Build and promote to Cloud Run
 
 on:
   push:
-    branches:
-      - staging
+    branches: [staging]
   release:
-    types: [created]
-  workflow_dispatch:
+    types: [published]
+
+permissions:
+  contents: read
 
 concurrency:
-  group: deploy-${{ github.event_name }}-${{ github.ref }}
+  group: ${{ github.event_name == 'release' && 'production-platform' || format('deploy-staging-{0}', github.ref) }}
   cancel-in-progress: ${{ github.event_name != 'release' }}
 
 env:
-  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-  GCP_REGION: ${{ secrets.GCP_REGION }}
-  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
-  STAGE_SERVICE: ${{ secrets.STAGE_SERVICE }}
-  PROD_SERVICE: ${{ secrets.PROD_SERVICE }}
+  GCP_PROJECT: ${{ vars.GCP_PROJECT }}
+  GCP_REGION: ${{ vars.GCP_REGION }}
+  GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  STAGE_SERVICE: ${{ vars.STAGE_SERVICE }}
+  PROD_SERVICE: ${{ vars.PROD_SERVICE }}
+  PROD_URL: ${{ vars.PROD_URL }}
 
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  quality:
+    if: github.event_name == 'push'
     permissions:
       contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun ci
-
-      - name: Verify
-        run: bun run verify
+    uses: ./.github/workflows/quality.yml
 
   build:
+    if: github.event_name == 'push'
+    needs: quality
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: verify
+    timeout-minutes: 25
+    environment: staging
     permissions:
-      actions: write
       contents: read
+      id-token: write
+      attestations: write
     outputs:
-      image_tag: ${{ steps.set_tag.outputs.TAG }}
+      image: ${{ steps.image.outputs.uri }}
+      digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@v4
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Set Docker tag
-        id: set_tag
+      - name: Validate staging deployment inputs
+        env:
+          WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          DEPLOYER_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
         run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            RELEASE_TAG="${{ github.ref_name }}"
-            # Enforce semantic versioning vX.Y.Z
-            if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "❌ Error: Release tag '$RELEASE_TAG' is not in semantic version format (vX.Y.Z)."
-              exit 1
-            fi
-            echo "✅ Using release tag: $RELEASE_TAG"
-            echo "TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          else
-            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-            echo "✅ Using short SHA: $SHORT_SHA"
-            echo "TAG=${SHORT_SHA}" >> $GITHUB_OUTPUT
-          fi
+          for name in GCP_PROJECT GCP_REGION GAR_REPOSITORY IMAGE_NAME STAGE_SERVICE WIF_PROVIDER DEPLOYER_SERVICE_ACCOUNT; do
+            [[ -n "${!name:-}" ]] || { echo "Missing required deployment variable: $name" >&2; exit 1; }
+          done
+          [[ "$WIF_PROVIDER" =~ ^projects/[0-9]+/locations/global/workloadIdentityPools/[^/]+/providers/[^/]+$ ]]
+          [[ "$DEPLOYER_SERVICE_ACCOUNT" == *@"$GCP_PROJECT".iam.gserviceaccount.com ]]
 
-      - name: Build and push image with cache
-        uses: docker/build-push-action@v7
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Configure Artifact Registry authentication
+        run: gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
+
+      - name: Set image URI
+        id: image
+        run: echo "uri=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPOSITORY}/${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+
+      - name: Build once and push
+        id: build
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_IMAGE }}:${{ steps.set_tag.outputs.TAG }}
           platforms: linux/amd64
-          provenance: false
-          sbom: false
+          tags: |
+            ${{ steps.image.outputs.uri }}:build-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true
 
-  deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+      - name: Attest exact image digest
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-name: ${{ steps.image.outputs.uri }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+
+      - name: Scan exact image digest
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
+        with:
+          image-ref: ${{ steps.image.outputs.uri }}@${{ steps.build.outputs.digest }}
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+  staging:
+    if: github.event_name == 'push'
     needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
     permissions:
       contents: read
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v3
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_ID_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
 
-      - name: Setup gcloud SDK
-        uses: google-github-actions/setup-gcloud@v3
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
         with:
           project_id: ${{ env.GCP_PROJECT }}
 
-      - name: Deploy to Cloud Run (staging)
-        if: github.ref == 'refs/heads/staging'
+      - name: Deploy candidate without traffic
+        id: deploy
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}@${{ needs.build.outputs.digest }}
+          TAG: candidate-${{ github.run_id }}
+          SUFFIX: candidate-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
-          echo "🚀 Deploying staging build: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
-          gcloud run deploy $STAGE_SERVICE \
-            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
-            --region=$GCP_REGION \
-            --project=$GCP_PROJECT \
-            --min-instances=0 \
-            --max-instances=1 \
-            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
+          gcloud run deploy "$STAGE_SERVICE" --image="$IMAGE" --region="$GCP_REGION" --project="$GCP_PROJECT" --no-traffic --tag="$TAG" --revision-suffix="$SUFFIX" --quiet
+          URL=$(gcloud run services describe "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json | jq -r --arg tag "$TAG" '.status.traffic[] | select(.tag == $tag) | .url')
+          test -n "$URL" && test "$URL" != "null"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "revision=$STAGE_SERVICE-$SUFFIX" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy to Cloud Run (prod)
-        if: github.event_name == 'release'
+      - name: Smoke-test candidate
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: ./scripts/smoke-deployment.sh "$URL"
+
+      - name: Promote exact tested revision
+        env:
+          REVISION: ${{ steps.deploy.outputs.revision }}
+        run: gcloud run services update-traffic "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet
+
+      - name: Mark staging-approved digest as verified
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+          DIGEST: ${{ needs.build.outputs.digest }}
+        run: gcloud artifacts docker tags add "$IMAGE@$DIGEST" "$IMAGE:verified-${GITHUB_SHA}" --quiet
+
+      - name: Remove candidate tag
+        if: always()
+        env:
+          TAG: candidate-${{ github.run_id }}
+        run: gcloud run services update-traffic "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet
+
+  production_prepare:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    permissions:
+      attestations: read
+      contents: read
+      id-token: write
+    outputs:
+      candidate_url: ${{ steps.deploy.outputs.url }}
+      revision: ${{ steps.deploy.outputs.revision }}
+      previous: ${{ steps.deploy.outputs.previous }}
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Validate production deployment inputs
+        env:
+          WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          DEPLOYER_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
         run: |
-          echo "🚀 Deploying production release: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
-          gcloud run deploy $PROD_SERVICE \
-            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
-            --region=$GCP_REGION \
-            --project=$GCP_PROJECT \
-            --min-instances=1 \
-            --max-instances=1 \
-            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
+          for name in GCP_PROJECT GCP_REGION GAR_REPOSITORY IMAGE_NAME PROD_SERVICE PROD_URL WIF_PROVIDER DEPLOYER_SERVICE_ACCOUNT; do
+            [[ -n "${!name:-}" ]] || { echo "Missing required deployment variable: $name" >&2; exit 1; }
+          done
+          [[ "$WIF_PROVIDER" =~ ^projects/[0-9]+/locations/global/workloadIdentityPools/[^/]+/providers/[^/]+$ ]]
+          [[ "$DEPLOYER_SERVICE_ACCOUNT" == *@"$GCP_PROJECT".iam.gserviceaccount.com ]]
+          [[ "$PROD_URL" =~ ^https://[^/]+$ ]]
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Configure Artifact Registry authentication
+        run: gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
+
+      - name: Resolve previously verified staging digest
+        id: image
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$RELEASE_TAG" = "v$(jq -r .version package.json)"
+          COMMIT_SHA=$(git rev-parse HEAD)
+          URI="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPOSITORY}/${IMAGE_NAME}"
+          DIGEST=$(gcloud artifacts docker images describe "$URI:verified-$COMMIT_SHA" --project="$GCP_PROJECT" --format='value(image_summary.digest)')
+          test -n "$DIGEST"
+          echo "ref=$URI@$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "commit=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Verify build provenance for the release commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE: ${{ steps.image.outputs.ref }}
+          COMMIT_SHA: ${{ steps.image.outputs.commit }}
+        run: |
+          gh attestation verify "oci://$IMAGE" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/deploy.yml" \
+            --source-ref refs/heads/staging \
+            --source-digest "$COMMIT_SHA" \
+            --deny-self-hosted-runners
+
+      - name: Re-scan release image
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
+        with:
+          image-ref: ${{ steps.image.outputs.ref }}
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Deploy candidate without traffic
+        id: deploy
+        env:
+          IMAGE: ${{ steps.image.outputs.ref }}
+          TAG: candidate-${{ github.run_id }}
+          SUFFIX: candidate-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          SERVICE_STATE=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json)
+          ACTIVE_COUNT=$(jq '[.status.traffic[] | select((.percent // 0) > 0)] | length' <<<"$SERVICE_STATE")
+          ACTIVE_PERCENT=$(jq -r '[.status.traffic[] | select((.percent // 0) > 0)][0].percent' <<<"$SERVICE_STATE")
+          PREVIOUS=$(jq -r '[.status.traffic[] | select((.percent // 0) > 0)][0].revisionName' <<<"$SERVICE_STATE")
+          test "$ACTIVE_COUNT" = "1" && test "$ACTIVE_PERCENT" = "100"
+          test -n "$PREVIOUS" && test "$PREVIOUS" != "null"
+          gcloud run deploy "$PROD_SERVICE" --image="$IMAGE" --region="$GCP_REGION" --project="$GCP_PROJECT" --no-traffic --tag="$TAG" --revision-suffix="$SUFFIX" --quiet
+          URL=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json | jq -r --arg tag "$TAG" '.status.traffic[] | select(.tag == $tag) | .url')
+          test -n "$URL" && test "$URL" != "null"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "revision=$PROD_SERVICE-$SUFFIX" >> "$GITHUB_OUTPUT"
+          echo "previous=$PREVIOUS" >> "$GITHUB_OUTPUT"
+
+      - name: Persist immutable recovery state
+        env:
+          CANDIDATE: ${{ steps.deploy.outputs.revision }}
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+        run: |
+          printf 'candidate=%s\nprevious=%s\n' "$CANDIDATE" "$PREVIOUS" > /tmp/production-recovery.env
+
+      - name: Publish recovery state for independent watchdog
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: production-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/production-recovery.env
+          if-no-files-found: error
+          retention-days: 1
+
+  production:
+    if: github.event_name == 'release'
+    needs: production_prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Authenticate production promotion identity
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Smoke-test candidate
+        env:
+          URL: ${{ needs.production_prepare.outputs.candidate_url }}
+        run: ./scripts/smoke-deployment.sh "$URL"
+
+      - name: Canary and promote exact tested revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ needs.production_prepare.outputs.revision }}
+          PREVIOUS: ${{ needs.production_prepare.outputs.previous }}
+          URL: ${{ env.PROD_URL }}
+        run: |
+          promotion_complete=false
+          require_watchdog() {
+            local mode="${1:-active}" job_json status started_epoch elapsed ready_epoch ready_age
+
+            if [[ "$mode" == "initial" ]]; then
+              rm -rf /tmp/production-watchdog-ready
+              for _ in {1..20}; do
+                if gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "production-watchdog-ready-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" --dir /tmp/production-watchdog-ready; then
+                  break
+                fi
+                sleep 15
+              done
+              test -s /tmp/production-watchdog-ready/production-watchdog-ready.env
+            fi
+
+            job_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs" --jq '.jobs[] | select(.name == "production-watchdog")')
+            status=$(jq -r '.status' <<<"$job_json")
+            [[ "$status" == "in_progress" ]]
+
+            if [[ "$mode" == "initial" ]]; then
+              started_epoch=$(date -d "$(jq -r '.started_at' <<<"$job_json")" +%s)
+              elapsed=$(( $(date +%s) - started_epoch ))
+              ready_epoch=$(sed -n 's/^ready_epoch=//p' /tmp/production-watchdog-ready/production-watchdog-ready.env)
+              [[ "$ready_epoch" =~ ^[0-9]+$ ]]
+              ready_age=$(( $(date +%s) - ready_epoch ))
+              (( elapsed >= 0 && elapsed < 600 ))
+              (( ready_age >= 0 && ready_age < 300 ))
+            fi
+          }
+          rollback() {
+            if [[ "$promotion_complete" != "true" ]]; then
+              echo "Rolling traffic back to $PREVIOUS"
+              gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet || true
+            fi
+          }
+          trap rollback EXIT
+          trap 'exit 130' INT TERM
+
+          require_watchdog initial
+          gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=10,$PREVIOUS=90" --quiet
+          ./scripts/smoke-deployment.sh "$URL"
+
+          CANARY_STATE=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json)
+          test "$(jq --arg revision "$REVISION" '[.status.traffic[] | select(.revisionName == $revision and .percent == 10)] | length' <<<"$CANARY_STATE")" = "1"
+          test "$(jq --arg revision "$PREVIOUS" '[.status.traffic[] | select(.revisionName == $revision and .percent == 90)] | length' <<<"$CANARY_STATE")" = "1"
+          gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet
+          ./scripts/smoke-deployment.sh "$URL"
+
+          require_watchdog active
+          FINAL_STATE=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json)
+          test "$(jq --arg revision "$REVISION" '[.status.traffic[] | select((.percent // 0) > 0)] | length == 1 and .[0].revisionName == $revision and .[0].percent == 100' <<<"$FINAL_STATE")" = "true"
+
+          promotion_complete=true
+          trap - EXIT INT TERM
+
+      - name: Emergency rollback after interrupted promotion
+        if: failure() || cancelled()
+        env:
+          PREVIOUS: ${{ needs.production_prepare.outputs.previous }}
+        run: |
+          if [[ -n "$PREVIOUS" ]]; then
+            gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet
+          fi
+
+      - name: Remove candidate tag
+        if: always()
+        env:
+          TAG: candidate-${{ github.run_id }}
+        run: gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet
+
+  production-watchdog:
+    if: github.event_name == 'release'
+    needs: production_prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: production
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Authenticate recovery controller
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Load immutable recovery state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "production-recovery-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" --dir /tmp/production-recovery
+          test -s /tmp/production-recovery/production-recovery.env
+          CANDIDATE=$(sed -n 's/^candidate=//p' /tmp/production-recovery/production-recovery.env)
+          PREVIOUS=$(sed -n 's/^previous=//p' /tmp/production-recovery/production-recovery.env)
+          test -n "$CANDIDATE" && test -n "$PREVIOUS"
+          echo "CANDIDATE=$CANDIDATE" >> "$GITHUB_ENV"
+          echo "PREVIOUS=$PREVIOUS" >> "$GITHUB_ENV"
+          printf 'ready_epoch=%s\n' "$(date +%s)" > /tmp/production-watchdog-ready.env
+
+      - name: Publish authenticated watchdog readiness
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: production-watchdog-ready-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/production-watchdog-ready.env
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Reconcile an abandoned canary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: candidate-${{ github.run_id }}
+        run: |
+
+          for _ in {1..35}; do
+            JOB_STATE=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs" --jq '.jobs[] | select(.name == "production") | [.status, (.conclusion // "")] | @tsv')
+            JOB_STATUS=$(cut -f1 <<<"$JOB_STATE")
+            JOB_CONCLUSION=$(cut -f2 <<<"$JOB_STATE")
+            SERVICE_STATE=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json)
+            ACTIVE=$(jq '[.status.traffic[] | select((.percent // 0) > 0)]' <<<"$SERVICE_STATE")
+            ACTIVE_COUNT=$(jq 'length' <<<"$ACTIVE")
+            ACTIVE_REVISION=$(jq -r 'if length == 1 then .[0].revisionName else "" end' <<<"$ACTIVE")
+
+            if [[ "$JOB_STATUS" == "completed" ]]; then
+              if [[ "$JOB_CONCLUSION" != "success" ]]; then
+                if [[ "$ACTIVE_COUNT" != "1" || "$ACTIVE_REVISION" != "$PREVIOUS" ]]; then
+                  gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet
+                fi
+                gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet || true
+                echo "Production job concluded $JOB_CONCLUSION; baseline restored to $PREVIOUS" >&2
+                exit 1
+              fi
+              if [[ "$ACTIVE_COUNT" != "1" || "$ACTIVE_REVISION" != "$CANDIDATE" ]]; then
+                echo "Successful production job did not leave 100% traffic on $CANDIDATE" >&2
+                exit 1
+              fi
+              gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet || true
+              exit 0
+            fi
+
+            sleep 60
+          done
+
+          echo "Production watchdog timed out while the bounded production job was still reported as running" >&2
+          exit 1

@@ -21,7 +21,7 @@ export const MyComponent = component$<MyComponentProps>((props) => {
 ### Reactivity
 
 | Need | Use |
-|------|-----|
+| --- | --- |
 | Single mutable value | `useSignal<T>(initial)` |
 | Derived/computed value | `useComputed$(() => ...)` |
 | Side effect on signal change | `useTask$(({ track }) => { track(() => sig.value); ... })` |
@@ -56,7 +56,7 @@ Qwik auto-splits at `$` boundaries. Do not:
 ## File & Folder Naming
 
 | Type | Convention | Example |
-|------|-----------|---------|
+| --- | --- | --- |
 | Components | `kebab-case.tsx` | `service-card.tsx` |
 | Utilities/shared | `kebab-case.ts` | `locale-navigation.ts` |
 | Types | `kebab-case.ts` or single `types.ts` | `types.ts` |
@@ -117,10 +117,10 @@ Never pass a bare function without `$()` to a Qwik event handler prop.
 
 ## Testing Expectations
 
-When tests are added to this project:
+The project uses Vitest for unit/component tests and Playwright for E2E tests:
 
 - Place test files adjacent to the module they test: `service-utils.test.ts` next to `service-utils.ts`.
-- Use the test runner configured in `package.json` (currently none — when adding, prefer `vitest`).
+- Run focused tests with `bunx vitest run path/to/file.test.ts`.
 - Test utilities and shared logic first; snapshot-test components only when layout stability matters.
 
 ## Git Commit Hygiene

@@ -6,6 +6,7 @@
 
 # Development
 node_modules
+gha-creds-*.json
 *.local
 .claude/settings.local.json
 .claude/*.local.json
@@ -95,9 +96,6 @@ crash.log
 terraform.tfvars
 *.tfvars.json
 
-# .terraform.lock.hcl (if you are using Terraform v0.14+)
-.terraform.lock.hcl
-
 # Ansible inventory files
 inventory
 # Ansible vault files
@@ -107,4 +105,3 @@ infra/terraform/*.yaml
 Makefile_old
 create_gcloud.sh
 .agents/
-

@@ -1,6 +1,10 @@
 import { createQwikCity } from "@builder.io/qwik-city/middleware/bun";
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
+import { isRuntimeConfigReady } from "~/shared/runtime-config";
+import { applySecurityHeaders } from "~/shared/security-headers";
+import { logServerEvent } from "~/shared/server-logging";
+import { isSupabaseDependencyReady } from "~/shared/supabase-readiness";
 import render from "./entry.ssr";
 
 // Create the Qwik City Bun middleware
@@ -13,7 +17,16 @@ const { router, notFound, staticFile } = createQwikCity({
 // Allow for dynamic port
 const port = Number(Bun.env.PORT) || 3000;
 
-console.log(`🚀 Server started: http://localhost:${port}/`);
+logServerEvent("INFO", "server_started", { port });
+
+function statusResponse(ready = true) {
+	return applySecurityHeaders(
+		new Response(ready ? "OK" : "NOT READY", {
+			status: ready ? 200 : 503,
+			headers: { "Cache-Control": "no-store" },
+		}),
+	);
+}
 
 function supportsCompression(response: Response) {
 	if (!response.body) return false;
@@ -71,7 +84,13 @@ Bun.serve({
 	port,
 	routes: {
 		"/healthz": {
-			GET: () => new Response("OK", { status: 200 }),
+			GET: () => statusResponse(),
+		},
+		"/readyz": {
+			GET: () => statusResponse(isRuntimeConfigReady(Bun.env)),
+		},
+		"/dependencyz": {
+			GET: async () => statusResponse(await isSupabaseDependencyReady(Bun.env)),
 		},
 	},
 	async fetch(request: Request) {
@@ -136,7 +155,8 @@ Bun.serve({
 					"public, max-age=604800, stale-while-revalidate=2592000",
 				);
 			}
-			return maybeCompressResponse(adjustedRequest, response);
+			const securedResponse = applySecurityHeaders(response);
+			return maybeCompressResponse(adjustedRequest, securedResponse);
 		}
 
 		return response;
