@@ -220,6 +220,13 @@ jobs:
           test "$RELEASE_TAG" = "v$(jq -r .version package.json)"
           COMMIT_SHA=$(git rev-parse HEAD)
           URI="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPOSITORY}/${IMAGE_NAME}"
+
+          echo "RELEASE_TAG=$RELEASE_TAG"
+          echo "PACKAGE_VERSION=v$(jq -r .version package.json)"
+          echo "HEAD=$(git rev-parse HEAD)"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          echo "IMAGE=$URI:verified-$COMMIT_SHA"
+
           DIGEST=$(gcloud artifacts docker images describe "$URI:verified-$COMMIT_SHA" --project="$GCP_PROJECT" --format='value(image_summary.digest)')
           test -n "$DIGEST"
           echo "ref=$URI@$DIGEST" >> "$GITHUB_OUTPUT"
