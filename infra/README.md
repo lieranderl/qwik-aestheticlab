@@ -21,7 +21,7 @@
 6. Add the shared project's publishable/anon key to both environment-specific secrets through Secret Manager. Never use `service_role` or `sb_secret_*` keys in this application. Separate secrets preserve independent IAM and version promotion even when their value is initially identical.
 7. Push an immutable bootstrap image and set `initial_image` to its GAR digest. Existing services must be imported with their current immutable GAR digest.
 8. Run `tofu plan -out=tfplan`, review replacement/IAM/public-access changes, then apply the initial saved plan with the bootstrap identity.
-9. Add `github_repository_variables` plus the state, image, and Supabase URL/version values below as repository variables. Add the alert email as the `ALERT_NOTIFICATION_EMAIL` repository secret. Add each `github_environment_variables` output to its matching environment.
+9. Bootstrap at least one Monitoring notification channel outside OpenTofu state, then add its non-sensitive full resource name to the `MONITORING_NOTIFICATION_CHANNEL_IDS` repository variable as a JSON list. Keep recipient addresses out of GitHub, plans, and state. Add `github_repository_variables` plus the state, image, and Supabase URL/version values below as repository variables. Add each `github_environment_variables` output to its matching environment.
 10. Grant the `infrastructure-plan` service account bucket-scoped `roles/storage.objectViewer`; grant the protected `infrastructure` service account bucket-scoped `roles/storage.objectAdmin` for state locking and writes.
 11. Configure required reviewers on `production` and `infrastructure`; restrict `infrastructure-plan` and `infrastructure` to `staging`; require PR/security checks on `staging` before enabling deployer variables.
 
@@ -37,9 +37,9 @@ Infrastructure workflow variables:
 | `INITIAL_IMAGE` | Immutable GAR digest used only for bootstrap/import reconciliation |
 | `STAGING_SUPABASE_URL`, `PRODUCTION_SUPABASE_URL` | Supabase project URLs; they may be identical for this read-only site |
 | `STAGING_SUPABASE_SECRET_VERSION`, `PRODUCTION_SUPABASE_SECRET_VERSION` | Tested numeric versions |
-| `ALERT_NOTIFICATION_EMAIL` | Repository secret containing the address for the OpenTofu-managed primary alert channel |
+| `MONITORING_NOTIFICATION_CHANNEL_IDS` | JSON list of existing Monitoring notification channel resource names |
 
-Optional additional channels can be supplied through `additional_notification_channel_ids` in local bootstrap variables.
+Notification channel recipients are sensitive bootstrap data. OpenTofu manages alert policies and references channels by resource name, but deliberately does not manage notification-channel recipient configuration.
 
 This root creates secret containers but never secret values or versions. Add keys directly through Secret Manager and grant secret administration only to the bootstrap/rotation identity. Rotate staging first, validate it, then pin the tested numeric production version; deployments never follow `latest`.
 

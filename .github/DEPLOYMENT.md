@@ -25,7 +25,7 @@ Repository/environment configuration:
 | Each environment | `GCP_WORKLOAD_ID_PROVIDER`, `GCP_SERVICE_ACCOUNT` |
 
 Store configuration at the narrowest applicable scope. WIF resource names and service-account emails are identifiers, not secrets; no private key is stored in GitHub.
-Store the alert recipient as the repository secret `ALERT_NOTIFICATION_EMAIL`. Supabase runtime keys remain only in GCP Secret Manager and are never copied into GitHub Actions.
+Store only non-sensitive Monitoring channel resource names in the repository variable `MONITORING_NOTIFICATION_CHANNEL_IDS` as a JSON list. Keep recipient addresses inside GCP notification channels so they never enter GitHub, OpenTofu plans, or state. Supabase runtime keys remain only in GCP Secret Manager and are never copied into GitHub Actions.
 
 ## Container
 

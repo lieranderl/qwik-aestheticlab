@@ -355,17 +355,6 @@ resource "google_cloud_run_v2_service_iam_member" "deployer" {
   member   = "serviceAccount:${google_service_account.deployer[each.key].email}"
 }
 
-resource "google_monitoring_notification_channel" "email" {
-  display_name = "Aesthetic Lab production alerts"
-  type         = "email"
-  enabled      = true
-  labels = {
-    email_address = var.notification_email
-  }
-
-  depends_on = [google_project_service.required]
-}
-
 resource "google_monitoring_uptime_check_config" "localized_page" {
   display_name = "Aesthetic Lab production /en-BE/"
   timeout      = "10s"
@@ -421,7 +410,7 @@ resource "google_monitoring_uptime_check_config" "supabase_dependency" {
 resource "google_monitoring_alert_policy" "server_errors" {
   display_name          = "Aesthetic Lab production 5xx responses"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "5xx response rate is non-zero"
@@ -452,7 +441,7 @@ resource "google_monitoring_alert_policy" "server_errors" {
 resource "google_monitoring_alert_policy" "localized_page" {
   display_name          = "Aesthetic Lab production page or dependency unavailable"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Localized page check fails"
@@ -500,7 +489,7 @@ resource "google_monitoring_alert_policy" "localized_page" {
 resource "google_monitoring_alert_policy" "latency" {
   display_name          = "Aesthetic Lab production p95 latency"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "p95 request latency exceeds two seconds"
@@ -531,7 +520,7 @@ resource "google_monitoring_alert_policy" "latency" {
 resource "google_monitoring_alert_policy" "instance_saturation" {
   display_name          = "Aesthetic Lab production instance saturation"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Active instances at configured maximum"
@@ -562,7 +551,7 @@ resource "google_monitoring_alert_policy" "instance_saturation" {
 resource "google_monitoring_alert_policy" "runtime_failure" {
   display_name          = "Aesthetic Lab production runtime failure"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Cloud Run reports memory, startup, or termination failure"
@@ -582,7 +571,7 @@ resource "google_monitoring_alert_policy" "runtime_failure" {
 resource "google_monitoring_alert_policy" "supabase_failure" {
   display_name          = "Aesthetic Lab production Supabase loader failure"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Application reports Supabase fetch or configuration failure"
@@ -602,7 +591,7 @@ resource "google_monitoring_alert_policy" "supabase_failure" {
 resource "google_monitoring_alert_policy" "unexpected_production_mutation" {
   display_name          = "Aesthetic Lab unexpected production Cloud Run mutation"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Production changed outside delivery or protected IaC identities"

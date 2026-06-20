@@ -45,6 +45,7 @@
 - Production promotion is triggered by a published release, environment-protected, smoke-tested before traffic migration, and reversible to a prior Cloud Run revision.
 - Manage Cloud Run, dedicated least-privilege service accounts, secret bindings, WIF, monitoring, and alerts in `infra/`; after bootstrap, apply only a saved plan through the protected `infrastructure` workflow and never create console-only drift.
 - Never expose secrets in source, workflow inputs, image layers, plans, logs, or CLI arguments. Scope Secret Manager access to individual environment secrets; application runtimes may use only Supabase publishable/anon keys, never `service_role` or `sb_secret_*`.
+- Keep notification recipient addresses outside OpenTofu plans and state; bootstrap channels securely in GCP and reference only their non-sensitive resource names from IaC.
 
 ## Git and Commit Attribution
 
