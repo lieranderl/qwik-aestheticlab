@@ -1,9 +1,9 @@
 project_id              = "example-project"
 region                  = "europe-west1"
 initial_image           = "europe-west1-docker.pkg.dev/example-project/aestheticlab/web@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-staging_supabase_url                 = "https://staging-example.supabase.co"
+staging_supabase_url                 = "https://example.supabase.co"
 staging_supabase_secret_version      = "1"
-production_supabase_url              = "https://production-example.supabase.co"
+production_supabase_url              = "https://example.supabase.co"
 production_supabase_secret_version   = "1"
 
 # Use existing email, PagerDuty, or Slack channels.

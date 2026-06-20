@@ -5,7 +5,7 @@
 - Artifact Registry Docker repository with deployment-safe retention
 - Dedicated staging/production Cloud Run runtime identities
 - Dedicated GitHub WIF pool and per-environment providers restricted by repository, immutable owner ID, exact environment subject, and staging-branch/semantic-tag ref
-- Separate staging/production GitHub deployers and Supabase projects/secrets
+- Separate staging/production GitHub deployers, runtime identities, and Secret Manager secrets
 - Separate read-only planner and protected privileged apply identity for saved-plan OpenTofu automation
 - Secret-level publishable/anon Supabase access; service-role keys are rejected by runtime readiness
 - Cloud Run v2 services, probes, scaling, and public invocation
@@ -18,7 +18,7 @@
 3. Copy `terraform.tfvars.example` to an untracked `terraform.tfvars`, replace the placeholder digest, and set all required values.
 4. Run `tofu plan -lock-timeout=60s -out=tfplan.bootstrap`, cancel without applying, and verify the GCS `.tflock` object is released. Resolve backend IAM/locking before any infrastructure write.
 5. For a fresh project, bootstrap APIs, Artifact Registry, and the two secret containers first: `tofu apply -target=google_project_service.required -target=google_artifact_registry_repository.containers -target=google_secret_manager_secret.supabase_key`.
-6. Add distinct staging and production publishable/anon keys as secret versions through Secret Manager. Never use `service_role` or `sb_secret_*` keys in this application.
+6. Add the shared project's publishable/anon key to both environment-specific secrets through Secret Manager. Never use `service_role` or `sb_secret_*` keys in this application. Separate secrets preserve independent IAM and version promotion even when their value is initially identical.
 7. Push an immutable bootstrap image and set `initial_image` to its GAR digest. Existing services must be imported with their current immutable GAR digest.
 8. Run `tofu plan -out=tfplan`, review replacement/IAM/public-access changes, then apply the initial saved plan with the bootstrap identity.
 9. Add `github_repository_variables` plus the state, image, Supabase URL/version, and notification-channel values below as repository variables. Add each `github_environment_variables` output to its matching environment.
@@ -35,7 +35,7 @@ Infrastructure workflow variables:
 | `TF_STATE_BUCKET`, `TF_STATE_PREFIX` | Remote GCS backend coordinates |
 | `GCP_PROJECT`, `GCP_REGION` | Target project and region |
 | `INITIAL_IMAGE` | Immutable GAR digest used only for bootstrap/import reconciliation |
-| `STAGING_SUPABASE_URL`, `PRODUCTION_SUPABASE_URL` | Distinct project URLs |
+| `STAGING_SUPABASE_URL`, `PRODUCTION_SUPABASE_URL` | Supabase project URLs; they may be identical for this read-only site |
 | `STAGING_SUPABASE_SECRET_VERSION`, `PRODUCTION_SUPABASE_SECRET_VERSION` | Tested numeric versions |
 | `NOTIFICATION_CHANNEL_IDS` | OpenTofu list syntax, for example `["projects/PROJECT/notificationChannels/ID"]` |
 

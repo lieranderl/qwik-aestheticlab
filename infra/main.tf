@@ -62,11 +62,8 @@ locals {
 
 check "environment_isolation" {
   assert {
-    condition = (
-      var.staging_supabase_url != var.production_supabase_url &&
-      var.staging_supabase_secret_id != var.production_supabase_secret_id
-    )
-    error_message = "Staging and production must use different Supabase projects and Secret Manager secrets."
+    condition     = var.staging_supabase_secret_id != var.production_supabase_secret_id
+    error_message = "Staging and production must use different Secret Manager secrets, even when they share one Supabase project."
   }
 }
 

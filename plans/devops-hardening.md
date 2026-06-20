@@ -26,7 +26,7 @@ Close the repository, delivery, container, IAM, observability, and documentation
 
 ## Remaining Rollout
 
-- Create separate staging and production Supabase projects (or isolated schemas with independently scoped RLS), add distinct publishable/anon keys to `SUPABASE_KEY_STAGING` and `SUPABASE_KEY_PRODUCTION`, and rotate the currently configured `service_role` key out of every application runtime and local environment.
+- Add the shared Supabase project's publishable/anon key to the separate `SUPABASE_KEY_STAGING` and `SUPABASE_KEY_PRODUCTION` secrets, then rotate the currently configured `service_role` key out of every application runtime and local environment. This site is read-only; RLS remains the data boundary.
 - Apply/import `infra/` to create Artifact Registry, environment-scoped deployers,
   uptime checks, and alerts. The initial repository creation was blocked by the
   current external-operation approval quota.
