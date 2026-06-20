@@ -3,18 +3,31 @@
 ## Scope
 
 - Canonical policy; nested `AGENTS.md` files override it for their subtree. Preserve user changes and requested scope.
-- Aesthetic Lab uses Qwik City/Qwik Speak, Supabase SSR data, DaisyUI 5, Tailwind CSS 4, Bun, and Cloud Run; follow `plans/README.md` for non-trivial work.
+- Aesthetic Lab is a Qwik City/Qwik Speak site with Supabase SSR data, DaisyUI 5, Tailwind CSS 4, Bun, OpenTofu, and Cloud Run.
+- Follow `plans/README.md` for multi-step work. Review-only tasks use `REVIEW.md`; `code_review.md` is a compatibility pointer.
 
-## Package Manager
+## Commands
 
-- Use the Bun version pinned by the repository: `bun install`, `bun run dev`, `bun run verify`.
-- Do not change dependencies or `bun.lock` unless the task requires it.
+| Task | Command |
+| --- | --- |
+| Install local deps | `bun install` |
+| Install CI deps | `bun ci` |
+| Local dev | `bun run dev` |
+| Format/lint fix | `bun run biome` |
+| Format/lint check | `bunx --bun biome ci .` |
+| Typecheck | `bun run build.types` |
+| Unit tests | `bun run test` |
+| E2E tests | `bun run test.e2e` |
+| Production build | `bun run build` |
+| Main local verification | `bun run verify` |
+| Translation extraction | `bun run qwik-speak-extract` |
 
 ## File-Scoped Commands
 
 | Task | Command |
 | --- | --- |
 | Check/fix source file | `bunx --bun biome check --write path/to/file` |
+| Check source file only | `bunx --bun biome check path/to/file` |
 | Unit test file | `bunx vitest run path/to/file.test.ts` |
 | E2E spec | `bunx playwright test path/to/file.spec.ts` |
 | Markdown | `markdownlint --disable MD013 -- path/to/file.md` |
@@ -29,6 +42,15 @@
 | Translation keys | Extraction plus affected locale assets |
 | IaC | Format, validate, and review plan for each affected environment |
 
+## Repository Boundaries
+
+- `src/routes/` owns Qwik City routes, `routeLoader$`, and `DocumentHead`.
+- `src/components/sections/` owns page sections; `src/components/ui/` owns reusable UI primitives with no data fetching.
+- `src/shared/` owns Supabase, runtime config, security headers, logging, locale, and service helpers.
+- `i18n/` contains Qwik Speak locale assets; update all five locales through extraction when keys change.
+- `infra/` owns OpenTofu-managed GCP resources; `.github/workflows/` owns delivery automation.
+- `plans/` holds durable execution plans; `docs/prompt-pack.md` holds reusable prompts, not policy.
+
 ## Key Conventions
 
 - Use Qwik APIs only: `component$`, signals/stores, `$()` handlers; no React APIs.
@@ -37,6 +59,14 @@
 - Use `inlineTranslate()` and `key@@Default English Text`; synchronize all five locales with `bun run qwik-speak-extract`.
 - Route files own `DocumentHead`; preserve Consent Mode v2, accessibility, meaningful image `alt`, and stable image sizing.
 - Biome owns formatting. Do not add ESLint or Prettier.
+
+## Dependencies, Env, and Generated Files
+
+- Use the Bun version pinned in `package.json`; change dependencies and `bun.lock` only when required by the task.
+- Required runtime env vars: `SUPABASE_URL` and `SUPABASE_KEY`. Keep values only in `.env`, GitHub/Cloud Run secrets, or Secret Manager.
+- Never commit `.env`, secret values, service-role keys, `sb_secret_*` keys, or sensitive logs/plans.
+- Do not edit or commit generated/build output: `dist/`, `server/`, `node_modules/`, `tmp/`, reports, coverage, logs, or OpenTofu state/plan files.
+- No Supabase migration workflow exists in this repo; do not invent one. Document any required schema change and keep application runtime keys publishable/anon only.
 
 ## DevOps and IaC
 
@@ -47,6 +77,12 @@
 - Never expose secrets in source, workflow inputs, image layers, plans, logs, or CLI arguments. Scope Secret Manager access to individual environment secrets; application runtimes may use only Supabase publishable/anon keys, never `service_role` or `sb_secret_*`.
 - Keep notification recipient addresses outside OpenTofu plans and state; bootstrap channels securely in GCP and reference only their non-sensitive resource names from IaC.
 
+## Instruction Maintenance
+
+- Update this file or the nearest scoped guide when commands, stack, deployment flow, or hard invariants change.
+- If the same correction appears in review twice, add a short enforceable rule here or in the relevant `.github/*.md` guide.
+- Keep `AGENTS.md` concise; move detailed examples to `.github/`, `plans/README.md`, `REVIEW.md`, or nested `AGENTS.md`.
+
 ## Git and Commit Attribution
 
 - Use a feature branch. Validate before PR; use `gh` and target `staging`: `gh pr create --fill --base staging`.
@@ -55,6 +91,6 @@
 
 ## References
 
-- Review/deployment/data: `REVIEW.md`, `.github/DEPLOYMENT.md`, `.github/DATA_LOADING.md`.
+- Review/deployment/data: `REVIEW.md`, `code_review.md`, `.github/DEPLOYMENT.md`, `.github/DATA_LOADING.md`.
 - UI/i18n: `.github/COMPONENT_GUIDE.md`, `.github/DAISYUI_PATTERNS.md`, `.github/I18N_GUIDE.md`.
 - Human setup/entrypoint: `README.md`, `.codex/README.md`.

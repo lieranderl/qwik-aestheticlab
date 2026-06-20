@@ -1,6 +1,6 @@
 # Planning Workflow
 
-Use `plans/` for any task larger than a one-file fix.
+Use `plans/` for complex or risky work that needs durable sequencing.
 
 ## Loop
 
@@ -16,11 +16,17 @@ Use `plans/` for any task larger than a one-file fix.
 - Assumptions
 - Small ordered tasks (Phases)
 - Phase-wise Gating (Testing checkpoints per phase)
-- Atomic Commits (Commit often, at least once per phase)
+- Commit Strategy (only when the user explicitly requests commits)
 - Verification
 
 ## Verification
 
 - Substantial changes: `bun run verify`
-- Docs-only or workflow-only changes: `bun run biome`
-- For workflow or environment confusion, run `/doctor-project` before changing shared agent docs.
+- Docs-only Markdown changes: `markdownlint --disable MD013 -- <changed-files>`
+- Source, workflow, or config changes: `bunx --bun biome ci .`
+- IaC changes: `tofu -chdir=infra fmt -check -recursive`, `tofu -chdir=infra init -backend=false -input=false`, `tofu -chdir=infra validate`
+
+## Maintenance
+
+- Update a plan when assumptions break, scope changes, or verification requirements change.
+- Keep plans task-specific; durable project policy belongs in `AGENTS.md` or the nearest scoped guide.

@@ -7,7 +7,7 @@ Reduce instruction drift across the project's agent-facing docs and make the wor
 ## Scope
 
 - refresh `AGENTS.md` as the canonical workflow and policy document
-- align `README.md`, `CLAUDE.md`, `REVIEW.md`, `plans/README.md`, and `.codex/README.md`
+- align `README.md`, `REVIEW.md`, `code_review.md`, `plans/README.md`, `.codex/README.md`, `.github/copilot-instructions.md`, `.clinerules`, `.agents/skills/`, and `docs/prompt-pack.md`
 - fix verification guidance for docs-only versus code-affecting work
 - update stale repo layout and ownership details when needed
 
@@ -22,6 +22,7 @@ Reduce instruction drift across the project's agent-facing docs and make the wor
 - `AGENTS.md` should remain the canonical shared instruction source
 - planning in `plans/` is still expected for non-trivial work
 - review and verification may be handled by a second agent or by the same agent when no separate reviewer is available
+- removed legacy assistant surfaces should not be recreated unless explicitly requested
 
 ## Phases
 
@@ -35,12 +36,16 @@ Reduce instruction drift across the project's agent-facing docs and make the wor
 - Phase 1: Confirm the contradictions are evidenced in the current files before editing.
 - Phase 2: Keep the updated `AGENTS.md` aligned with the actual repo structure and current app behavior.
 - Phase 3: Ensure the secondary docs do not reintroduce workflow contradictions.
-- Phase 4: Run `bun run biome`.
+- Phase 4: Run Markdown linting plus safe project checks from `AGENTS.md`.
 
-## Atomic Commits
+## Commit Strategy
 
-- One docs-focused commit is sufficient if the refresh lands as a single coherent change.
+- Commit only if explicitly requested.
 
 ## Verification
 
-- `bun run biome`
+- `markdownlint --disable MD013 -- <changed Markdown files>`
+- `bunx --bun biome ci .`
+- `bun run build.types`
+- `bun run test`
+- `bun run build`

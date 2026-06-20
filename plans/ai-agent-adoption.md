@@ -1,5 +1,7 @@
 # AI Agent Workflow Adoption
 
+Status: historical. Current canonical policy is `AGENTS.md`; current planning and review entry points are `plans/README.md` and `REVIEW.md`. The Claude-specific rollout described below has been superseded by the agent-agnostic instruction refresh in `plans/agent-instruction-refresh.md`.
+
 ## Goal
 
 Adopt a tool-native Claude Code + Codex workflow for this repository without changing application behavior.
