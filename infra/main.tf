@@ -37,6 +37,13 @@ locals {
     infrastructure-plan = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:infrastructure-plan' && assertion.ref == 'refs/heads/staging'"
   }
 
+  github_provider_display_names = {
+    staging             = "Aesthetic Lab staging"
+    production          = "Aesthetic Lab production"
+    infrastructure      = "Aesthetic Lab infrastructure"
+    infrastructure-plan = "Aesthetic Lab infra plan"
+  }
+
   iac_project_roles = toset([
     "roles/artifactregistry.admin",
     "roles/iam.serviceAccountAdmin",
@@ -120,7 +127,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
   project                            = var.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-${each.key}"
-  display_name                       = "Aesthetic Lab ${each.key}"
+  display_name                       = local.github_provider_display_names[each.key]
 
   attribute_mapping = {
     "google.subject"                = "assertion.sub"
@@ -176,17 +183,17 @@ resource "google_project_iam_member" "iac_plan" {
 }
 
 resource "google_secret_manager_secret_iam_member" "runtime_access" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
   secret_id = google_secret_manager_secret.supabase_key[each.key].id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${each.value.email}"
+  member    = "serviceAccount:${google_service_account.runtime[each.key].email}"
 }
 
 resource "google_service_account_iam_member" "github_wif" {
-  for_each = google_service_account.deployer
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.deployer[each.key].name
   role               = "roles/iam.workloadIdentityUser"
   member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/subject/repo:${var.github_repository}:environment:${each.key}"
 
@@ -226,17 +233,17 @@ resource "google_artifact_registry_repository_iam_member" "production_deployer_r
 }
 
 resource "google_service_account_iam_member" "deployer_act_as" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.runtime[each.key].name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.deployer[each.key].email}"
 }
 
 resource "google_service_account_iam_member" "iac_act_as" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.runtime[each.key].name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.iac.email}"
 }
@@ -329,34 +336,23 @@ resource "google_cloud_run_v2_service" "web" {
 }
 
 resource "google_cloud_run_v2_service_iam_member" "public" {
-  for_each = var.allow_public_access ? google_cloud_run_v2_service.web : {}
+  for_each = var.allow_public_access ? local.services : {}
 
   project  = var.project_id
-  location = each.value.location
-  name     = each.value.name
+  location = google_cloud_run_v2_service.web[each.key].location
+  name     = google_cloud_run_v2_service.web[each.key].name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
 
 resource "google_cloud_run_v2_service_iam_member" "deployer" {
-  for_each = google_cloud_run_v2_service.web
+  for_each = local.services
 
   project  = var.project_id
-  location = each.value.location
-  name     = each.value.name
+  location = google_cloud_run_v2_service.web[each.key].location
+  name     = google_cloud_run_v2_service.web[each.key].name
   role     = "roles/run.developer"
   member   = "serviceAccount:${google_service_account.deployer[each.key].email}"
-}
-
-resource "google_monitoring_notification_channel" "email" {
-  display_name = "Aesthetic Lab production alerts"
-  type         = "email"
-  enabled      = true
-  labels = {
-    email_address = var.notification_email
-  }
-
-  depends_on = [google_project_service.required]
 }
 
 resource "google_monitoring_uptime_check_config" "localized_page" {
@@ -414,7 +410,7 @@ resource "google_monitoring_uptime_check_config" "supabase_dependency" {
 resource "google_monitoring_alert_policy" "server_errors" {
   display_name          = "Aesthetic Lab production 5xx responses"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "5xx response rate is non-zero"
@@ -445,7 +441,7 @@ resource "google_monitoring_alert_policy" "server_errors" {
 resource "google_monitoring_alert_policy" "localized_page" {
   display_name          = "Aesthetic Lab production page or dependency unavailable"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Localized page check fails"
@@ -493,7 +489,7 @@ resource "google_monitoring_alert_policy" "localized_page" {
 resource "google_monitoring_alert_policy" "latency" {
   display_name          = "Aesthetic Lab production p95 latency"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "p95 request latency exceeds two seconds"
@@ -524,14 +520,14 @@ resource "google_monitoring_alert_policy" "latency" {
 resource "google_monitoring_alert_policy" "instance_saturation" {
   display_name          = "Aesthetic Lab production instance saturation"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Active instances at configured maximum"
     condition_threshold {
       filter          = "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"${var.production_service_name}\" AND metric.type = \"run.googleapis.com/container/instance_count\" AND metric.labels.state = \"active\""
-      comparison      = "COMPARISON_GE"
-      threshold_value = var.production_max_instances
+      comparison      = "COMPARISON_GT"
+      threshold_value = var.production_max_instances - 1
       duration        = "300s"
 
       aggregations {
@@ -555,7 +551,7 @@ resource "google_monitoring_alert_policy" "instance_saturation" {
 resource "google_monitoring_alert_policy" "runtime_failure" {
   display_name          = "Aesthetic Lab production runtime failure"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Cloud Run reports memory, startup, or termination failure"
@@ -575,7 +571,7 @@ resource "google_monitoring_alert_policy" "runtime_failure" {
 resource "google_monitoring_alert_policy" "supabase_failure" {
   display_name          = "Aesthetic Lab production Supabase loader failure"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Application reports Supabase fetch or configuration failure"
@@ -595,7 +591,7 @@ resource "google_monitoring_alert_policy" "supabase_failure" {
 resource "google_monitoring_alert_policy" "unexpected_production_mutation" {
   display_name          = "Aesthetic Lab unexpected production Cloud Run mutation"
   combiner              = "OR"
-  notification_channels = concat([google_monitoring_notification_channel.email.name], var.additional_notification_channel_ids)
+  notification_channels = var.notification_channel_ids
 
   conditions {
     display_name = "Production changed outside delivery or protected IaC identities"

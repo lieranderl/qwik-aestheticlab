@@ -6,7 +6,8 @@ staging_supabase_secret_version      = "1"
 production_supabase_url              = "https://example.supabase.co"
 production_supabase_secret_version   = "1"
 
-notification_email = "alerts@example.com"
-
-# Optional existing PagerDuty, Slack, or additional email channels.
-additional_notification_channel_ids = []
+# Bootstrap notification channels outside OpenTofu state so recipient addresses
+# never enter plans or state. Only non-sensitive resource names belong here.
+notification_channel_ids = [
+  "projects/PROJECT_ID/notificationChannels/CHANNEL_ID",
+]

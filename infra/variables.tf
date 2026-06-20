@@ -111,20 +111,20 @@ variable "github_repository_owner_id" {
   default     = "19622412"
 }
 
-variable "notification_email" {
-  description = "Email address for the managed production alert channel."
-  type        = string
+variable "notification_channel_ids" {
+  description = "Existing Monitoring notification channel resource names used by production alerts."
+  type        = list(string)
 
   validation {
-    condition     = can(regex("^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$", var.notification_email))
-    error_message = "notification_email must be a valid email address."
+    condition = (
+      length(var.notification_channel_ids) > 0 &&
+      alltrue([
+        for channel_id in var.notification_channel_ids :
+        can(regex("^projects/[^/]+/notificationChannels/[^/]+$", channel_id))
+      ])
+    )
+    error_message = "notification_channel_ids must contain at least one full Monitoring notification channel resource name."
   }
-}
-
-variable "additional_notification_channel_ids" {
-  description = "Optional existing Monitoring notification channel resource names."
-  type        = list(string)
-  default     = []
 }
 
 variable "allow_public_access" {
@@ -157,6 +157,11 @@ variable "production_min_instances" {
 variable "production_max_instances" {
   type    = number
   default = 3
+
+  validation {
+    condition     = var.production_max_instances >= 1
+    error_message = "production_max_instances must be at least 1."
+  }
 }
 
 variable "container_concurrency" {
