@@ -6,6 +6,7 @@
 
 # Development
 node_modules
+gha-creds-*.json
 *.local
 .claude/settings.local.json
 .claude/*.local.json
@@ -107,4 +108,3 @@ infra/terraform/*.yaml
 Makefile_old
 create_gcloud.sh
 .agents/
-

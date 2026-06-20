@@ -19,6 +19,12 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 	const client = supabase(event);
+	if (!client) {
+		logServerEvent("ERROR", "supabase_configuration_rejected", {
+			resource: "contact",
+		});
+		return null;
+	}
 
 	const { data, error } = await client
 		.schema("gettimely")
@@ -41,6 +47,12 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 	async (requestEv) => {
 		const client = supabase(requestEv);
+		if (!client) {
+			logServerEvent("ERROR", "supabase_configuration_rejected", {
+				resource: "service_groups",
+			});
+			return [];
+		}
 		const { data, error } = await client
 			.schema("gettimely")
 			.from("service_groups")
@@ -61,6 +73,12 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 
 export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 	const client = supabase(requestEv);
+	if (!client) {
+		logServerEvent("ERROR", "supabase_configuration_rejected", {
+			resource: "staff",
+		});
+		return [];
+	}
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("staff")
@@ -79,6 +97,12 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 
 export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 	const client = supabase(requestEv);
+	if (!client) {
+		logServerEvent("ERROR", "supabase_configuration_rejected", {
+			resource: "services",
+		});
+		return [];
+	}
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("services")

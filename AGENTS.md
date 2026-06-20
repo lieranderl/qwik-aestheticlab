@@ -43,8 +43,8 @@
 - GitHub Actions is the delivery system; authenticate to GCP with OIDC/WIF only.
 - Build, scan, attest, and publish once to Artifact Registry; deploy immutable digests and promote the same digest to production.
 - Production promotion is triggered by a published release, environment-protected, smoke-tested before traffic migration, and reversible to a prior Cloud Run revision.
-- Manage Cloud Run, dedicated least-privilege service accounts, secret bindings, WIF, monitoring, and alerts in `infra/`; no console-only drift.
-- Never expose secrets in source, workflow inputs, image layers, plans, logs, or CLI arguments. Scope Secret Manager access to individual secrets.
+- Manage Cloud Run, dedicated least-privilege service accounts, secret bindings, WIF, monitoring, and alerts in `infra/`; after bootstrap, apply only a saved plan through the protected `infrastructure` workflow and never create console-only drift.
+- Never expose secrets in source, workflow inputs, image layers, plans, logs, or CLI arguments. Scope Secret Manager access to individual environment secrets; application runtimes may use only Supabase publishable/anon keys, never `service_role` or `sb_secret_*`.
 
 ## Git and Commit Attribution
 

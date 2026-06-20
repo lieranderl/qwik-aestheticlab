@@ -24,6 +24,11 @@ variable "image_name" {
 variable "initial_image" {
   description = "Bootstrapping image; CI owns subsequent image updates by digest."
   type        = string
+
+  validation {
+    condition     = can(regex("@sha256:[0-9a-f]{64}$", var.initial_image))
+    error_message = "initial_image must use an immutable sha256 digest."
+  }
 }
 
 variable "staging_service_name" {
@@ -36,24 +41,55 @@ variable "production_service_name" {
   default = "aestheticlab-web"
 }
 
-variable "supabase_url" {
-  description = "Public Supabase project URL."
-  type        = string
-}
-
-variable "supabase_secret_id" {
-  description = "Secret Manager secret ID containing the Supabase key."
-  type        = string
-  default     = "SUPABASE_KEY"
-}
-
-variable "supabase_secret_version" {
-  description = "Pinned numeric Secret Manager version containing the Supabase key."
+variable "staging_supabase_url" {
+  description = "Staging Supabase project URL."
   type        = string
 
   validation {
-    condition     = can(regex("^[1-9][0-9]*$", var.supabase_secret_version))
-    error_message = "supabase_secret_version must be a positive numeric version."
+    condition     = can(regex("^https://", var.staging_supabase_url))
+    error_message = "staging_supabase_url must use HTTPS."
+  }
+}
+
+variable "production_supabase_url" {
+  description = "Production Supabase project URL."
+  type        = string
+
+  validation {
+    condition     = can(regex("^https://", var.production_supabase_url))
+    error_message = "production_supabase_url must use HTTPS."
+  }
+}
+
+variable "staging_supabase_secret_id" {
+  description = "Secret Manager secret ID containing the staging publishable/anon key."
+  type        = string
+  default     = "SUPABASE_KEY_STAGING"
+}
+
+variable "production_supabase_secret_id" {
+  description = "Secret Manager secret ID containing the production publishable/anon key."
+  type        = string
+  default     = "SUPABASE_KEY_PRODUCTION"
+}
+
+variable "staging_supabase_secret_version" {
+  description = "Pinned numeric Secret Manager version containing the staging publishable/anon key."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.staging_supabase_secret_version))
+    error_message = "staging_supabase_secret_version must be a positive numeric version."
+  }
+}
+
+variable "production_supabase_secret_version" {
+  description = "Pinned numeric Secret Manager version containing the production publishable/anon key."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.production_supabase_secret_version))
+    error_message = "production_supabase_secret_version must be a positive numeric version."
   }
 }
 
@@ -63,14 +99,16 @@ variable "production_uptime_host" {
   default     = "aestheticlab.be"
 }
 
-variable "github_workload_identity_principals" {
-  description = "Exact environment-scoped WIF principals keyed by staging and production, e.g. principal://iam.googleapis.com/projects/NUMBER/locations/global/workloadIdentityPools/POOL/subject/repo:OWNER/REPO:environment:staging."
-  type        = map(string)
+variable "github_repository" {
+  description = "GitHub repository allowed to federate into the dedicated pool."
+  type        = string
+  default     = "lieranderl/qwik-aestheticlab"
+}
 
-  validation {
-    condition     = length(setsubtract(toset(["staging", "production"]), toset(keys(var.github_workload_identity_principals)))) == 0
-    error_message = "Provide staging and production WIF principals."
-  }
+variable "github_repository_owner_id" {
+  description = "Immutable numeric GitHub owner ID used in the WIF provider condition."
+  type        = string
+  default     = "19622412"
 }
 
 variable "notification_channel_ids" {

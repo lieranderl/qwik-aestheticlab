@@ -22,5 +22,27 @@ output "github_repository_variables" {
     IMAGE_NAME     = var.image_name
     STAGE_SERVICE  = var.staging_service_name
     PROD_SERVICE   = var.production_service_name
+    PROD_URL       = "https://${var.production_uptime_host}"
+  }
+}
+
+output "github_environment_variables" {
+  value = {
+    staging = {
+      GCP_SERVICE_ACCOUNT      = google_service_account.deployer["staging"].email
+      GCP_WORKLOAD_ID_PROVIDER = google_iam_workload_identity_pool_provider.github["staging"].name
+    }
+    production = {
+      GCP_SERVICE_ACCOUNT      = google_service_account.deployer["production"].email
+      GCP_WORKLOAD_ID_PROVIDER = google_iam_workload_identity_pool_provider.github["production"].name
+    }
+    infrastructure = {
+      GCP_SERVICE_ACCOUNT      = google_service_account.iac.email
+      GCP_WORKLOAD_ID_PROVIDER = google_iam_workload_identity_pool_provider.github["infrastructure"].name
+    }
+    infrastructure-plan = {
+      GCP_SERVICE_ACCOUNT      = google_service_account.iac_plan.email
+      GCP_WORKLOAD_ID_PROVIDER = google_iam_workload_identity_pool_provider.github["infrastructure-plan"].name
+    }
   }
 }

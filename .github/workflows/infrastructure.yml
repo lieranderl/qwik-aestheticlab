@@ -1,0 +1,129 @@
+name: OpenTofu plan and apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Apply the saved plan after a second environment approval
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-platform
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: infrastructure-plan
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TF_IN_AUTOMATION: "true"
+      TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+      TF_STATE_PREFIX: ${{ vars.TF_STATE_PREFIX }}
+      TF_VAR_project_id: ${{ vars.GCP_PROJECT }}
+      TF_VAR_region: ${{ vars.GCP_REGION }}
+      TF_VAR_initial_image: ${{ vars.INITIAL_IMAGE }}
+      TF_VAR_staging_supabase_url: ${{ vars.STAGING_SUPABASE_URL }}
+      TF_VAR_staging_supabase_secret_version: ${{ vars.STAGING_SUPABASE_SECRET_VERSION }}
+      TF_VAR_production_supabase_url: ${{ vars.PRODUCTION_SUPABASE_URL }}
+      TF_VAR_production_supabase_secret_version: ${{ vars.PRODUCTION_SUPABASE_SECRET_VERSION }}
+      TF_VAR_notification_channel_ids: ${{ vars.NOTIFICATION_CHANNEL_IDS }}
+    steps:
+      - name: Require staging workflow ref and complete inputs
+        env:
+          WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          DEPLOYER_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+        run: |
+          [[ "$GITHUB_REF" == "refs/heads/staging" ]]
+          for name in TF_STATE_BUCKET TF_STATE_PREFIX TF_VAR_project_id TF_VAR_region TF_VAR_initial_image TF_VAR_staging_supabase_url TF_VAR_staging_supabase_secret_version TF_VAR_production_supabase_url TF_VAR_production_supabase_secret_version TF_VAR_notification_channel_ids WIF_PROVIDER DEPLOYER_SERVICE_ACCOUNT; do
+            [[ -n "${!name:-}" ]] || { echo "Missing required infrastructure variable: $name" >&2; exit 1; }
+          done
+
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@000eeb8522f0572907c393e8151076c205fdba1b # v1.0.6
+        with:
+          tofu_version: 1.12.2
+          tofu_wrapper: false
+
+      - name: Authenticate read-only planning identity
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Initialize remote backend
+        run: tofu -chdir=infra init -input=false -backend-config="bucket=$TF_STATE_BUCKET" -backend-config="prefix=$TF_STATE_PREFIX"
+
+      - name: Create saved plan without state mutation
+        run: tofu -chdir=infra plan -input=false -lock=false -out=tfplan
+
+      - name: Summarize plan
+        run: tofu -chdir=infra show -no-color tfplan >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload immutable saved plan
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: infrastructure-plan-${{ github.run_id }}
+          path: infra/tfplan
+          if-no-files-found: error
+          retention-days: 1
+
+  apply:
+    if: inputs.apply
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: infrastructure
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TF_IN_AUTOMATION: "true"
+      TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+      TF_STATE_PREFIX: ${{ vars.TF_STATE_PREFIX }}
+      TF_VAR_project_id: ${{ vars.GCP_PROJECT }}
+      TF_VAR_region: ${{ vars.GCP_REGION }}
+      TF_VAR_initial_image: ${{ vars.INITIAL_IMAGE }}
+      TF_VAR_staging_supabase_url: ${{ vars.STAGING_SUPABASE_URL }}
+      TF_VAR_staging_supabase_secret_version: ${{ vars.STAGING_SUPABASE_SECRET_VERSION }}
+      TF_VAR_production_supabase_url: ${{ vars.PRODUCTION_SUPABASE_URL }}
+      TF_VAR_production_supabase_secret_version: ${{ vars.PRODUCTION_SUPABASE_SECRET_VERSION }}
+      TF_VAR_notification_channel_ids: ${{ vars.NOTIFICATION_CHANNEL_IDS }}
+    steps:
+      - name: Checkout exact planned revision
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@000eeb8522f0572907c393e8151076c205fdba1b # v1.0.6
+        with:
+          tofu_version: 1.12.2
+          tofu_wrapper: false
+
+      - name: Authenticate protected infrastructure identity
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Initialize remote backend
+        run: tofu -chdir=infra init -input=false -backend-config="bucket=$TF_STATE_BUCKET" -backend-config="prefix=$TF_STATE_PREFIX"
+
+      - name: Download reviewed saved plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: infrastructure-plan-${{ github.run_id }}
+          path: infra
+
+      - name: Apply reviewed saved plan
+        run: tofu -chdir=infra apply -input=false -lock-timeout=5m tfplan

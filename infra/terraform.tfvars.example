@@ -1,13 +1,10 @@
 project_id              = "example-project"
 region                  = "europe-west1"
-initial_image           = "europe-west1-docker.pkg.dev/example-project/aestheticlab/web@sha256:replace-me"
-supabase_url            = "https://example.supabase.co"
-supabase_secret_version = "1"
-
-github_workload_identity_principals = {
-  staging    = "principal://iam.googleapis.com/projects/123456789/locations/global/workloadIdentityPools/github/subject/repo:OWNER/REPOSITORY:environment:staging"
-  production = "principal://iam.googleapis.com/projects/123456789/locations/global/workloadIdentityPools/github/subject/repo:OWNER/REPOSITORY:environment:production"
-}
+initial_image           = "europe-west1-docker.pkg.dev/example-project/aestheticlab/web@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+staging_supabase_url                 = "https://staging-example.supabase.co"
+staging_supabase_secret_version      = "1"
+production_supabase_url              = "https://production-example.supabase.co"
+production_supabase_secret_version   = "1"
 
 # Use existing email, PagerDuty, or Slack channels.
 notification_channel_ids = ["projects/example-project/notificationChannels/123456789"]

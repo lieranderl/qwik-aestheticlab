@@ -1,8 +1,10 @@
 import { createQwikCity } from "@builder.io/qwik-city/middleware/bun";
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
+import { isRuntimeConfigReady } from "~/shared/runtime-config";
 import { applySecurityHeaders } from "~/shared/security-headers";
 import { logServerEvent } from "~/shared/server-logging";
+import { isSupabaseDependencyReady } from "~/shared/supabase-readiness";
 import render from "./entry.ssr";
 
 // Create the Qwik City Bun middleware
@@ -17,10 +19,10 @@ const port = Number(Bun.env.PORT) || 3000;
 
 logServerEvent("INFO", "server_started", { port });
 
-function healthResponse() {
+function statusResponse(ready = true) {
 	return applySecurityHeaders(
-		new Response("OK", {
-			status: 200,
+		new Response(ready ? "OK" : "NOT READY", {
+			status: ready ? 200 : 503,
 			headers: { "Cache-Control": "no-store" },
 		}),
 	);
@@ -82,10 +84,13 @@ Bun.serve({
 	port,
 	routes: {
 		"/healthz": {
-			GET: healthResponse,
+			GET: () => statusResponse(),
 		},
 		"/readyz": {
-			GET: healthResponse,
+			GET: () => statusResponse(isRuntimeConfigReady(Bun.env)),
+		},
+		"/dependencyz": {
+			GET: async () => statusResponse(await isSupabaseDependencyReady(Bun.env)),
 		},
 	},
 	async fetch(request: Request) {

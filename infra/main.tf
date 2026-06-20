@@ -1,26 +1,83 @@
 locals {
   services = {
     staging = {
-      name          = var.staging_service_name
-      min_instances = var.staging_min_instances
-      max_instances = var.staging_max_instances
+      name                    = var.staging_service_name
+      min_instances           = var.staging_min_instances
+      max_instances           = var.staging_max_instances
+      supabase_url            = var.staging_supabase_url
+      supabase_secret_id      = var.staging_supabase_secret_id
+      supabase_secret_version = var.staging_supabase_secret_version
     }
     production = {
-      name          = var.production_service_name
-      min_instances = var.production_min_instances
-      max_instances = var.production_max_instances
+      name                    = var.production_service_name
+      min_instances           = var.production_min_instances
+      max_instances           = var.production_max_instances
+      supabase_url            = var.production_supabase_url
+      supabase_secret_id      = var.production_supabase_secret_id
+      supabase_secret_version = var.production_supabase_secret_version
     }
   }
 
   required_apis = toset([
     "artifactregistry.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",
+    "logging.googleapis.com",
     "monitoring.googleapis.com",
     "run.googleapis.com",
     "secretmanager.googleapis.com",
     "sts.googleapis.com",
   ])
+
+  github_provider_conditions = {
+    staging             = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:staging' && assertion.ref == 'refs/heads/staging'"
+    production          = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:production' && assertion.ref.matches('^refs/tags/v[0-9]+[.][0-9]+[.][0-9]+$')"
+    infrastructure      = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:infrastructure' && assertion.ref == 'refs/heads/staging'"
+    infrastructure-plan = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:infrastructure-plan' && assertion.ref == 'refs/heads/staging'"
+  }
+
+  iac_project_roles = toset([
+    "roles/artifactregistry.admin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/iam.workloadIdentityPoolAdmin",
+    "roles/logging.configWriter",
+    "roles/monitoring.editor",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/run.admin",
+    "roles/secretmanager.admin",
+    "roles/serviceusage.serviceUsageAdmin",
+  ])
+
+  iac_plan_project_roles = toset([
+    "roles/artifactregistry.reader",
+    "roles/iam.securityReviewer",
+    "roles/iam.workloadIdentityPoolViewer",
+    "roles/monitoring.viewer",
+    "roles/secretmanager.viewer",
+    "roles/serviceusage.serviceUsageViewer",
+    "roles/viewer",
+  ])
+}
+
+check "environment_isolation" {
+  assert {
+    condition = (
+      var.staging_supabase_url != var.production_supabase_url &&
+      var.staging_supabase_secret_id != var.production_supabase_secret_id
+    )
+    error_message = "Staging and production must use different Supabase projects and Secret Manager secrets."
+  }
+}
+
+check "initial_image_location" {
+  assert {
+    condition = startswith(
+      var.initial_image,
+      "${var.region}-docker.pkg.dev/${var.project_id}/${var.artifact_registry_repository}/${var.image_name}@sha256:",
+    )
+    error_message = "initial_image must reference this project's configured Artifact Registry image."
+  }
 }
 
 resource "google_project_service" "required" {
@@ -37,35 +94,48 @@ resource "google_artifact_registry_repository" "containers" {
   description   = "Aesthetic Lab deployable containers"
   format        = "DOCKER"
 
-  cleanup_policy_dry_run = false
-
-  cleanup_policies {
-    id     = "retain-recent"
-    action = "KEEP"
-    most_recent_versions {
-      keep_count = 30
-    }
-  }
-
-  cleanup_policies {
-    id     = "delete-old"
-    action = "DELETE"
-    condition {
-      tag_state  = "ANY"
-      older_than = "7776000s"
-    }
-  }
-
   depends_on = [google_project_service.required]
 }
 
 resource "google_secret_manager_secret" "supabase_key" {
-  secret_id = var.supabase_secret_id
+  for_each = local.services
+
+  secret_id           = each.value.supabase_secret_id
+  deletion_protection = var.deletion_protection
   replication {
     auto {}
   }
 
   depends_on = [google_project_service.required]
+}
+
+resource "google_iam_workload_identity_pool" "github" {
+  project                   = var.project_id
+  workload_identity_pool_id = "aestheticlab-github"
+  display_name              = "Aesthetic Lab GitHub Actions"
+
+  depends_on = [google_project_service.required]
+}
+
+resource "google_iam_workload_identity_pool_provider" "github" {
+  for_each = local.github_provider_conditions
+
+  project                            = var.project_id
+  workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
+  workload_identity_pool_provider_id = "github-${each.key}"
+  display_name                       = "Aesthetic Lab ${each.key}"
+
+  attribute_mapping = {
+    "google.subject"                = "assertion.sub"
+    "attribute.repository"          = "assertion.repository"
+    "attribute.repository_owner_id" = "assertion.repository_owner_id"
+  }
+
+  attribute_condition = each.value
+
+  oidc {
+    issuer_uri = "https://token.actions.githubusercontent.com"
+  }
 }
 
 resource "google_service_account" "runtime" {
@@ -82,10 +152,36 @@ resource "google_service_account" "deployer" {
   display_name = "Aesthetic Lab ${each.key} GitHub deployer"
 }
 
+resource "google_service_account" "iac" {
+  account_id   = "aesthetic-infra-deployer"
+  display_name = "Aesthetic Lab protected OpenTofu deployer"
+}
+
+resource "google_service_account" "iac_plan" {
+  account_id   = "aesthetic-infra-planner"
+  display_name = "Aesthetic Lab read-only OpenTofu planner"
+}
+
+resource "google_project_iam_member" "iac" {
+  for_each = local.iac_project_roles
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.iac.email}"
+}
+
+resource "google_project_iam_member" "iac_plan" {
+  for_each = local.iac_plan_project_roles
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.iac_plan.email}"
+}
+
 resource "google_secret_manager_secret_iam_member" "runtime_access" {
   for_each = google_service_account.runtime
 
-  secret_id = google_secret_manager_secret.supabase_key.id
+  secret_id = google_secret_manager_secret.supabase_key[each.key].id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${each.value.email}"
 }
@@ -95,7 +191,25 @@ resource "google_service_account_iam_member" "github_wif" {
 
   service_account_id = each.value.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = var.github_workload_identity_principals[each.key]
+  member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/subject/repo:${var.github_repository}:environment:${each.key}"
+
+  depends_on = [google_iam_workload_identity_pool_provider.github]
+}
+
+resource "google_service_account_iam_member" "github_wif_iac" {
+  service_account_id = google_service_account.iac.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/subject/repo:${var.github_repository}:environment:infrastructure"
+
+  depends_on = [google_iam_workload_identity_pool_provider.github]
+}
+
+resource "google_service_account_iam_member" "github_wif_iac_plan" {
+  service_account_id = google_service_account.iac_plan.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/subject/repo:${var.github_repository}:environment:infrastructure-plan"
+
+  depends_on = [google_iam_workload_identity_pool_provider.github]
 }
 
 resource "google_artifact_registry_repository_iam_member" "staging_deployer_writer" {
@@ -120,6 +234,14 @@ resource "google_service_account_iam_member" "deployer_act_as" {
   service_account_id = each.value.name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.deployer[each.key].email}"
+}
+
+resource "google_service_account_iam_member" "iac_act_as" {
+  for_each = google_service_account.runtime
+
+  service_account_id = each.value.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_service_account.iac.email}"
 }
 
 resource "google_cloud_run_v2_service" "web" {
@@ -158,15 +280,15 @@ resource "google_cloud_run_v2_service" "web" {
 
       env {
         name  = "SUPABASE_URL"
-        value = var.supabase_url
+        value = each.value.supabase_url
       }
 
       env {
         name = "SUPABASE_KEY"
         value_source {
           secret_key_ref {
-            secret  = google_secret_manager_secret.supabase_key.secret_id
-            version = var.supabase_secret_version
+            secret  = google_secret_manager_secret.supabase_key[each.key].secret_id
+            version = each.value.supabase_secret_version
           }
         }
       }
@@ -177,7 +299,7 @@ resource "google_cloud_run_v2_service" "web" {
         period_seconds        = 5
         failure_threshold     = 12
         http_get {
-          path = "/readyz"
+          path = "/dependencyz"
           port = 3000
         }
       }
@@ -205,6 +327,7 @@ resource "google_cloud_run_v2_service" "web" {
   depends_on = [
     google_project_service.required,
     google_secret_manager_secret_iam_member.runtime_access,
+    google_service_account_iam_member.iac_act_as,
   ]
 }
 
@@ -247,6 +370,37 @@ resource "google_monitoring_uptime_check_config" "localized_page" {
       project_id = var.project_id
     }
   }
+
+  content_matchers {
+    content = "Aesthetic Lab"
+    matcher = "CONTAINS_STRING"
+  }
+}
+
+resource "google_monitoring_uptime_check_config" "supabase_dependency" {
+  display_name = "Aesthetic Lab production Supabase dependency"
+  timeout      = "10s"
+  period       = "60s"
+
+  http_check {
+    path         = "/dependencyz"
+    port         = 443
+    use_ssl      = true
+    validate_ssl = true
+  }
+
+  monitored_resource {
+    type = "uptime_url"
+    labels = {
+      host       = var.production_uptime_host
+      project_id = var.project_id
+    }
+  }
+
+  content_matchers {
+    content = "OK"
+    matcher = "CONTAINS_STRING"
+  }
 }
 
 resource "google_monitoring_alert_policy" "server_errors" {
@@ -281,7 +435,7 @@ resource "google_monitoring_alert_policy" "server_errors" {
 }
 
 resource "google_monitoring_alert_policy" "localized_page" {
-  display_name          = "Aesthetic Lab localized production page unavailable"
+  display_name          = "Aesthetic Lab production page or dependency unavailable"
   combiner              = "OR"
   notification_channels = var.notification_channel_ids
 
@@ -289,6 +443,25 @@ resource "google_monitoring_alert_policy" "localized_page" {
     display_name = "Localized page check fails"
     condition_threshold {
       filter          = "resource.type = \"uptime_url\" AND metric.type = \"monitoring.googleapis.com/uptime_check/check_passed\" AND metric.labels.check_id = \"${google_monitoring_uptime_check_config.localized_page.uptime_check_id}\""
+      comparison      = "COMPARISON_LT"
+      threshold_value = 1
+      duration        = "120s"
+
+      aggregations {
+        alignment_period   = "120s"
+        per_series_aligner = "ALIGN_NEXT_OLDER"
+      }
+
+      trigger {
+        count = 1
+      }
+    }
+  }
+
+  conditions {
+    display_name = "Supabase dependency check fails"
+    condition_threshold {
+      filter          = "resource.type = \"uptime_url\" AND metric.type = \"monitoring.googleapis.com/uptime_check/check_passed\" AND metric.labels.check_id = \"${google_monitoring_uptime_check_config.supabase_dependency.uptime_check_id}\""
       comparison      = "COMPARISON_LT"
       threshold_value = 1
       duration        = "120s"
@@ -397,9 +570,29 @@ resource "google_monitoring_alert_policy" "supabase_failure" {
   notification_channels = var.notification_channel_ids
 
   conditions {
-    display_name = "Application reports supabase_fetch_failed"
+    display_name = "Application reports Supabase fetch or configuration failure"
     condition_matched_log {
-      filter = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND jsonPayload.message=\"supabase_fetch_failed\""
+      filter = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND (jsonPayload.message=\"supabase_fetch_failed\" OR jsonPayload.message=\"supabase_configuration_rejected\")"
+    }
+  }
+
+  alert_strategy {
+    notification_rate_limit {
+      period = "300s"
+    }
+    auto_close = "604800s"
+  }
+}
+
+resource "google_monitoring_alert_policy" "unexpected_production_mutation" {
+  display_name          = "Aesthetic Lab unexpected production Cloud Run mutation"
+  combiner              = "OR"
+  notification_channels = var.notification_channel_ids
+
+  conditions {
+    display_name = "Production changed outside delivery or protected IaC identities"
+    condition_matched_log {
+      filter = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND (protoPayload.methodName:\"Services.UpdateService\" OR protoPayload.methodName:\"SetIamPolicy\") AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.deployer["production"].email}\" AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.iac.email}\""
     }
   }
 

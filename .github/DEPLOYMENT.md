@@ -6,31 +6,32 @@
 staging commit → verify → build/scan/attest once → Artifact Registry digest
                → staging no-traffic deploy → smoke test → staging traffic
 GitHub release → resolve the verified digest for the release commit
-               → production approval → no-traffic deploy → smoke test
-               → 10% canary → canonical-domain check → 100% or automatic rollback
+               → production approval + independent watchdog
+               → no-traffic deploy → smoke test → 10% canary
+               → canonical-domain check → 100% or automatic rollback
 ```
 
 - GitHub Actions is the only automated delivery system; workflow definitions live in `.github/workflows/`.
 - GCP authentication uses GitHub OIDC and Workload Identity Federation; no service-account keys are stored in GitHub.
 - Container tags are lookup metadata. Scan success creates `verified-<full-commit-sha>`; Cloud Run deployments always use the immutable `sha256` digest.
-- Production promotion never rebuilds. A published release must reference the exact commit already verified and deployed to staging.
+- Production promotion never rebuilds. A published release must reference the exact commit already verified and deployed to staging; a separate runner reconciles an abandoned 10/90 canary.
 - The protected `production` GitHub environment owns approval and environment-scoped configuration.
 
 Repository/environment configuration:
 
-| Kind | Names |
+| Scope | Variables |
 | --- | --- |
-| Variables | `GCP_PROJECT`, `GCP_REGION`, `GAR_REPOSITORY`, `IMAGE_NAME`, `STAGE_SERVICE`, `PROD_SERVICE` |
-| Secrets | `GCP_WORKLOAD_ID_PROVIDER`, `GCP_SERVICE_ACCOUNT` |
+| Repository | `GCP_PROJECT`, `GCP_REGION`, `GAR_REPOSITORY`, `IMAGE_NAME`, `STAGE_SERVICE`, `PROD_SERVICE`, `PROD_URL` |
+| Each environment | `GCP_WORKLOAD_ID_PROVIDER`, `GCP_SERVICE_ACCOUNT` |
 
-Store configuration at the narrowest applicable repository or GitHub environment scope. The two secrets identify WIF resources; neither contains a private key.
+Store configuration at the narrowest applicable scope. WIF resource names and service-account emails are identifiers, not secrets; no private key is stored in GitHub.
 
 ## Container
 
 - `Dockerfile` performs the Qwik build and creates a minimal Bun runtime image.
 - The distroless runtime contains built `dist/`, `public/`, and `server/` output plus the minimal production dependency graph; build-only dependencies remain in the build stage.
 - The runtime is non-root, exposes port `3000`, and starts `server/entry.bun.js`.
-- CI generates an SBOM and provenance attestation, scans the exact published digest, and gates deployment on the result.
+- PR CI builds, runs, and scans the production container. Delivery generates an SBOM and provenance attestation, scans the exact published digest, and gates deployment on the result; production verifies provenance and re-scans before deployment.
 - Images are stored in the regional Google Artifact Registry repository managed by OpenTofu.
 
 Local verification:
@@ -53,9 +54,9 @@ curl --fail http://localhost:3000/healthz
 
 ## Cloud Run
 
-- Staging and production are separate services with dedicated runtime service accounts.
+- Staging and production are separate services with dedicated runtime service accounts, Supabase projects, URLs, and secrets.
 - Runtime identities receive access only to the named Secret Manager secret, never project-wide secret roles.
-- Deployments create a revision with no traffic, validate localized pages through a temporary tagged URL, remove the tag after validation, then migrate traffic; Cloud Run probes validate `/readyz` and `/healthz` internally.
+- Deployments create a revision with no traffic, validate the Supabase dependency and localized pages through a temporary tagged URL, remove the tag after validation, then migrate traffic; Cloud Run startup and liveness probes validate `/dependencyz` and `/healthz` internally.
 - Startup/liveness probes, scaling, concurrency, resource limits, labels, and environment variables are declared in `infra/`.
 - Production supports multiple instances; tune concurrency and memory from monitoring data, not by console drift.
 
@@ -64,7 +65,7 @@ Required runtime configuration:
 | Name | Source | Notes |
 | --- | --- | --- |
 | `SUPABASE_URL` | Cloud Run environment | Public project URL |
-| `SUPABASE_KEY` | Secret Manager | Injected at runtime; never baked into the image |
+| `SUPABASE_KEY` | Environment-specific Secret Manager secret | Publishable/anon key injected at runtime; `service_role` and `sb_secret_*` keys fail readiness |
 | `NODE_ENV` | Container | `production` |
 
 ## Infrastructure as Code
@@ -72,7 +73,8 @@ Required runtime configuration:
 - `infra/` is canonical for Artifact Registry, Cloud Run, IAM, Workload Identity Federation, secrets access, uptime checks, and alerts.
 - Use a remote, versioned, encrypted state backend with locking; do not use local state for production resources.
 - Pin OpenTofu and provider versions; commit `.terraform.lock.hcl`.
-- Review plans before apply for replacement, IAM expansion, public access, and secret exposure; protect production applies with explicit approval.
+- Pull requests validate OpenTofu. Post-bootstrap plans and applies run only through `.github/workflows/infrastructure.yml`; a read-only planning identity creates the immutable plan, while the privileged identity is available only after protected `infrastructure` approval.
+- Review plans for replacement, IAM expansion, public access, and secret exposure.
 - Import existing resources before the first apply; never recreate production merely to bring it under management.
 
 Typical local checks (follow `infra/README.md` for backend/environment inputs):
@@ -125,8 +127,8 @@ gcloud run services update-traffic SERVICE \
 
 ## Operational Checks
 
-- OpenTofu manages a public `/en-BE/` uptime check plus availability, 5xx, p95 latency, instance-saturation, memory-limit, and structured Supabase-failure alerts.
-- Candidate deployment smoke tests cover `/en-BE/` and `/fr-BE/pricelist/` before traffic migration.
+- OpenTofu manages content-matched page/dependency uptime checks plus availability, 5xx, p95 latency, instance-saturation, memory-limit, structured Supabase-failure, and unexpected-production-mutation alerts.
+- Candidate deployment smoke tests require readiness, localized content, and security headers on `/en-BE/` and `/fr-BE/pricelist/` before traffic migration.
 - Inspect Cloud Run revision logs and monitoring before shifting traffic.
 - Treat a passing `/healthz` as process health only; localized smoke tests validate the dependency path.
 
