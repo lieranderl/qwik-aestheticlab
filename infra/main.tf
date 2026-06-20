@@ -37,6 +37,13 @@ locals {
     infrastructure-plan = "assertion.repository == '${var.github_repository}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.sub == 'repo:${var.github_repository}:environment:infrastructure-plan' && assertion.ref == 'refs/heads/staging'"
   }
 
+  github_provider_display_names = {
+    staging             = "Aesthetic Lab staging"
+    production          = "Aesthetic Lab production"
+    infrastructure      = "Aesthetic Lab infrastructure"
+    infrastructure-plan = "Aesthetic Lab infra plan"
+  }
+
   iac_project_roles = toset([
     "roles/artifactregistry.admin",
     "roles/iam.serviceAccountAdmin",
@@ -120,7 +127,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
   project                            = var.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-${each.key}"
-  display_name                       = "Aesthetic Lab ${each.key}"
+  display_name                       = local.github_provider_display_names[each.key]
 
   attribute_mapping = {
     "google.subject"                = "assertion.sub"
@@ -176,17 +183,17 @@ resource "google_project_iam_member" "iac_plan" {
 }
 
 resource "google_secret_manager_secret_iam_member" "runtime_access" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
   secret_id = google_secret_manager_secret.supabase_key[each.key].id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${each.value.email}"
+  member    = "serviceAccount:${google_service_account.runtime[each.key].email}"
 }
 
 resource "google_service_account_iam_member" "github_wif" {
-  for_each = google_service_account.deployer
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.deployer[each.key].name
   role               = "roles/iam.workloadIdentityUser"
   member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/subject/repo:${var.github_repository}:environment:${each.key}"
 
@@ -226,17 +233,17 @@ resource "google_artifact_registry_repository_iam_member" "production_deployer_r
 }
 
 resource "google_service_account_iam_member" "deployer_act_as" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.runtime[each.key].name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.deployer[each.key].email}"
 }
 
 resource "google_service_account_iam_member" "iac_act_as" {
-  for_each = google_service_account.runtime
+  for_each = local.services
 
-  service_account_id = each.value.name
+  service_account_id = google_service_account.runtime[each.key].name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.iac.email}"
 }
@@ -329,21 +336,21 @@ resource "google_cloud_run_v2_service" "web" {
 }
 
 resource "google_cloud_run_v2_service_iam_member" "public" {
-  for_each = var.allow_public_access ? google_cloud_run_v2_service.web : {}
+  for_each = var.allow_public_access ? local.services : {}
 
   project  = var.project_id
-  location = each.value.location
-  name     = each.value.name
+  location = google_cloud_run_v2_service.web[each.key].location
+  name     = google_cloud_run_v2_service.web[each.key].name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
 
 resource "google_cloud_run_v2_service_iam_member" "deployer" {
-  for_each = google_cloud_run_v2_service.web
+  for_each = local.services
 
   project  = var.project_id
-  location = each.value.location
-  name     = each.value.name
+  location = google_cloud_run_v2_service.web[each.key].location
+  name     = google_cloud_run_v2_service.web[each.key].name
   role     = "roles/run.developer"
   member   = "serviceAccount:${google_service_account.deployer[each.key].email}"
 }

@@ -16,14 +16,13 @@ output "service_urls" {
 
 output "github_repository_variables" {
   value = {
-    GCP_PROJECT              = var.project_id
-    GCP_REGION               = var.region
-    GAR_REPOSITORY           = google_artifact_registry_repository.containers.repository_id
-    IMAGE_NAME               = var.image_name
-    STAGE_SERVICE            = var.staging_service_name
-    PROD_SERVICE             = var.production_service_name
-    PROD_URL                 = "https://${var.production_uptime_host}"
-    ALERT_NOTIFICATION_EMAIL = var.notification_email
+    GCP_PROJECT    = var.project_id
+    GCP_REGION     = var.region
+    GAR_REPOSITORY = google_artifact_registry_repository.containers.repository_id
+    IMAGE_NAME     = var.image_name
+    STAGE_SERVICE  = var.staging_service_name
+    PROD_SERVICE   = var.production_service_name
+    PROD_URL       = "https://${var.production_uptime_host}"
   }
 }
 

@@ -279,7 +279,7 @@ export interface Service {
 | `SUPABASE_KEY` | Environment-specific Supabase publishable/anon key; privileged keys are prohibited | Yes |
 
 These are accessed at runtime via `event.env.get()` inside `routeLoader$` handlers. They are not baked into the client bundle.
-Staging and production use separate projects and Secret Manager secrets. Runtime readiness rejects legacy `service_role` JWTs and `sb_secret_*` keys.
+Staging and production share one read-only Supabase project but use separate Secret Manager secrets and independently pinned versions. Runtime readiness rejects legacy `service_role` JWTs and `sb_secret_*` keys.
 
 For local development, set them in your shell environment or a `.env` file (Vite loads `.env` files automatically).
 
