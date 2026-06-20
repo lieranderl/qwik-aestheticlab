@@ -70,6 +70,7 @@ Open [http://localhost:5173](http://localhost:5173).
 
 | Command | Description |
 | --- | --- |
+| `bun ci` | Install dependencies exactly as CI does. |
 | `bun run dev` | Start the Qwik City dev server. |
 | `bun run build` | Build the production app. |
 | `bun run build.types` | Run TypeScript checks. |
@@ -77,6 +78,7 @@ Open [http://localhost:5173](http://localhost:5173).
 | `bun run test.e2e` | Run Playwright tests. |
 | `bun run verify` | Run Biome, type checks, tests, and build. |
 | `bun run biome` | Run Biome with fixes. |
+| `bunx --bun biome ci .` | Check formatting and lint without modifying files. |
 | `bun run qwik-speak-extract` | Extract translation keys into locale files. |
 | `bun run docker.build` | Build local Docker image `aestheticlab:local`. |
 | `make help` | Show Makefile targets. |
@@ -128,7 +130,7 @@ bun run verify
 For docs-only changes:
 
 ```bash
-markdownlint --disable MD013 -- README.md
+markdownlint --disable MD013 -- <changed-files>
 ```
 
 For focused checks:
@@ -136,9 +138,10 @@ For focused checks:
 | Change | Command |
 | --- | --- |
 | Source file | `bunx --bun biome check --write path/to/file` |
+| Source file check only | `bunx --bun biome check path/to/file` |
 | Unit test | `bunx vitest run path/to/file.test.ts` |
 | E2E spec | `bunx playwright test path/to/file.spec.ts` |
-| Infrastructure | `tofu -chdir=infra fmt -check -recursive && tofu -chdir=infra validate` |
+| Infrastructure | `tofu -chdir=infra fmt -check -recursive`, `tofu -chdir=infra init -backend=false -input=false`, `tofu -chdir=infra validate` |
 
 ## Deployment
 

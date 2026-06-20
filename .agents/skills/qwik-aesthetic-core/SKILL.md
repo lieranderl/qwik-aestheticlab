@@ -13,4 +13,4 @@ Use this skill for application-code work that needs a fast reminder of the repoâ
 - DaisyUI first
 - `inlineTranslate()` with `@@`
 - loaders in route files
-- fresh verification before completion
+- exact commands and verification rules from `AGENTS.md`

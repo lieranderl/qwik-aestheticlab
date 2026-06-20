@@ -1,4 +1,0 @@
-# Retired Hetzner cluster: API endpoint no longer exists (verified 2026-06-20).
-aa3d07bb044c13bf161b0036323584de25ec1cbc:infra/terraform-hcloud-kube/aesthetic-cluster_kubeconfig.yaml:private-key:19
-# Retired Hetzner Terraform stack removed in 2025; exact historical false positive.
-ef373904956984bf7831b404732614a9d49a4b99:infra/terraform-hcloud-kube/kube.tf:hashicorp-tf-password:1167
