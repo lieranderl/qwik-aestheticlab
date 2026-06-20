@@ -1,141 +1,246 @@
-name: Deploy to Cloud Run
+name: Build and promote to Cloud Run
 
 on:
   push:
-    branches:
-      - staging
+    branches: [staging]
   release:
-    types: [created]
-  workflow_dispatch:
+    types: [published]
+
+permissions:
+  contents: read
 
 concurrency:
   group: deploy-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name != 'release' }}
 
 env:
-  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-  GCP_REGION: ${{ secrets.GCP_REGION }}
-  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
-  STAGE_SERVICE: ${{ secrets.STAGE_SERVICE }}
-  PROD_SERVICE: ${{ secrets.PROD_SERVICE }}
+  GCP_PROJECT: ${{ vars.GCP_PROJECT }}
+  GCP_REGION: ${{ vars.GCP_REGION }}
+  GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  STAGE_SERVICE: ${{ vars.STAGE_SERVICE }}
+  PROD_SERVICE: ${{ vars.PROD_SERVICE }}
 
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  quality:
+    if: github.event_name == 'push'
     permissions:
       contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun ci
-
-      - name: Verify
-        run: bun run verify
+    uses: ./.github/workflows/quality.yml
 
   build:
+    if: github.event_name == 'push'
+    needs: quality
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: verify
-    permissions:
-      actions: write
-      contents: read
-    outputs:
-      image_tag: ${{ steps.set_tag.outputs.TAG }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@v4
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Set Docker tag
-        id: set_tag
-        run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            RELEASE_TAG="${{ github.ref_name }}"
-            # Enforce semantic versioning vX.Y.Z
-            if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "❌ Error: Release tag '$RELEASE_TAG' is not in semantic version format (vX.Y.Z)."
-              exit 1
-            fi
-            echo "✅ Using release tag: $RELEASE_TAG"
-            echo "TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          else
-            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-            echo "✅ Using short SHA: $SHORT_SHA"
-            echo "TAG=${SHORT_SHA}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Build and push image with cache
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          push: true
-          tags: ${{ env.DOCKER_IMAGE }}:${{ steps.set_tag.outputs.TAG }}
-          platforms: linux/amd64
-          provenance: false
-          sbom: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: build
+    timeout-minutes: 25
+    environment: staging
     permissions:
       contents: read
       id-token: write
+      attestations: write
+    outputs:
+      image: ${{ steps.image.outputs.uri }}
+      digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v3
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_ID_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - name: Setup gcloud SDK
-        uses: google-github-actions/setup-gcloud@v3
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
         with:
           project_id: ${{ env.GCP_PROJECT }}
 
-      - name: Deploy to Cloud Run (staging)
-        if: github.ref == 'refs/heads/staging'
-        run: |
-          echo "🚀 Deploying staging build: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
-          gcloud run deploy $STAGE_SERVICE \
-            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
-            --region=$GCP_REGION \
-            --project=$GCP_PROJECT \
-            --min-instances=0 \
-            --max-instances=1 \
-            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
+      - name: Configure Artifact Registry authentication
+        run: gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
 
-      - name: Deploy to Cloud Run (prod)
-        if: github.event_name == 'release'
+      - name: Set image URI
+        id: image
+        run: echo "uri=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPOSITORY}/${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+
+      - name: Build once and push
+        id: build
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ steps.image.outputs.uri }}:build-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true
+
+      - name: Attest exact image digest
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-name: ${{ steps.image.outputs.uri }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+
+      - name: Scan exact image digest
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
+        with:
+          image-ref: ${{ steps.image.outputs.uri }}@${{ steps.build.outputs.digest }}
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+  staging:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Deploy candidate without traffic
+        id: deploy
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}@${{ needs.build.outputs.digest }}
+          TAG: candidate-${{ github.run_id }}
+          SUFFIX: candidate-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
-          echo "🚀 Deploying production release: $DOCKER_IMAGE:${{ needs.build.outputs.image_tag }}"
-          gcloud run deploy $PROD_SERVICE \
-            --image=docker.io/$DOCKER_IMAGE:${{ needs.build.outputs.image_tag }} \
-            --region=$GCP_REGION \
-            --project=$GCP_PROJECT \
-            --min-instances=1 \
-            --max-instances=1 \
-            --set-env-vars=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --set-secrets=SUPABASE_KEY=SUPABASE_KEY:latest
+          gcloud run deploy "$STAGE_SERVICE" --image="$IMAGE" --region="$GCP_REGION" --project="$GCP_PROJECT" --no-traffic --tag="$TAG" --revision-suffix="$SUFFIX" --quiet
+          URL=$(gcloud run services describe "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json | jq -r --arg tag "$TAG" '.status.traffic[] | select(.tag == $tag) | .url')
+          test -n "$URL" && test "$URL" != "null"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "revision=$STAGE_SERVICE-$SUFFIX" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke-test candidate
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 5 "$URL/en-BE/" >/dev/null
+          curl --fail --show-error --silent --retry 3 --retry-all-errors --retry-delay 5 "$URL/fr-BE/pricelist/" >/dev/null
+
+      - name: Promote exact tested revision
+        env:
+          REVISION: ${{ steps.deploy.outputs.revision }}
+        run: gcloud run services update-traffic "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet
+
+      - name: Mark staging-approved digest as verified
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+          DIGEST: ${{ needs.build.outputs.digest }}
+        run: gcloud artifacts docker tags add "$IMAGE@$DIGEST" "$IMAGE:verified-${GITHUB_SHA}" --quiet
+
+      - name: Remove candidate tag
+        if: always()
+        env:
+          TAG: candidate-${{ github.run_id }}
+        run: gcloud run services update-traffic "$STAGE_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet
+
+  production:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_ID_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Resolve previously verified staging digest
+        id: image
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$RELEASE_TAG" = "v$(jq -r .version package.json)"
+          COMMIT_SHA=$(git rev-parse HEAD)
+          URI="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPOSITORY}/${IMAGE_NAME}"
+          DIGEST=$(gcloud artifacts docker images describe "$URI:verified-$COMMIT_SHA" --project="$GCP_PROJECT" --format='value(image_summary.digest)')
+          test -n "$DIGEST"
+          echo "ref=$URI@$DIGEST" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy candidate without traffic
+        id: deploy
+        env:
+          IMAGE: ${{ steps.image.outputs.ref }}
+          TAG: candidate-${{ github.run_id }}
+          SUFFIX: candidate-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          PREVIOUS=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json | jq -r '.status.traffic | max_by(.percent) | .revisionName')
+          test -n "$PREVIOUS" && test "$PREVIOUS" != "null"
+          gcloud run deploy "$PROD_SERVICE" --image="$IMAGE" --region="$GCP_REGION" --project="$GCP_PROJECT" --no-traffic --tag="$TAG" --revision-suffix="$SUFFIX" --quiet
+          URL=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json | jq -r --arg tag "$TAG" '.status.traffic[] | select(.tag == $tag) | .url')
+          test -n "$URL" && test "$URL" != "null"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "revision=$PROD_SERVICE-$SUFFIX" >> "$GITHUB_OUTPUT"
+          echo "previous=$PREVIOUS" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke-test candidate
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 5 "$URL/en-BE/" >/dev/null
+          curl --fail --show-error --silent --retry 3 --retry-all-errors --retry-delay 5 "$URL/fr-BE/pricelist/" >/dev/null
+
+      - name: Canary exact tested revision
+        env:
+          REVISION: ${{ steps.deploy.outputs.revision }}
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+        run: |
+          gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=10,$PREVIOUS=90" --quiet
+          if ! curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 5 https://aestheticlab.be/en-BE/ >/dev/null; then
+            gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet
+            exit 1
+          fi
+
+      - name: Promote exact tested revision
+        env:
+          REVISION: ${{ steps.deploy.outputs.revision }}
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+        run: |
+          if ! gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet; then
+            gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet
+            exit 1
+          fi
+          if ! curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 5 https://aestheticlab.be/en-BE/ >/dev/null || ! curl --fail --show-error --silent --retry 3 --retry-all-errors --retry-delay 5 https://aestheticlab.be/fr-BE/pricelist/ >/dev/null; then
+            gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$PREVIOUS=100" --quiet
+            exit 1
+          fi
+
+      - name: Remove candidate tag
+        if: always()
+        env:
+          TAG: candidate-${{ github.run_id }}
+        run: gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --remove-tags="$TAG" --quiet

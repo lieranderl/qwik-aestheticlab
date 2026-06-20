@@ -9,9 +9,8 @@ LICENSE
 .vscode
 Makefile
 helm-charts
-.env
-.env.local
-.env.production
+.env*
+!.env.example
 .editorconfig
 .idea
 coverage*

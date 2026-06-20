@@ -1,259 +1,141 @@
 # Deployment Guide
 
-This document covers the build pipeline, Docker containerization, and deployment process for the Aesthetic Lab project.
+## Delivery Model
 
-## Build Pipeline
+```text
+staging commit → verify → build/scan/attest once → Artifact Registry digest
+               → staging no-traffic deploy → smoke test → staging traffic
+GitHub release → resolve the verified digest for the release commit
+               → production approval → no-traffic deploy → smoke test
+               → 10% canary → canonical-domain check → 100% or automatic rollback
+```
 
-### Local Development
+- GitHub Actions is the only automated delivery system; workflow definitions live in `.github/workflows/`.
+- GCP authentication uses GitHub OIDC and Workload Identity Federation; no service-account keys are stored in GitHub.
+- Container tags are lookup metadata. Scan success creates `verified-<full-commit-sha>`; Cloud Run deployments always use the immutable `sha256` digest.
+- Production promotion never rebuilds. A published release must reference the exact commit already verified and deployed to staging.
+- The protected `production` GitHub environment owns approval and environment-scoped configuration.
+
+Repository/environment configuration:
+
+| Kind | Names |
+| --- | --- |
+| Variables | `GCP_PROJECT`, `GCP_REGION`, `GAR_REPOSITORY`, `IMAGE_NAME`, `STAGE_SERVICE`, `PROD_SERVICE` |
+| Secrets | `GCP_WORKLOAD_ID_PROVIDER`, `GCP_SERVICE_ACCOUNT` |
+
+Store configuration at the narrowest applicable repository or GitHub environment scope. The two secrets identify WIF resources; neither contains a private key.
+
+## Container
+
+- `Dockerfile` performs the Qwik build and creates a minimal Bun runtime image.
+- The distroless runtime contains built `dist/`, `public/`, and `server/` output plus the minimal production dependency graph; build-only dependencies remain in the build stage.
+- The runtime is non-root, exposes port `3000`, and starts `server/entry.bun.js`.
+- CI generates an SBOM and provenance attestation, scans the exact published digest, and gates deployment on the result.
+- Images are stored in the regional Google Artifact Registry repository managed by OpenTofu.
+
+Local verification:
 
 ```bash
-bun run dev        # Starts Vite dev server with SSR mode
-# or
-make dev
+bun run verify
+docker build --tag aestheticlab:local .
+docker run --rm --publish 3000:3000 \
+  --env SUPABASE_URL \
+  --env SUPABASE_KEY \
+  aestheticlab:local
+curl --fail http://localhost:3000/healthz
 ```
 
-The dev server runs at `http://localhost:5173` with:
-- Hot module replacement (HMR).
-- Server-side rendering (SSR) enabled via `--mode ssr`.
-- No caching (`Cache-Control: public, max-age=0`).
+## Quality Gates
 
-### Production Build
+- `.github/workflows/quality.yml` runs on every pull request and `staging` push.
+- It runs non-mutating Biome checks, type checking, unit tests, a production build, Chromium E2E smoke tests, a high-severity dependency audit, and full-history secret scanning.
+- `.github/workflows/deploy.yml` pins third-party actions to commit SHAs and blocks deployment when Trivy finds a fixed high or critical image vulnerability.
+
+## Cloud Run
+
+- Staging and production are separate services with dedicated runtime service accounts.
+- Runtime identities receive access only to the named Secret Manager secret, never project-wide secret roles.
+- Deployments create a revision with no traffic, validate localized pages through a temporary tagged URL, remove the tag after validation, then migrate traffic; Cloud Run probes validate `/readyz` and `/healthz` internally.
+- Startup/liveness probes, scaling, concurrency, resource limits, labels, and environment variables are declared in `infra/`.
+- Production supports multiple instances; tune concurrency and memory from monitoring data, not by console drift.
+
+Required runtime configuration:
+
+| Name | Source | Notes |
+| --- | --- | --- |
+| `SUPABASE_URL` | Cloud Run environment | Public project URL |
+| `SUPABASE_KEY` | Secret Manager | Injected at runtime; never baked into the image |
+| `NODE_ENV` | Container | `production` |
+
+## Infrastructure as Code
+
+- `infra/` is canonical for Artifact Registry, Cloud Run, IAM, Workload Identity Federation, secrets access, uptime checks, and alerts.
+- Use a remote, versioned, encrypted state backend with locking; do not use local state for production resources.
+- Pin OpenTofu and provider versions; commit `.terraform.lock.hcl`.
+- Review plans before apply for replacement, IAM expansion, public access, and secret exposure; protect production applies with explicit approval.
+- Import existing resources before the first apply; never recreate production merely to bring it under management.
+
+Typical local checks (follow `infra/README.md` for backend/environment inputs):
 
 ```bash
-bun run build
+tofu -chdir=infra fmt -check -recursive
+tofu -chdir=infra init -backend=false
+tofu -chdir=infra validate
 ```
 
-This runs `qwik build`, which triggers three sequential steps:
+## Caching
 
-1. **Client build** (`build.client`) — Vite bundles the client-side assets into `dist/`.
-2. **Server build** (`build.server`) — Vite bundles the Bun server adapter into `server/`.
-3. **qwik-speak inline** — The `qwikSpeakInline` Vite plugin inlines all translations at build time for each supported locale.
-
-Output directories:
-
-| Directory | Contents |
-|-----------|----------|
-| `dist/` | Client-side static assets (JS, CSS, images) |
-| `server/` | Server entry point (`entry.bun.js`) |
-| `public/` | Static files served as-is (fonts, manifest, favicon) |
-
-### Type Checking
-
-```bash
-bun run build.types
-```
-
-Runs `tsc --incremental --noEmit` — type checks without emitting files. Use this to catch type errors without a full build.
-
-## Docker
-
-### Dockerfile Overview
-
-The Dockerfile uses a **three-stage build** for minimal image size:
-
-| Stage | Base Image | Purpose |
-|-------|-----------|---------|
-| `build` | `oven/bun:slim` | Install all deps, run `bun run build` |
-| `deps` | `oven/bun:slim` | Install production deps only, strip unnecessary files |
-| `runtime` | `oven/bun:distroless` | Copy built assets + prod deps, run the server |
-
-The final image contains only:
-- Production `node_modules` (no dev dependencies, no docs, no tests).
-- Built `dist/`, `server/`, and `public/` directories.
-- `package.json` for module resolution.
-
-### Building the Docker Image
-
-```bash
-make docker-build-push TAG=staging-v1
-```
-
-Or manually:
-
-```bash
-docker buildx build \
-  --platform linux/amd64 \
-  --provenance=false \
-  --sbom=false \
-  -t furlingene/qwik-aesthetic:TAG \
-  --push .
-```
-
-Key details:
-- Target platform: `linux/amd64` (Google Cloud Run requirement).
-- `--provenance=false --sbom=false` — reduces image size by skipping attestation metadata.
-- Images are pushed to Docker Hub under `furlingene/qwik-aesthetic`.
-
-### Running the Container Locally
-
-```bash
-docker run -p 3000:3000 \
-  -e SUPABASE_URL=https://your-project.supabase.co \
-  -e SUPABASE_KEY=your-anon-key \
-  furlingene/qwik-aesthetic:TAG
-```
-
-The container:
-- Exposes port `3000`.
-- Runs `bun server/entry.bun.js` as the entrypoint.
-- Requires `SUPABASE_URL` and `SUPABASE_KEY` environment variables.
-
-## Google Cloud Run Deployment
-
-### Deploy Command
-
-```bash
-make gcloud-deploy TAG=staging-v1
-```
-
-Or manually:
-
-```bash
-gcloud run deploy aestheticlab-web \
-  --image=furlingene/qwik-aesthetic:TAG \
-  --region=europe-west1 \
-  --project=nail-lab-449417
-```
-
-### Configuration
-
-| Setting | Value |
-|---------|-------|
-| Service name | `aestheticlab-web` |
-| Region | `europe-west1` (Belgium) |
-| GCP Project | `nail-lab-449417` |
-| Image registry | Docker Hub (`furlingene/qwik-aesthetic`) |
-
-### Environment Variables on Cloud Run
-
-Set these in the Cloud Run service configuration (console or CLI):
-
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `SUPABASE_URL` | Supabase project URL | Yes |
-| `SUPABASE_KEY` | Supabase anon key | Yes |
-| `NODE_ENV` | Set to `production` (already set in Dockerfile) | Auto |
-
-To update env vars via CLI:
-
-```bash
-gcloud run services update aestheticlab-web \
-  --region=europe-west1 \
-  --set-env-vars="SUPABASE_URL=https://xxx.supabase.co,SUPABASE_KEY=xxx"
-```
-
-## CI/CD — GitHub Actions
-
-### Lint Workflow
-
-File: `.github/workflows/lint.yaml`
-
-Runs Biome linting on push and PR to ensure code quality.
-
-### Deploy Workflow
-
-File: `.github/workflows/deploy.yml`
-
-Automates the build → push → deploy pipeline. Triggered on pushes to the deployment branch.
-
-## Environment Variables Reference
-
-| Variable | Used In | Purpose |
-|----------|---------|---------|
-| `SUPABASE_URL` | `shared/supabase-client.ts` via `event.env.get()` | Supabase project URL |
-| `SUPABASE_KEY` | `shared/supabase-client.ts` via `event.env.get()` | Supabase anonymous/service key |
-| `NODE_ENV` | Dockerfile, runtime | Set to `production` in Docker |
-
-### Local Development Environment
-
-For local dev, create a `.env` file at the project root (Vite auto-loads it):
-
-```
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_KEY=your-anon-key
-```
-
-The `.env` file is gitignored — never commit credentials.
-
-## Caching Strategy
-
-### HTTP Caching (Runtime)
-
-Configured in `src/routes/[...lang]/layout.tsx`:
+The localized route shell is configured in `src/routes/[...lang]/layout.tsx`:
 
 ```tsx
 cacheControl({
-  staleWhileRevalidate: 60 * 60 * 24 * 7,  // 7 days
-  maxAge: 5,                                 // 5 seconds
+  staleWhileRevalidate: 60 * 60 * 24 * 7,
+  maxAge: 60 * 5,
 });
 ```
 
-- First 5 seconds: serve fresh response.
-- After 5 seconds: serve stale response while revalidating in the background.
-- Stale window: 7 days.
+- Dynamic HTML is fresh for 300 seconds, then eligible for stale-while-revalidate for seven days.
+- Hashed Vite assets use long-lived immutable caching.
+- Translation changes require a rebuild because Qwik Speak inlines translations.
 
-This applies to all routes under `[...lang]/`.
+## Release
 
-### Static Asset Caching
+1. Merge a verified change to `staging` and confirm the staging deployment and smoke test passed.
+2. Set `package.json` to the release version in the release change and run `bun run verify`.
+3. Create an annotated semantic-version tag for that exact commit and push it.
+4. Publish the GitHub release from the tag; the release-published workflow resolves the existing digest.
+5. Approve the protected production environment after reviewing artifact identity and deployment metadata.
+6. Confirm production smoke tests, traffic migration, uptime, errors, latency, and revision health.
 
-Vite-built assets in `dist/` have content-hash filenames (e.g., `chunk-abc123.js`). Serve these with long-lived cache headers. Cloud Run and CDN layers handle this automatically for hashed assets.
-
-### Build-Time Inlining
-
-Translations are inlined at build time by `qwikSpeakInline`. This means:
-- Zero runtime cost for translation lookups.
-- Locale JSON files are NOT shipped to the client.
-- A rebuild is required after changing translation files.
-
-## Deployment Checklist
-
-Before deploying to production:
-
-- [ ] `bun run biome` passes with no errors.
-- [ ] `bun run build` completes successfully.
-- [ ] `bun run build.types` reports no type errors.
-- [ ] New translation keys have been extracted: `bun run qwik-speak-extract`.
-- [ ] All locale `app.json` files have been updated with translations.
-- [ ] Environment variables (`SUPABASE_URL`, `SUPABASE_KEY`) are set on the target environment.
-- [ ] Docker image builds and runs locally with correct data rendering.
-- [ ] No hardcoded development URLs or debug code left in the codebase.
+Use `gh release create v<x.y.z> --verify-tag --title "v<x.y.z>" --generate-notes` after the tag is available remotely.
 
 ## Rollback
 
-To roll back to a previous version on Cloud Run:
+Prefer an immediate traffic rollback; it does not rebuild or mutate the failed revision:
 
 ```bash
-# List recent revisions
-gcloud run revisions list --service=aestheticlab-web --region=europe-west1
-
-# Route traffic to a previous revision
-gcloud run services update-traffic aestheticlab-web \
-  --region=europe-west1 \
-  --to-revisions=REVISION_NAME=100
+gcloud run revisions list --service SERVICE --region REGION
+gcloud run services update-traffic SERVICE \
+  --region REGION \
+  --to-revisions PREVIOUS_REVISION=100
 ```
 
-Or redeploy the previous Docker image tag:
+- Record the incident and reconcile the desired image digest in OpenTofu/delivery configuration.
+- Do not overwrite or reuse release tags.
 
-```bash
-make gcloud-deploy TAG=previous-tag
-```
+## Operational Checks
+
+- OpenTofu manages a public `/en-BE/` uptime check plus availability, 5xx, p95 latency, instance-saturation, memory-limit, and structured Supabase-failure alerts.
+- Candidate deployment smoke tests cover `/en-BE/` and `/fr-BE/pricelist/` before traffic migration.
+- Inspect Cloud Run revision logs and monitoring before shifting traffic.
+- Treat a passing `/healthz` as process health only; localized smoke tests validate the dependency path.
 
 ## Troubleshooting
 
-### Build Failures
-
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `Invalid module "@qwik-city-plan"` | Qwik packages in `dependencies` instead of `devDependencies` | Move `@builder.io/qwik` and `@builder.io/qwik-city` to `devDependencies` |
-| Duplicate dependency error | Same package in both `dependencies` and `devDependencies` | Remove from `dependencies`, keep in `devDependencies` |
-| Translation keys missing in build | New `t()` calls not extracted | Run `bun run qwik-speak-extract` |
-| Type errors on build | TypeScript strict mode violations | Fix types — do not use `@ts-ignore` |
-
-### Runtime Issues
-
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Blank page / 500 error | Missing `SUPABASE_URL` or `SUPABASE_KEY` | Set environment variables on the host |
-| Data not loading | Supabase query errors | Check Cloud Run logs for `console.error` output from loaders |
-| Stale content after data update | HTTP cache serving old response | Wait for `maxAge` (5s) to expire, or redeploy |
-| Wrong language content | Locale not resolving | Verify URL has correct lang prefix (e.g., `/fr-BE/`) |
+| Symptom | Check |
+| --- | --- |
+| Release cannot resolve an image | Tag commit must match a successful staging artifact/deployment record |
+| New revision fails before traffic | Container logs, probes, secret access, runtime service-account IAM |
+| Supabase data missing | Environment URL, secret version binding, loader error logs |
+| Stale content after update | Dynamic response may remain fresh for 300 seconds |
+| IaC proposes unexpected replacement | Provider/version drift, imported resource identity, environment state selection |

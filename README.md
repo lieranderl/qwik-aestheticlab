@@ -29,7 +29,7 @@ A multilingual marketing site for Aesthetic Lab, built with Qwik City and styled
 
 ## 🛠️ Local Development
 
-Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [CLAUDE.md](CLAUDE.md) for the AI-agent entrypoint.
+Before making changes, read [AGENTS.md](AGENTS.md) for project conventions.
 
 ### Prerequisites
 
@@ -38,24 +38,28 @@ Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [
 
 ### Setup
 
-1.  **Clone the repository**:
+1. **Clone the repository**:
+
     ```bash
     git clone <repo-url>
     cd qwik-aestheticlab
     ```
 
-2.  **Environment Variables**:
+2. **Environment Variables**:
     Copy `.env.example` to `.env` and fill in your credentials:
+
     ```bash
     cp .env.example .env
     ```
 
-3.  **Install dependencies**:
+3. **Install dependencies**:
+
     ```bash
     bun install
     ```
 
-4.  **Run Development Server**:
+4. **Run Development Server**:
+
     ```bash
     make dev
     ```
@@ -65,14 +69,19 @@ Before making changes, read [AGENTS.md](AGENTS.md) for project conventions and [
 The project uses Vitest for unit/component tests and Playwright for E2E testing.
 
 - **Run all unit tests**:
+
   ```bash
   bun run test
   ```
+
 - **Run E2E tests**:
+
   ```bash
   bun run test.e2e
   ```
+
 - **Run all verification checks** (Lint, Type check, Unit tests, Build):
+
   ```bash
   bun run verify
   ```
@@ -98,12 +107,9 @@ See [CLAUDE.md](CLAUDE.md), [.codex/README.md](.codex/README.md), [plans/README.
 
 ## 📦 Deployment
 
-The project includes a `Dockerfile` and a `Makefile` target for deploying to Google Cloud Run:
+GitHub Actions builds an attested container once, publishes it to Google Artifact Registry, and deploys its immutable digest to Cloud Run staging. Publishing a GitHub release promotes that same verified digest to production without rebuilding it. Production uses a protected GitHub environment, a no-traffic smoke test, and controlled traffic migration.
 
-```bash
-make docker-build-push TAG=v1.0.0
-make gcloud-deploy TAG=v1.0.0
-```
+Cloud Run, IAM, Secret Manager bindings, Workload Identity Federation, and monitoring are managed with OpenTofu in `infra/`; do not make persistent console-only changes. See [.github/DEPLOYMENT.md](.github/DEPLOYMENT.md).
 
 ## 📜 License
 

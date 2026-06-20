@@ -4,7 +4,7 @@ This project loads all server-side data from Supabase via `routeLoader$` functio
 
 ## Architecture Overview
 
-```
+```text
 Browser Request
   → Qwik City Route
     → layout.tsx (routeLoader$ functions)
@@ -80,7 +80,7 @@ export const useMyDataLoader = routeLoader$<ReturnType>(async (requestEv) => {
 ## Existing Loaders
 
 | Loader | Table | Returns | Null-safe default |
-|--------|-------|---------|-------------------|
+| --- | --- | --- | --- |
 | `useContactLoader` | `contacts` | `Contact \| null` | `null` |
 | `useServiceGroupsLoader` | `service_groups` | `ServiceGroup[]` | `[]` |
 | `useTechniciansLoader` | `staff` | `Staff[]` | `[]` |
@@ -101,7 +101,7 @@ Do not query the default `public` schema unless explicitly needed for a new feat
 Supabase tables store multilingual content via suffixed columns:
 
 | Base field | Russian | Dutch | French | Ukrainian |
-|-----------|---------|-------|--------|-----------|
+| --- | --- | --- | --- | --- |
 | `name` | `name_ru` | `name_nl` | `name_fr` | `name_uk` |
 | `description` | `description_ru` | `description_nl` | `description_fr` | `description_uk` |
 | `about` | `about_ru` | `about_nl` | `about_fr` | `about_uk` |
@@ -153,13 +153,14 @@ HTTP caching is configured in the `onGet` handler in `layout.tsx`:
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
     staleWhileRevalidate: 60 * 60 * 24 * 7, // 7 days
-    maxAge: 5, // 5 seconds
+    maxAge: 60 * 5, // 5 minutes
   });
 };
 ```
 
 This means:
-- Fresh data is served for 5 seconds.
+
+- Fresh data is served for 300 seconds.
 - After that, stale data is served while revalidation happens in the background.
 - The stale window is 7 days.
 
@@ -273,7 +274,7 @@ export interface Service {
 ## Environment Variables
 
 | Variable | Purpose | Required |
-|----------|---------|----------|
+| --- | --- | --- |
 | `SUPABASE_URL` | Supabase project URL | Yes |
 | `SUPABASE_KEY` | Supabase anon/service key | Yes |
 
@@ -284,7 +285,7 @@ For local development, set them in your shell environment or a `.env` file (Vite
 ## Common Mistakes
 
 | Mistake | Correct Approach |
-|---------|-----------------|
+| --- | --- |
 | Querying Supabase inside a component | Move the query to a `routeLoader$` in a route/layout file |
 | Using `process.env.SUPABASE_URL` | Use `event.env.get("SUPABASE_URL")` |
 | Throwing errors in loaders | Catch, log, and return safe defaults |

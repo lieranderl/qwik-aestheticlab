@@ -6,6 +6,7 @@ import {
 	localizeServiceGroups,
 	localizeServices,
 } from "~/shared/locale-content";
+import { logServerEvent } from "~/shared/server-logging";
 import { supabase } from "~/shared/supabase-client";
 import type { Contact, Service, ServiceGroup, Staff } from "~/types";
 
@@ -17,8 +18,6 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 };
 
 export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
-	console.log("Fetching contact info from Supabase…");
-
 	const client = supabase(event);
 
 	const { data, error } = await client
@@ -29,7 +28,10 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 		.single();
 
 	if (error) {
-		console.error("Error fetching contact:", error);
+		logServerEvent("ERROR", "supabase_fetch_failed", {
+			resource: "contact",
+			error,
+		});
 		return null;
 	}
 
@@ -38,8 +40,6 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 
 export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 	async (requestEv) => {
-		console.log("Fetching service groups from Supabase");
-
 		const client = supabase(requestEv);
 		const { data, error } = await client
 			.schema("gettimely")
@@ -48,7 +48,10 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 			.order("priority", { ascending: true });
 
 		if (error) {
-			console.error("Error fetching service groups:", error);
+			logServerEvent("ERROR", "supabase_fetch_failed", {
+				resource: "service_groups",
+				error,
+			});
 			return [];
 		}
 
@@ -57,8 +60,6 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 );
 
 export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
-	console.log("Fetching staff from Supabase");
-
 	const client = supabase(requestEv);
 	const { data, error } = await client
 		.schema("gettimely")
@@ -67,15 +68,16 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 		.eq("active", true);
 
 	if (error) {
-		console.error("Error fetching staff:", error);
+		logServerEvent("ERROR", "supabase_fetch_failed", {
+			resource: "staff",
+			error,
+		});
 		return [];
 	}
 	return (data ?? []) as Staff[];
 });
 
 export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
-	console.log("Fetching services from Supabase");
-
 	const client = supabase(requestEv);
 	const { data, error } = await client
 		.schema("gettimely")
@@ -85,7 +87,10 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 		.order("priority", { ascending: true });
 
 	if (error) {
-		console.error("Error fetching services:", error);
+		logServerEvent("ERROR", "supabase_fetch_failed", {
+			resource: "services",
+			error,
+		});
 		return [];
 	}
 
