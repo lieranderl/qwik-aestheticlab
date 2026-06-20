@@ -45,6 +45,9 @@ jobs:
 
       - name: Chromium smoke tests
         run: bunx playwright test --project=chromium
+        env:
+          SUPABASE_URL: https://example.invalid
+          SUPABASE_KEY: ci-placeholder
 
       - name: Dependency audit
         run: bun audit --audit-level=high
