@@ -111,14 +111,20 @@ variable "github_repository_owner_id" {
   default     = "19622412"
 }
 
-variable "notification_channel_ids" {
-  description = "Existing Monitoring notification channel resource names."
-  type        = list(string)
+variable "notification_email" {
+  description = "Email address for the managed production alert channel."
+  type        = string
 
   validation {
-    condition     = length(var.notification_channel_ids) > 0
-    error_message = "Provide at least one Monitoring notification channel."
+    condition     = can(regex("^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$", var.notification_email))
+    error_message = "notification_email must be a valid email address."
   }
+}
+
+variable "additional_notification_channel_ids" {
+  description = "Optional existing Monitoring notification channel resource names."
+  type        = list(string)
+  default     = []
 }
 
 variable "allow_public_access" {

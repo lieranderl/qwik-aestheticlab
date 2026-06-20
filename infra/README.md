@@ -21,7 +21,7 @@
 6. Add the shared project's publishable/anon key to both environment-specific secrets through Secret Manager. Never use `service_role` or `sb_secret_*` keys in this application. Separate secrets preserve independent IAM and version promotion even when their value is initially identical.
 7. Push an immutable bootstrap image and set `initial_image` to its GAR digest. Existing services must be imported with their current immutable GAR digest.
 8. Run `tofu plan -out=tfplan`, review replacement/IAM/public-access changes, then apply the initial saved plan with the bootstrap identity.
-9. Add `github_repository_variables` plus the state, image, Supabase URL/version, and notification-channel values below as repository variables. Add each `github_environment_variables` output to its matching environment.
+9. Add `github_repository_variables` plus the state, image, Supabase URL/version, and alert-email values below as repository variables. Add each `github_environment_variables` output to its matching environment.
 10. Grant the `infrastructure-plan` service account bucket-scoped `roles/storage.objectViewer`; grant the protected `infrastructure` service account bucket-scoped `roles/storage.objectAdmin` for state locking and writes.
 11. Configure required reviewers on `production` and `infrastructure`; restrict `infrastructure-plan` and `infrastructure` to `staging`; require PR/security checks on `staging` before enabling deployer variables.
 
@@ -37,7 +37,9 @@ Infrastructure workflow variables:
 | `INITIAL_IMAGE` | Immutable GAR digest used only for bootstrap/import reconciliation |
 | `STAGING_SUPABASE_URL`, `PRODUCTION_SUPABASE_URL` | Supabase project URLs; they may be identical for this read-only site |
 | `STAGING_SUPABASE_SECRET_VERSION`, `PRODUCTION_SUPABASE_SECRET_VERSION` | Tested numeric versions |
-| `NOTIFICATION_CHANNEL_IDS` | OpenTofu list syntax, for example `["projects/PROJECT/notificationChannels/ID"]` |
+| `ALERT_NOTIFICATION_EMAIL` | Address for the OpenTofu-managed primary alert channel |
+
+Optional additional channels can be supplied through `additional_notification_channel_ids` in local bootstrap variables.
 
 This root creates secret containers but never secret values or versions. Add keys directly through Secret Manager and grant secret administration only to the bootstrap/rotation identity. Rotate staging first, validate it, then pin the tested numeric production version; deployments never follow `latest`.
 

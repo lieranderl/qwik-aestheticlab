@@ -6,5 +6,7 @@ staging_supabase_secret_version      = "1"
 production_supabase_url              = "https://example.supabase.co"
 production_supabase_secret_version   = "1"
 
-# Use existing email, PagerDuty, or Slack channels.
-notification_channel_ids = ["projects/example-project/notificationChannels/123456789"]
+notification_email = "alerts@example.com"
+
+# Optional existing PagerDuty, Slack, or additional email channels.
+additional_notification_channel_ids = []

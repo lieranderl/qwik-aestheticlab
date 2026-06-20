@@ -96,9 +96,6 @@ crash.log
 terraform.tfvars
 *.tfvars.json
 
-# .terraform.lock.hcl (if you are using Terraform v0.14+)
-.terraform.lock.hcl
-
 # Ansible inventory files
 inventory
 # Ansible vault files
