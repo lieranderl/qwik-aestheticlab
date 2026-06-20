@@ -537,8 +537,8 @@ resource "google_monitoring_alert_policy" "instance_saturation" {
     display_name = "Active instances at configured maximum"
     condition_threshold {
       filter          = "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"${var.production_service_name}\" AND metric.type = \"run.googleapis.com/container/instance_count\" AND metric.labels.state = \"active\""
-      comparison      = "COMPARISON_GE"
-      threshold_value = var.production_max_instances
+      comparison      = "COMPARISON_GT"
+      threshold_value = var.production_max_instances - 1
       duration        = "300s"
 
       aggregations {

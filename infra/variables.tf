@@ -157,6 +157,11 @@ variable "production_min_instances" {
 variable "production_max_instances" {
   type    = number
   default = 3
+
+  validation {
+    condition     = var.production_max_instances >= 1
+    error_message = "production_max_instances must be at least 1."
+  }
 }
 
 variable "container_concurrency" {
