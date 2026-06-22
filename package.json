@@ -54,7 +54,7 @@
 		"daisyui": "^5.5.23",
 		"husky": "^9.1.7",
 		"ignore": "^7.0.5",
-		"lint-staged": "^17.0.7",
+		"lint-staged": "^17.0.8",
 		"luxon": "^3.7.2",
 		"qwik-speak": "^0.24.0",
 		"tailwindcss": "^4.3.1",
