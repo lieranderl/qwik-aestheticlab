@@ -51,13 +51,19 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = {
-	title: "Aesthetic Lab | Nail Design, Brows & Laser",
-	meta: [
-		{
-			name: "description",
-			content:
-				"Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
-		},
-	],
+import { inlineTranslate } from "qwik-speak";
+
+export const head: DocumentHead = () => {
+	const t = inlineTranslate();
+	return {
+		title: t("app.head.home.title@@Aesthetic Lab | Nail Design, Brows & Laser"),
+		meta: [
+			{
+				name: "description",
+				content: t(
+					"app.head.home.description@@Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
+				),
+			},
+		],
+	};
 };

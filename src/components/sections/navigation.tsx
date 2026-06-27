@@ -77,7 +77,7 @@ export const Navigation = component$(() => {
 						>
 							<BirdLogo
 								class="h-12 w-auto md:h-16"
-								aria-label="Aesthetic Lab Bird"
+								aria-label={t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")}
 							/>
 						</a>
 					</div>
@@ -141,7 +141,7 @@ export const Navigation = component$(() => {
 								onClick$={$(() => {
 									isMobileMenuOpen.value = !isMobileMenuOpen.value;
 								})}
-								aria-label="Open menu"
+								aria-label={t("app.nav.open_menu@@Open menu")}
 								aria-controls={mobileMenuId}
 								aria-expanded={isMobileMenuOpen.value}
 							>
@@ -180,7 +180,7 @@ export const Navigation = component$(() => {
 						onClick$={$(() => {
 							isMobileMenuOpen.value = false;
 						})}
-						aria-label="Close menu"
+						aria-label={t("app.nav.close_menu@@Close menu")}
 						aria-controls={mobileMenuId}
 					>
 						<svg

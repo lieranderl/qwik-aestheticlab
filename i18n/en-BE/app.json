@@ -16,6 +16,7 @@
     },
     "changeLocale": "Change language",
     "common": {
+      "close": "Close",
       "read_less": "Read Less",
       "read_more": "Read More"
     },
@@ -26,6 +27,7 @@
       "instagram": "Follow us on Instagram",
       "location": "Location",
       "map_location": "Location map",
+      "map_title": "Aesthetic Lab Location",
       "monday": "Monday",
       "opening_hours": "Opening Hours",
       "parking": "Parking available at",
@@ -51,8 +53,12 @@
     },
     "head": {
       "home": {
-        "description": "Localized routing",
-        "title": "Aesthetic Lab"
+        "description": "Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
+        "title": "Aesthetic Lab | Nail Design, Brows & Laser"
+      },
+      "pricelist": {
+        "description": "Full price list for manicures, pedicures, brows, and laser treatments.",
+        "title": "Services & Pricing | Aesthetic Lab"
       }
     },
     "hero": {
@@ -89,8 +95,11 @@
     },
     "nav": {
       "about": "About",
+      "close_menu": "Close menu",
       "contact": "Contact",
       "home": "Home",
+      "logo_bird": "Aesthetic Lab Bird Logo",
+      "open_menu": "Open menu",
       "policy": "Policy",
       "services": "Services",
       "team": "Team",
@@ -110,6 +119,7 @@
       "individual_features": "Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
       "intro": "At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
       "last_update": "Last updated:",
+      "last_update_date": "Last updated: 01.07.2025",
       "mechanical_damage": "Mechanical damage to the nails",
       "other_factors": "Other factors that may affect durability:",
       "policy_care": "We care about your satisfaction and will be happy to fix any issues that may arise within this period.",
@@ -142,6 +152,7 @@
       "info": "1. Information We Collect",
       "info_text": "We collect the following personal information when you book an appointment or contact us:",
       "last_update": "Last updated:",
+      "last_update_date": "Last updated: 19.02.2026",
       "legal": "Legal authorities if required by law",
       "name": "Name",
       "phone": "Phone number",
