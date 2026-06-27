@@ -13,7 +13,7 @@ const ASSETS_GALLERY: Record<string, string> = import.meta.glob(
 ) as Record<string, string>;
 
 const ASSETS_SERVICES: Record<string, string> = import.meta.glob(
-	"../media/services/*.png",
+	"../media/services/*.webp",
 	{
 		eager: true,
 		import: "default",
@@ -71,7 +71,7 @@ export function getGroupCoverImage(category: ServiceGroup | undefined): string {
 	const mapped = mapName(name);
 	for (const path in ASSETS_SERVICES) {
 		if (path.toLowerCase().includes(mapped)) {
-			return `service:${mapped}.png`;
+			return `service:${mapped}.webp`;
 		}
 	}
 	return "gallery:universal.jpg";
@@ -102,7 +102,7 @@ export function resolveCoverImage(imageName: string): string {
 
 	for (const path in ASSETS_SERVICES) {
 		if (path.toLowerCase().includes(mapped)) {
-			return `service:${mapped}.png`;
+			return `service:${mapped}.webp`;
 		}
 	}
 	return "gallery:universal.jpg";

@@ -1,4 +1,10 @@
-import { $, component$, useStyles$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	useSignal,
+	useStyles$,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -13,7 +19,8 @@ const marqueeStyles = `
 	animation: reviews-scroll var(--scroll-duration, 60s) linear infinite;
 }
 
-.reviews-animate-scroll:hover {
+.reviews-animate-scroll:hover,
+.reviews-animate-scroll:focus-within {
 	animation-play-state: paused;
 }
 
@@ -37,12 +44,6 @@ export const ReviewsSection = component$(() => {
 
 	// Extracted from Google Maps
 	const reviews: Review[] = [
-		{
-			author: "Polina Kiper",
-			rating: 5,
-			text: "The best nail salon in Leuven! I highly recommend it to anyone who values top-notch quality, a clean and hygienic environment, and a team that truly focuses on the customer. I’d been searching for years for a place I could fully trust... I can’t wait to see what’s next!",
-			date: "3 weeks ago",
-		},
 		{
 			author: "Elena Matviichuk",
 			rating: 5,
@@ -79,10 +80,47 @@ export const ReviewsSection = component$(() => {
 			text: "Top-notch hygiene, speed and precision of the service and pleasant staff. The prices are a bit higher, but I understand why, because the service matches them. I definitely recommend this salon!",
 			date: "3 months ago",
 		},
+		{
+			author: "Yevheniia Maksymenko",
+			rating: 5,
+			text: "I had a wonderful experience! The manicure is always done perfectly, with great attention to detail. I really appreciate how clean and well-maintained the tools are - it makes me feel completely comfortable and confident. The staff are incredibly attentive and professional, always making sure everything is just right. And the delicious coffee they offer is such a lovely touch that makes each visit even more enjoyable. Highly recommended!😍",
+			date: "1 week ago",
+		},
+		{
+			author: "Виктория Васильева",
+			rating: 5,
+			text: "I’ve been coming to this nail studio in Leuven for a long time, and I’m always happy with the results. Zara is professional, talented, and pays great attention to detail. The service is always excellent, and my nails look perfect every time. Highly recommended!",
+			date: "2 weeks ago",
+		},
+		{
+			author: "Елизавета Абхазава",
+			rating: 5,
+			text: "I had eyelash and eyebrow lamination with Yulia. The results were amazing. I thank Yulia for her work, her expertise, and the amazing results that make me want to look in the mirror more often. Definitely come and try it out!",
+			date: "2 weeks ago",
+		},
+		{
+			author: "Diana Richardson",
+			rating: 5,
+			text: "Excellent service and great place! Julia is an extremely talented professional and I'm very happy with the results!",
+			date: "1 month ago",
+		},
+		{
+			author: "Ирен Ирен",
+			rating: 5,
+			text: "I got my nails done by Rubina and was very pleased with the results! The work was done quickly and carefully, everything was sterile and professional. My manicure turned out absolutely perfect. Thank you so much, I'll definitely be back again.",
+			date: "1 month ago",
+		},
 	];
 
+	const shuffledReviews = useSignal<Review[]>(reviews);
+
+	// biome-ignore lint/correctness/noQwikUseVisibleTask: Client-side randomization avoids SSR hydration mismatch
+	useVisibleTask$(() => {
+		shuffledReviews.value = [...reviews].sort(() => Math.random() - 0.5);
+	});
+
 	// Infinite scroll animation duplication
-	const allReviews = [...reviews, ...reviews];
+	const allReviews = [...shuffledReviews.value, ...shuffledReviews.value];
 
 	return (
 		<section class="relative overflow-hidden bg-base-200 py-16 md:py-24">
@@ -134,27 +172,6 @@ export const ReviewsSection = component$(() => {
 							{t("app.reviews.google_link@@Read all reviews on Google")}
 						</a>
 					</div>
-				</FadeUp>
-
-				<FadeUp delay={150}>
-					<figure class="mt-8 grid gap-5 rounded-2xl border border-base-300 bg-base-100/90 p-4 shadow-sm md:mt-12 md:gap-8 md:p-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-						<div class="space-y-2 md:space-y-3">
-							<p class="editorial-kicker">
-								{t("app.reviews.featured@@Featured review")}
-							</p>
-							<figcaption>
-								<p class="font-qestero text-[1.7rem] leading-none text-base-content md:text-5xl">
-									{reviews[0].author}
-								</p>
-								<p class="font-montserrat mt-2 text-sm text-base-content/65">
-									Google Review
-								</p>
-							</figcaption>
-						</div>
-						<blockquote class="font-montserrat text-sm leading-relaxed text-base-content md:text-xl">
-							"{reviews[0].text}"
-						</blockquote>
-					</figure>
 				</FadeUp>
 			</div>
 
