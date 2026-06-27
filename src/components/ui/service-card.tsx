@@ -13,7 +13,7 @@ const GALLERY_IMAGES = import.meta.glob("../../media/gallery/*.jpg", {
 	import: "default",
 }) as Record<string, ServiceImageComponent>;
 
-const SERVICE_IMAGES = import.meta.glob("../../media/services/*.png", {
+const SERVICE_IMAGES = import.meta.glob("../../media/services/*.webp", {
 	eager: true,
 	query: "?jsx",
 	import: "default",
@@ -31,9 +31,9 @@ function resolveImageComponent(image: string) {
 	}
 
 	if (image.startsWith("service:")) {
-		const imageName = image.slice("service:".length).replace(/\.png$/i, "");
+		const imageName = image.slice("service:".length).replace(/\.webp$/i, "");
 		for (const path in SERVICE_IMAGES) {
-			if (path.endsWith(`/${imageName}.png`)) {
+			if (path.endsWith(`/${imageName}.webp`)) {
 				return SERVICE_IMAGES[path];
 			}
 		}
@@ -126,7 +126,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 
 					<div class="card-body gap-3 p-4 md:gap-4 md:p-6">
 						<div class="space-y-2.5 md:space-y-3">
-							<h3 class="font-qestero text-[1.55rem] leading-none text-base-content md:text-[2rem]">
+							<h3 class="font-qestero text-[1.35rem] sm:text-[1.55rem] lg:text-[1.75rem] xl:text-[2rem] leading-none text-base-content">
 								{title.charAt(0).toUpperCase() + title.slice(1)}
 							</h3>
 							<p

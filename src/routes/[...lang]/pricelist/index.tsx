@@ -317,13 +317,17 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = {
-	title: "Services & Pricing | Aesthetic Lab",
-	meta: [
-		{
-			name: "description",
-			content:
-				"Full price list for manicures, pedicures, brows, and laser treatments.",
-		},
-	],
+export const head: DocumentHead = () => {
+	const t = inlineTranslate();
+	return {
+		title: t("app.head.pricelist.title@@Services & Pricing | Aesthetic Lab"),
+		meta: [
+			{
+				name: "description",
+				content: t(
+					"app.head.pricelist.description@@Full price list for manicures, pedicures, brows, and laser treatments.",
+				),
+			},
+		],
+	};
 };

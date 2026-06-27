@@ -16,8 +16,9 @@
     },
     "changeLocale": "Changer de langue",
     "common": {
-      "read_less": "Read Less",
-      "read_more": "Read More"
+      "close": "Fermer",
+      "read_less": "Lire moins",
+      "read_more": "Lire plus"
     },
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
@@ -26,6 +27,7 @@
       "instagram": "Suivez-nous sur Instagram",
       "location": "Lieu",
       "map_location": "Carte de localisation",
+      "map_title": "Adresse d'Aesthetic Lab",
       "monday": "Lundi",
       "opening_hours": "Heures d'ouverture",
       "parking": "Parking disponible à",
@@ -51,8 +53,12 @@
     },
     "head": {
       "home": {
-        "description": "Routage localisé",
-        "title": "Aesthetic Lab"
+        "description": "Salon de beauté haut de gamme proposant des manucures sur mesure, la restructuration des sourcils et des soins d'épilation laser dans un cadre zen et naturel.",
+        "title": "Aesthetic Lab | Onglerie, Sourcils & Laser"
+      },
+      "pricelist": {
+        "description": "Liste complète des tarifs pour les manucures, pédicures, sourcils et traitements laser.",
+        "title": "Tarifs & Prestations | Aesthetic Lab"
       }
     },
     "hero": {
@@ -89,8 +95,11 @@
     },
     "nav": {
       "about": "À propos",
+      "close_menu": "Fermer le menu",
       "contact": "Contact",
       "home": "Accueil",
+      "logo_bird": "Logo Oiseau Aesthetic Lab",
+      "open_menu": "Ouvrir le menu",
       "policy": "Politique",
       "services": "Services",
       "team": "Équipe",
@@ -110,6 +119,7 @@
       "individual_features": "Caractéristiques individuelles des ongles (telles qu'une humidité accrue, une fragilité ou une tendance au décollement)",
       "intro": "Dans notre salon, nous nous efforçons de fournir des services d'ongles de haute qualité et durables en utilisant uniquement des produits et des techniques professionnels. Pour assurer la transparence et gérer les attentes, veuillez lire attentivement les informations suivantes :",
       "last_update": "Dernière mise à jour :",
+      "last_update_date": "Dernière mise à jour : 01.07.2025",
       "mechanical_damage": "Dommages mécaniques aux ongles",
       "other_factors": "Autres facteurs pouvant affecter la durabilité :",
       "policy_care": "Nous nous soucions de votre satisfaction et serons heureux de résoudre tout problème pouvant survenir au cours de cette période.",
@@ -142,6 +152,7 @@
       "info": "1. Informations que nous collectons",
       "info_text": "Nous collectons les informations personnelles suivantes lorsque vous prenez rendez-vous ou nous contactez :",
       "last_update": "Dernière mise à jour :",
+      "last_update_date": "Dernière mise à jour : 19.02.2026",
       "legal": "Autorités légales si la loi l'exige",
       "name": "Nom",
       "phone": "Numéro de téléphone",

@@ -16,8 +16,9 @@
     },
     "changeLocale": "Verander taal",
     "common": {
-      "read_less": "Read Less",
-      "read_more": "Read More"
+      "close": "Sluiten",
+      "read_less": "Minder lezen",
+      "read_more": "Meer lezen"
     },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
@@ -26,6 +27,7 @@
       "instagram": "Volg ons op Instagram",
       "location": "Locatie",
       "map_location": "Locatiekaart",
+      "map_title": "Aesthetic Lab Locatie",
       "monday": "Maandag",
       "opening_hours": "Openingstijden",
       "parking": "Parkeren beschikbaar bij",
@@ -51,8 +53,12 @@
     },
     "head": {
       "home": {
-        "description": "Gelokaliseerde routing",
-        "title": "Aesthetic Lab"
+        "description": "Premium schoonheidssalon met manicures op maat, wenkbrauwmodellering en laserbehandelingen in een zen, biologische omgeving.",
+        "title": "Aesthetic Lab | Nagelontwerp, Wenkbrauwen & Laser"
+      },
+      "pricelist": {
+        "description": "Volledige prijslijst voor manicures, pedicures, wenkbrauwen en laserbehandelingen.",
+        "title": "Diensten & Prijzen | Aesthetic Lab"
       }
     },
     "hero": {
@@ -89,8 +95,11 @@
     },
     "nav": {
       "about": "Over ons",
+      "close_menu": "Menu sluiten",
       "contact": "Contact",
       "home": "Home",
+      "logo_bird": "Aesthetic Lab Vogel Logo",
+      "open_menu": "Menu openen",
       "policy": "Beleid",
       "services": "Diensten",
       "team": "Team",
@@ -110,6 +119,7 @@
       "individual_features": "Individuele nagelkenmerken (zoals verhoogd vochtgehalte, broosheid of neiging tot afbladderen)",
       "intro": "In onze salon streven we ernaar om nageldiensten van hoge kwaliteit en lange duurzaamheid te leveren met uitsluitend professionele producten en technieken. Om transparantie te waarborgen en verwachtingen te managen, lees de volgende informatie zorgvuldig door:",
       "last_update": "Laatst bijgewerkt:",
+      "last_update_date": "Laatst bijgewerkt: 01.07.2025",
       "mechanical_damage": "Mechanische schade aan de nagels",
       "other_factors": "Andere factoren die de duurzaamheid kunnen beïnvloeden:",
       "policy_care": "We geven om uw tevredenheid en lossen eventuele problemen die zich binnen deze periode voordoen graag op.",
@@ -142,6 +152,7 @@
       "info": "1. Informatie die we verzamelen",
       "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak boekt of contact met ons opneemt:",
       "last_update": "Laatst bijgewerkt:",
+      "last_update_date": "Laatst bijgewerkt: 19.02.2026",
       "legal": "Wettelijke autoriteiten indien vereist door de wet",
       "name": "Naam",
       "phone": "Telefoonnummer",

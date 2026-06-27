@@ -9,7 +9,6 @@ import Root from "./root";
 import { config } from "./speak-config";
 
 function extractBase({ serverData }: RenderOptions): string {
-	console.log(isDev, serverData?.locale);
 	return !isDev && serverData?.locale
 		? `/build/${serverData.locale}`
 		: "/build";
