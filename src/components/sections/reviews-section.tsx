@@ -1,4 +1,10 @@
-import { $, component$, useStyles$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	useSignal,
+	useStyles$,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -106,8 +112,15 @@ export const ReviewsSection = component$(() => {
 		},
 	];
 
+	const shuffledReviews = useSignal<Review[]>(reviews);
+
+	// biome-ignore lint/correctness/noQwikUseVisibleTask: Client-side randomization avoids SSR hydration mismatch
+	useVisibleTask$(() => {
+		shuffledReviews.value = [...reviews].sort(() => Math.random() - 0.5);
+	});
+
 	// Infinite scroll animation duplication
-	const allReviews = [...reviews, ...reviews];
+	const allReviews = [...shuffledReviews.value, ...shuffledReviews.value];
 
 	return (
 		<section class="relative overflow-hidden bg-base-200 py-16 md:py-24">
