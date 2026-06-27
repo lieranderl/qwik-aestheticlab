@@ -91,6 +91,7 @@ export const Booking = component$<BookingProps>(
 							<button
 								type="submit"
 								class="btn btn-sm btn-square btn-ghost absolute right-1 top-1"
+								aria-label={t("app.common.close@@Close")}
 							>
 								✕
 							</button>

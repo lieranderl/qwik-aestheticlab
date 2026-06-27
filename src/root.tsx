@@ -11,6 +11,7 @@ import "./global.css";
 import { useQwikSpeak, useSpeakLocale } from "qwik-speak";
 import { GoogleAnalytics } from "./components/ui/google-analytics";
 import { JSON_LD } from "./constants/metadata";
+import { getGoogleAnalyticsBootstrapScript } from "./shared/cookie-consent";
 import { config } from "./speak-config";
 import { translationFn } from "./speak-functions";
 
@@ -36,6 +37,18 @@ export default component$(() => {
 					type="font/woff2"
 					crossOrigin="anonymous"
 				/>
+				<link
+					rel="preload"
+					href="/fonts/QESTERO-Regular.ttf"
+					as="font"
+					type="font/ttf"
+					crossOrigin="anonymous"
+				/>
+				{!isDev && (
+					<script
+						dangerouslySetInnerHTML={getGoogleAnalyticsBootstrapScript()}
+					/>
+				)}
 				{!isDev && (
 					<script
 						type="application/ld+json"

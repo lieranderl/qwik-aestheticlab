@@ -13,8 +13,8 @@ export default component$(() => {
 							{t("app.notice.important_info@@Important Client Information")}
 						</h1>
 						<div class="h-px w-20 bg-primary mx-auto mb-6" />
-						<p class="font-montserrat text-sm text-neutral-content uppercase tracking-widest">
-							{t("app.notice.last_update@@Last updated:")} 01.07.2025
+						<p class="font-montserrat text-sm text-base-content uppercase tracking-widest">
+							{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
 						</p>
 					</div>
 
