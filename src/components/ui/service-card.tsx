@@ -87,7 +87,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 
 		return (
 			<FadeUp delay={delay} class="h-full">
-				<article class="card h-full overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+				<article class="card h-full overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl">
 					<figure
 						class={[
 							"group relative overflow-hidden bg-base-200",
@@ -182,7 +182,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									) : null}
 									{duration ? (
 										<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
-											{duration} {t("app.services.minutes@@min")}
+											{duration}&nbsp;{t("app.services.minutes@@min")}
 										</span>
 									) : null}
 								</div>

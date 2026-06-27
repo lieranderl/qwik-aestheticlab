@@ -47,7 +47,7 @@ export const ReviewsSection = component$(() => {
 		{
 			author: "Elena Matviichuk",
 			rating: 5,
-			text: "What a great experience at this salon! The staff is very professional and experienced, incredibly kind and friendly, and the atmosphere is relaxed and welcoming. I got an amazing manicure and pedicure, and the result truly exceeded my expectations. They also sterilize all their tools... I’ll definitely be coming back!",
+			text: "What a great experience at this salon! The staff is very professional and experienced, incredibly kind and friendly, and the atmosphere is relaxed and welcoming. I got an amazing manicure and pedicure, and the result truly exceeded my expectations. They also sterilize all their tools… I’ll definitely be coming back!",
 			date: "1 month ago",
 		},
 		{
@@ -65,7 +65,7 @@ export const ReviewsSection = component$(() => {
 		{
 			author: "Julia Lavrentieva",
 			rating: 5,
-			text: "Love being here as I always get perfect quality of my nails and service in general. Zara always takes care of my skin by gentle polishing, I see that all tools are sterile... I wear my manicure for weeks in perfect condition. Totally recommend!",
+			text: "Love being here as I always get perfect quality of my nails and service in general. Zara always takes care of my skin by gentle polishing, I see that all tools are sterile… I wear my manicure for weeks in perfect condition. Totally recommend!",
 			date: "3 weeks ago",
 		},
 		{
@@ -214,7 +214,7 @@ export const ReviewsSection = component$(() => {
 									))}
 								</div>{" "}
 								<p class="font-montserrat line-clamp-5 text-[0.82rem] leading-relaxed italic md:line-clamp-6 md:text-sm">
-									"{review.text}"
+									“{review.text}”
 								</p>
 							</div>
 							<div class="mt-4 flex items-center gap-3 md:mt-6">

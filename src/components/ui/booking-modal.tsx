@@ -93,7 +93,7 @@ export const Booking = component$<BookingProps>(
 								class="btn btn-sm btn-square btn-ghost absolute right-1 top-1"
 								aria-label={t("app.common.close@@Close")}
 							>
-								✕
+								<span aria-hidden="true">✕</span>
 							</button>
 						</form>
 						{isOpen.value && (

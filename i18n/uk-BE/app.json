@@ -1,6 +1,10 @@
 {
   "app": {
     "about": {
+      "alt": {
+        "artists": "Aesthetic Lab artists at work in Leuven studio",
+        "manicure_detail": "Close-up detail of premium gel manicure work"
+      },
       "extra_text": "Ми прагнемо надавати процедури найвищої якості у розслаблюючій атмосфері. Кожна деталь продумана для вашого комфорту та задоволення, роблячи ваш візит справді омолоджуючим.",
       "philosophy": "& Філософія",
       "subtitle": "З 2025 року"
@@ -137,6 +141,7 @@
     "pricelist": {
       "category_label": "Категорія",
       "category_nav": "Категорії послуг",
+      "hero_alt": "Aesthetic Lab treatment catalog background",
       "ready": "Готові, коли вам зручно"
     },
     "privacy": {

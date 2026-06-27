@@ -38,7 +38,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	return (
 		<section
 			id="team"
-			class="relative overflow-hidden bg-base-200 py-16 md:py-24"
+			class="relative overflow-hidden scroll-mt-24 bg-base-200 py-16 md:py-24"
 		>
 			<div class="custom-container">
 				<FadeUp class="mb-9 grid gap-5 text-center md:mb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:text-left">
@@ -85,7 +85,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	const ImageComp = resolveImageComponent(tech.photo_url);
 
 	return (
-		<article class="flex h-full flex-col rounded-2xl border border-white/50 bg-base-100/90 p-4 text-left shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl md:p-6">
+		<article class="flex h-full flex-col rounded-2xl border border-white/50 bg-base-100/90 p-4 text-left shadow-sm backdrop-blur-sm transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-xl md:p-6">
 			<div class="mx-auto mb-4 h-32 w-32 shrink-0 overflow-hidden rounded-full border border-base-300 bg-base-200 transition-transform duration-500 group-hover:border-primary/30 md:mb-6 md:aspect-4/5 md:h-auto md:w-full md:rounded-t-full md:rounded-b-2xl">
 				{ImageComp ? (
 					<ImageComp
@@ -118,7 +118,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 			<div class="mb-4 flex grow flex-col md:mb-6">
 				<div
 					class={[
-						"font-montserrat relative text-[0.82rem] leading-relaxed transition-all duration-300 md:text-sm",
+						"font-montserrat relative text-[0.82rem] leading-relaxed transition-[max-height] duration-300 md:text-sm",
 						isExpanded.value
 							? "max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
 							: "line-clamp-3 md:line-clamp-4",
@@ -144,7 +144,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 				text={t("app.book.book_now@@Book Now")}
 				location="372146"
 				staff={String(tech.id)}
-				classes="btn btn-outline btn-neutral w-full rounded-full px-8 font-montserrat uppercase tracking-wider text-xs hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 transform active:scale-95"
+				classes="btn btn-outline btn-neutral w-full rounded-full px-8 font-montserrat uppercase tracking-wider text-xs hover:bg-primary hover:text-white hover:border-primary transition-[transform,background-color,border-color,color] duration-300 transform active:scale-95"
 				analyticsPlacement="team"
 				analyticsServiceCategory="staff"
 				analyticsServiceId={String(tech.id)}

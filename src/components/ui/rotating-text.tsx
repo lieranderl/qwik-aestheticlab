@@ -9,8 +9,8 @@ export const RotatingText = component$(() => {
 			<div class="text-xl md:text-2xl font-medium text-primary-content tracking-wide mb-2 flex flex-col md:flex-row items-center justify-center gap-2">
 				<span>{t("app.hero.the_best@@The best")}</span>
 
-				<span class="text-rotate text-left overflow-hidden inline-flex flex-col">
-					<span class="font-bold justify-items-center">
+				<span class="text-rotate font-bold">
+					<span>
 						<span class="block px-2 text-accent">
 							{t("app.hero.manicure@@manicure")}
 						</span>

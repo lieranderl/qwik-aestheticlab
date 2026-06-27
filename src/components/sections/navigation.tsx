@@ -62,7 +62,7 @@ export const Navigation = component$(() => {
 	return (
 		<>
 			<header
-				class={`fixed left-0 right-0 top-0 z-100 transition-all duration-300 ${
+				class={`fixed left-0 right-0 top-0 z-100 transition-[background-color,padding,box-shadow,backdrop-filter] duration-300 ${
 					isScrolled.value
 						? "bg-base-200/90 py-2 shadow-sm backdrop-blur-md"
 						: "bg-transparent py-3 md:py-5"
