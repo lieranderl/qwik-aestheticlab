@@ -89,6 +89,29 @@
 - Do not commit, push, create a PR, deploy, or alter cloud resources unless explicitly requested.
 - AI commits MUST include `Co-Authored-By: <agent model> <agent attribution email>` using the acting agent's identity.
 
+## Deployments
+
+### Deploy to Staging
+
+To deploy changes to the staging environment, do not push directly to `staging`. Follow these steps:
+
+1. Create and switch to a feature branch (e.g., `feat/...` or `fix/...`).
+2. Commit your changes including the required `Co-authored-by` footer.
+3. Push your feature branch to the remote repository.
+4. Create a Pull Request targeting the `staging` branch: `gh pr create --fill --base staging`.
+5. Monitor and wait for all PR checks to pass: `gh pr checks <pr-number>`.
+6. Squash merge the pull request and delete the remote branch: `gh pr merge <pr-number> --squash --delete-branch`.
+7. A merge/push to `staging` automatically triggers the **Build and promote to Cloud Run** GitHub Actions workflow. Monitor the deployment progress with `gh run list` and `gh run view <run-id>`.
+
+### Deploy to Production
+
+Production deployments are triggered by publishing a new GitHub release tag that matches the `version` field in `package.json`.
+
+1. Verify the current project version in `package.json` matches your intended release tag.
+2. Publish a new GitHub Release targeting the `staging` branch:
+   `gh release create vX.Y.Z --target staging --title "vX.Y.Z" --notes "Release notes"`
+3. The release trigger automatically starts the production deployment workflow. Monitor its status to ensure the canary split, smoke testing, and promotion complete successfully.
+
 ## References
 
 - Review/deployment/data: `REVIEW.md`, `code_review.md`, `.github/DEPLOYMENT.md`, `.github/DATA_LOADING.md`.
