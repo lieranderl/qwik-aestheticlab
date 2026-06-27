@@ -97,7 +97,7 @@ export const Navigation = component$(() => {
 						</nav>
 
 						{/* Mobile Booking Button - Absolutely centered in the screen */}
-						<div class="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+						<div class="hidden min-[375px]:block lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 							<Booking
 								id="mobile-nav-book-btn"
 								text={t("app.book.book_now@@Book Now")}

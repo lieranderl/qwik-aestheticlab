@@ -13,7 +13,8 @@ const marqueeStyles = `
 	animation: reviews-scroll var(--scroll-duration, 60s) linear infinite;
 }
 
-.reviews-animate-scroll:hover {
+.reviews-animate-scroll:hover,
+.reviews-animate-scroll:focus-within {
 	animation-play-state: paused;
 }
 

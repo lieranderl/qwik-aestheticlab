@@ -145,10 +145,10 @@ describe("groupServicesAndCategories", () => {
 describe("service-utils image resolution", () => {
 	test("maps special service names to the matching service cover asset", () => {
 		expect(resolveCoverImage("Brows & Lashes")).toEqual(
-			expect.stringContaining("brows.png"),
+			expect.stringContaining("brows.webp"),
 		);
 		expect(resolveCoverImage("Laser Hair Removal Face")).toEqual(
-			expect.stringContaining("laser-face.png"),
+			expect.stringContaining("laser-face.webp"),
 		);
 	});
 
@@ -165,7 +165,7 @@ describe("service-utils image resolution", () => {
 		});
 
 		expect(getGroupCoverImage(category)).toEqual(
-			expect.stringContaining("pedicure.png"),
+			expect.stringContaining("pedicure.webp"),
 		);
 	});
 
