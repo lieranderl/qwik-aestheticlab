@@ -68,7 +68,9 @@ export const AboutSection = component$(() => {
 						>
 							<div class="relative aspect-3/4 w-56 overflow-hidden rounded-t-[10rem] rounded-b-3xl border border-white/50 shadow-2xl md:w-80 lg:w-96">
 								<ImgWork1
-									alt="Artists at Work"
+									alt={t(
+										"app.about.alt.artists@@Aesthetic Lab artists at work in Leuven studio",
+									)}
 									class="object-cover w-full h-full hover:scale-105 transition-transform duration-1000"
 									loading="lazy"
 								/>
@@ -85,7 +87,9 @@ export const AboutSection = component$(() => {
 							<div class="animate-float">
 								<div class="aspect-square w-32 overflow-hidden rounded-full border-4 border-white shadow-xl md:w-56">
 									<ImgManicure5
-										alt="Detail Shot"
+										alt={t(
+											"app.about.alt.manicure_detail@@Close-up detail of premium gel manicure work",
+										)}
 										class="object-cover w-full h-full"
 										loading="lazy"
 									/>

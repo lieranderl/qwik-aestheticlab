@@ -44,10 +44,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 					</svg>
 				</button>
 
-				<ul
-					tabIndex={-1}
-					class="dropdown-content menu bg-base-200 rounded-2xl z-10 w-32 p-2 shadow-lg border-base-content border"
-				>
+				<ul class="dropdown-content menu bg-base-200 rounded-2xl z-10 w-32 p-2 shadow-lg border-base-content border">
 					{config.supportedLocales.map((locale) => {
 						// Compute correct path for this locale
 						const segments = loc.url.pathname.split("/").filter(Boolean);

@@ -26,10 +26,12 @@ export const HeroSection = component$(() => {
 						direction="up"
 						distance={28}
 					>
-						<AestheticLabLogo
-							class="h-auto w-[78vw] max-w-[25rem] text-primary md:w-[54vw] md:max-w-[32rem]"
-							aria-label="Aesthetic Lab"
-						/>
+						<h1 class="contents">
+							<AestheticLabLogo
+								class="h-auto w-[78vw] max-w-[25rem] text-primary md:w-[54vw] md:max-w-[32rem]"
+								aria-label="Aesthetic Lab"
+							/>
+						</h1>
 					</FadeUp>
 
 					<FadeUp delay={400} duration={1000} direction="up">
@@ -48,13 +50,13 @@ export const HeroSection = component$(() => {
 						id="hero-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
 						location="372146"
-						classes="inline-flex w-full justify-center sm:w-auto btn btn-primary btn-md md:btn-lg font-montserrat font-medium tracking-[0.16em] uppercase hover:-translate-y-1 transition-all duration-300"
+						classes="inline-flex w-full justify-center sm:w-auto btn btn-primary btn-md md:btn-lg font-montserrat font-medium tracking-[0.16em] uppercase hover:-translate-y-1 transition-[transform,background-color,border-color,box-shadow] duration-300"
 						analyticsPlacement="hero"
 					/>
 
 					<a
 						href="#services"
-						class="btn btn-primary btn-md btn-outline w-full font-montserrat font-medium uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-1 sm:w-auto md:btn-lg"
+						class="btn btn-primary btn-md btn-outline w-full font-montserrat font-medium uppercase tracking-[0.16em] transition-[transform,background-color,border-color,box-shadow] duration-300 hover:-translate-y-1 sm:w-auto md:btn-lg"
 					>
 						<span class="text-xs md:text-sm">
 							{t("app.hero.view_services@@View Services")}

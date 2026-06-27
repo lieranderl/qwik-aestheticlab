@@ -19,7 +19,7 @@ export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
 
 	return (
-		<section id="gallery" class="py-16 md:py-24">
+		<section id="gallery" class="scroll-mt-24 py-16 md:py-24">
 			<div class="custom-container">
 				<div class="mb-10 text-center md:mb-16">
 					<FadeUp>
@@ -36,18 +36,52 @@ export const GalleryGrid = component$(() => {
 				{/* Static Gallery */}
 				<div class="mb-10 grid grid-cols-2 gap-3 md:mb-16 md:grid-cols-4 md:gap-4">
 					{[
-						{ Img: ImgManicure1, id: "m1" },
-						{ Img: ImgPedicure5, id: "p5" },
-						{ Img: ImgPedicure1, id: "p1" },
-						{ Img: ImgManicure4, id: "m4" },
-						{ Img: ImgManicure2, id: "m2" },
-						{ Img: ImgPedicure2, id: "p2" },
-						{ Img: ImgManicure3, id: "m3" },
-						{ Img: ImgPedicure3, id: "p3" },
-					].map(({ Img, id }, i) => (
+						{
+							Img: ImgManicure1,
+							id: "m1",
+							altKey: "app.work.alt.m1@@Bespoke classic manicure detail",
+						},
+						{
+							Img: ImgPedicure5,
+							id: "p5",
+							altKey: "app.work.alt.p5@@Aesthetic pedicure detailing",
+						},
+						{
+							Img: ImgPedicure1,
+							id: "p1",
+							altKey: "app.work.alt.p1@@Nourishing foot bath and pedicure",
+						},
+						{
+							Img: ImgManicure4,
+							id: "m4",
+							altKey:
+								"app.work.alt.m4@@Precision cuticle work and natural gel nails",
+						},
+						{
+							Img: ImgManicure2,
+							id: "m2",
+							altKey: "app.work.alt.m2@@Minimalist clean girl manicure styling",
+						},
+						{
+							Img: ImgPedicure2,
+							id: "p2",
+							altKey: "app.work.alt.p2@@Refined toenail polish finish",
+						},
+						{
+							Img: ImgManicure3,
+							id: "m3",
+							altKey: "app.work.alt.m3@@Elegant matte finish manicure",
+						},
+						{
+							Img: ImgPedicure3,
+							id: "p3",
+							altKey:
+								"app.work.alt.p3@@Professional hygienic pedicure treatment",
+						},
+					].map(({ Img, id, altKey }, i) => (
 						<FadeUp key={id} delay={i * 100} class="overflow-hidden rounded-xl">
 							<Img
-								alt="Aesthetic Lab Work"
+								alt={t(altKey)}
 								class="h-full w-full object-cover transition-transform duration-700 hover:scale-110 aspect-square"
 								loading="lazy"
 							/>
@@ -67,12 +101,15 @@ export const GalleryGrid = component$(() => {
 								link_url: "https://www.instagram.com/aestheticlabbe",
 							});
 						})}
-						class="group mt-8 grid overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:rounded-[2rem]"
+						class="group mt-8 grid overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1.05fr_0.95fr] lg:rounded-[2rem]"
 					>
 						<div class="flex flex-col justify-between gap-4 p-5 sm:p-6 md:p-8 lg:p-12">
 							<div class="space-y-3 md:space-y-5">
 								<div class="inline-flex items-center gap-2 text-primary">
-									<SiInstagram class="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
+									<SiInstagram
+										class="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4"
+										aria-hidden="true"
+									/>
 									<p class="font-montserrat text-[0.65rem] uppercase tracking-[0.22em] md:text-xs md:tracking-[0.28em]">
 										{t("app.instagram.eyebrow@@Instagram")}
 									</p>

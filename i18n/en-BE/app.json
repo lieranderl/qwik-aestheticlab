@@ -1,6 +1,10 @@
 {
   "app": {
     "about": {
+      "alt": {
+        "artists": "Aesthetic Lab artists at work in Leuven studio",
+        "manicure_detail": "Close-up detail of premium gel manicure work"
+      },
       "extra_text": "We are dedicated to providing the highest quality treatments in a relaxing environment. Every detail is curated to ensure your comfort and satisfaction, making your visit a truly rejuvenating experience.",
       "philosophy": "& Philosophy",
       "subtitle": "Since 2025"
@@ -137,6 +141,7 @@
     "pricelist": {
       "category_label": "Category",
       "category_nav": "Service categories",
+      "hero_alt": "Aesthetic Lab treatment catalog background",
       "ready": "Ready when you are"
     },
     "privacy": {

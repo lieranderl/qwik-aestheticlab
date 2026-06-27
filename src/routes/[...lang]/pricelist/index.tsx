@@ -116,7 +116,7 @@ const PricelistServiceItem = component$(
 								<polyline points="12 6 12 12 16 14" />
 							</svg>
 							<span class="ml-2">
-								{service.duration} {t("app.services.minutes@@min")}
+								{service.duration}&nbsp;{t("app.services.minutes@@min")}
 							</span>
 						</span>
 					</div>
@@ -188,7 +188,9 @@ export default component$(() => {
 				<div class="relative flex h-[34vh] min-h-72 items-center justify-center overflow-hidden md:h-[48vh] md:min-h-120">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
-							alt="Services Background"
+							alt={t(
+								"app.pricelist.hero_alt@@Aesthetic Lab treatment catalog background",
+							)}
 							class="h-full w-full object-cover brightness-[0.85] saturate-90"
 							loading="eager"
 							fetchPriority="high"

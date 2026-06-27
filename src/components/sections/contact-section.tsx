@@ -104,7 +104,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 										</span>
 										<div class="flex items-baseline gap-4">
 											<span class="font-montserrat text-xl text-base-content md:text-2xl">
-												{contact.open_hours.from} - {contact.open_hours.to}
+												{contact.open_hours.from}–{contact.open_hours.to}
 											</span>
 										</div>
 										<p class="font-montserrat text-sm text-base-content/70 mt-1">
@@ -150,7 +150,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 							class="relative order-1 h-[220px] bg-neutral-100 md:h-[300px] lg:order-2 lg:h-auto lg:min-h-[450px] lg:w-7/12"
 							aria-label={t("app.contact.map_location@@Location map")}
 						>
-							<div class="absolute inset-0 w-full h-full lg:grayscale lg:hover:grayscale-0 transition-all duration-1000">
+							<div class="absolute inset-0 w-full h-full lg:grayscale lg:hover:grayscale-0 transition-[filter] duration-1000">
 								<MapEmbed />
 							</div>
 							{/* Mobile Overlay Gradient */}
