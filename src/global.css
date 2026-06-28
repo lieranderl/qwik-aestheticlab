@@ -294,3 +294,8 @@ body::before {
   --depth: 1;
   --noise: 1;
 }
+
+.text-rotate > * {
+  justify-items: center;
+}
+

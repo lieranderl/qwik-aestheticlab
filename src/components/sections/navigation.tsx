@@ -57,12 +57,21 @@ export const Navigation = component$(() => {
 		}
 	});
 
-	const navTextColorClass = "text-primary";
+	const isPricelist = location.url.pathname.includes("/pricelist");
+	const isLightHeader = isScrolled.value || !isPricelist;
+	const headerTextColorClass = isLightHeader ? "text-primary" : "text-white";
+	const navTextColorClass = isLightHeader ? "text-primary" : "text-white";
+
+	const bookingBtnClass = isScrolled.value
+		? "btn btn-primary uppercase tracking-wider font-medium"
+		: isLightHeader
+			? "btn btn-primary btn-outline uppercase tracking-wider font-medium"
+			: "btn border-white text-white hover:bg-white hover:text-primary hover:border-white uppercase tracking-wider font-medium bg-transparent";
 
 	return (
 		<>
 			<header
-				class={`fixed left-0 right-0 top-0 z-100 transition-[background-color,padding,box-shadow,backdrop-filter] duration-300 ${
+				class={`fixed left-0 right-0 top-0 z-100 transition-[background-color,padding,box-shadow,backdrop-filter] duration-300 ${headerTextColorClass} ${
 					isScrolled.value
 						? "bg-base-200/90 py-2 shadow-sm backdrop-blur-md"
 						: "bg-transparent py-3 md:py-5"
@@ -76,7 +85,7 @@ export const Navigation = component$(() => {
 							class="flex items-center gap-2 transition-opacity hover:opacity-80"
 						>
 							<BirdLogo
-								class="h-12 w-auto md:h-16"
+								class={`h-12 w-auto md:h-16 [&_path]:fill-current ${headerTextColorClass}`}
 								aria-label={t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")}
 							/>
 						</a>
@@ -103,11 +112,7 @@ export const Navigation = component$(() => {
 								text={t("app.book.book_now@@Book Now")}
 								location="372146"
 								analyticsPlacement="mobile_nav"
-								classes={` ${
-									isScrolled.value
-										? "btn btn-primary uppercase tracking-wider font-medium"
-										: "btn btn-primary btn-outline uppercase tracking-wider font-medium "
-								}`}
+								classes={bookingBtnClass}
 							/>
 						</div>
 					</div>
@@ -121,11 +126,7 @@ export const Navigation = component$(() => {
 								text={t("app.book.book_now@@Book Now")}
 								location="372146"
 								analyticsPlacement="desktop_nav"
-								classes={` ${
-									isScrolled.value
-										? "btn btn-primary uppercase tracking-wider font-medium"
-										: "btn btn-primary btn-outline uppercase tracking-wider font-medium"
-								}`}
+								classes={bookingBtnClass}
 							/>
 							<LanguageSwitcher />
 						</div>
