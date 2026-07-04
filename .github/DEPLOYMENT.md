@@ -128,7 +128,7 @@ gcloud run services update-traffic SERVICE \
 
 ## Operational Checks
 
-- OpenTofu manages content-matched page/dependency uptime checks plus availability, 5xx, p95 latency, instance-saturation, memory-limit, structured Supabase-failure, and unexpected-production-mutation alerts.
+- OpenTofu manages health/dependency uptime checks plus availability, 5xx, p95 latency, instance-saturation, memory-limit, structured Supabase-failure, and unexpected-production-mutation alerts. Keep high-frequency uptime checks on lightweight endpoints; localized page checks belong in deployment smoke tests.
 - Candidate deployment smoke tests require readiness, localized content, and security headers on `/en-BE/` and `/fr-BE/pricelist/` before traffic migration.
 - Inspect Cloud Run revision logs and monitoring before shifting traffic.
 - Treat a passing `/healthz` as process health only; localized smoke tests validate the dependency path.
