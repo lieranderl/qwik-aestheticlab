@@ -360,7 +360,7 @@ resource "google_cloud_run_v2_service_iam_member" "deployer" {
 
 resource "google_monitoring_uptime_check_config" "localized_page" {
   display_name     = "Aesthetic Lab production health endpoint"
-  selected_regions = ["EUROPE"]
+  selected_regions = ["EUROPE", "USA", "ASIA_PACIFIC"]
   timeout          = "10s"
   period           = "60s"
 
@@ -387,7 +387,7 @@ resource "google_monitoring_uptime_check_config" "localized_page" {
 
 resource "google_monitoring_uptime_check_config" "supabase_dependency" {
   display_name     = "Aesthetic Lab production Supabase dependency"
-  selected_regions = ["EUROPE"]
+  selected_regions = ["EUROPE", "USA", "ASIA_PACIFIC"]
   timeout          = "10s"
   period           = "300s"
 
