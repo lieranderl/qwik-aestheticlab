@@ -9,7 +9,7 @@
 - Separate read-only planner and protected privileged apply identity for saved-plan OpenTofu automation
 - Secret-level publishable/anon Supabase access; service-role keys are rejected by runtime readiness
 - Cloud Run v2 services, probes, scaling, and public invocation
-- Production localized-page and Supabase-dependency uptime plus 5xx, p95 latency, instance saturation, runtime-failure, loader, and unexpected-mutation alerts
+- Production health-endpoint and Supabase-dependency uptime plus 5xx, p95 latency, instance saturation, runtime-failure, loader, and unexpected-mutation alerts
 
 ## Bootstrap
 

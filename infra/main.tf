@@ -359,12 +359,13 @@ resource "google_cloud_run_v2_service_iam_member" "deployer" {
 }
 
 resource "google_monitoring_uptime_check_config" "localized_page" {
-  display_name = "Aesthetic Lab production /en-BE/"
-  timeout      = "10s"
-  period       = "60s"
+  display_name     = "Aesthetic Lab production health endpoint"
+  selected_regions = ["EUROPE"]
+  timeout          = "10s"
+  period           = "60s"
 
   http_check {
-    path         = "/en-BE/"
+    path         = "/healthz"
     port         = 443
     use_ssl      = true
     validate_ssl = true
@@ -379,15 +380,16 @@ resource "google_monitoring_uptime_check_config" "localized_page" {
   }
 
   content_matchers {
-    content = "Aesthetic Lab"
+    content = "OK"
     matcher = "CONTAINS_STRING"
   }
 }
 
 resource "google_monitoring_uptime_check_config" "supabase_dependency" {
-  display_name = "Aesthetic Lab production Supabase dependency"
-  timeout      = "10s"
-  period       = "60s"
+  display_name     = "Aesthetic Lab production Supabase dependency"
+  selected_regions = ["EUROPE"]
+  timeout          = "10s"
+  period           = "300s"
 
   http_check {
     path         = "/dependencyz"
@@ -442,12 +444,12 @@ resource "google_monitoring_alert_policy" "server_errors" {
 }
 
 resource "google_monitoring_alert_policy" "localized_page" {
-  display_name          = "Aesthetic Lab production page or dependency unavailable"
+  display_name          = "Aesthetic Lab production health or dependency unavailable"
   combiner              = "OR"
   notification_channels = var.notification_channel_ids
 
   conditions {
-    display_name = "Localized page check fails"
+    display_name = "Health endpoint check fails"
     condition_threshold {
       filter          = "resource.type = \"uptime_url\" AND metric.type = \"monitoring.googleapis.com/uptime_check/check_passed\" AND metric.labels.check_id = \"${google_monitoring_uptime_check_config.localized_page.uptime_check_id}\""
       comparison      = "COMPARISON_LT"
