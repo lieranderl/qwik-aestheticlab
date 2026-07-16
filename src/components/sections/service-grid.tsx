@@ -352,7 +352,8 @@ export const ServiceGrid = component$<ServiceGridProps>(
 			showFullList.value = hasCategory;
 		});
 
-		// URL state keeps the in-page drill-down shareable and restores Back/Forward.
+		// URL state keeps the drill-down shareable, restores Back/Forward, and
+		// falls back to the overview when a query references an unknown category.
 		useOnWindow("popstate", restoreTreatmentState);
 		useOnWindow("hashchange", restoreTreatmentState);
 
