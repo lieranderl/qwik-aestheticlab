@@ -51,6 +51,16 @@ test("keeps the hero as the complete first viewport", async ({ page }) => {
 	expect(heroHeight).toBeGreaterThanOrEqual(viewportHeight - 1);
 });
 
+test("uses a stable mobile viewport height when browser chrome changes", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/en-BE/");
+
+	await expect(page.locator("#hero")).toHaveClass(/\bmin-h-svh\b/);
+	await expect(page.locator("#hero")).not.toHaveClass(/\bmin-h-dvh\b/);
+});
+
 test("supports the audited responsive widths without horizontal overflow", async ({
 	page,
 }) => {
@@ -167,11 +177,32 @@ test("uses one card radius and a non-looping review rail", async ({ page }) => {
 	expect(cardRadii).toEqual(["16px"]);
 	await expect(reviewRail.locator("article")).toHaveCount(11);
 	await expect(reviewRail).toHaveCSS("animation-name", "none");
+
+	const ratingStyles = await page
+		.getByTestId("review-rating")
+		.evaluateAll((ratings) =>
+			ratings.map((rating) => ({
+				current: rating.lastElementChild?.getAttribute("aria-current"),
+				opacities: Array.from(
+					rating.children,
+					(star) => getComputedStyle(star).opacity,
+				),
+			})),
+		);
+
+	expect(ratingStyles).toHaveLength(12);
+	expect(ratingStyles).toEqual(
+		Array.from({ length: 12 }, () => ({
+			current: "true",
+			opacities: ["1", "1", "1", "1", "1"],
+		})),
+	);
 });
 
 test("opens treatments in-page and restores the overview with browser history", async ({
 	page,
 }) => {
+	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/#services");
 
 	const treatmentButtons = page.getByRole("button", { name: "View Treatments" });
@@ -181,6 +212,36 @@ test("opens treatments in-page and restores the overview with browser history", 
 	await expect(page).toHaveURL(/\?treatment=[^#]+#services$/);
 	await expect(page.locator("#service-details-heading")).toBeVisible();
 
+	const detailsCard = page.getByTestId("service-details-card");
+	const categoryButtons = detailsCard.getByRole("button");
+	await expect(categoryButtons).toHaveCount(4);
+	await categoryButtons.nth(1).click();
+
+	await expect.poll(async () => {
+		return detailsCard.evaluate((card) => {
+			const header = document.querySelector("header");
+			const cardTop = card.getBoundingClientRect().top;
+			const headerBottom = header?.getBoundingClientRect().bottom ?? 0;
+			return cardTop >= headerBottom - 1 && cardTop <= headerBottom + 32;
+		});
+	}).toBe(true);
+
+	const backActions = page.getByTestId("service-back-actions");
+	await expect(backActions.getByRole("button", { name: "Back to Overview" })).toBeVisible();
+	const verticalPositions = await page.evaluate(() => {
+		const card = document.querySelector('[data-testid="service-details-card"]');
+		const actions = document.querySelector('[data-testid="service-back-actions"]');
+		return {
+			actionsTop: actions?.getBoundingClientRect().top ?? 0,
+			cardBottom: card?.getBoundingClientRect().bottom ?? 0,
+		};
+	});
+	expect(verticalPositions.actionsTop).toBeGreaterThanOrEqual(
+		verticalPositions.cardBottom,
+	);
+
+	await page.goBack();
+	await expect(page.locator("#service-details-heading")).toBeVisible();
 	await page.goBack();
 	await expect(page).toHaveURL(/\/en-BE\/#services$/);
 	await expect(treatmentButtons).toHaveCount(4);

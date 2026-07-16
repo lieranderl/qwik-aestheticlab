@@ -30,6 +30,9 @@ interface DisplayServiceGroup extends GroupedServiceData {
 	displayTitle: string;
 }
 
+const serviceDetailsCardId = "service-details-card";
+const serviceDetailsHeadingId = "service-details-heading";
+
 function updateTreatmentUrl(categoryId?: string, subgroupId?: string) {
 	const url = new URL(window.location.href);
 
@@ -49,18 +52,19 @@ function updateTreatmentUrl(categoryId?: string, subgroupId?: string) {
 	history.pushState(null, "", url);
 }
 
-function focusServiceDetails() {
+function revealServiceDetails() {
 	requestAnimationFrame(() => {
-		document.getElementById("service-details-heading")?.focus();
-	});
-}
-
-function scrollToServices() {
-	document.getElementById("services")?.scrollIntoView({
-		behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-			? "auto"
-			: "smooth",
-		block: "start",
+		requestAnimationFrame(() => {
+			document.getElementById(serviceDetailsCardId)?.scrollIntoView({
+				behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+					? "auto"
+					: "smooth",
+				block: "start",
+			});
+			document
+				.getElementById(serviceDetailsHeadingId)
+				?.focus({ preventScroll: true });
+		});
 	});
 }
 
@@ -307,8 +311,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				});
 
 				updateTreatmentUrl(groupId);
-				scrollToServices();
-				focusServiceDetails();
+				revealServiceDetails();
 			},
 		);
 
@@ -324,15 +327,14 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				});
 
 				updateTreatmentUrl("laser", groupId);
-				scrollToServices();
-				focusServiceDetails();
+				revealServiceDetails();
 			},
 		);
 
 		const resetLaserSubgroup = $(() => {
 			selectedLaserSubgroupId.value = null;
 			updateTreatmentUrl("laser");
-			focusServiceDetails();
+			revealServiceDetails();
 		});
 
 		const restoreTreatmentState = $(() => {
@@ -383,24 +385,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 								>
 									{viewFullLabel}
 								</a>
-								{selectedLaserSubgroupId.value ? (
-									<button
-										type="button"
-										onClick$={resetLaserSubgroup}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
-									>
-										{backToLaserLabel}
-									</button>
-								) : null}
-								{showFullList.value ? (
-									<button
-										type="button"
-										onClick$={resetOverview}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
-									>
-										{backLabel}
-									</button>
-								) : null}
 							</div>
 						</FadeUp>
 					</div>
@@ -409,7 +393,12 @@ export const ServiceGrid = component$<ServiceGridProps>(
 						<div class="space-y-6 md:space-y-8">
 							{activeDetailGroup.value ? (
 								<FadeUp>
-									<div class="surface-card p-4 md:p-6">
+									<section
+										id={serviceDetailsCardId}
+										data-testid={serviceDetailsCardId}
+										aria-labelledby={serviceDetailsHeadingId}
+										class="card surface-card scroll-mt-24 p-4 md:p-6"
+									>
 										<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 											<div class="space-y-3 md:space-y-4">
 												<div class="flex flex-wrap gap-2">
@@ -431,7 +420,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 												</div>
 												<div>
 													<h3
-														id="service-details-heading"
+														id={serviceDetailsHeadingId}
 														tabIndex={-1}
 														class="text-balance font-qestero text-3xl leading-none text-base-content outline-none md:text-4xl"
 													>
@@ -488,9 +477,33 @@ export const ServiceGrid = component$<ServiceGridProps>(
 												})}
 											</div>
 										</nav>
-									</div>
+									</section>
 								</FadeUp>
 							) : null}
+
+							<FadeUp delay={60}>
+								<div
+									data-testid="service-back-actions"
+									class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
+								>
+									{selectedLaserSubgroupId.value ? (
+										<button
+											type="button"
+											onClick$={resetLaserSubgroup}
+											class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
+										>
+											{backToLaserLabel}
+										</button>
+									) : null}
+									<button
+										type="button"
+										onClick$={resetOverview}
+										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
+									>
+										{backLabel}
+									</button>
+								</div>
+							</FadeUp>
 
 							{selectedGroup.value?.groupId === "laser" &&
 							!selectedLaserSubgroup.value ? (
