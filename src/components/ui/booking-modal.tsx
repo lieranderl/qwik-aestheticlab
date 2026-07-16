@@ -33,6 +33,8 @@ export const Booking = component$<BookingProps>(
 	}) => {
 		const t = inlineTranslate();
 		const isOpen = useSignal(false);
+		const isLoaded = useSignal(false);
+		const titleId = `${id}-title`;
 		const eventParams = {
 			booking_id: id,
 			placement: analyticsPlacement || id,
@@ -55,6 +57,7 @@ export const Booking = component$<BookingProps>(
 			const modal = document.getElementById(id) as HTMLDialogElement;
 			if (modal) {
 				isOpen.value = true;
+				isLoaded.value = false;
 				modal.showModal();
 
 				trackGoogleAnalyticsEvent("booking_opened", eventParams);
@@ -82,32 +85,54 @@ export const Booking = component$<BookingProps>(
 				<dialog
 					id={id}
 					class="modal"
+					aria-labelledby={titleId}
 					onClose$={$(() => {
 						isOpen.value = false;
+						isLoaded.value = false;
 					})}
 				>
-					<div class="modal-box w-full max-w-5xl p-2 pt-10 bg-base-200 rounded-2xl">
+					<div class="modal-box relative flex min-h-[50vh] w-[calc(100%-1rem)] max-w-5xl flex-col rounded-2xl bg-base-100 p-2 pt-12">
+						<h2 id={titleId} class="sr-only">
+							{text}
+						</h2>
 						<form method="dialog">
 							<button
 								type="submit"
-								class="btn btn-sm btn-square btn-ghost absolute right-1 top-1"
+								class="btn btn-ghost btn-square absolute right-1 top-1 min-h-11 min-w-11"
 								aria-label={t("app.common.close@@Close")}
 							>
 								<span aria-hidden="true">✕</span>
 							</button>
 						</form>
 						{isOpen.value && (
-							<iframe
-								title={t("app.booking.widget_title@@Booking Widget")}
-								src={iframeUrl}
-								class="w-full h-[75vh] rounded-lg border-0"
-								onLoad$={$(() => {
-									trackGoogleAnalyticsEvent(
-										"booking_widget_loaded",
-										eventParams,
-									);
-								})}
-							/>
+							<div
+								class="relative min-h-[60vh] grow"
+								aria-busy={!isLoaded.value}
+							>
+								{!isLoaded.value ? (
+									<div
+										class="absolute inset-0 flex items-center justify-center"
+										role="status"
+									>
+										<span class="loading loading-spinner loading-lg text-primary" />
+										<span class="sr-only">
+											{t("app.booking.loading@@Loading booking options")}
+										</span>
+									</div>
+								) : null}
+								<iframe
+									title={t("app.booking.widget_title@@Booking Widget")}
+									src={iframeUrl}
+									class={`h-[75vh] w-full rounded-2xl border-0 transition-opacity duration-200 ${isLoaded.value ? "opacity-100" : "opacity-0"}`}
+									onLoad$={$(() => {
+										isLoaded.value = true;
+										trackGoogleAnalyticsEvent(
+											"booking_widget_loaded",
+											eventParams,
+										);
+									})}
+								/>
+							</div>
 						)}
 					</div>
 					<form method="dialog" class="modal-backdrop">

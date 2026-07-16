@@ -56,12 +56,12 @@ interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		duration = 800,
+		duration = 320,
 		threshold = 0.1,
 		runOnce = true,
 		rootMargin = 50,
 		easing = "ease-out",
-		distance = 60,
+		distance = 16,
 		direction = "up",
 		disable = false,
 		class: className = "",
@@ -135,7 +135,7 @@ export const FadeUp = component$(
 					"--fade-distance": `${distance}px`,
 					"--fade-easing": easing,
 				}}
-				class={`${classMap[state.value]} ${className}`.trim()}
+				class={`fade-motion ${classMap[state.value]} ${className}`.trim()}
 				onClick$={onClick$}
 			>
 				<Slot />

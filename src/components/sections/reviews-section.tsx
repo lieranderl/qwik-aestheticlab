@@ -1,35 +1,7 @@
-import {
-	$,
-	component$,
-	useSignal,
-	useStyles$,
-	useVisibleTask$,
-} from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { FadeUp } from "~/components/ui/fade-up";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
-
-const marqueeStyles = `
-@keyframes reviews-scroll {
-	0% { transform: translateX(0); }
-	100% { transform: translateX(-50%); }
-}
-
-.reviews-animate-scroll {
-	animation: reviews-scroll var(--scroll-duration, 60s) linear infinite;
-}
-
-.reviews-animate-scroll:hover,
-.reviews-animate-scroll:focus-within {
-	animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.reviews-animate-scroll {
-		animation: none;
-	}
-}
-`;
 
 interface Review {
 	author: string;
@@ -40,7 +12,6 @@ interface Review {
 
 export const ReviewsSection = component$(() => {
 	const t = inlineTranslate();
-	useStyles$(marqueeStyles);
 
 	// Extracted from Google Maps
 	const reviews: Review[] = [
@@ -112,25 +83,15 @@ export const ReviewsSection = component$(() => {
 		},
 	];
 
-	const shuffledReviews = useSignal<Review[]>(reviews);
-
-	// biome-ignore lint/correctness/noQwikUseVisibleTask: Client-side randomization avoids SSR hydration mismatch
-	useVisibleTask$(() => {
-		shuffledReviews.value = [...reviews].sort(() => Math.random() - 0.5);
-	});
-
-	// Infinite scroll animation duplication
-	const allReviews = [...shuffledReviews.value, ...shuffledReviews.value];
-
 	return (
-		<section class="relative overflow-hidden bg-base-200 py-16 md:py-24">
+		<section class="section-shell relative overflow-hidden bg-base-200">
 			<div class="custom-container mb-9 md:mb-12">
 				<FadeUp class="grid gap-6 text-center md:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:text-left">
 					<div>
 						<p class="editorial-kicker mb-4">
 							{t("app.reviews.kicker@@Client notes")}
 						</p>
-						<h2 class="font-qestero mb-4 text-4xl md:text-5xl">
+						<h2 class="section-heading mb-4">
 							{t("app.reviews.title@@Kind Words")}
 						</h2>
 						<div class="editorial-rule mx-auto mb-6 w-20 lg:mx-0 lg:w-32" />
@@ -175,62 +136,61 @@ export const ReviewsSection = component$(() => {
 				</FadeUp>
 			</div>
 
-			{/* Marquee Container */}
-			<div class="relative w-full overflow-hidden">
-				{/* Gradients to fade edges */}
-				<div class="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-8 bg-linear-to-r from-base-200 to-transparent md:w-32" />
-				<div class="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-8 bg-linear-to-l from-base-200 to-transparent md:w-32" />
-
-				{/* Scrolling Track */}
-				<div
-					class="reviews-animate-scroll flex w-max gap-4 md:gap-8"
-					style={{
-						"--scroll-duration": "95s",
-					}}
-				>
-					{allReviews.map((review, index) => (
-						<div
-							key={`${review.author}-${index}`}
-							class="flex w-[17rem] shrink-0 flex-col justify-between rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm md:w-[25rem] md:p-8"
-						>
-							<div>
-								<span class="sr-only">
-									{t("app.reviews.rating_aria@@5 out of 5 stars")}
-								</span>
-								<div
-									class="rating rating-xs mb-3 gap-0.5 md:rating-sm md:mb-4"
-									aria-hidden="true"
-								>
-									{[1, 2, 3, 4, 5].map((i) => (
-										<input
-											key={i}
-											type="radio"
-											name={`rating-${index}`}
-											class="mask mask-star-2 bg-warning"
-											aria-label={`${i} star${i > 1 ? "s" : ""}`}
-											checked
-											disabled
-										/>
-									))}
-								</div>{" "}
-								<p class="font-montserrat line-clamp-5 text-[0.82rem] leading-relaxed italic md:line-clamp-6 md:text-sm">
-									“{review.text}”
-								</p>
-							</div>
-							<div class="mt-4 flex items-center gap-3 md:mt-6">
-								<div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 font-qestero font-bold text-primary md:h-10 md:w-10">
-									{review.author.charAt(0)}
-								</div>
+			<div class="custom-container">
+				<FadeUp delay={60}>
+					<section
+						class="scroll-fade-x scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-3 md:gap-6"
+						aria-label={t("app.reviews.title@@Kind Words")}
+					>
+						{reviews.map((review, index) => (
+							<article
+								key={`${review.author}-${index}`}
+								class="surface-card flex w-[min(18rem,calc(100vw-3rem))] shrink-0 snap-start flex-col justify-between p-5 sm:w-80 md:w-96 md:p-6"
+							>
 								<div>
-									<p class="font-montserrat text-sm font-semibold">
-										{review.author}
+									<span class="sr-only">
+										{t("app.reviews.rating_aria@@5 out of 5 stars")}
+									</span>
+									<div
+										class="rating rating-xs mb-3 gap-0.5 md:rating-sm md:mb-4"
+										aria-hidden="true"
+									>
+										{[1, 2, 3, 4, 5].map((i) => (
+											<input
+												key={i}
+												type="radio"
+												name={`rating-${index}`}
+												class="mask mask-star-2 bg-warning"
+												aria-label={`${i} star${i > 1 ? "s" : ""}`}
+												checked
+												disabled
+											/>
+										))}
+									</div>{" "}
+									<p
+										lang="en"
+										class="line-clamp-6 text-pretty font-montserrat text-sm leading-relaxed italic text-base-content/85"
+									>
+										“{review.text}”
 									</p>
-									<p class="text-xs text-base-content/80">Google Review</p>
 								</div>
-							</div>
-						</div>
-					))}
-				</div>
+								<div class="mt-4 flex items-center gap-3 md:mt-6">
+									<div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 font-qestero font-bold text-primary md:h-10 md:w-10">
+										{review.author.charAt(0)}
+									</div>
+									<div>
+										<p class="font-montserrat text-sm font-semibold">
+											{review.author}
+										</p>
+										<p class="text-xs text-base-content/80">
+											{t("app.reviews.source@@Google Review")}
+										</p>
+									</div>
+								</div>
+							</article>
+						))}
+					</section>
+				</FadeUp>
 			</div>
 		</section>
 	);

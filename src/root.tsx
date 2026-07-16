@@ -65,7 +65,7 @@ export default component$(() => {
 				<RouterHead />
 				{!isDev && <ServiceWorkerRegister />}
 			</head>
-			<body lang={locale.lang} class="font-montserrat">
+			<body lang={locale.lang} data-theme="Aesthetic" class="font-montserrat">
 				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />
 			</body>

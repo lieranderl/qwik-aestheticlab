@@ -123,9 +123,9 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 
 export default component$(() => {
 	return (
-		<main>
+		<div>
 			<Slot />
 			<CookieBanner />
-		</main>
+		</div>
 	);
 });

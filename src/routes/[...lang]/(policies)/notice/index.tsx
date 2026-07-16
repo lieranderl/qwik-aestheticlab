@@ -1,141 +1,158 @@
 import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/ui/fade-up";
 
 export default component$(() => {
 	const t = inlineTranslate();
+	const durabilityFactors = [
+		"app.notice.factor1@@The declared durability depends not only on the quality of the products but also on individual nail characteristics and aftercare.",
+		"app.notice.factor2@@External factors such as frequent water exposure, harsh chemicals, and mechanical damage may reduce wear time.",
+		"app.notice.factor3@@Personal physiology, including hormonal changes, can also affect product adhesion and durability.",
+	];
+	const individualFactors = [
+		"app.notice.water_contact@@Frequent contact with water or aggressive chemicals without gloves",
+		"app.notice.mechanical_damage@@Mechanical damage to the nails",
+		"app.notice.individual_features@@Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
+	];
+
 	return (
-		<section class=" min-h-screen w-full overflow-hidden bg-base-200 py-24 z-0">
-			<div class="container mx-auto px-2 md:px-8 max-w-6xl relative z-10">
-				<FadeUp>
-					<div class="text-center mb-16">
-						<h1 class="font-qestero text-4xl md:text-5xl text-base-content mb-4">
-							{t("app.notice.important_info@@Important Client Information")}
-						</h1>
-						<div class="h-px w-20 bg-primary mx-auto mb-6" />
-						<p class="font-montserrat text-sm text-base-content uppercase tracking-widest">
-							{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
+		<section class="w-full bg-base-200 pb-12 sm:pb-16 md:pb-20">
+			<div class="mx-auto max-w-3xl">
+				<header class="mb-8 sm:mb-10">
+					<h1 class="text-balance font-qestero text-4xl leading-tight text-base-content sm:text-5xl">
+						{t("app.notice.important_info@@Important Client Information")}
+					</h1>
+					<div class="my-5 h-px w-16 bg-primary" />
+					<p class="badge badge-outline min-h-7 border-base-300 px-3 font-montserrat text-xs font-medium uppercase tracking-wider text-base-content sm:text-sm">
+						{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
+					</p>
+				</header>
+
+				<div class="space-y-6 font-montserrat text-base-content sm:space-y-8">
+					<div class="alert bg-base-100 px-5 py-5 shadow-sm sm:px-8 sm:py-6">
+						<p class="text-sm leading-7 sm:text-base">
+							{t(
+								"app.notice.intro@@At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
+							)}
 						</p>
 					</div>
 
-					<div class="prose max-w-none mx-auto bg-transparent font-montserrat text-base-content/80">
-						{/* Intro Card */}
-						<div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
-							<div class="card-body">
-								<p class="text-lg leading-relaxed text-center italic">
-									{t(
-										"app.notice.intro@@At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
-									)}
-								</p>
-							</div>
-						</div>
-
-						{/* Product Durability Card */}
-						<div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
-							<div class="card-body">
-								<h2 class="card-title font-qestero text-3xl text-base-content mb-4">
+					<div class="card surface-card">
+						<div class="card-body gap-0 p-5 sm:p-8 md:p-10">
+							<section class="border-b border-base-300/50 pb-8 sm:pb-10">
+								<h2 class="font-qestero text-2xl leading-tight text-secondary sm:text-3xl">
 									{t(
 										"app.notice.durability_title@@Product Durability Disclaimer",
 									)}
 								</h2>
-								<p class="mb-6 leading-relaxed">
+								<p class="mt-4 text-sm leading-7 sm:text-base">
 									{t(
 										"app.notice.durability_intro@@Our salon works exclusively with professional materials, including gel polishes, builder gels, and hard gels from trusted brands. According to manufacturers, these products are designed to last up to 3 weeks with proper application and aftercare.",
 									)}
 								</p>
-								<p class="mb-4 font-semibold text-secondary">
+								<p class="mt-5 text-sm font-semibold text-secondary sm:text-base">
 									{t("app.notice.however@@However, please note:")}
 								</p>
-								<ul class="space-y-4 mb-8 bg-base-200/30 p-6 rounded-xl">
-									{[
-										"app.notice.factor1@@The declared durability depends not only on the quality of the products but also on individual nail characteristics and aftercare.",
-										"app.notice.factor2@@External factors such as frequent water exposure, harsh chemicals, and mechanical damage may reduce wear time.",
-										"app.notice.factor3@@Personal physiology, including hormonal changes, can also affect product adhesion and durability.",
-									].map((key) => (
-										<li key={key} class="flex items-start gap-3">
-											<span class="text-primary mt-1">✦</span>
-											<span>{t(key)}</span>
+								<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
+									{durabilityFactors.map((key) => (
+										<li key={key} class="list-row gap-3 px-4 py-3">
+											<span aria-hidden="true" class="pt-0.5 text-primary">
+												✦
+											</span>
+											<span class="leading-6">{t(key)}</span>
 										</li>
 									))}
 								</ul>
-								<div class="p-6 bg-warning/10 border-l-4 border-warning rounded-lg">
-									<p class="text-sm md:text-base font-medium text-base-content">
+								<div
+									class="alert alert-warning alert-soft mt-5 px-4 py-4"
+									role="note"
+								>
+									<p class="text-sm font-medium leading-6 sm:text-base">
 										{t(
 											"app.notice.guarantee@@The salon guarantees proper and professional application of materials, but we cannot guarantee maximum wear time if external or individual factors interfere.",
 										)}
 									</p>
 								</div>
-							</div>
-						</div>
+							</section>
 
-						{/* Important Notice (Hormonal) Card */}
-						<div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
-							<div class="card-body">
-								<h2 class="card-title font-qestero text-3xl text-base-content mb-4">
+							<section class="border-b border-base-300/50 py-8 sm:py-10">
+								<h2 class="font-qestero text-2xl leading-tight text-secondary sm:text-3xl">
 									{t("app.notice.hormonal_title@@Important Notice")}
 								</h2>
-								<p class="mb-6 leading-relaxed">
+								<p class="mt-4 text-sm leading-7 sm:text-base">
 									{t(
 										"app.notice.hormonal_intro@@The durability of nail coatings may vary depending on individual characteristics, including hormonal fluctuations. Please be aware that during periods of hormonal changes (such as PMS, pregnancy, breastfeeding, taking hormonal medications, or experiencing high stress levels), the adhesion of the product to the nail plate may decrease, which can affect the longevity of the coating.",
 									)}
 								</p>
-								<p class="mb-4 font-semibold text-secondary">
+								<p class="mt-5 text-sm font-semibold text-secondary sm:text-base">
 									{t(
 										"app.notice.other_factors@@Other factors that may affect durability:",
 									)}
 								</p>
-								<ul class="space-y-4 mb-8 bg-base-200/30 p-6 rounded-xl">
-									{[
-										"app.notice.water_contact@@Frequent contact with water or aggressive chemicals without gloves",
-										"app.notice.mechanical_damage@@Mechanical damage to the nails",
-										"app.notice.individual_features@@Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
-									].map((key) => (
-										<li key={key} class="flex items-start gap-3">
-											<span class="text-primary mt-1">✦</span>
-											<span>{t(key)}</span>
+								<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
+									{individualFactors.map((key) => (
+										<li key={key} class="list-row gap-3 px-4 py-3">
+											<span aria-hidden="true" class="pt-0.5 text-primary">
+												✦
+											</span>
+											<span class="leading-6">{t(key)}</span>
 										</li>
 									))}
 								</ul>
-								<div class="p-6 bg-info/10 border-l-4 border-info rounded-lg">
-									<p class="text-sm md:text-base font-medium text-base-content">
+								<div
+									class="alert alert-info alert-soft mt-5 px-4 py-4"
+									role="note"
+								>
+									<p class="text-sm font-medium leading-6 sm:text-base">
 										{t(
 											"app.notice.understanding@@Please understand that in the presence of these factors, the salon cannot guarantee standard wear time of the coating.",
 										)}
 									</p>
 								</div>
-							</div>
-						</div>
+							</section>
 
-						{/* Fix Policy Card */}
-						<div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
-							<div class="card-body">
-								<h2 class="card-title font-qestero text-3xl text-base-content mb-4">
+							<section class="pt-8 sm:pt-10">
+								<h2 class="font-qestero text-2xl leading-tight text-secondary sm:text-3xl">
 									{t("app.notice.policy_title@@Complimentary Fix Policy")}
 								</h2>
-								<p class="mb-4 leading-relaxed">
+								<p class="mt-4 text-sm leading-7 sm:text-base">
 									{t(
 										"app.notice.policy_description@@If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
 									)}
 								</p>
-								<p class="leading-relaxed font-medium text-secondary">
+								<p class="mt-4 text-sm font-medium leading-7 text-secondary sm:text-base">
 									{t(
 										"app.notice.policy_care@@We care about your satisfaction and will be happy to fix any issues that may arise within this period.",
 									)}
 								</p>
-							</div>
-						</div>
-
-						{/* Thank You Footer */}
-						<div class="text-center p-8 mt-16">
-							<p class="text-xl font-qestero text-primary">
-								{t(
-									"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting. 💅✨",
-								)}
-							</p>
+							</section>
 						</div>
 					</div>
-				</FadeUp>
+
+					<div class="alert bg-base-100 px-5 py-5 text-center shadow-sm sm:px-8 sm:py-6">
+						<p class="w-full font-qestero text-xl leading-relaxed text-primary sm:text-2xl">
+							{t(
+								"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting. 💅✨",
+							)}
+						</p>
+					</div>
+				</div>
 			</div>
 		</section>
 	);
 });
+
+export const head: DocumentHead = () => {
+	const t = inlineTranslate();
+	return {
+		title: t("app.head.notice.title@@Client Information | Aesthetic Lab"),
+		meta: [
+			{
+				name: "description",
+				content: t(
+					"app.head.notice.description@@Important treatment durability, aftercare, and complimentary fix information for Aesthetic Lab clients.",
+				),
+			},
+		],
+	};
+};

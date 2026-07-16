@@ -2,20 +2,52 @@
 
 @theme {
   --font-qestero: "qestero", "Cormorant Garamond", serif;
-  --font-montserrat: "Montserrat", "sans-serif";
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
+:root {
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --motion-enter: 320ms;
 }
 
 @layer components {
   .custom-container {
-    @apply container mx-auto px-4 md:px-16 lg:px-32 xl:px-48;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
   .editorial-kicker {
-    @apply font-montserrat text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary md:text-xs md:tracking-[0.28em];
+    @apply font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-primary md:tracking-[0.24em];
   }
 
   .editorial-rule {
     @apply h-px bg-primary/60;
+  }
+
+  .section-shell {
+    @apply scroll-mt-24 py-16 md:py-24;
+  }
+
+  .section-heading {
+    @apply text-balance font-qestero text-4xl leading-none text-base-content md:text-5xl;
+  }
+
+  .section-lead {
+    @apply text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base;
+  }
+
+  .surface-card {
+    @apply rounded-2xl border border-base-content/10 bg-base-100 shadow-sm;
+  }
+
+  .hero-rotate-accent {
+    color: color-mix(in srgb, var(--color-accent) 45%, var(--color-base-content));
+  }
+
+  .interactive-media {
+    transition-duration: var(--motion-base);
+    transition-property: transform;
+    transition-timing-function: ease-out;
   }
 
   .scroll-fade-x {
@@ -112,29 +144,29 @@ html {
   background-color: var(--color-base-200);
 }
 
-body {
-  position: relative;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
-/* Global Grain/Noise Texture */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: overlay;
+body {
+  min-width: 320px;
+  position: relative;
+  background-color: var(--color-base-200);
+  color: var(--color-base-content);
+  text-rendering: optimizeLegibility;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
 /* Animation Base */
-[class*="fade-"] {
+.fade-motion {
   transition-property: opacity, transform;
-  transition-duration: var(--fade-duration, 800ms);
+  transition-duration: var(--fade-duration, var(--motion-enter));
   transition-timing-function: var(--fade-easing, ease-out);
   transition-delay: var(--fade-delay, 0ms);
 }
@@ -180,9 +212,6 @@ body::before {
 
 /* Mobile & Touch Tweaks */
 @media (max-width: 768px), (pointer: coarse) {
-  [class*="fade-"] {
-    transition-duration: calc(var(--fade-duration, 800ms) * 0.8);
-  }
   .fade-up-hidden {
     transform: translateY(calc(var(--fade-distance, 40px) * 0.7));
   }
@@ -199,63 +228,39 @@ body::before {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  [class*="fade-"] {
+  .fade-motion {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
 
-  .animate-float,
-  .animate-float-reverse,
-  .animate-pulse-slow {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .hero-text-rotate-track {
     animation: none !important;
+    transform: none !important;
   }
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0px) rotate(3deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(3deg);
-  }
-  100% {
-    transform: translateY(0px) rotate(3deg);
+@media (hover: hover) and (pointer: fine) {
+  .interactive-media:hover,
+  .group:hover .interactive-media {
+    transform: scale(1.02);
   }
 }
 
-@keyframes float-reverse {
-  0% {
-    transform: translateY(0px) rotate(-2deg);
+@media (prefers-reduced-motion: reduce) {
+  .interactive-media {
+    animation: none !important;
+    transform: none !important;
   }
-  50% {
-    transform: translateY(-15px) rotate(-2deg);
-  }
-  100% {
-    transform: translateY(0px) rotate(-2deg);
-  }
-}
-
-@keyframes pulse-slow {
-  0%,
-  100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.15;
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: float-reverse 7s ease-in-out infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 8s ease-in-out infinite;
 }
 
 @plugin "daisyui";
@@ -263,7 +268,7 @@ body::before {
 @plugin "daisyui/theme" {
   name: "Aesthetic";
   default: true;
-  prefersdark: true;
+  prefersdark: false;
   color-scheme: "light";
   --color-base-100: #f0f2f0;
   --color-base-200: #8b9687;
@@ -287,7 +292,7 @@ body::before {
   --color-error-content: #fce9e8;
   --radius-selector: 9999px;
   --radius-field: 9999px;
-  --radius-box: 2rem;
+  --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -295,7 +300,20 @@ body::before {
   --noise: 1;
 }
 
-.text-rotate > * {
-  justify-items: center;
+/* Keep every DaisyUI button spatially stable across hover and press states. */
+.btn,
+.btn:hover,
+.btn:active {
+  min-height: 2.75rem;
+  transform: none;
+  translate: none;
+  scale: 1;
 }
 
+.btn {
+  transition-duration: var(--motion-fast);
+}
+
+.rating input {
+  animation-duration: var(--motion-base);
+}

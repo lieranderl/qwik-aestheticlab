@@ -16,6 +16,7 @@
       "book_now": "Réserver"
     },
     "booking": {
+      "loading": "Chargement des options de réservation",
       "widget_title": "Widget de réservation"
     },
     "changeLocale": "Changer de langue",
@@ -60,9 +61,17 @@
         "description": "Salon de beauté haut de gamme proposant des manucures sur mesure, la restructuration des sourcils et des soins d'épilation laser dans un cadre zen et naturel.",
         "title": "Aesthetic Lab | Onglerie, Sourcils & Laser"
       },
+      "notice": {
+        "description": "Informations importantes sur la tenue des soins, l’entretien et les retouches offertes aux clientes d’Aesthetic Lab.",
+        "title": "Informations clientes | Aesthetic Lab"
+      },
       "pricelist": {
         "description": "Liste complète des tarifs pour les manucures, pédicures, sourcils et traitements laser.",
         "title": "Tarifs & Prestations | Aesthetic Lab"
+      },
+      "privacy": {
+        "description": "Comment Aesthetic Lab collecte, utilise et protège vos données personnelles.",
+        "title": "Politique de confidentialité | Aesthetic Lab"
       }
     },
     "hero": {
@@ -94,6 +103,10 @@
       "title": "Suivez le studio au-delà de votre rendez-vous",
       "view_post": "Voir cette publication sur Instagram"
     },
+    "language": {
+      "options": "Options de langue",
+      "select": "Choisir la langue"
+    },
     "modal": {
       "close": "fermer"
     },
@@ -103,8 +116,10 @@
       "contact": "Contact",
       "home": "Accueil",
       "logo_bird": "Logo Oiseau Aesthetic Lab",
+      "mobile_menu": "Navigation mobile",
       "open_menu": "Ouvrir le menu",
       "policy": "Politique",
+      "primary": "Navigation principale",
       "services": "Services",
       "team": "Équipe",
       "work": "Travaux"
@@ -141,6 +156,7 @@
     "pricelist": {
       "category_label": "Catégorie",
       "category_nav": "Catégories de services",
+      "empty": "Les tarifs sont temporairement indisponibles. Contactez-nous pour connaître les soins actuels.",
       "hero_alt": "Aesthetic Lab treatment catalog background",
       "ready": "Prête quand vous l’êtes"
     },
@@ -180,6 +196,7 @@
       "google_link": "Lire tous les avis sur Google",
       "kicker": "Notes clientes",
       "rating_aria": "5 étoiles sur 5",
+      "source": "Avis Google",
       "title": "Mots gentils"
     },
     "services": {
@@ -190,6 +207,7 @@
       "catalogue": "Catalogue des soins",
       "default_category": "Services",
       "duration": "Durée :",
+      "empty": "Les soins sont temporairement indisponibles. Contactez-nous pour connaître les options actuelles.",
       "from_price": "À partir de",
       "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
       "laser_body_title": "Épilation laser CORPS",

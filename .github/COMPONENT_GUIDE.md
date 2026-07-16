@@ -5,7 +5,7 @@ This guide documents the component architecture, patterns, and step-by-step inst
 ## Component Taxonomy
 
 | Category | Directory | Purpose | Examples |
-|----------|-----------|---------|----------|
+| ---------- | ----------- | --------- | ---------- |
 | **Sections** | `src/components/sections/` | Full-width page blocks anchored by `id` | `hero-section`, `service-grid`, `team-section` |
 | **UI** | `src/components/ui/` | Reusable primitives composed inside sections or pages | `fade-up`, `booking-modal`, `service-card` |
 | **Router Head** | `src/components/router-head/` | Document `<head>` management | `router-head` |
@@ -13,11 +13,13 @@ This guide documents the component architecture, patterns, and step-by-step inst
 ### Sections vs UI — Decision Criteria
 
 Choose **section** when:
+
 - The component represents a full page block (hero, services, team, gallery, contact, footer).
 - It has an anchor `id` for in-page navigation.
 - It is composed directly inside a route page file (`index.tsx`).
 
 Choose **UI** when:
+
 - The component is reused across multiple sections or pages.
 - It encapsulates a single interactive pattern (modal, card, animation wrapper, form input).
 - It receives all data via props — no awareness of page context.
@@ -27,7 +29,7 @@ Choose **UI** when:
 ### Sections
 
 | Component | File | Anchor `id` | Data Source |
-|-----------|------|-------------|-------------|
+| ----------- | ------ | ------------- | ------------- |
 | `Navigation` | `navigation.tsx` | — (fixed header) | `inlineTranslate`, `useLocation` |
 | `HeroSection` | `hero-section.tsx` | — (top of page) | Translations only |
 | `ServiceGrid` | `service-grid.tsx` | `#services` | `services`, `serviceCategories`, `location` props |
@@ -41,7 +43,7 @@ Choose **UI** when:
 ### UI
 
 | Component | File | Purpose |
-|-----------|------|---------|
+| ----------- | ------ | --------- |
 | `FadeUp` | `fade-up.tsx` | Scroll-triggered entrance animation (IntersectionObserver) |
 | `Booking` | `booking-modal.tsx` | DaisyUI modal wrapping a GetTimely booking iframe |
 | `ServiceCard` | `service-card.tsx` | Image-overlay card for service display |
@@ -49,13 +51,13 @@ Choose **UI** when:
 | `CookieBanner` | `cookie-banner.tsx` | GDPR cookie consent banner |
 | `InstagramCard` | `instagram-card.tsx` | Instagram embed blockquote |
 | `MapEmbed` | `google-map.tsx` | Google Maps iframe embed |
-| `RotatingText` | `rotating-text.tsx` | CSS text rotation animation for hero keywords |
+| `RotatingText` | `rotating-text.tsx` | Accessible DaisyUI `text-rotate` hero service line |
 
 ## Creating a New Section Component
 
 ### 1. Create the File
 
-```
+```text
 src/components/sections/my-section.tsx
 ```
 
@@ -77,16 +79,16 @@ export const MySection = component$<MySectionProps>(({ items }) => {
   const t = inlineTranslate();
 
   return (
-    <section id="my-section" class="py-24 bg-base-200">
+    <section id="my-section" class="section-shell bg-base-200">
       <div class="custom-container">
         {/* Section Header */}
         <div class="mb-16 text-center">
           <FadeUp>
-            <h2 class="font-qestero mb-4 text-4xl md:text-5xl text-base-content">
+            <h2 class="section-heading mb-4">
               {t("app.my_section.title@@Section Title")}
             </h2>
             <div class="h-px w-20 bg-primary mx-auto" />
-            <p class="font-montserrat mt-6 max-w-lg mx-auto text-base-content">
+            <p class="section-lead mt-6 max-w-lg mx-auto">
               {t("app.my_section.subtitle@@Section subtitle text.")}
             </p>
           </FadeUp>
@@ -95,7 +97,7 @@ export const MySection = component$<MySectionProps>(({ items }) => {
         {/* Section Content */}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item, index) => (
-            <FadeUp key={item.id} delay={index * 100}>
+            <FadeUp key={item.id} delay={index * 60}>
               {/* Item rendering */}
             </FadeUp>
           ))}
@@ -109,10 +111,10 @@ export const MySection = component$<MySectionProps>(({ items }) => {
 ### 3. Key Patterns to Follow
 
 - **Named export** — `export const MySection`, not `export default`.
-- **Section wrapper** — `<section id="my-section" class="py-24 bg-base-200">`.
+- **Section wrapper** — `<section id="my-section" class="section-shell bg-base-200">`.
 - **Container** — `<div class="custom-container">` for consistent max-width and padding.
 - **Section header** — `font-qestero` heading + `h-px w-20 bg-primary mx-auto` divider line + `font-montserrat` subtitle.
-- **Staggered animation** — `FadeUp` with incremental `delay={index * 100}` or `delay={index * 150}`.
+- **Staggered animation** — `FadeUp` with incremental `delay={index * 60}` and cap long lists so content is not delayed excessively.
 - **Translations** — All user-facing strings wrapped with `t("app.section.key@@Default")`.
 - **Background alternation** — Sections alternate between `bg-base-200` (muted) and no background class (inherits page bg). Check adjacent sections in `index.tsx` to pick the right one.
 
@@ -154,13 +156,13 @@ And update the inline `navLinks` array in `src/components/sections/navigation.ts
 
 ## Creating a New UI Component
 
-### 1. Create the File
+### 1. Create the UI File
 
-```
+```text
 src/components/ui/my-widget.tsx
 ```
 
-### 2. Follow the Standard Structure
+### 2. Follow the UI Component Structure
 
 ```tsx
 import { component$ } from "@builder.io/qwik";
@@ -182,7 +184,7 @@ export const MyWidget = component$<MyWidgetProps>(
 );
 ```
 
-### 3. Key Patterns to Follow
+### 3. UI Component Patterns
 
 - **Named export** — always.
 - **Typed props** — define an interface above the component.
@@ -195,17 +197,17 @@ export const MyWidget = component$<MyWidgetProps>(
 
 `FadeUp` is the standard animation wrapper used throughout the project. Understand it before building new animated components.
 
-### Props
+### FadeUp Props
 
 | Prop | Type | Default | Purpose |
-|------|------|---------|---------|
+| ------ | ------ | --------- | --------- |
 | `delay` | `number` | `0` | Milliseconds before animation starts after element enters viewport |
-| `duration` | `number` | `800` | Animation duration in ms |
+| `duration` | `number` | `320` | Animation duration in ms |
 | `threshold` | `number` | `0.1` | IntersectionObserver threshold (0–1) |
 | `runOnce` | `boolean` | `true` | Animate only on first intersection |
 | `rootMargin` | `number` | `50` | Viewport margin for triggering |
 | `easing` | `string` | `"ease-out"` | CSS timing function |
-| `distance` | `number` | `60` | Travel distance in pixels |
+| `distance` | `number` | `16` | Travel distance in pixels |
 | `direction` | `"up" \| "down" \| "left" \| "right"` | `"up"` | Direction element enters from |
 | `disable` | `boolean` | `false` | Skip animation entirely |
 | `class` | `string` | `""` | Additional CSS classes |
@@ -220,30 +222,27 @@ export const MyWidget = component$<MyWidgetProps>(
 
 // Staggered grid items
 {items.map((item, i) => (
-  <FadeUp key={item.id} delay={i * 100}>
+  <FadeUp key={item.id} delay={i * 60}>
     <Card item={item} />
   </FadeUp>
 ))}
 
 // Directional entrance for side content
-<FadeUp delay={300} direction="left" distance={80}>
+<FadeUp delay={60} direction="left">
   <SideImage />
 </FadeUp>
 
-// Longer entrance for hero elements
-<FadeUp delay={300} duration={1200} direction="up" distance={40}>
-  <Logo />
-</FadeUp>
+// Keep hero/LCP content immediately visible; use entrances below the fold.
 ```
 
 ## The Booking Component
 
 `Booking` wraps a GetTimely booking iframe inside a DaisyUI modal. It is the standard CTA pattern.
 
-### Props
+### Booking Props
 
 | Prop | Type | Required | Purpose |
-|------|------|----------|---------|
+| ------ | ------ | ---------- | --------- |
 | `id` | `string` | Yes | Unique dialog element ID |
 | `text` | `string` | Yes | Button label |
 | `classes` | `string` | No | Button CSS classes (defaults to `btn btn-primary`) |
@@ -303,13 +302,14 @@ For images from Supabase or runtime URLs, use standard `<img>`:
 ```
 
 Always provide:
+
 - `alt` text (meaningful, not decorative placeholder).
 - `width` and `height` attributes or aspect-ratio classes to prevent layout shift.
 - `loading="lazy"` for below-fold images.
 
 ### Image Organization
 
-```
+```text
 src/media/
 ├── gallery/          # Photo gallery images (manicure1.jpg, pedicure2.jpg, etc.)
 ├── services/         # Service category cover images (*.png)
@@ -374,7 +374,7 @@ export const Expandable = component$(() => {
 ### State Patterns Used in This Project
 
 | Pattern | Example | Where |
-|---------|---------|-------|
+| --------- | --------- | ------- |
 | Toggle boolean | `isExpanded`, `isMobileMenuOpen`, `showBanner` | Cards, Navigation, CookieBanner |
 | Scroll state | `isScrolled` via `useOnWindow("scroll", ...)` | Navigation |
 | Selected filter | `selectedCategoryId` | ServiceGrid |

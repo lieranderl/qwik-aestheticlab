@@ -58,8 +58,8 @@ export const CookieBanner = component$(() => {
 	return (
 		<>
 			{showBanner.value && (
-				<div class="fixed top-18 right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-6 md:left-auto md:w-[min(28rem,calc(100vw-3rem))]">
-					<div class="max-h-[38svh] overflow-y-auto rounded-2xl border border-base-content/15 bg-base-100/96 p-4 shadow-xl backdrop-blur md:max-h-none md:p-5">
+				<div class="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-auto md:w-[min(28rem,calc(100vw-3rem))]">
+					<div class="surface-card max-h-[38svh] overflow-y-auto bg-base-100/98 p-4 shadow-xl md:max-h-none md:p-5">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
 								<p class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content">
@@ -74,7 +74,10 @@ export const CookieBanner = component$(() => {
 									{t(
 										"app.cookies.necessary@@Strictly necessary cookies are always active.",
 									)}{" "}
-									<a class="link link-primary" href={privacyHref}>
+									<a
+										class="link link-primary inline-flex min-h-11 items-center"
+										href={privacyHref}
+									>
 										{t("app.cookies.privacy_link@@Read our Privacy Policy")}
 									</a>
 								</div>
@@ -83,14 +86,14 @@ export const CookieBanner = component$(() => {
 							<div class="flex gap-2 sm:items-center sm:justify-end">
 								<button
 									type="button"
-									class="btn btn-outline btn-sm min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
+									class="btn btn-outline btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={rejectOptional}
 								>
 									{t("app.cookies.reject@@Reject analytics")}
 								</button>
 								<button
 									type="button"
-									class="btn btn-primary btn-sm min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
+									class="btn btn-primary btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={acceptAll}
 								>
 									{t("app.cookies.accept@@Accept analytics")}
@@ -102,13 +105,30 @@ export const CookieBanner = component$(() => {
 			)}
 
 			{hasChoice.value && !showBanner.value && (
-				<div class="fixed bottom-2 left-2 z-110 md:bottom-4 md:left-4">
+				<div class="fixed bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] left-2 z-110 md:bottom-[calc(env(safe-area-inset-bottom)+1rem)] md:left-4">
 					<button
 						type="button"
-						class="btn btn-xs btn-ghost min-h-7 rounded-full border border-base-content/20 bg-base-100/80 px-2 text-[0.68rem] opacity-75 backdrop-blur transition-opacity hover:opacity-100 focus-visible:opacity-100 md:min-h-8 md:px-3 md:text-xs md:opacity-100"
+						class="btn btn-square btn-sm rounded-full border border-base-content/20 bg-base-100/95 text-xs opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100 md:w-auto md:px-4 md:opacity-90"
 						onClick$={openSettings}
+						aria-label={t("app.cookies.settings@@Cookie settings")}
 					>
-						{t("app.cookies.settings@@Cookie settings")}
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.75"
+							class="size-4"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4"
+							/>
+						</svg>
+						<span class="hidden md:inline">
+							{t("app.cookies.settings@@Cookie settings")}
+						</span>
 					</button>
 				</div>
 			)}
