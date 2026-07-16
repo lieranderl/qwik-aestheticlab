@@ -164,16 +164,13 @@ Used for the language switcher:
 Used in the reviews section:
 
 ```tsx
-<div class="rating rating-sm gap-0.5" aria-label="5 out of 5 stars">
+<div class="rating rating-sm gap-0.5" role="img" aria-label="5 out of 5 stars">
   {[1, 2, 3, 4, 5].map((i) => (
-    <input
+    <div
       key={i}
-      type="radio"
-      name={`rating-${uniqueIndex}`}
       class="mask mask-star-2 bg-warning"
-      aria-label={`${i} star${i > 1 ? "s" : ""}`}
-      checked
-      disabled
+      aria-hidden="true"
+      aria-current={i === 5 ? "true" : undefined}
     />
   ))}
 </div>
@@ -181,9 +178,11 @@ Used in the reviews section:
 
 ### Rating Conventions
 
-- Display-only ratings use `checked disabled` on all inputs.
+- Display-only ratings use non-interactive elements and mark the selected value with `aria-current="true"`.
+- The selected value makes it and every preceding star fully opaque; without it daisyUI intentionally renders stars at 20% opacity.
+- Expose the group as one localized `role="img"` label and hide the decorative star elements from assistive technology.
 - Star color: `bg-warning` (golden).
-- Each rating group needs a unique `name` to avoid radio button conflicts.
+- Interactive ratings use radio inputs with a unique `name`; do not use inputs for display-only ratings.
 
 ## Links (`link`)
 

@@ -314,6 +314,6 @@ body {
   transition-duration: var(--motion-fast);
 }
 
-.rating input {
+.rating > * {
   animation-duration: var(--motion-base);
 }

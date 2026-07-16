@@ -99,14 +99,19 @@ export const ReviewsSection = component$(() => {
 					</div>
 					<div class="flex flex-col items-center gap-2 lg:items-end">
 						<div class="flex items-center justify-center gap-2">
-							<span class="sr-only">
-								{t("app.reviews.rating_aria@@5 out of 5 stars")}
-							</span>
-							{/* 5 Stars SVG */}
-							{/* 5 Stars DaisyUI */}
-							<div class="rating rating-md gap-1" aria-hidden="true">
+							<div
+								class="rating rating-md gap-1"
+								data-testid="review-rating"
+								role="img"
+								aria-label={t("app.reviews.rating_aria@@5 out of 5 stars")}
+							>
 								{[1, 2, 3, 4, 5].map((i) => (
-									<span key={i} class="mask mask-star-2 size-5 bg-warning" />
+									<div
+										key={i}
+										class="mask mask-star-2 size-5 bg-warning"
+										aria-hidden="true"
+										aria-current={i === 5 ? "true" : undefined}
+									/>
 								))}
 							</div>
 							<span class="font-montserrat font-medium">5.0</span>
@@ -141,17 +146,18 @@ export const ReviewsSection = component$(() => {
 								class="surface-card flex w-[min(18rem,calc(100vw-3rem))] shrink-0 snap-start flex-col justify-between p-5 sm:w-80 md:w-96 md:p-6"
 							>
 								<div>
-									<span class="sr-only">
-										{t("app.reviews.rating_aria@@5 out of 5 stars")}
-									</span>
 									<div
 										class="rating rating-xs mb-3 gap-0.5 md:rating-sm md:mb-4"
-										aria-hidden="true"
+										data-testid="review-rating"
+										role="img"
+										aria-label={t("app.reviews.rating_aria@@5 out of 5 stars")}
 									>
 										{[1, 2, 3, 4, 5].map((i) => (
-											<span
+											<div
 												key={i}
 												class="mask mask-star-2 size-3 bg-warning md:size-4"
+												aria-hidden="true"
+												aria-current={i === review.rating ? "true" : undefined}
 											/>
 										))}
 									</div>{" "}

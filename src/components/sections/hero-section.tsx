@@ -10,7 +10,7 @@ export const HeroSection = component$(() => {
 	return (
 		<section
 			id="hero"
-			class="hero relative flex min-h-dvh w-full items-center justify-center overflow-hidden bg-base-200 pt-[calc(env(safe-area-inset-top)+5.25rem)] pb-10 md:pt-[calc(env(safe-area-inset-top)+6.5rem)] md:pb-16"
+			class="hero relative flex min-h-svh w-full items-center justify-center overflow-hidden bg-base-200 pt-[calc(env(safe-area-inset-top)+5.25rem)] pb-10 md:pt-[calc(env(safe-area-inset-top)+6.5rem)] md:pb-16"
 		>
 			<div class="custom-container relative z-10 flex flex-col items-center justify-center text-center">
 				{/* Main Headline Group */}
