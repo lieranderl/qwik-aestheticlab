@@ -48,6 +48,7 @@
 		"@types/node": "26.1.1",
 		"daisyui": "^5.6.18",
 		"husky": "^9.1.7",
+		"ignore": "^7.0.5",
 		"lint-staged": "^17.0.8",
 		"qwik-speak": "^0.24.0",
 		"tailwindcss": "^4.3.3",
