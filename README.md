@@ -26,11 +26,11 @@ Aesthetic Lab is a multilingual marketing and booking site for a beauty studio i
 | --- | --- |
 | Runtime | Bun `1.3.14` |
 | Framework | Qwik `1.20`, Qwik City |
-| Language | TypeScript |
+| Language | TypeScript `7` |
 | Styling | Tailwind CSS `4`, DaisyUI `5` |
-| Data | Supabase SSR |
+| Data | Supabase SSR `0.12` |
 | i18n | Qwik Speak |
-| Tests | Vitest, Playwright |
+| Tests | Vitest with V8 coverage, Playwright |
 | Quality | Biome |
 | Hosting | Google Cloud Run |
 | Infrastructure | OpenTofu |
@@ -75,8 +75,9 @@ Open [http://localhost:5173](http://localhost:5173).
 | `bun run build` | Build the production app. |
 | `bun run build.types` | Run TypeScript checks. |
 | `bun run test` | Run Vitest tests. |
+| `bun run test.coverage` | Run Vitest with enforced V8 coverage thresholds. |
 | `bun run test.e2e` | Run Playwright tests. |
-| `bun run verify` | Run Biome, type checks, tests, and build. |
+| `bun run verify` | Run Biome, type checks, unit coverage, and production build. |
 | `bun run biome` | Run Biome with fixes. |
 | `bunx --bun biome ci .` | Check formatting and lint without modifying files. |
 | `bun run qwik-speak-extract` | Extract translation keys into locale files. |
@@ -107,6 +108,7 @@ scripts/             # Smoke/deployment helper scripts
 - Read [AGENTS.md](AGENTS.md) before making changes.
 - Use Qwik APIs only: `component$`, `routeLoader$`, signals/stores, and `$()` handlers.
 - Keep Supabase reads server-side in route loaders.
+- Select explicit Supabase columns and validate/project raw rows before returning loader data.
 - Use `inlineTranslate()` with `key@@Default English Text` for user-facing strings.
 - Run `bun run qwik-speak-extract` after adding translation keys.
 - Use existing DaisyUI/Tailwind patterns and `src/components/ui/*` primitives.
@@ -127,6 +129,26 @@ For most changes:
 bun run verify
 ```
 
+### Test Coverage
+
+`bun run test.coverage` measures the pure/server-side TypeScript modules under
+`src/shared/` with Vitest's V8 provider. Generated HTML and JSON reports are
+written to the ignored `coverage/` directory.
+
+CI enforces these global minimums:
+
+| Metric | Minimum | Current baseline |
+| --- | ---: | ---: |
+| Statements | 80% | 80.44% |
+| Branches | 75% | 75.87% |
+| Functions | 90% | 90.47% |
+| Lines | 84% | 84.64% |
+
+Playwright coverage is reported separately as passed browser scenarios; it is
+not mixed into the unit-coverage percentage. The deterministic suite currently
+runs 60 scenarios across Chromium, Firefox, and WebKit locally, while CI runs
+the Chromium project.
+
 For docs-only changes:
 
 ```bash
@@ -140,6 +162,7 @@ For focused checks:
 | Source file | `bunx --bun biome check --write path/to/file` |
 | Source file check only | `bunx --bun biome check path/to/file` |
 | Unit test | `bunx vitest run path/to/file.test.ts` |
+| Unit coverage | `bun run test.coverage` |
 | E2E spec | `bunx playwright test path/to/file.spec.ts` |
 | Infrastructure | `tofu -chdir=infra fmt -check -recursive`, `tofu -chdir=infra init -backend=false -input=false`, `tofu -chdir=infra validate` |
 

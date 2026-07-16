@@ -8,9 +8,9 @@ const environment = {
 
 describe("checkSupabaseDependency", () => {
 	it("requires the expected contact row through the gettimely schema", async () => {
-		const fetchImplementation = vi.fn(async () =>
-			Response.json([{ id: 1 }]),
-		) as unknown as typeof fetch;
+		const fetchImplementation = vi.fn(
+			async (_input: URL, _init?: RequestInit) => Response.json([{ id: 1 }]),
+		);
 
 		await expect(
 			checkSupabaseDependency(environment, fetchImplementation),
@@ -24,15 +24,11 @@ describe("checkSupabaseDependency", () => {
 	});
 
 	it("rejects empty, unauthorized, or unreachable dependencies", async () => {
-		const empty = vi.fn(async () =>
-			Response.json([]),
-		) as unknown as typeof fetch;
-		const unauthorized = vi.fn(
-			async () => new Response(null, { status: 401 }),
-		) as unknown as typeof fetch;
+		const empty = vi.fn(async () => Response.json([]));
+		const unauthorized = vi.fn(async () => new Response(null, { status: 401 }));
 		const unreachable = vi.fn(async () => {
 			throw new Error("unreachable");
-		}) as unknown as typeof fetch;
+		});
 
 		await expect(checkSupabaseDependency(environment, empty)).resolves.toBe(
 			false,

@@ -77,6 +77,10 @@ export const ServiceCard = component$<ServiceCardProps>(
 		const descriptionId = useId();
 		const hasLongDescription = description.length > 140;
 		const ImageComp = resolveImageComponent(image);
+		const imageSizes =
+			variant === "category"
+				? "(min-width: 1280px) 19rem, (min-width: 1024px) calc(25vw - 1.5rem), (min-width: 768px) calc(50vw - 2.25rem), calc(100vw - 2rem)"
+				: "(min-width: 1280px) 25rem, (min-width: 1024px) calc(33.333vw - 2rem), (min-width: 768px) calc(50vw - 2.25rem), calc(100vw - 2rem)";
 
 		return (
 			<FadeUp delay={delay} class="h-full">
@@ -95,6 +99,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								class="interactive-media h-full w-full object-cover object-center"
 								loading={eager ? "eager" : "lazy"}
 								fetchPriority={eager ? "high" : "auto"}
+								sizes={imageSizes}
 							/>
 						) : (
 							<img

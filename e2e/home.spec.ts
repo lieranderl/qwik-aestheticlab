@@ -166,6 +166,34 @@ test("keeps hero service copy readable at mobile and desktop widths", async ({
 	}
 });
 
+test("keeps animated SSR content visible without client JavaScript", async ({
+	browser,
+	baseURL,
+}) => {
+	const context = await browser.newContext({
+		baseURL,
+		javaScriptEnabled: false,
+	});
+	const page = await context.newPage();
+
+	await page.goto("/en-BE/");
+	const animationStyles = await page.locator(".fade-motion").evaluateAll((items) =>
+		items.map((item) => ({
+			opacity: getComputedStyle(item).opacity,
+			transform: getComputedStyle(item).transform,
+		})),
+	);
+
+	expect(animationStyles.length).toBeGreaterThan(0);
+	expect(
+		animationStyles.every(
+			({ opacity, transform }) => opacity === "1" && transform === "none",
+		),
+	).toBe(true);
+
+	await context.close();
+});
+
 test("uses one card radius and a non-looping review rail", async ({ page }) => {
 	await page.goto("/en-BE/");
 
@@ -259,7 +287,7 @@ test("falls back to the treatment overview for invalid shared state", async ({
 	await expect(page.locator("#service-details-heading")).toHaveCount(0);
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
 		"href",
-		"http://localhost:5173/en-BE/",
+		"https://aestheticlab.be/en-BE/",
 	);
 });
 

@@ -46,34 +46,29 @@ Every loader follows this structure:
 
 ```tsx
 export const useMyDataLoader = routeLoader$<ReturnType>(async (requestEv) => {
-  // 1. Log for debugging
-  console.log("Fetching [resource] from Supabase…");
-
-  // 2. Create client
+  // 1. Create and validate the per-request client
   const client = supabase(requestEv);
+  if (!client) return [];
 
-  // 3. Query with schema prefix
+  // 2. Query only the columns required for localization and rendering
   const { data, error } = await client
     .schema("gettimely")
     .from("table_name")
-    .select("*")
+    .select("id,name,name_ru,name_nl,name_fr,name_uk,priority")
     .eq("active", true)
     .order("priority", { ascending: true });
 
-  // 4. Handle errors gracefully
+  // 3. Handle errors gracefully
   if (error) {
-    console.error("Error fetching [resource]:", error);
+    logServerEvent("ERROR", "supabase_fetch_failed", {
+      resource: "table_name",
+      error,
+    });
     return []; // or null for single-record loaders
   }
-  if (!data) return [];
 
-  // 5. Map locale-specific fields
-  const shortlocal = requestEv.locale().split("-")[0];
-  return data.map((item) => ({
-    ...item,
-    name: resolveLocaleField(item, "name", shortlocal),
-    description: resolveLocaleField(item, "description", shortlocal),
-  })) as MyType[];
+  // 4. Validate, localize, and project compact serializable view models
+  return projectServiceGroups(data, requestEv.locale());
 });
 ```
 
@@ -121,14 +116,14 @@ const localizedName =
   : item.name; // English fallback
 ```
 
-**Rule:** This mapping happens exclusively in `routeLoader$` functions. Components receive already-localized data and never inspect locale suffixes.
+**Rule:** Locale selection happens in the loader boundary through the pure helpers in `src/shared/locale-content.ts` and `src/shared/supabase-data.ts`. Components receive compact, already-localized view models and never inspect locale suffixes.
 
 ## Error Handling
 
 Every loader must follow these rules:
 
 1. **Catch Supabase errors** — check the `error` field from the query response.
-2. **Log errors** — use `console.error` with a descriptive message identifying the resource.
+2. **Log errors** — use `logServerEvent` with a stable event name and resource field.
 3. **Return safe defaults** — `[]` for list loaders, `null` for single-record loaders.
 4. **Never throw** — a thrown error inside `routeLoader$` breaks the entire page render.
 5. **Handle missing data** — check `if (!data)` before mapping.
@@ -136,10 +131,12 @@ Every loader must follow these rules:
 ```tsx
 // ✅ Correct
 if (error) {
-  console.error("Error fetching services:", error);
+  logServerEvent("ERROR", "supabase_fetch_failed", {
+    resource: "services",
+    error,
+  });
   return [];
 }
-if (!data) return [];
 
 // ❌ Wrong — will crash the page
 if (error) throw new Error("Failed to fetch services");
@@ -201,26 +198,18 @@ export default component$(() => {
 
 ## Data Types
 
-All Supabase data contracts are defined in `src/types.ts`:
+`src/types.ts` defines the compact view models that are safe to serialize to components. Raw Supabase rows are untrusted and remain private to the projection boundary:
 
 ```tsx
 export interface Staff {
-  id: string;
+  id: number;
   name: string;
   photo_url: string;
-  email: string;
-  active: boolean;
   about: string;
-  about_ru: string;
-  about_nl: string;
-  about_fr: string;
-  about_uk: string;
   role: string;
 }
 
 export interface Contact {
-  id: number;
-  created_at: string;
   email: string;
   open_hours: { start_week_day: string; end_week_day: string; from: string; to: string };
   location: { name: string; address: string; link: string };
@@ -230,44 +219,28 @@ export interface Contact {
 export interface ServiceGroup {
   id: string;
   name: string;
-  name_ru: string;
-  name_nl: string;
-  name_fr: string;
-  name_uk: string;
   name_en: string;
-  active: boolean;
   priority: number;
 }
 
 export interface Service {
   id: string;
   group_id: ServiceGroup["id"];
-  category: ServiceGroup["name"];
   name: string;
-  name_ru: string;
-  name_nl: string;
-  name_fr: string;
-  name_uk: string;
   description: string;
-  description_ru: string;
-  description_nl: string;
-  description_fr: string;
-  description_uk: string;
   duration: number;
   price: number;
-  priority: number;
-  active: boolean;
 }
 ```
 
-**Rule:** When Supabase tables change, update `src/types.ts` first, then update the corresponding loader and any component props.
+**Rule:** Never cast raw Supabase results to these interfaces. Select explicit columns, validate/project with `src/shared/supabase-data.ts`, and return only fields consumed by the UI. When a table changes, update the projection tests, explicit select, and view model only when the UI contract actually changes.
 
 ## Adding a New Loader
 
-1. Define or update the interface in `src/types.ts`.
+1. Define or update the compact interface in `src/types.ts`.
 2. Add the `routeLoader$` in `src/routes/[...lang]/layout.tsx`.
 3. Export the loader so child routes can import it.
-4. Follow the established pattern: log → create client → query → handle error → map locale fields → return typed data.
+4. Follow the established pattern: create validated client → query explicit columns → handle/log error → runtime-validate → localize/project → return compact data.
 5. Consume it in the route page file and pass data to components via props.
 6. Never put `routeLoader$` inside a component file — they belong in route or layout files only.
 

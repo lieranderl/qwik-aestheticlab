@@ -1,26 +1,6 @@
 import type { Service, ServiceGroup } from "~/types";
 
 // ============================================================================
-// Asset Imports
-// ============================================================================
-
-const ASSETS_GALLERY: Record<string, string> = import.meta.glob(
-	"../media/gallery/*.jpg",
-	{
-		eager: true,
-		import: "default",
-	},
-) as Record<string, string>;
-
-const ASSETS_SERVICES: Record<string, string> = import.meta.glob(
-	"../media/services/*.webp",
-	{
-		eager: true,
-		import: "default",
-	},
-) as Record<string, string>;
-
-// ============================================================================
 // Image Configuration
 // ============================================================================
 
@@ -44,6 +24,36 @@ const GALLERY_CONFIG: Record<string, { prefix: string; count: number }> = {
 	"laser-male": { prefix: "lazer", count: 1 },
 	removal: { prefix: "removal", count: 1 },
 };
+
+const SERVICE_COVER_IMAGE_NAMES = new Set([
+	"brows",
+	"laser-body",
+	"laser-combo",
+	"laser-face",
+	"laser-male",
+	"laser",
+	"manicure",
+	"pedicure",
+]);
+
+const GALLERY_IMAGE_NAMES = new Set([
+	"eyebrows1",
+	"eyebrows2",
+	"lazer1",
+	"manicure1",
+	"manicure2",
+	"manicure3",
+	"manicure4",
+	"manicure5",
+	"manicure6",
+	"pedicure1",
+	"pedicure2",
+	"pedicure3",
+	"pedicure4",
+	"pedicure5",
+	"pedicure6",
+	"removal1",
+]);
 
 // ============================================================================
 // Helpers
@@ -69,10 +79,8 @@ function mapName(name: string): string {
 export function getGroupCoverImage(category: ServiceGroup | undefined): string {
 	const name = category?.name_en || category?.name || "";
 	const mapped = mapName(name);
-	for (const path in ASSETS_SERVICES) {
-		if (path.toLowerCase().includes(mapped)) {
-			return `service:${mapped}.webp`;
-		}
+	if (SERVICE_COVER_IMAGE_NAMES.has(mapped)) {
+		return `service:${mapped}.webp`;
 	}
 	return "gallery:universal.jpg";
 }
@@ -88,9 +96,9 @@ export function getServiceItemImage(
 
 	if (config) {
 		const num = (index % config.count) + 1;
-		const key = `../media/gallery/${config.prefix}${num}.jpg`;
-		if (ASSETS_GALLERY[key]) {
-			return `gallery:${config.prefix}${num}.jpg`;
+		const imageName = `${config.prefix}${num}`;
+		if (GALLERY_IMAGE_NAMES.has(imageName)) {
+			return `gallery:${imageName}.jpg`;
 		}
 	}
 
@@ -100,10 +108,8 @@ export function getServiceItemImage(
 export function resolveCoverImage(imageName: string): string {
 	const mapped = mapName(imageName);
 
-	for (const path in ASSETS_SERVICES) {
-		if (path.toLowerCase().includes(mapped)) {
-			return `service:${mapped}.webp`;
-		}
+	if (SERVICE_COVER_IMAGE_NAMES.has(mapped)) {
+		return `service:${mapped}.webp`;
 	}
 	return "gallery:universal.jpg";
 }

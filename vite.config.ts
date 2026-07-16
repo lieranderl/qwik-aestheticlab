@@ -92,6 +92,19 @@ export default defineConfig(({ mode }) => {
 			globals: true,
 			environment: "node",
 			include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+			coverage: {
+				provider: "v8",
+				reporter: ["text", "json-summary", "html"],
+				include: ["src/shared/**/*.ts"],
+				exclude: ["src/shared/**/*.{test,spec}.ts"],
+				reportsDirectory: "coverage",
+				thresholds: {
+					statements: 80,
+					branches: 75,
+					functions: 90,
+					lines: 84,
+				},
+			},
 		},
 		plugins: [
 			localImageCacheHeaders(),

@@ -86,6 +86,7 @@ export const GalleryGrid = component$(() => {
 								alt={alt}
 								class="interactive-media aspect-square h-full w-full object-cover"
 								loading="lazy"
+								sizes="(min-width: 1280px) 19rem, (min-width: 768px) calc(25vw - 1.5rem), calc(50vw - 1.5rem)"
 							/>
 						</FadeUp>
 					))}
@@ -145,6 +146,7 @@ export const GalleryGrid = component$(() => {
 									alt={t("app.instagram.alt.studio@@Aesthetic Lab studio work")}
 									class="interactive-media h-full w-full object-cover"
 									loading="lazy"
+									sizes="(min-width: 1024px) 20rem, calc(33vw - 1rem)"
 								/>
 							</div>
 							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
@@ -152,6 +154,7 @@ export const GalleryGrid = component$(() => {
 									alt={t("app.instagram.alt.brows@@Aesthetic Lab brows detail")}
 									class="h-full w-full object-cover"
 									loading="lazy"
+									sizes="calc(33vw - 1rem)"
 								/>
 							</div>
 							<div class="overflow-hidden border-l border-base-300 bg-base-100 lg:hidden">
@@ -161,6 +164,7 @@ export const GalleryGrid = component$(() => {
 									)}
 									class="h-full w-full object-cover"
 									loading="lazy"
+									sizes="calc(33vw - 1rem)"
 								/>
 							</div>
 							<div class="hidden min-h-0 grid-rows-2 gap-px bg-base-300 lg:grid">
@@ -171,6 +175,7 @@ export const GalleryGrid = component$(() => {
 										)}
 										class="interactive-media h-full w-full object-cover"
 										loading="lazy"
+										sizes="12rem"
 									/>
 								</div>
 								<div class="min-h-0 overflow-hidden">
@@ -180,6 +185,7 @@ export const GalleryGrid = component$(() => {
 										)}
 										class="interactive-media h-full w-full object-cover"
 										loading="lazy"
+										sizes="12rem"
 									/>
 								</div>
 							</div>

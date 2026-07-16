@@ -84,6 +84,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 						alt={tech.name}
 						class="interactive-media h-full w-full object-cover"
 						loading="lazy"
+						sizes="(min-width: 1152px) 16rem, (min-width: 1024px) calc(25vw - 2rem), (min-width: 768px) calc(33vw - 2rem), (min-width: 640px) calc(50vw - 2rem), 8rem"
 					/>
 				) : (
 					tech.photo_url && (

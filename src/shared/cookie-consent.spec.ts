@@ -6,6 +6,8 @@ import {
 	CONSENT_STORAGE_KEY,
 	disableAnalytics,
 	enableAnalytics,
+	getGoogleAnalyticsBootstrapScript,
+	initializeGoogleAnalytics,
 	readCookieConsent,
 	saveCookieConsent,
 	trackGoogleAnalyticsEvent,
@@ -20,9 +22,9 @@ type MockStorage = {
 };
 
 type MockAnalyticsWindow = Window & {
+	__aestheticAnalyticsInitialized?: boolean;
 	dataLayer?: IArguments[];
 	gtag?: (...args: unknown[]) => void;
-	[key: `ga-disable-${string}`]: boolean | undefined;
 };
 
 // biome-ignore lint/correctness/useQwikValidLexicalScope: Test helper runs only in Vitest's Node environment.
@@ -52,9 +54,15 @@ const installBrowserGlobals = () => {
 	Object.assign(globalThis, {
 		localStorage: localStorageMock,
 		document: {
+			createElement: vi.fn(() => ({})),
+			getElementById: vi.fn(() => null),
+			head: {
+				appendChild: vi.fn(),
+			},
 			title: "Aesthetic Lab",
 		},
 		window: {
+			localStorage: localStorageMock,
 			location: {
 				href: "https://aestheticlab.test/en-BE/pricelist?view=full#prices",
 				pathname: "/en-BE/pricelist",
@@ -68,7 +76,7 @@ const installBrowserGlobals = () => {
 };
 
 function getMockWindow() {
-	return globalThis.window as unknown as MockAnalyticsWindow;
+	return globalThis.window as MockAnalyticsWindow;
 }
 
 describe("cookie-consent helpers", () => {
@@ -79,9 +87,9 @@ describe("cookie-consent helpers", () => {
 	afterEach(() => {
 		vi.useRealTimers();
 		vi.restoreAllMocks();
-		delete (globalThis as unknown as Record<string, unknown>).window;
-		delete (globalThis as unknown as Record<string, unknown>).document;
-		delete (globalThis as unknown as Record<string, unknown>).localStorage;
+		Reflect.deleteProperty(globalThis, "window");
+		Reflect.deleteProperty(globalThis, "document");
+		Reflect.deleteProperty(globalThis, "localStorage");
 	});
 
 	describe("readCookieConsent", () => {
@@ -120,6 +128,12 @@ describe("cookie-consent helpers", () => {
 
 			localStorage.setItem(
 				CONSENT_STORAGE_KEY,
+				JSON.stringify({ version: 1, analytics: true }),
+			);
+			expect(readCookieConsent()).toBeNull();
+
+			localStorage.setItem(
+				CONSENT_STORAGE_KEY,
 				JSON.stringify({
 					version: 1,
 					analytics: "yes",
@@ -146,6 +160,14 @@ describe("cookie-consent helpers", () => {
 					updatedAt: "2026-04-17T12:34:56.000Z",
 				}),
 			);
+		});
+
+		it("keeps the current-session choice usable when storage is unavailable", () => {
+			vi.mocked(localStorage.setItem).mockImplementationOnce(() => {
+				throw new Error("storage unavailable");
+			});
+
+			expect(saveCookieConsent(false)).toBe(false);
 		});
 	});
 
@@ -210,10 +232,36 @@ describe("cookie-consent helpers", () => {
 	});
 
 	describe("analytics updates", () => {
+		it("does not repeat bootstrap commands during runtime initialization", () => {
+			new Function(getGoogleAnalyticsBootstrapScript())();
+			const analyticsWindow = getMockWindow();
+			const initialCommands = analyticsWindow.dataLayer?.map(
+				(entry) => entry[0],
+			);
+
+			expect(initialCommands).toEqual([
+				"consent",
+				"set",
+				"set",
+				"js",
+				"config",
+			]);
+
+			initializeGoogleAnalytics();
+
+			expect(analyticsWindow.dataLayer?.map((entry) => entry[0])).toEqual(
+				initialCommands,
+			);
+			expect(analyticsWindow.__aestheticAnalyticsInitialized).toBe(true);
+			expect(document.head.appendChild).toHaveBeenCalledOnce();
+		});
+
 		it("updates analytics consent and tracks a granted event by default", () => {
 			enableAnalytics();
 
-			expect(getMockWindow()[`ga-disable-${gaMeasurementId}`]).toBe(false);
+			expect(
+				Reflect.get(getMockWindow(), `ga-disable-${gaMeasurementId}`),
+			).toBe(false);
 			expect(getMockWindow().dataLayer).toHaveLength(2);
 			expect(getMockWindow().dataLayer?.[0]).toMatchObject({
 				0: "consent",
@@ -238,7 +286,9 @@ describe("cookie-consent helpers", () => {
 		it("updates analytics consent and can skip tracking the update event", () => {
 			disableAnalytics({ trackUpdate: false });
 
-			expect(getMockWindow()[`ga-disable-${gaMeasurementId}`]).toBe(false);
+			expect(
+				Reflect.get(getMockWindow(), `ga-disable-${gaMeasurementId}`),
+			).toBe(false);
 			expect(getMockWindow().dataLayer).toHaveLength(1);
 			expect(getMockWindow().dataLayer?.[0]).toMatchObject({
 				0: "consent",

@@ -10,8 +10,33 @@ type LocalizedFieldSet = {
 	uk: string;
 };
 
-type LocalizableServiceGroup = Omit<ServiceGroup, "name_en"> &
-	Partial<Pick<ServiceGroup, "name_en">>;
+export interface LocalizableServiceGroup {
+	id: string;
+	name: string;
+	name_en?: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	name_uk: string;
+	priority: number;
+}
+
+export interface LocalizableService {
+	id: string;
+	group_id: string;
+	name: string;
+	name_ru: string;
+	name_nl: string;
+	name_fr: string;
+	name_uk: string;
+	description: string;
+	description_ru: string;
+	description_nl: string;
+	description_fr: string;
+	description_uk: string;
+	duration: number;
+	price: number;
+}
 
 const SUPPORTED_LOCALE_CODES = new Set<LocaleCode>([
 	"en",
@@ -59,7 +84,7 @@ export function localizeServiceGroup(
 	const englishName = group.name_en ?? group.name;
 
 	return {
-		...group,
+		id: group.id,
 		name: resolveLocalizedField(localeCode, {
 			defaultValue: englishName,
 			ru: group.name_ru,
@@ -68,14 +93,19 @@ export function localizeServiceGroup(
 			uk: group.name_uk,
 		}),
 		name_en: englishName,
+		priority: group.priority,
 	};
 }
 
-export function localizeService(service: Service, locale: string): Service {
+export function localizeService(
+	service: LocalizableService,
+	locale: string,
+): Service {
 	const localeCode = getLocaleCode(locale);
 
 	return {
-		...service,
+		id: service.id,
+		group_id: service.group_id,
 		name: resolveLocalizedField(localeCode, {
 			defaultValue: service.name,
 			ru: service.name_ru,
@@ -90,6 +120,8 @@ export function localizeService(service: Service, locale: string): Service {
 			fr: service.description_fr,
 			uk: service.description_uk,
 		}),
+		duration: service.duration,
+		price: service.price,
 	};
 }
 
@@ -103,7 +135,7 @@ export function localizeServiceGroups(
 }
 
 export function localizeServices(
-	services: Service[] | null | undefined,
+	services: LocalizableService[] | null | undefined,
 	locale: string,
 ): Service[] {
 	if (!services?.length) return [];
