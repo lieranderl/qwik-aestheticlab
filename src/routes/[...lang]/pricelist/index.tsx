@@ -14,7 +14,7 @@ import { FadeUp } from "~/components/ui/fade-up";
 import { formatPrice } from "~/consts";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
-import type { Service } from "~/types";
+import type { Service, ServiceGroup } from "~/types";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -40,12 +40,18 @@ function getStartingPriceLabel(groupServices: Service[], fromLabel: string) {
 	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
 }
 
-function getDisplayCategoryName(categoryName: string) {
+function getDisplayCategoryName(
+	category: ServiceGroup | undefined,
+	fallback: string,
+	browsAndLashesLabel: string,
+) {
+	const categoryName = category?.name || fallback;
 	const displayCategoryName =
 		categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
-	if (displayCategoryName === "Brows") {
-		return "Brows & Lashes";
+	const englishName = category?.name_en?.toLowerCase() || "";
+	if (englishName.includes("brows") || englishName.includes("lashes")) {
+		return browsAndLashesLabel;
 	}
 
 	return displayCategoryName;
@@ -147,6 +153,9 @@ export default component$(() => {
 	const categoryLabel = t("app.pricelist.category_label@@Category");
 	const categoryNavLabel = t("app.pricelist.category_nav@@Service categories");
 	const fromPriceLabel = t("app.services.from_price@@From");
+	const browsAndLashesLabel = t(
+		"app.services.brows_lashes_title@@Brows & Lashes",
+	);
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA events require browser-only gtag state.
 	useVisibleTask$(() => {
@@ -175,7 +184,9 @@ export default component$(() => {
 				(a, b) => a.price - b.price,
 			);
 			const displayCategoryName = getDisplayCategoryName(
-				category?.name || defaultCategoryLabel,
+				category,
+				defaultCategoryLabel,
+				browsAndLashesLabel,
 			);
 			return {
 				groupId,
@@ -210,7 +221,7 @@ export default component$(() => {
 						<div class="hero-overlay absolute inset-0 bg-base-200/40" />
 					</div>
 					<div class="hero-content relative z-10 w-full max-w-7xl justify-center px-4 py-12 md:px-8 md:py-16 opacity-95">
-						<FadeUp class="mx-auto w-full max-w-xl">
+						<div class="mx-auto w-full max-w-xl">
 							<div class="surface-card bg-base-100/90 px-6 py-7 text-center text-base-content md:px-9 md:py-8">
 								<h1 class="font-qestero text-4xl leading-tight md:text-5xl">
 									{t("app.services.pricing_title@@Services & Pricing")}
@@ -222,7 +233,7 @@ export default component$(() => {
 									)}
 								</p>
 							</div>
-						</FadeUp>
+						</div>
 					</div>
 				</section>
 
@@ -279,7 +290,7 @@ export default component$(() => {
 									index,
 								) => {
 									return (
-										<FadeUp key={groupId} delay={index * 60}>
+										<FadeUp key={groupId} delay={Math.min(index, 5) * 60}>
 											<section
 												id={anchorId}
 												class="card surface-card scroll-mt-36 shadow-md"

@@ -13,6 +13,8 @@ import { getLocaleNavLink } from "~/shared/locale-navigation";
 export const CookieBanner = component$(() => {
 	const t = inlineTranslate();
 	const location = useLocation();
+	const titleId = "cookie-settings-title";
+	const descriptionId = "cookie-settings-description";
 
 	const showBanner = useSignal(false);
 	const hasChoice = useSignal(false);
@@ -58,14 +60,21 @@ export const CookieBanner = component$(() => {
 	return (
 		<>
 			{showBanner.value && (
-				<div class="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-auto md:w-[min(28rem,calc(100vw-3rem))]">
+				<section
+					class="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-auto md:w-[min(28rem,calc(100vw-3rem))]"
+					aria-labelledby={titleId}
+					aria-describedby={descriptionId}
+				>
 					<div class="surface-card max-h-[38svh] overflow-y-auto bg-base-100/98 p-4 shadow-xl md:max-h-none md:p-5">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
-								<p class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content">
+								<p
+									id={titleId}
+									class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content"
+								>
 									{t("app.cookies.title@@Cookie settings")}
 								</p>
-								<p class="text-sm text-base-content/80">
+								<p id={descriptionId} class="text-sm text-base-content/80">
 									{t(
 										"app.cookies.description@@We use strictly necessary cookies to run this site. Google Analytics runs in Consent Mode: analytics storage is denied unless you accept, and Google may receive cookieless consent and measurement pings before your choice.",
 									)}
@@ -101,7 +110,7 @@ export const CookieBanner = component$(() => {
 							</div>
 						</div>
 					</div>
-				</div>
+				</section>
 			)}
 
 			{hasChoice.value && !showBanner.value && (

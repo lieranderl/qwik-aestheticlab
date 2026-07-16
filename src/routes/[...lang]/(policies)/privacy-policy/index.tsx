@@ -106,8 +106,8 @@ export default component$(() => {
 								</p>
 								{section.list && (
 									<ul class="list mt-5 rounded-box bg-base-200/45 py-1 font-montserrat text-sm text-base-content sm:text-base">
-										{section.list.map((item, i) => (
-											<li key={i} class="list-row gap-3 px-4 py-3">
+										{section.list.map((item) => (
+											<li key={item} class="list-row gap-3 px-4 py-3">
 												<span aria-hidden="true" class="pt-0.5 text-primary">
 													✦
 												</span>

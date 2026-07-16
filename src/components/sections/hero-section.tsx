@@ -22,6 +22,7 @@ export const HeroSection = component$(() => {
 					<h1 class="mb-6 flex justify-center text-primary md:mb-8">
 						<AestheticLabLogo
 							class="h-auto w-[78vw] max-w-100 text-primary md:w-[54vw] md:max-w-lg"
+							role="img"
 							aria-label="Aesthetic Lab"
 						/>
 					</h1>

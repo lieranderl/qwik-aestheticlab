@@ -137,12 +137,33 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		initialSubgroupId,
 	}) => {
 		const t = inlineTranslate();
-		const showFullList = useSignal(Boolean(initialCategoryId));
+		const categoryById = new Map(
+			serviceCategories.map((category) => [String(category.id), category]),
+		);
+		const hasInitialCategory = initialCategoryId
+			? initialCategoryId === "laser"
+				? services.some((service) =>
+						isLaserCategory(categoryById.get(String(service.group_id))),
+					)
+				: services.some(
+						(service) => String(service.group_id) === initialCategoryId,
+					)
+			: false;
+		const hasInitialLaserSubgroup =
+			hasInitialCategory &&
+			initialCategoryId === "laser" &&
+			Boolean(initialSubgroupId) &&
+			services.some(
+				(service) =>
+					String(service.group_id) === initialSubgroupId &&
+					isLaserCategory(categoryById.get(String(service.group_id))),
+			);
+		const showFullList = useSignal(hasInitialCategory);
 		const selectedCategoryId = useSignal<string | null>(
-			initialCategoryId || null,
+			hasInitialCategory ? initialCategoryId || null : null,
 		);
 		const selectedLaserSubgroupId = useSignal<string | null>(
-			initialCategoryId === "laser" ? initialSubgroupId || null : null,
+			hasInitialLaserSubgroup ? initialSubgroupId || null : null,
 		);
 		const defaultCategoryLabel = t("app.services.default_category@@Services");
 		const treatmentsLabel = t("app.services.treatments@@Treatments");
@@ -176,10 +197,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				"app.services.general_desc@@Professional beauty treatments for your refined look.",
 			),
 		};
-		const categoryById = new Map(
-			serviceCategories.map((category) => [String(category.id), category]),
-		);
-
 		const groupedServices = useComputed$(() => {
 			return groupServicesAndCategories(services, serviceCategories);
 		});

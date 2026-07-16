@@ -10,23 +10,26 @@ export const GoogleAnalytics = component$(() => {
 	const trackedRoute = useSignal("");
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA route tracking is browser-only and depends on window/document.
-	useVisibleTask$(({ track }) => {
-		initializeGoogleAnalytics();
-		const route = track(
-			() =>
-				`${location.url.pathname}${location.url.search}${location.url.hash}`,
-		);
+	useVisibleTask$(
+		({ track }) => {
+			initializeGoogleAnalytics();
+			const route = track(
+				() =>
+					`${location.url.pathname}${location.url.search}${location.url.hash}`,
+			);
 
-		if (!trackedRoute.value) {
+			if (!trackedRoute.value) {
+				trackedRoute.value = route;
+				return;
+			}
+
+			if (trackedRoute.value === route) return;
+
 			trackedRoute.value = route;
-			return;
-		}
-
-		if (trackedRoute.value === route) return;
-
-		trackedRoute.value = route;
-		trackGoogleAnalyticsPageView();
-	});
+			trackGoogleAnalyticsPageView();
+		},
+		{ strategy: "document-ready" },
+	);
 
 	return null;
 });

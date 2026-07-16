@@ -3,7 +3,7 @@ import { inlineTranslate } from "qwik-speak";
 import { baseUrlBooking } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
-interface BookingProps {
+export interface BookingProps {
 	id: string; // unique per service
 	text: string;
 	classes?: string;
@@ -86,6 +86,7 @@ export const Booking = component$<BookingProps>(
 					id={id}
 					class="modal"
 					aria-labelledby={titleId}
+					aria-modal="true"
 					onClose$={$(() => {
 						isOpen.value = false;
 						isLoaded.value = false;
@@ -136,7 +137,7 @@ export const Booking = component$<BookingProps>(
 						)}
 					</div>
 					<form method="dialog" class="modal-backdrop">
-						<button type="submit">close</button>
+						<button type="submit">{t("app.common.close@@Close")}</button>
 					</form>
 				</dialog>
 			</>

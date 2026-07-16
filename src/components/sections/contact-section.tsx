@@ -48,7 +48,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 											<a
 												href={contact.location.link}
 												target="_blank"
-												rel="noreferrer"
+												rel="noopener noreferrer"
 												onClick$={$(() => {
 													trackGoogleAnalyticsEvent("directions_clicked", {
 														placement: "contact_section",
@@ -73,7 +73,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 															<a
 																href={p.link}
 																target="_blank"
-																rel="noreferrer"
+																rel="noopener noreferrer"
 																onClick$={$(() => {
 																	trackGoogleAnalyticsEvent("parking_clicked", {
 																		placement: "contact_section",
@@ -83,7 +83,10 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 																})}
 																class="group flex items-center gap-2"
 															>
-																<span class="size-1.5 rounded-full bg-primary/40 transition-colors duration-150 group-hover:bg-primary" />
+																<span
+																	aria-hidden="true"
+																	class="size-1.5 rounded-full bg-primary/40 transition-colors duration-150 group-hover:bg-primary"
+																/>
 																<span class="font-montserrat text-sm text-base-content/80 decoration-primary/30 underline-offset-4 transition-colors duration-150 group-hover:text-primary group-hover:underline">
 																	{p.name}
 																</span>

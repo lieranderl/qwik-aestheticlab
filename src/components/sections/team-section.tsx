@@ -1,5 +1,4 @@
 import { $, component$, useId, useSignal } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
@@ -69,21 +68,11 @@ interface TeamMemberCardProps {
 	tech: Staff;
 }
 
-function getBioForLang(lang: string, tech: Staff) {
-	if (lang.includes("nl")) return tech.about_nl || tech.about;
-	if (lang.includes("fr")) return tech.about_fr || tech.about;
-	if (lang.includes("ru")) return tech.about_ru || tech.about;
-	if (lang.includes("uk")) return tech.about_uk || tech.about;
-	return tech.about;
-}
-
 export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
 	const t = inlineTranslate();
-	const loc = useLocation();
-	const lang = loc.params.lang || "en-BE";
 	const isExpanded = useSignal(false);
 	const ImageComp = resolveImageComponent(tech.photo_url);
-	const bio = getBioForLang(lang, tech);
+	const bio = tech.about;
 	const bioId = useId();
 	const hasLongBio = bio.length > 180;
 

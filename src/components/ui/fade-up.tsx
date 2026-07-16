@@ -39,7 +39,7 @@ function getSharedObserver(rootMargin: number, threshold: number) {
 	return shared;
 }
 
-interface FadeUpProps {
+export interface FadeUpProps {
 	delay?: number;
 	duration?: number;
 	threshold?: number;
@@ -97,6 +97,7 @@ export const FadeUp = component$(
 				rect.bottom > rootMargin
 			) {
 				state.value = delay > 0 ? "visible" : "immediate";
+				if (runOnce) return;
 			}
 
 			const sharedObserver = getSharedObserver(rootMargin, threshold);

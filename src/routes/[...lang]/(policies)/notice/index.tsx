@@ -5,14 +5,24 @@ import { inlineTranslate } from "qwik-speak";
 export default component$(() => {
 	const t = inlineTranslate();
 	const durabilityFactors = [
-		"app.notice.factor1@@The declared durability depends not only on the quality of the products but also on individual nail characteristics and aftercare.",
-		"app.notice.factor2@@External factors such as frequent water exposure, harsh chemicals, and mechanical damage may reduce wear time.",
-		"app.notice.factor3@@Personal physiology, including hormonal changes, can also affect product adhesion and durability.",
+		t(
+			"app.notice.factor1@@The declared durability depends not only on the quality of the products but also on individual nail characteristics and aftercare.",
+		),
+		t(
+			"app.notice.factor2@@External factors such as frequent water exposure, harsh chemicals, and mechanical damage may reduce wear time.",
+		),
+		t(
+			"app.notice.factor3@@Personal physiology, including hormonal changes, can also affect product adhesion and durability.",
+		),
 	];
 	const individualFactors = [
-		"app.notice.water_contact@@Frequent contact with water or aggressive chemicals without gloves",
-		"app.notice.mechanical_damage@@Mechanical damage to the nails",
-		"app.notice.individual_features@@Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
+		t(
+			"app.notice.water_contact@@Frequent contact with water or aggressive chemicals without gloves",
+		),
+		t("app.notice.mechanical_damage@@Mechanical damage to the nails"),
+		t(
+			"app.notice.individual_features@@Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
+		),
 	];
 
 	return (
@@ -54,12 +64,12 @@ export default component$(() => {
 									{t("app.notice.however@@However, please note:")}
 								</p>
 								<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
-									{durabilityFactors.map((key) => (
-										<li key={key} class="list-row gap-3 px-4 py-3">
+									{durabilityFactors.map((factor) => (
+										<li key={factor} class="list-row gap-3 px-4 py-3">
 											<span aria-hidden="true" class="pt-0.5 text-primary">
 												✦
 											</span>
-											<span class="leading-6">{t(key)}</span>
+											<span class="leading-6">{factor}</span>
 										</li>
 									))}
 								</ul>
@@ -90,12 +100,12 @@ export default component$(() => {
 									)}
 								</p>
 								<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
-									{individualFactors.map((key) => (
-										<li key={key} class="list-row gap-3 px-4 py-3">
+									{individualFactors.map((factor) => (
+										<li key={factor} class="list-row gap-3 px-4 py-3">
 											<span aria-hidden="true" class="pt-0.5 text-primary">
 												✦
 											</span>
-											<span class="leading-6">{t(key)}</span>
+											<span class="leading-6">{factor}</span>
 										</li>
 									))}
 								</ul>

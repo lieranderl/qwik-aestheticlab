@@ -39,49 +39,51 @@ export const GalleryGrid = component$(() => {
 						{
 							Img: ImgManicure1,
 							id: "m1",
-							altKey: "app.work.alt.m1@@Bespoke classic manicure detail",
+							alt: t("app.work.alt.m1@@Bespoke classic manicure detail"),
 						},
 						{
 							Img: ImgPedicure5,
 							id: "p5",
-							altKey: "app.work.alt.p5@@Aesthetic pedicure detailing",
+							alt: t("app.work.alt.p5@@Aesthetic pedicure detailing"),
 						},
 						{
 							Img: ImgPedicure1,
 							id: "p1",
-							altKey: "app.work.alt.p1@@Nourishing foot bath and pedicure",
+							alt: t("app.work.alt.p1@@Nourishing foot bath and pedicure"),
 						},
 						{
 							Img: ImgManicure4,
 							id: "m4",
-							altKey:
+							alt: t(
 								"app.work.alt.m4@@Precision cuticle work and natural gel nails",
+							),
 						},
 						{
 							Img: ImgManicure2,
 							id: "m2",
-							altKey: "app.work.alt.m2@@Minimalist clean girl manicure styling",
+							alt: t("app.work.alt.m2@@Minimalist clean girl manicure styling"),
 						},
 						{
 							Img: ImgPedicure2,
 							id: "p2",
-							altKey: "app.work.alt.p2@@Refined toenail polish finish",
+							alt: t("app.work.alt.p2@@Refined toenail polish finish"),
 						},
 						{
 							Img: ImgManicure3,
 							id: "m3",
-							altKey: "app.work.alt.m3@@Elegant matte finish manicure",
+							alt: t("app.work.alt.m3@@Elegant matte finish manicure"),
 						},
 						{
 							Img: ImgPedicure3,
 							id: "p3",
-							altKey:
+							alt: t(
 								"app.work.alt.p3@@Professional hygienic pedicure treatment",
+							),
 						},
-					].map(({ Img, id, altKey }, i) => (
+					].map(({ Img, id, alt }, i) => (
 						<FadeUp key={id} delay={i * 40} class="overflow-hidden rounded-2xl">
 							<Img
-								alt={t(altKey)}
+								alt={alt}
 								class="interactive-media aspect-square h-full w-full object-cover"
 								loading="lazy"
 							/>
@@ -94,7 +96,7 @@ export const GalleryGrid = component$(() => {
 						data-testid="instagram-card"
 						href="https://www.instagram.com/aestheticlabbe"
 						target="_blank"
-						rel="noreferrer"
+						rel="noopener noreferrer"
 						onClick$={$(() => {
 							trackGoogleAnalyticsEvent("instagram_clicked", {
 								placement: "gallery_section",

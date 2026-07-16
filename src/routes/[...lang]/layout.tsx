@@ -3,6 +3,7 @@ import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { CookieBanner } from "~/components/ui/cookie-banner";
 import {
+	getLocaleCode,
 	localizeServiceGroups,
 	localizeServices,
 } from "~/shared/locale-content";
@@ -16,6 +17,21 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 		maxAge: 60 * 5,
 	});
 };
+
+function resolveStaffAbout(staff: Staff, locale: string) {
+	switch (getLocaleCode(locale)) {
+		case "ru":
+			return staff.about_ru || staff.about;
+		case "nl":
+			return staff.about_nl || staff.about;
+		case "fr":
+			return staff.about_fr || staff.about;
+		case "uk":
+			return staff.about_uk || staff.about;
+		default:
+			return staff.about;
+	}
+}
 
 export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 	const client = supabase(event);
@@ -41,7 +57,7 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 		return null;
 	}
 
-	return data as Contact;
+	return data ? (data as Contact) : null;
 });
 
 export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
@@ -57,6 +73,7 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 			.schema("gettimely")
 			.from("service_groups")
 			.select("*")
+			.eq("active", true)
 			.order("priority", { ascending: true });
 
 		if (error) {
@@ -83,7 +100,8 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 		.schema("gettimely")
 		.from("staff")
 		.select("*")
-		.eq("active", true);
+		.eq("active", true)
+		.order("id", { ascending: true });
 
 	if (error) {
 		logServerEvent("ERROR", "supabase_fetch_failed", {
@@ -92,7 +110,10 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 		});
 		return [];
 	}
-	return (data ?? []) as Staff[];
+	return ((data ?? []) as Staff[]).map((staff) => ({
+		...staff,
+		about: resolveStaffAbout(staff, requestEv.locale()),
+	}));
 });
 
 export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
@@ -123,9 +144,9 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 
 export default component$(() => {
 	return (
-		<div>
+		<>
 			<Slot />
 			<CookieBanner />
-		</div>
+		</>
 	);
 });

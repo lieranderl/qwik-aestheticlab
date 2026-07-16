@@ -51,7 +51,8 @@
     },
     "footer": {
       "all_rights": "Tous droits réservés",
-      "copyright": "Copyright"
+      "copyright": "Copyright",
+      "navigation": "Navigation de pied de page"
     },
     "generic": {
       "view": "Voir"
@@ -236,6 +237,16 @@
     },
     "title": "{{name}} démo",
     "work": {
+      "alt": {
+        "m1": "Détail d’une manucure classique sur mesure",
+        "m2": "Manucure minimaliste au style « clean girl »",
+        "m3": "Manucure élégante au fini mat",
+        "m4": "Travail précis des cuticules et ongles en gel naturels",
+        "p1": "Bain de pieds nourrissant et pédicure",
+        "p2": "Finition soignée du vernis à ongles des pieds",
+        "p3": "Soin de pédicure professionnel et hygiénique",
+        "p5": "Détails d’une pédicure esthétique"
+      },
       "title": "Nos réalisations"
     }
   },

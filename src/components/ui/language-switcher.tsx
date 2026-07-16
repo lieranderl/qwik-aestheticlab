@@ -1,10 +1,10 @@
-import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { $, component$, useId, useSignal } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import { config } from "~/speak-config";
 
-interface LanguageSwitcherProps {
+export interface LanguageSwitcherProps {
 	buttonClass?: string;
 }
 
@@ -15,6 +15,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 		const isExpanded = useSignal(false);
 		const dropdownRef = useSignal<HTMLDivElement>();
 		const triggerRef = useSignal<HTMLButtonElement>();
+		const menuId = useId();
 
 		// Extract current lang from URL or default
 		const currentLang =
@@ -25,25 +26,41 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 		const currentLangShort = currentLang.split("-")[0].toUpperCase();
 		const toggleMenu = $(() => {
 			isExpanded.value = !isExpanded.value;
+			if (isExpanded.value) {
+				requestAnimationFrame(() => triggerRef.value?.focus());
+			}
 		});
+		const trackLanguageChange = $((event: MouseEvent) => {
+			if (!(event.target instanceof Element)) return;
+			const link = event.target.closest<HTMLAnchorElement>("a[data-locale]");
+			const toLocale = link?.dataset.locale;
+			if (!toLocale) return;
 
-		useOnDocument(
-			"click",
-			$((event) => {
-				if (
-					isExpanded.value &&
-					event.target instanceof Node &&
-					!dropdownRef.value?.contains(event.target)
-				) {
-					isExpanded.value = false;
-				}
-			}),
-		);
+			trackGoogleAnalyticsEvent("language_changed", {
+				from_locale: currentLang,
+				to_locale: toLocale,
+			});
+		});
 
 		return (
 			<div
 				ref={dropdownRef}
 				class={`dropdown dropdown-end relative ${isExpanded.value ? "dropdown-open" : ""}`}
+				onFocusOut$={$((event) => {
+					if (
+						event.relatedTarget instanceof Node &&
+						dropdownRef.value?.contains(event.relatedTarget)
+					) {
+						return;
+					}
+					isExpanded.value = false;
+				})}
+				onKeyDown$={$((event) => {
+					if (event.key !== "Escape") return;
+					event.stopPropagation();
+					isExpanded.value = false;
+					requestAnimationFrame(() => triggerRef.value?.focus());
+				})}
 			>
 				<button
 					ref={triggerRef}
@@ -52,10 +69,8 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 					aria-label={t("app.language.select@@Select language")}
 					aria-haspopup="true"
 					aria-expanded={isExpanded.value}
+					aria-controls={menuId}
 					onClick$={toggleMenu}
-					onKeyDown$={$((event) => {
-						if (event.key === "Escape") isExpanded.value = false;
-					})}
 				>
 					{currentLangShort}
 					<svg
@@ -77,13 +92,10 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 
 				{isExpanded.value ? (
 					<ul
+						id={menuId}
 						class="dropdown-content menu menu-sm absolute right-0 top-full z-10 mt-1 w-32 rounded-2xl border border-base-content/20 bg-base-100 p-2 shadow-lg"
 						aria-label={t("app.language.options@@Language options")}
-						onKeyDown$={$((event) => {
-							if (event.key !== "Escape") return;
-							isExpanded.value = false;
-							requestAnimationFrame(() => triggerRef.value?.focus());
-						})}
+						onClick$={trackLanguageChange}
 					>
 						{config.supportedLocales.map((locale) => {
 							// Compute correct path for this locale
@@ -118,12 +130,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 									) : (
 										<a
 											href={localizedHref}
-											onClick$={$(() => {
-												trackGoogleAnalyticsEvent("language_changed", {
-													from_locale: currentLang,
-													to_locale: locale.lang,
-												});
-											})}
+											data-locale={locale.lang}
 											class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-base-content transition-colors duration-150 hover:bg-base-200"
 										>
 											{locale.lang.split("-")[0].toUpperCase()}

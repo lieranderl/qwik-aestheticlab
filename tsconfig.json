@@ -29,5 +29,5 @@
 			"~/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "./*.d.ts", "./*.config.ts"]
+	"include": ["src", "adapters/**/*.ts", "./*.d.ts", "./*.config.ts"]
 }

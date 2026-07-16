@@ -15,7 +15,9 @@ test("keeps the current locale prefix in primary navigation links", async ({
 }) => {
 	await page.goto("/en-BE/");
 
-	await expect(page.getByRole("link", { name: "Home" })).toHaveAttribute(
+	await expect(
+		page.getByRole("link", { name: "Home", exact: true }),
+	).toHaveAttribute(
 		"href",
 		"/en-BE/#",
 	);
@@ -147,7 +149,7 @@ test("keeps hero service copy readable at mobile and desktop widths", async ({
 
 		expect(result).not.toBeNull();
 		expect(result?.animationName).toBe("rotator");
-		expect(result?.colorCount).toBe(4);
+		expect(result?.colorCount).toBe(5);
 		expect(result?.lineHeight).toBeGreaterThan(0);
 		expect(result?.textRotateHeight).toBeGreaterThan(0);
 		expect(result?.lineBottom).toBeLessThanOrEqual(result?.footnoteTop ?? 0);
@@ -182,6 +184,56 @@ test("opens treatments in-page and restores the overview with browser history", 
 	await page.goBack();
 	await expect(page).toHaveURL(/\/en-BE\/#services$/);
 	await expect(treatmentButtons).toHaveCount(4);
+});
+
+test("falls back to the treatment overview for invalid shared state", async ({
+	page,
+}) => {
+	await page.goto(
+		"/en-BE/?treatment=unknown&treatmentArea=unknown#services",
+	);
+
+	await expect(page.getByRole("button", { name: "View Treatments" })).toHaveCount(
+		4,
+	);
+	await expect(page.locator("#service-details-heading")).toHaveCount(0);
+	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+		"href",
+		"http://localhost:5173/en-BE/",
+	);
+});
+
+test("supports keyboard dismissal for the language menu", async ({ page }) => {
+	await page.goto("/en-BE/");
+
+	const trigger = page.getByRole("button", { name: "Select language" });
+	await trigger.click();
+
+	await expect(trigger).toHaveAttribute("aria-expanded", "true");
+	await expect(
+		page.getByRole("list", { name: "Language options" }),
+	).toBeVisible();
+
+	await page.keyboard.press("Escape");
+
+	await expect(trigger).toHaveAttribute("aria-expanded", "false");
+	await expect(trigger).toBeFocused();
+});
+
+test("opens and closes the booking dialog without eagerly rendering it", async ({
+	page,
+}) => {
+	await page.goto("/en-BE/");
+
+	await page.getByRole("button", { name: "Book Appointment" }).first().click();
+
+	const dialog = page.getByRole("dialog", { name: "Book Appointment" });
+	await expect(dialog).toBeVisible();
+	await expect(dialog).toHaveAttribute("aria-modal", "true");
+	await expect(dialog.getByTitle("Booking Widget")).toHaveCount(1);
+
+	await dialog.getByRole("button", { name: "Close" }).first().click();
+	await expect(dialog).toBeHidden();
 });
 
 test.describe("cookie consent banner", () => {

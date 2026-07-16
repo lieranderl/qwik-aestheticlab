@@ -51,7 +51,8 @@
     },
     "footer": {
       "all_rights": "Alle rechten voorbehouden",
-      "copyright": "Copyright"
+      "copyright": "Copyright",
+      "navigation": "Navigatie in voettekst"
     },
     "generic": {
       "view": "Bekijken"
@@ -236,6 +237,16 @@
     },
     "title": "{{name}} demo",
     "work": {
+      "alt": {
+        "m1": "Detail van klassieke manicure op maat",
+        "m2": "Minimalistische clean-girl-manicure",
+        "m3": "Elegante manicure met matte afwerking",
+        "m4": "Precisiewerk aan nagelriemen en natuurlijke gelnagels",
+        "p1": "Verzorgend voetbad en pedicure",
+        "p2": "Verfijnde afwerking met teennagellak",
+        "p3": "Professionele hygiënische pedicurebehandeling",
+        "p5": "Esthetische pedicuredetails"
+      },
       "title": "Ons werk"
     }
   },

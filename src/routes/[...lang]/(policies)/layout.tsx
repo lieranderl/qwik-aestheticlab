@@ -6,14 +6,14 @@ import { LanguageSwitcher } from "~/components/ui/language-switcher";
 export default component$(() => {
 	const locale = useSpeakLocale();
 	const getPath = localizePath();
-	const pathtohome = getPath("/", locale.lang);
+	const pathToHome = getPath("/", locale.lang);
 	const t = inlineTranslate();
 	return (
 		<div class="min-h-screen bg-base-200 px-4 text-base-content sm:px-6 md:px-8">
 			<div class="mx-auto max-w-3xl py-3 sm:py-4 md:py-6">
 				<header class="surface-card sticky top-3 z-30 mb-8 flex items-center justify-between bg-base-100/98 p-2 md:mb-10">
 					<a
-						href={pathtohome}
+						href={pathToHome}
 						class="btn btn-ghost min-h-11 gap-2 px-3"
 						aria-label={t("app.nav.home@@Home")}
 					>

@@ -40,7 +40,10 @@ export const Navigation = component$(() => {
 	useOnWindow(
 		"scroll",
 		$(() => {
-			isScrolled.value = window.scrollY > 50;
+			const nextIsScrolled = window.scrollY > 50;
+			if (nextIsScrolled !== isScrolled.value) {
+				isScrolled.value = nextIsScrolled;
+			}
 		}),
 	);
 
@@ -114,10 +117,11 @@ export const Navigation = component$(() => {
 						<a
 							href={getLocaleNavLink(location.url.pathname, "#")}
 							class="flex items-center gap-2 transition-opacity hover:opacity-80"
+							aria-label={`${t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")} — ${t("app.nav.home@@Home")}`}
 						>
 							<BirdLogo
 								class={`h-12 w-auto md:h-16 [&_path]:fill-current ${headerTextColorClass}`}
-								aria-label={t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")}
+								aria-hidden="true"
 							/>
 						</a>
 					</div>

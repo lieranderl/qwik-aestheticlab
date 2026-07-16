@@ -13,7 +13,10 @@ export const AboutSection = component$(() => {
 			class="section-shell relative overflow-hidden bg-base-200/35"
 		>
 			{/* Background Decor - Watermark & Blobs */}
-			<div class="pointer-events-none absolute top-4 left-0 z-0 hidden w-full select-none text-center font-qestero text-[10vw] leading-none text-primary/20 sm:block md:top-10 md:left-10 md:w-auto md:text-left md:text-[8vw] md:text-primary/35">
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute top-4 left-0 z-0 hidden w-full select-none text-center font-qestero text-[10vw] leading-none text-primary/20 sm:block md:top-10 md:left-10 md:w-auto md:text-left md:text-[8vw] md:text-primary/35"
+			>
 				Aesthetic Lab
 			</div>
 			<div class="custom-container relative z-10">
@@ -38,7 +41,10 @@ export const AboutSection = component$(() => {
 						<FadeUp delay={80}>
 							<div class="section-lead relative max-w-2xl text-pretty">
 								{/* Decorative Quote Mark */}
-								<span class="absolute -top-8 -left-8 text-8xl text-primary/10 font-serif leading-none hidden lg:block">
+								<span
+									aria-hidden="true"
+									class="absolute -top-8 -left-8 hidden font-serif text-8xl leading-none text-primary/10 lg:block"
+								>
 									“
 								</span>
 

@@ -1,5 +1,5 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useId, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "./booking-modal";
 import { FadeUp } from "./fade-up";
@@ -19,30 +19,22 @@ const SERVICE_IMAGES = import.meta.glob("../../media/services/*.webp", {
 	import: "default",
 }) as Record<string, ServiceImageComponent>;
 
+const IMAGE_COMPONENTS = new Map<string, ServiceImageComponent>([
+	...Object.entries(GALLERY_IMAGES).map(
+		([path, component]) =>
+			[`gallery:${path.split("/").at(-1)}`, component] as const,
+	),
+	...Object.entries(SERVICE_IMAGES).map(
+		([path, component]) =>
+			[`service:${path.split("/").at(-1)}`, component] as const,
+	),
+]);
+
 function resolveImageComponent(image: string) {
-	if (image.startsWith("gallery:")) {
-		const imageName = image.slice("gallery:".length).replace(/\.jpg$/i, "");
-		for (const path in GALLERY_IMAGES) {
-			if (path.endsWith(`/${imageName}.jpg`)) {
-				return GALLERY_IMAGES[path];
-			}
-		}
-		return null;
-	}
-
-	if (image.startsWith("service:")) {
-		const imageName = image.slice("service:".length).replace(/\.webp$/i, "");
-		for (const path in SERVICE_IMAGES) {
-			if (path.endsWith(`/${imageName}.webp`)) {
-				return SERVICE_IMAGES[path];
-			}
-		}
-	}
-
-	return null;
+	return IMAGE_COMPONENTS.get(image) ?? null;
 }
 
-interface ServiceCardProps {
+export interface ServiceCardProps {
 	title: string;
 	description: string;
 	price?: string;
@@ -82,6 +74,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 	}) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
+		const descriptionId = useId();
 		const hasLongDescription = description.length > 140;
 		const ImageComp = resolveImageComponent(image);
 
@@ -130,6 +123,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								{title.charAt(0).toUpperCase() + title.slice(1)}
 							</h3>
 							<p
+								id={descriptionId}
 								class={[
 									"text-pretty font-montserrat text-sm leading-relaxed text-base-content/80",
 									variant === "category"
@@ -149,6 +143,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									})}
 									class="btn btn-ghost btn-sm min-h-11 w-fit rounded-full px-0 font-montserrat uppercase tracking-wider text-primary"
 									aria-expanded={isExpanded.value}
+									aria-controls={descriptionId}
 								>
 									{isExpanded.value
 										? t("app.common.read_less@@Read Less")
@@ -192,9 +187,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 							{customAction$ ? (
 								<button
 									type="button"
-									onClick$={$(() => {
-										customAction$();
-									})}
+									onClick$={customAction$}
 									class={[
 										"btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap rounded-full px-4 font-montserrat text-xs uppercase tracking-[0.08em]",
 										variant === "category"

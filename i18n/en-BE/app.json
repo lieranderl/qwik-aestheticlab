@@ -51,7 +51,8 @@
     },
     "footer": {
       "all_rights": "All right reserved",
-      "copyright": "Copyright"
+      "copyright": "Copyright",
+      "navigation": "Footer navigation"
     },
     "generic": {
       "view": "View"
@@ -233,6 +234,16 @@
     },
     "title": "{{name}} demo",
     "work": {
+      "alt": {
+        "m1": "Bespoke classic manicure detail",
+        "m2": "Minimalist clean girl manicure styling",
+        "m3": "Elegant matte finish manicure",
+        "m4": "Precision cuticle work and natural gel nails",
+        "p1": "Nourishing foot bath and pedicure",
+        "p2": "Refined toenail polish finish",
+        "p3": "Professional hygienic pedicure treatment",
+        "p5": "Aesthetic pedicure detailing"
+      },
       "title": "Our Work"
     }
   },
