@@ -6,8 +6,7 @@ export const RotatingText = component$(() => {
 	const rootRef = useSignal<HTMLElement>();
 	const isVisible = useSignal(false);
 
-	// eslint-disable-next-line qwik/no-use-visible-task
-	// biome-ignore lint: CSS animation needs viewport-aware play state.
+	// biome-ignore lint/correctness/noQwikUseVisibleTask: CSS animation needs viewport-aware play state.
 	useVisibleTask$(({ cleanup }) => {
 		const root = rootRef.value;
 		if (!root) return;

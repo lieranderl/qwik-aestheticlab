@@ -2,14 +2,25 @@ import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { CookieBanner } from "~/components/ui/cookie-banner";
-import {
-	getLocaleCode,
-	localizeServiceGroups,
-	localizeServices,
-} from "~/shared/locale-content";
 import { logServerEvent } from "~/shared/server-logging";
 import { supabase } from "~/shared/supabase-client";
+import {
+	projectContact,
+	projectServiceGroups,
+	projectServices,
+	projectStaff,
+} from "~/shared/supabase-data";
+import { config } from "~/speak-config";
 import type { Contact, Service, ServiceGroup, Staff } from "~/types";
+
+export const onRequest: RequestHandler = ({ params, error }) => {
+	const isSupportedLocale = config.supportedLocales.some(
+		(locale) => locale.lang === params.lang,
+	);
+	if (!isSupportedLocale) {
+		throw error(404, "Not Found");
+	}
+};
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({
@@ -17,21 +28,6 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 		maxAge: 60 * 5,
 	});
 };
-
-function resolveStaffAbout(staff: Staff, locale: string) {
-	switch (getLocaleCode(locale)) {
-		case "ru":
-			return staff.about_ru || staff.about;
-		case "nl":
-			return staff.about_nl || staff.about;
-		case "fr":
-			return staff.about_fr || staff.about;
-		case "uk":
-			return staff.about_uk || staff.about;
-		default:
-			return staff.about;
-	}
-}
 
 export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 	const client = supabase(event);
@@ -45,7 +41,7 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("contacts")
-		.select("*")
+		.select("email,open_hours,location,parking")
 		.eq("id", 1)
 		.single();
 
@@ -57,7 +53,7 @@ export const useContactLoader = routeLoader$<Contact | null>(async (event) => {
 		return null;
 	}
 
-	return data ? (data as Contact) : null;
+	return projectContact(data);
 });
 
 export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
@@ -72,7 +68,7 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 		const { data, error } = await client
 			.schema("gettimely")
 			.from("service_groups")
-			.select("*")
+			.select("id,name,name_ru,name_nl,name_fr,name_uk,priority")
 			.eq("active", true)
 			.order("priority", { ascending: true });
 
@@ -84,7 +80,7 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 			return [];
 		}
 
-		return localizeServiceGroups(data, requestEv.locale());
+		return projectServiceGroups(data, requestEv.locale());
 	},
 );
 
@@ -99,7 +95,7 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("staff")
-		.select("*")
+		.select("id,name,photo_url,about,about_ru,about_nl,about_fr,about_uk,role")
 		.eq("active", true)
 		.order("id", { ascending: true });
 
@@ -110,10 +106,7 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 		});
 		return [];
 	}
-	return ((data ?? []) as Staff[]).map((staff) => ({
-		...staff,
-		about: resolveStaffAbout(staff, requestEv.locale()),
-	}));
+	return projectStaff(data, requestEv.locale());
 });
 
 export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
@@ -127,7 +120,9 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("services")
-		.select("*")
+		.select(
+			"id,group_id,name,name_ru,name_nl,name_fr,name_uk,description,description_ru,description_nl,description_fr,description_uk,duration,price",
+		)
 		.eq("active", true)
 		.order("priority", { ascending: true });
 
@@ -139,7 +134,7 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 		return [];
 	}
 
-	return localizeServices(data, requestEv.locale());
+	return projectServices(data, requestEv.locale());
 });
 
 export default component$(() => {

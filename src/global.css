@@ -172,19 +172,19 @@ body {
 }
 
 /* Directional Variants */
-.fade-up-hidden {
+.js .fade-up-hidden {
   opacity: 0;
   transform: translateY(var(--fade-distance, 40px));
 }
-.fade-down-hidden {
+.js .fade-down-hidden {
   opacity: 0;
   transform: translateY(calc(var(--fade-distance, 40px) * -1));
 }
-.fade-left-hidden {
+.js .fade-left-hidden {
   opacity: 0;
   transform: translateX(var(--fade-distance, 40px));
 }
-.fade-right-hidden {
+.js .fade-right-hidden {
   opacity: 0;
   transform: translateX(calc(var(--fade-distance, 40px) * -1));
 }
@@ -212,16 +212,16 @@ body {
 
 /* Mobile & Touch Tweaks */
 @media (max-width: 768px), (pointer: coarse) {
-  .fade-up-hidden {
+  .js .fade-up-hidden {
     transform: translateY(calc(var(--fade-distance, 40px) * 0.7));
   }
-  .fade-down-hidden {
+  .js .fade-down-hidden {
     transform: translateY(calc(var(--fade-distance, 40px) * -0.7));
   }
-  .fade-left-hidden {
+  .js .fade-left-hidden {
     transform: translateX(calc(var(--fade-distance, 40px) * 0.7));
   }
-  .fade-right-hidden {
+  .js .fade-right-hidden {
     transform: translateX(calc(var(--fade-distance, 40px) * -0.7));
   }
 }

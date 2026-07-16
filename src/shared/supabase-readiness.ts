@@ -1,7 +1,10 @@
 import { isRuntimeConfigReady } from "./runtime-config";
 
 type RuntimeEnvironment = Record<string, string | undefined>;
-type FetchImplementation = typeof fetch;
+type FetchImplementation = (
+	input: URL,
+	init?: RequestInit,
+) => Promise<Response>;
 
 export async function checkSupabaseDependency(
 	environment: RuntimeEnvironment,

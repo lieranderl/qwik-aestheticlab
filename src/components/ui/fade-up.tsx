@@ -72,8 +72,7 @@ export const FadeUp = component$(
 			disable ? "disabled" : "hidden",
 		);
 
-		// eslint-disable-next-line qwik/no-use-visible-task
-		// biome-ignore lint: qwik/no-use-visible-task
+		// biome-ignore lint/correctness/noQwikUseVisibleTask: Visibility animation requires IntersectionObserver and layout bounds.
 		useVisibleTask$(({ cleanup }) => {
 			const el = elRef.value;
 			if (!el) return;
@@ -100,6 +99,7 @@ export const FadeUp = component$(
 				if (runOnce) return;
 			}
 
+			state.value = "hidden";
 			const sharedObserver = getSharedObserver(rootMargin, threshold);
 			sharedObserver.callbacks.set(el, (entry) => {
 				if (entry.isIntersecting) {

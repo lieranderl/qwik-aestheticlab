@@ -1,14 +1,15 @@
 import { describe, expect, it } from "vitest";
-import type { Service, ServiceGroup } from "~/types";
 import {
 	getLocaleCode,
+	type LocalizableService,
+	type LocalizableServiceGroup,
 	localizeService,
 	localizeServiceGroup,
 	localizeServiceGroups,
 	localizeServices,
 } from "./locale-content";
 
-const baseGroup: ServiceGroup = {
+const baseGroup: LocalizableServiceGroup = {
 	id: "group-1",
 	name: "Manicure",
 	name_en: "Manicure",
@@ -16,14 +17,12 @@ const baseGroup: ServiceGroup = {
 	name_nl: "Manicure NL",
 	name_fr: "Manucure",
 	name_uk: "Манікюр",
-	active: true,
 	priority: 10,
 };
 
-const baseService: Service = {
+const baseService: LocalizableService = {
 	id: "service-1",
 	group_id: "group-1",
-	category: "Manicure",
 	name: "Classic manicure",
 	name_ru: "Классический маникюр",
 	name_nl: "Klassieke manicure",
@@ -36,8 +35,6 @@ const baseService: Service = {
 	description_uk: "Український опис",
 	duration: 60,
 	price: 50,
-	priority: 1,
-	active: true,
 };
 
 describe("getLocaleCode", () => {
@@ -84,7 +81,7 @@ describe("localizeService", () => {
 	});
 
 	it("falls back to default (English) values when translation strings are empty", () => {
-		const emptyStringService: Service = {
+		const emptyStringService: LocalizableService = {
 			...baseService,
 			name_nl: "",
 			description_nl: "",

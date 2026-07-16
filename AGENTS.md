@@ -17,6 +17,7 @@
 | Format/lint check | `bunx --bun biome ci .` |
 | Typecheck | `bun run build.types` |
 | Unit tests | `bun run test` |
+| Unit coverage | `bun run test.coverage` |
 | E2E tests | `bun run test.e2e` |
 | Production build | `bun run build` |
 | Main local verification | `bun run verify` |

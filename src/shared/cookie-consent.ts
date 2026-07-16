@@ -33,7 +33,6 @@ export type StoredConsent = {
 };
 
 type AnalyticsWindow = Window & {
-	[key: `ga-disable-${string}`]: boolean | undefined;
 	dataLayer?: unknown[];
 	gtag?: (...args: unknown[]) => void;
 	__aestheticAnalyticsInitialized?: boolean;
@@ -64,7 +63,7 @@ function getConsentState(analytics: boolean): GoogleConsentState {
 }
 
 function getAnalyticsWindow() {
-	return window as unknown as AnalyticsWindow;
+	return window as AnalyticsWindow;
 }
 
 function hasAnalyticsConsent() {
@@ -105,7 +104,7 @@ function ensureGtag() {
 	analyticsWindow.gtag = gtag;
 
 	// Consent Mode advanced relies on consent-aware pings when storage is denied.
-	analyticsWindow[`ga-disable-${gaMeasurementId}`] = false;
+	Object.assign(analyticsWindow, { [`ga-disable-${gaMeasurementId}`]: false });
 
 	return gtag;
 }
@@ -137,7 +136,10 @@ function loadGoogleAnalyticsScript() {
 
 export function initializeGoogleAnalytics() {
 	const analyticsWindow = getAnalyticsWindow();
-	if (analyticsWindow.__aestheticAnalyticsInitialized) return;
+	if (analyticsWindow.__aestheticAnalyticsInitialized) {
+		loadGoogleAnalyticsScript();
+		return;
+	}
 
 	const gtag = ensureGtag();
 	gtag("consent", "default", {
@@ -209,6 +211,7 @@ export const getGoogleAnalyticsBootstrapScript = () => {
 
 	window.gtag("js", new Date());
 	window.gtag("config", measurementId, config);
+	window.__aestheticAnalyticsInitialized = true;
 })();
 `;
 };
@@ -218,7 +221,11 @@ export const readCookieConsent = (): StoredConsent | null => {
 		const raw = localStorage.getItem(CONSENT_STORAGE_KEY);
 		if (!raw) return null;
 		const parsed = JSON.parse(raw) as StoredConsent;
-		if (parsed?.version !== 1 || typeof parsed.analytics !== "boolean") {
+		if (
+			parsed?.version !== 1 ||
+			typeof parsed.analytics !== "boolean" ||
+			typeof parsed.updatedAt !== "string"
+		) {
 			return null;
 		}
 		return parsed;
@@ -233,7 +240,12 @@ export const saveCookieConsent = (analytics: boolean) => {
 		analytics,
 		updatedAt: new Date().toISOString(),
 	};
-	localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(payload));
+	try {
+		localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(payload));
+		return true;
+	} catch {
+		return false;
+	}
 };
 
 export const disableAnalytics = (options: { trackUpdate?: boolean } = {}) => {

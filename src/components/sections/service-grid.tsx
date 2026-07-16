@@ -631,7 +631,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										serviceId={`cat-${group.groupId}`}
 										location={location}
 										showBooking={false}
-										eager={index < 2}
 									/>
 								);
 							})}

@@ -29,6 +29,11 @@ export default component$(() => {
 			<head>
 				<meta charset="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<script
+					dangerouslySetInnerHTML={
+						'document.documentElement.classList.add("js");'
+					}
+				/>
 
 				<link
 					rel="preload"

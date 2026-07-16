@@ -12,12 +12,7 @@ function createCategory(overrides: Partial<ServiceGroup> = {}): ServiceGroup {
 	return {
 		id: "group-1",
 		name: "Manicure",
-		name_ru: "Маникюр",
-		name_nl: "Manicure",
-		name_fr: "Manucure",
-		name_uk: "Манікюр",
 		name_en: "Manicure",
-		active: true,
 		priority: 10,
 		...overrides,
 	};
@@ -27,21 +22,10 @@ function createService(overrides: Partial<Service> = {}): Service {
 	return {
 		id: "service-1",
 		group_id: "group-1",
-		category: "Manicure",
 		name: "Classic manicure",
-		name_ru: "Классический маникюр",
-		name_nl: "Klassieke manicure",
-		name_fr: "Manucure classique",
-		name_uk: "Класичний манікюр",
 		description: "Classic manicure service",
-		description_ru: "Классический маникюр",
-		description_nl: "Klassieke manicure",
-		description_fr: "Manucure classique",
-		description_uk: "Класичний манікюр",
 		duration: 60,
 		price: 50,
-		priority: 1,
-		active: true,
 		...overrides,
 	};
 }
@@ -55,7 +39,6 @@ describe("groupServicesAndCategories", () => {
 				createService({
 					id: "s3",
 					group_id: "group-2",
-					category: "Pedicure",
 					price: 55,
 				}),
 			],
@@ -120,7 +103,6 @@ describe("groupServicesAndCategories", () => {
 				createService({
 					id: "orphan",
 					group_id: "missing-group",
-					category: "Unknown",
 					price: 65,
 				}),
 			],
@@ -144,11 +126,9 @@ describe("groupServicesAndCategories", () => {
 
 describe("service-utils image resolution", () => {
 	test("maps special service names to the matching service cover asset", () => {
-		expect(resolveCoverImage("Brows & Lashes")).toEqual(
-			expect.stringContaining("brows.webp"),
-		);
-		expect(resolveCoverImage("Laser Hair Removal Face")).toEqual(
-			expect.stringContaining("laser-face.webp"),
+		expect(resolveCoverImage("Brows & Lashes")).toBe("service:brows.webp");
+		expect(resolveCoverImage("Laser Hair Removal Face")).toBe(
+			"service:laser-face.webp",
 		);
 	});
 
