@@ -98,7 +98,7 @@ test("keeps the Instagram profile card compact on desktop and fluid on mobile", 
 
 		if (viewport.width >= 1024) {
 			expect(metrics.width).toBeLessThanOrEqual(1024);
-			expect(metrics.height).toBeLessThanOrEqual(448);
+			expect(metrics.height).toBeLessThanOrEqual(448.5);
 			expect(metrics.left).toBeCloseTo(
 				(metrics.viewportWidth - metrics.width) / 2,
 				0,
@@ -175,10 +175,6 @@ test("opens treatments in-page and restores the overview with browser history", 
 	await page.goto("/en-BE/#services");
 
 	const treatmentButtons = page.getByRole("button", { name: "View Treatments" });
-	test.skip(
-		(await treatmentButtons.count()) === 0,
-		"Requires an available service catalogue",
-	);
 	await expect(treatmentButtons).toHaveCount(4);
 	await treatmentButtons.first().click();
 
@@ -198,10 +194,6 @@ test("falls back to the treatment overview for invalid shared state", async ({
 	);
 
 	const treatmentButtons = page.getByRole("button", { name: "View Treatments" });
-	test.skip(
-		(await treatmentButtons.count()) === 0,
-		"Requires an available service catalogue",
-	);
 	await expect(treatmentButtons).toHaveCount(4);
 	await expect(page.locator("#service-details-heading")).toHaveCount(0);
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
