@@ -1,5 +1,30 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const mockSupabaseUrl = "http://127.0.0.1:43121";
+const webServers = [
+	...(process.env.CI
+		? [
+				{
+					command: "bun e2e/mock-supabase.ts",
+					name: "Mock Supabase",
+					reuseExistingServer: false,
+					url: `${mockSupabaseUrl}/health`,
+				},
+			]
+		: []),
+	{
+		command: "bun run dev",
+		env: process.env.CI
+			? {
+					SUPABASE_KEY: "sb_publishable_ci_placeholder",
+					SUPABASE_URL: mockSupabaseUrl,
+				}
+			: undefined,
+		reuseExistingServer: !process.env.CI,
+		url: "http://localhost:5173",
+	},
+];
+
 export default defineConfig({
 	testDir: "./e2e",
 	fullyParallel: false,
@@ -25,9 +50,5 @@ export default defineConfig({
 			use: { ...devices["Desktop Safari"] },
 		},
 	],
-	webServer: {
-		command: "bun run dev",
-		url: "http://localhost:5173",
-		reuseExistingServer: !process.env.CI,
-	},
+	webServer: webServers,
 });
