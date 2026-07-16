@@ -65,7 +65,7 @@ export const CookieBanner = component$(() => {
 					aria-labelledby={titleId}
 					aria-describedby={descriptionId}
 				>
-					<div class="surface-card max-h-[38svh] overflow-y-auto bg-base-100/98 p-4 shadow-xl md:max-h-none md:p-5">
+					<div class="surface-card max-h-[50svh] overflow-y-auto overscroll-contain bg-base-100/98 p-4 shadow-xl md:p-5">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
 								<p
