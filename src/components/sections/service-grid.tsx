@@ -385,24 +385,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 								>
 									{viewFullLabel}
 								</a>
-								{selectedLaserSubgroupId.value ? (
-									<button
-										type="button"
-										onClick$={resetLaserSubgroup}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
-									>
-										{backToLaserLabel}
-									</button>
-								) : null}
-								{showFullList.value ? (
-									<button
-										type="button"
-										onClick$={resetOverview}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
-									>
-										{backLabel}
-									</button>
-								) : null}
 							</div>
 						</FadeUp>
 					</div>
@@ -498,6 +480,30 @@ export const ServiceGrid = component$<ServiceGridProps>(
 									</section>
 								</FadeUp>
 							) : null}
+
+							<FadeUp delay={60}>
+								<div
+									data-testid="service-back-actions"
+									class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
+								>
+									{selectedLaserSubgroupId.value ? (
+										<button
+											type="button"
+											onClick$={resetLaserSubgroup}
+											class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
+										>
+											{backToLaserLabel}
+										</button>
+									) : null}
+									<button
+										type="button"
+										onClick$={resetOverview}
+										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
+									>
+										{backLabel}
+									</button>
+								</div>
+							</FadeUp>
 
 							{selectedGroup.value?.groupId === "laser" &&
 							!selectedLaserSubgroup.value ? (

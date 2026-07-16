@@ -226,6 +226,20 @@ test("opens treatments in-page and restores the overview with browser history", 
 		});
 	}).toBe(true);
 
+	const backActions = page.getByTestId("service-back-actions");
+	await expect(backActions.getByRole("button", { name: "Back to Overview" })).toBeVisible();
+	const verticalPositions = await page.evaluate(() => {
+		const card = document.querySelector('[data-testid="service-details-card"]');
+		const actions = document.querySelector('[data-testid="service-back-actions"]');
+		return {
+			actionsTop: actions?.getBoundingClientRect().top ?? 0,
+			cardBottom: card?.getBoundingClientRect().bottom ?? 0,
+		};
+	});
+	expect(verticalPositions.actionsTop).toBeGreaterThanOrEqual(
+		verticalPositions.cardBottom,
+	);
+
 	await page.goBack();
 	await expect(page.locator("#service-details-heading")).toBeVisible();
 	await page.goBack();
