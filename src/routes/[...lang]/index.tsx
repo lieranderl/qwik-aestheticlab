@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, useLocation } from "@builder.io/qwik-city";
 import { AboutSection } from "~/components/sections/about-section";
 import { ContactSection } from "~/components/sections/contact-section";
 import { Footer } from "~/components/sections/footer";
@@ -21,6 +21,7 @@ export default component$(() => {
 	const serviceCategoriesSig = useServiceGroupsLoader();
 	const techniciansSignal = useTechniciansLoader();
 	const contactSignal = useContactLoader();
+	const location = useLocation();
 
 	return (
 		<div class="min-h-screen">
@@ -33,6 +34,12 @@ export default component$(() => {
 					services={servicesSignal.value}
 					serviceCategories={serviceCategoriesSig.value}
 					location={contactSignal.value?.location.name || ""}
+					initialCategoryId={
+						location.url.searchParams.get("treatment") || undefined
+					}
+					initialSubgroupId={
+						location.url.searchParams.get("treatmentArea") || undefined
+					}
 				/>
 
 				<TeamSection technicians={techniciansSignal.value} />

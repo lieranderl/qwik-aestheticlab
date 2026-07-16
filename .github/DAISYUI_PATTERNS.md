@@ -2,7 +2,7 @@
 
 This file documents how DaisyUI 5 components are used in this project. AI agents and developers should follow these established patterns for consistency.
 
-> **Source of truth:** https://daisyui.com/components/
+> **Source of truth:** <https://daisyui.com/components/>
 > **DaisyUI version:** 5.x (configured via `@plugin "daisyui"` in `src/global.css`)
 
 ## Theme Configuration
@@ -22,7 +22,7 @@ The custom theme is defined in `src/global.css` inside the `@plugin "daisyui/the
 ### Key Palette Tokens
 
 | Token | Hex | Usage |
-|-------|-----|-------|
+| ------- | ----- | ------- |
 | `base-100` | `#f0f2f0` | Card backgrounds, light surfaces |
 | `base-200` | `#8b9687` | Page background, muted surfaces |
 | `base-300` | `#6b7568` | Borders, dividers |
@@ -62,7 +62,7 @@ The custom theme is defined in `src/global.css` inside the `@plugin "daisyui/the
 <button class="btn btn-outline btn-sm rounded-full">Reject</button>
 ```
 
-### Convention
+### Button Conventions
 
 - **Primary actions** → `btn btn-primary`
 - **Secondary actions** → `btn btn-primary btn-outline` or `btn btn-outline btn-neutral`
@@ -88,7 +88,7 @@ Used for the booking widget. Pattern:
 </dialog>
 ```
 
-### Convention
+### Modal Conventions
 
 - Open via `(document.getElementById(id) as HTMLDialogElement).showModal()`.
 - Close via `<form method="dialog">` button or the `close` event.
@@ -102,7 +102,7 @@ Used for the booking widget. Pattern:
 Service cards use a custom image overlay pattern rather than the standard DaisyUI `card` class, but still follow DaisyUI token conventions:
 
 ```tsx
-<div class="group relative h-[400px] w-full overflow-hidden rounded-2xl shadow-sm transition-all duration-500 hover:shadow-xl cursor-pointer bg-neutral-900">
+<div class="group relative h-[400px] w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-sm transition-shadow duration-200 hover:shadow-xl">
   {/* Background image + gradient overlay */}
   {/* Content positioned absolute at bottom */}
 </div>
@@ -113,7 +113,7 @@ Service cards use a custom image overlay pattern rather than the standard DaisyU
 These use the DaisyUI `card` component:
 
 ```tsx
-<div class="card lg:card-side bg-base-100/90 backdrop-blur-md overflow-hidden border border-white/50 shadow-xl rounded-2xl">
+<div class="card surface-card overflow-hidden lg:card-side">
   <div class="card-body p-8 md:p-12">
     {/* Content */}
   </div>
@@ -126,17 +126,17 @@ These use the DaisyUI `card` component:
 ### Team Member Cards
 
 ```tsx
-<div class="bg-base-100/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:scale-102 text-center border border-white/50 h-full flex flex-col">
+<div class="surface-card flex h-full flex-col p-8 text-center transition-shadow duration-200 hover:shadow-md">
   {/* Avatar, name, bio, booking button */}
 </div>
 ```
 
-### Convention
+### Card Conventions
 
-- Cards use `rounded-2xl` consistently (matches `--radius-box: 2rem` theme token).
+- Cards use `rounded-2xl` consistently (matches the `--radius-box: 1rem` theme token).
 - Controls and badges use pill radius via DaisyUI selector/field tokens plus `rounded-full` where explicit styling is needed.
-- Glass/frosted effect: `bg-base-100/90 backdrop-blur-sm border border-white/50`.
-- Hover: `hover:shadow-xl` + optional `hover:scale-102` or `hover:scale-105`.
+- Use opaque or near-opaque surfaces instead of large backdrop-filter areas.
+- Hover feedback uses the shared 150–200 ms motion scale and compositor-safe transforms only.
 
 ## Dropdowns (`dropdown`)
 
@@ -153,7 +153,7 @@ Used for the language switcher:
 </div>
 ```
 
-### Convention
+### Dropdown Conventions
 
 - Use `dropdown-end` for right-aligned dropdowns.
 - Menu items inside `<ul class="dropdown-content menu">`.
@@ -179,7 +179,7 @@ Used in the reviews section:
 </div>
 ```
 
-### Convention
+### Rating Conventions
 
 - Display-only ratings use `checked disabled` on all inputs.
 - Star color: `bg-warning` (golden).
@@ -202,6 +202,29 @@ Also used as thin decorative lines:
 ```tsx
 <div class="h-px w-20 bg-primary mx-auto" />
 ```
+
+## Text Rotate (`text-rotate`)
+
+Used for the hero service line. Keep the official nested structure and reserve a
+stable width so words do not shift the surrounding sentence:
+
+```tsx
+<span class="text-rotate w-64 font-qestero leading-[1.5] duration-10000">
+  <span class="justify-items-center">
+    <span class="text-primary">manicure</span>
+    <span class="text-secondary">pedicure</span>
+    <span class="hero-rotate-accent">brows &amp; lashes</span>
+    <span class="text-base-content">laser</span>
+  </span>
+</span>
+```
+
+The custom line height follows DaisyUI's tall-font pattern and prevents Qestero
+glyphs from clipping. Provide the complete sentence separately for assistive
+technology, pause the looping track off-screen, and disable it when reduced
+motion is requested. Give each row a distinct semantic theme color; derive the
+plum variant from `accent` and `base-content` to preserve contrast on
+`base-200`.
 
 ## Carousel (`carousel`)
 
@@ -232,21 +255,21 @@ Uses DaisyUI button patterns within a fixed-position card:
 ## Z-Index Scale
 
 | Layer | z-index | Usage |
-|-------|---------|-------|
-| Body grain overlay | `z-[9999]` | Noise texture pseudo-element |
+| ------- | --------- | ------- |
 | Navigation header | `z-100` | Fixed nav bar |
-| Mobile menu overlay | `z-110` | Full-screen mobile nav |
-| Cookie banner | `z-120` | Bottom cookie consent |
+| Cookie settings | `z-110` | Persistent compact settings control |
+| Mobile menu overlay | `z-120` | Full-screen mobile nav |
+| Cookie banner | `z-130` | Consent decision panel |
 
 ## Combining DaisyUI with Tailwind
 
 DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 
 ```tsx
-<button class="btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase hover:-translate-y-1 transition-all duration-300">
+<button class="btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase transition-colors duration-150">
   {/* DaisyUI: btn btn-primary btn-lg */}
   {/* Tailwind: font-montserrat font-medium tracking-widest uppercase */}
-  {/* Tailwind animation: hover:-translate-y-1 transition-all duration-300 */}
+  {/* Interaction feedback stays within the shared 150–200 ms motion scale. */}
 </button>
 ```
 
@@ -255,7 +278,7 @@ DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 ## When to Use Which
 
 | Need | Use |
-|------|-----|
+| ------ | ----- |
 | Buttons | DaisyUI `btn` + variants |
 | Modals/dialogs | DaisyUI `modal` with `<dialog>` |
 | Dropdowns | DaisyUI `dropdown` + `menu` |
@@ -263,6 +286,7 @@ DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 | Navigation links | DaisyUI `link` |
 | Horizontal separator | DaisyUI `divider` |
 | Horizontal scroll | DaisyUI `carousel` |
+| Rotating hero copy | DaisyUI `text-rotate` |
 | Cards | DaisyUI `card` for standard layouts; custom div for image-overlay cards |
 | Badges/pills | DaisyUI `badge` |
 | Loading states | DaisyUI `loading loading-spinner` |
@@ -279,7 +303,7 @@ DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 
 When introducing a DaisyUI component not yet used in the project:
 
-1. Check https://daisyui.com/components/ for the latest v5 API.
+1. Check <https://daisyui.com/components/> for the latest v5 API.
 2. Follow the existing pattern of combining DaisyUI structure classes with Tailwind for customization.
 3. Use theme tokens for colors — do not override with arbitrary values.
 4. Match the `rounded-2xl` border radius convention unless the component has its own radius token.

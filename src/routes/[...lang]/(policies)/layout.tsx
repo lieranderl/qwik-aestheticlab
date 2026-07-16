@@ -1,21 +1,29 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { HiHomeOutline } from "@qwikest/icons/heroicons";
-import { localizePath, useSpeakLocale } from "qwik-speak";
+import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
 import { LanguageSwitcher } from "~/components/ui/language-switcher";
 
 export default component$(() => {
 	const locale = useSpeakLocale();
 	const getPath = localizePath();
-	const pathtohome = getPath("/", locale.lang);
+	const pathToHome = getPath("/", locale.lang);
+	const t = inlineTranslate();
 	return (
-		<div class="min-h-screen bg-base-200 text-base-content px-1 md:px-8">
-			<div class="max-w-3xl mx-auto bg-transparent p-8 rounded-2xl">
-				<div class="flex justify-between items-center mb-12 p-8">
-					<a href={pathtohome} class="link">
-						<HiHomeOutline class="text-xl md:text-3xl text-primary" />
+		<div class="min-h-screen bg-base-200 px-4 text-base-content sm:px-6 md:px-8">
+			<div class="mx-auto max-w-3xl py-3 sm:py-4 md:py-6">
+				<header class="surface-card sticky top-3 z-30 mb-8 flex items-center justify-between bg-base-100/98 p-2 md:mb-10">
+					<a
+						href={pathToHome}
+						class="btn btn-ghost min-h-11 gap-2 px-3"
+						aria-label={t("app.nav.home@@Home")}
+					>
+						<HiHomeOutline class="text-xl text-primary" aria-hidden="true" />
+						<span class="font-montserrat text-sm font-semibold">
+							{t("app.nav.home@@Home")}
+						</span>
 					</a>
 					<LanguageSwitcher />
-				</div>
+				</header>
 				<Slot />
 			</div>
 		</div>

@@ -16,12 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import pkg from "./package.json";
 
 type PkgDep = Record<string, string>;
-// biome-ignore lint/suspicious/noExplicitAny: false positive
-const { dependencies = {}, devDependencies = {} } = pkg as any as {
-	dependencies: PkgDep;
-	devDependencies: PkgDep;
-	[key: string]: unknown;
-};
+const { dependencies, devDependencies } = pkg;
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
 const immutableAssetCache = "public, max-age=31536000, immutable";

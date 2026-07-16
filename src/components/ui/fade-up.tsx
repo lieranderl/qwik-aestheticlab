@@ -39,7 +39,7 @@ function getSharedObserver(rootMargin: number, threshold: number) {
 	return shared;
 }
 
-interface FadeUpProps {
+export interface FadeUpProps {
 	delay?: number;
 	duration?: number;
 	threshold?: number;
@@ -56,12 +56,12 @@ interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		duration = 800,
+		duration = 320,
 		threshold = 0.1,
 		runOnce = true,
 		rootMargin = 50,
 		easing = "ease-out",
-		distance = 60,
+		distance = 16,
 		direction = "up",
 		disable = false,
 		class: className = "",
@@ -97,6 +97,7 @@ export const FadeUp = component$(
 				rect.bottom > rootMargin
 			) {
 				state.value = delay > 0 ? "visible" : "immediate";
+				if (runOnce) return;
 			}
 
 			const sharedObserver = getSharedObserver(rootMargin, threshold);
@@ -135,7 +136,7 @@ export const FadeUp = component$(
 					"--fade-distance": `${distance}px`,
 					"--fade-easing": easing,
 				}}
-				class={`${classMap[state.value]} ${className}`.trim()}
+				class={`fade-motion ${classMap[state.value]} ${className}`.trim()}
 				onClick$={onClick$}
 			>
 				<Slot />

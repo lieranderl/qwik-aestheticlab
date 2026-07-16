@@ -16,6 +16,7 @@
       "book_now": "Nu boeken"
     },
     "booking": {
+      "loading": "Boekingsopties laden",
       "widget_title": "Boekingswidget"
     },
     "changeLocale": "Verander taal",
@@ -50,7 +51,8 @@
     },
     "footer": {
       "all_rights": "Alle rechten voorbehouden",
-      "copyright": "Copyright"
+      "copyright": "Copyright",
+      "navigation": "Navigatie in voettekst"
     },
     "generic": {
       "view": "Bekijken"
@@ -60,9 +62,17 @@
         "description": "Premium schoonheidssalon met manicures op maat, wenkbrauwmodellering en laserbehandelingen in een zen, biologische omgeving.",
         "title": "Aesthetic Lab | Nagelontwerp, Wenkbrauwen & Laser"
       },
+      "notice": {
+        "description": "Belangrijke informatie over houdbaarheid, nazorg en gratis correcties voor klanten van Aesthetic Lab.",
+        "title": "Klantinformatie | Aesthetic Lab"
+      },
       "pricelist": {
         "description": "Volledige prijslijst voor manicures, pedicures, wenkbrauwen en laserbehandelingen.",
         "title": "Diensten & Prijzen | Aesthetic Lab"
+      },
+      "privacy": {
+        "description": "Hoe Aesthetic Lab uw persoonsgegevens verzamelt, gebruikt en beschermt.",
+        "title": "Privacybeleid | Aesthetic Lab"
       }
     },
     "hero": {
@@ -94,6 +104,10 @@
       "title": "Volg de studio ook buiten je afspraak om",
       "view_post": "Bekijk dit bericht op Instagram"
     },
+    "language": {
+      "options": "Taalopties",
+      "select": "Taal kiezen"
+    },
     "modal": {
       "close": "sluiten"
     },
@@ -103,8 +117,10 @@
       "contact": "Contact",
       "home": "Home",
       "logo_bird": "Aesthetic Lab Vogel Logo",
+      "mobile_menu": "Mobiele navigatie",
       "open_menu": "Menu openen",
       "policy": "Beleid",
+      "primary": "Hoofdnavigatie",
       "services": "Diensten",
       "team": "Team",
       "work": "Werk"
@@ -141,6 +157,7 @@
     "pricelist": {
       "category_label": "Categorie",
       "category_nav": "Servicecategorieën",
+      "empty": "De prijzen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor actuele informatie.",
       "hero_alt": "Aesthetic Lab treatment catalog background",
       "ready": "Klaar wanneer u dat bent"
     },
@@ -180,6 +197,7 @@
       "google_link": "Lees alle beoordelingen op Google",
       "kicker": "Klantnotities",
       "rating_aria": "5 van 5 sterren",
+      "source": "Google-review",
       "title": "Vriendelijke woorden"
     },
     "services": {
@@ -190,6 +208,7 @@
       "catalogue": "Behandelcatalogus",
       "default_category": "Diensten",
       "duration": "Duur:",
+      "empty": "De behandelingen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor de actuele opties.",
       "from_price": "Vanaf",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
       "laser_body_title": "Laserontharing LICHAAM",
@@ -218,6 +237,16 @@
     },
     "title": "{{name}} demo",
     "work": {
+      "alt": {
+        "m1": "Detail van klassieke manicure op maat",
+        "m2": "Minimalistische clean-girl-manicure",
+        "m3": "Elegante manicure met matte afwerking",
+        "m4": "Precisiewerk aan nagelriemen en natuurlijke gelnagels",
+        "p1": "Verzorgend voetbad en pedicure",
+        "p2": "Verfijnde afwerking met teennagellak",
+        "p3": "Professionele hygiënische pedicurebehandeling",
+        "p5": "Esthetische pedicuredetails"
+      },
       "title": "Ons werk"
     }
   },

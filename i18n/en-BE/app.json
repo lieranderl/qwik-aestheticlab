@@ -16,6 +16,7 @@
       "book_now": "Book Now"
     },
     "booking": {
+      "loading": "Loading booking options",
       "widget_title": "Booking Widget"
     },
     "changeLocale": "Change language",
@@ -50,7 +51,8 @@
     },
     "footer": {
       "all_rights": "All right reserved",
-      "copyright": "Copyright"
+      "copyright": "Copyright",
+      "navigation": "Footer navigation"
     },
     "generic": {
       "view": "View"
@@ -60,9 +62,17 @@
         "description": "Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
         "title": "Aesthetic Lab | Nail Design, Brows & Laser"
       },
+      "notice": {
+        "description": "Important treatment durability, aftercare, and complimentary fix information for Aesthetic Lab clients.",
+        "title": "Client Information | Aesthetic Lab"
+      },
       "pricelist": {
         "description": "Full price list for manicures, pedicures, brows, and laser treatments.",
         "title": "Services & Pricing | Aesthetic Lab"
+      },
+      "privacy": {
+        "description": "How Aesthetic Lab collects, uses, and protects your personal information.",
+        "title": "Privacy Policy | Aesthetic Lab"
       }
     },
     "hero": {
@@ -94,6 +104,10 @@
       "title": "Follow the studio beyond your appointment",
       "view_post": "View this post on Instagram"
     },
+    "language": {
+      "options": "Language options",
+      "select": "Select language"
+    },
     "modal": {
       "close": "close"
     },
@@ -103,8 +117,10 @@
       "contact": "Contact",
       "home": "Home",
       "logo_bird": "Aesthetic Lab Bird Logo",
+      "mobile_menu": "Mobile navigation",
       "open_menu": "Open menu",
       "policy": "Policy",
+      "primary": "Primary navigation",
       "services": "Services",
       "team": "Team",
       "work": "Work"
@@ -141,6 +157,7 @@
     "pricelist": {
       "category_label": "Category",
       "category_nav": "Service categories",
+      "empty": "Pricing is temporarily unavailable. Please contact us for current treatment information.",
       "hero_alt": "Aesthetic Lab treatment catalog background",
       "ready": "Ready when you are"
     },
@@ -180,6 +197,7 @@
       "google_link": "Read all reviews on Google",
       "kicker": "Client notes",
       "rating_aria": "5 out of 5 stars",
+      "source": "Google Review",
       "title": "Kind Words"
     },
     "services": {
@@ -190,6 +208,7 @@
       "catalogue": "Treatment catalogue",
       "default_category": "Services",
       "duration": "Duration:",
+      "empty": "Treatments are temporarily unavailable. Please contact us for current options.",
       "from_price": "From",
       "general_desc": "Professional beauty treatments for your refined look.",
       "laser_category": "Laser",
@@ -215,6 +234,16 @@
     },
     "title": "{{name}} demo",
     "work": {
+      "alt": {
+        "m1": "Bespoke classic manicure detail",
+        "m2": "Minimalist clean girl manicure styling",
+        "m3": "Elegant matte finish manicure",
+        "m4": "Precision cuticle work and natural gel nails",
+        "p1": "Nourishing foot bath and pedicure",
+        "p2": "Refined toenail polish finish",
+        "p3": "Professional hygienic pedicure treatment",
+        "p5": "Aesthetic pedicure detailing"
+      },
       "title": "Our Work"
     }
   },

@@ -1,4 +1,10 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	useId,
+	useSignal,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { Footer } from "~/components/sections/footer";
@@ -8,7 +14,7 @@ import { FadeUp } from "~/components/ui/fade-up";
 import { formatPrice } from "~/consts";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
-import type { Service } from "~/types";
+import type { Service, ServiceGroup } from "~/types";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -34,12 +40,18 @@ function getStartingPriceLabel(groupServices: Service[], fromLabel: string) {
 	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
 }
 
-function getDisplayCategoryName(categoryName: string) {
+function getDisplayCategoryName(
+	category: ServiceGroup | undefined,
+	fallback: string,
+	browsAndLashesLabel: string,
+) {
+	const categoryName = category?.name || fallback;
 	const displayCategoryName =
 		categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
-	if (displayCategoryName === "Brows") {
-		return "Brows & Lashes";
+	const englishName = category?.name_en?.toLowerCase() || "";
+	if (englishName.includes("brows") || englishName.includes("lashes")) {
+		return browsAndLashesLabel;
 	}
 
 	return displayCategoryName;
@@ -57,71 +69,77 @@ const PricelistServiceItem = component$(
 	({ service }: PricelistServiceItemProps) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
+		const descriptionId = useId();
 		const readLessLabel = t("app.common.read_less@@Read Less");
 		const readMoreLabel = t("app.common.read_more@@Read More");
 
 		return (
-			<div class="group rounded-2xl bg-base-100/60 px-3.5 py-3.5 md:px-6 md:py-5">
-				{/* Header Row: Title --- Price */}
-				<div class="mb-1.5 flex flex-col gap-1.5 md:mb-2 md:flex-row md:items-baseline md:justify-between md:gap-0">
-					<div class="flex min-w-0 grow items-baseline">
-						<h3 class="pr-3 font-qestero text-base font-semibold tracking-wide text-base-content md:pr-4 md:text-2xl">
-							{service.name.charAt(0).toUpperCase() + service.name.slice(1)}
-						</h3>
-						<div class="hidden md:block grow border-b border-dotted border-base-200 mx-2 relative -top-1.5 opacity-70 min-w-5"></div>
-					</div>
-					<span class="self-end shrink-0 rounded-full bg-base-200/40 px-3 py-1 font-montserrat text-xs font-semibold text-base-content md:self-auto md:px-4 md:pl-4 md:text-base">
-						{formatPremiumPrice(service.price)}
-					</span>
-				</div>
-
-				{/* Description with expand/collapse on mobile */}
-				<div class="mb-2">
-					<p
-						class={`max-w-2xl font-montserrat text-xs text-base-content/80 md:text-sm ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
-					>
-						{service.description}
-					</p>
-					{service.description && service.description.length > 100 && (
-						<button
-							type="button"
-							onClick$={$(() => {
-								isExpanded.value = !isExpanded.value;
-							})}
-							class="mt-1 text-[10px] font-medium text-primary hover:underline md:hidden"
-						>
-							{isExpanded.value ? readLessLabel : readMoreLabel}
-						</button>
-					)}
-				</div>
-
-				{/* Meta: Duration */}
-				{service.duration && (
-					<div class="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wider text-primary md:text-xs">
-						<span class="inline-flex h-6 items-center justify-center rounded-full bg-primary/10 px-2.5 text-primary md:h-7 md:px-3">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="12"
-								height="12"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="lucide lucide-clock"
-								aria-hidden="true"
-							>
-								<circle cx="12" cy="12" r="10" />
-								<polyline points="12 6 12 12 16 14" />
-							</svg>
-							<span class="ml-2">
-								{service.duration}&nbsp;{t("app.services.minutes@@min")}
-							</span>
+			<article class="card card-sm border border-base-content/12 bg-base-100 shadow-sm">
+				<div class="card-body gap-3 px-4 py-4 md:px-6 md:py-5">
+					{/* Header Row: Title --- Price */}
+					<div class="flex flex-col gap-1.5 md:flex-row md:items-baseline md:justify-between md:gap-0">
+						<div class="flex min-w-0 grow items-baseline">
+							<h3 class="pr-3 font-montserrat text-base leading-snug font-semibold text-base-content md:pr-4 md:text-lg">
+								{service.name}
+							</h3>
+							<div class="relative -top-1.5 mx-2 hidden min-w-5 grow border-b border-dotted border-base-content/25 md:block" />
+						</div>
+						<span class="badge badge-primary badge-lg self-end shrink-0 font-montserrat font-semibold text-primary-content md:self-auto">
+							{formatPremiumPrice(service.price)}
 						</span>
 					</div>
-				)}
-			</div>
+
+					{/* Description with expand/collapse on mobile */}
+					<div class="mb-2">
+						<p
+							id={descriptionId}
+							class={`max-w-4xl font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7 ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
+						>
+							{service.description}
+						</p>
+						{service.description && service.description.length > 100 && (
+							<button
+								type="button"
+								onClick$={$(() => {
+									isExpanded.value = !isExpanded.value;
+								})}
+								class="btn btn-ghost btn-sm mt-1 min-h-11 px-0 font-montserrat text-xs text-primary md:hidden"
+								aria-expanded={isExpanded.value}
+								aria-controls={descriptionId}
+							>
+								{isExpanded.value ? readLessLabel : readMoreLabel}
+							</button>
+						)}
+					</div>
+
+					{/* Meta: Duration */}
+					{service.duration && (
+						<div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-base-content/75">
+							<span class="badge badge-outline badge-sm h-auto min-h-8 gap-2 border-base-content/25 px-3 text-base-content/75">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="lucide lucide-clock"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="10" />
+									<polyline points="12 6 12 12 16 14" />
+								</svg>
+								<span class="ml-2">
+									{service.duration}&nbsp;{t("app.services.minutes@@min")}
+								</span>
+							</span>
+						</div>
+					)}
+				</div>
+			</article>
 		);
 	},
 );
@@ -135,6 +153,9 @@ export default component$(() => {
 	const categoryLabel = t("app.pricelist.category_label@@Category");
 	const categoryNavLabel = t("app.pricelist.category_nav@@Service categories");
 	const fromPriceLabel = t("app.services.from_price@@From");
+	const browsAndLashesLabel = t(
+		"app.services.brows_lashes_title@@Brows & Lashes",
+	);
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA events require browser-only gtag state.
 	useVisibleTask$(() => {
@@ -163,7 +184,9 @@ export default component$(() => {
 				(a, b) => a.price - b.price,
 			);
 			const displayCategoryName = getDisplayCategoryName(
-				category?.name || defaultCategoryLabel,
+				category,
+				defaultCategoryLabel,
+				browsAndLashesLabel,
 			);
 			return {
 				groupId,
@@ -180,136 +203,157 @@ export default component$(() => {
 		})
 		.sort((a, b) => b.priority - a.priority);
 	return (
-		<div class="min-h-screen">
+		<div class="min-h-screen bg-base-100">
 			<Navigation />
 
 			<main>
 				{/* Hero */}
-				<div class="relative flex h-[34vh] min-h-72 items-center justify-center overflow-hidden md:h-[48vh] md:min-h-120">
+				<section class="hero relative min-h-96 overflow-hidden bg-base-200 pt-16 md:min-h-128 md:pt-20">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
 							alt={t(
 								"app.pricelist.hero_alt@@Aesthetic Lab treatment catalog background",
 							)}
-							class="h-full w-full object-cover brightness-[0.85] saturate-90"
+							class="h-full w-full object-cover opacity-85"
 							loading="eager"
 							fetchPriority="high"
 						/>
-						<div class="absolute inset-0 bg-linear-to-b from-black/60 via-black/30 to-black/60" />
+						<div class="hero-overlay absolute inset-0 bg-base-200/40" />
 					</div>
-					<div class="relative z-10 max-w-2xl p-5 text-center text-white md:p-6">
-						<FadeUp>
-							<div class="inline-flex items-center gap-2 bg-base-100/10 border border-white/20 rounded-full px-3 md:px-4 py-1 text-[10px] md:text-xs uppercase tracking-[0.25em] md:tracking-[0.3em]">
-								<span class="h-2 w-2 rounded-full bg-primary" />
-								Aesthetic Lab
+					<div class="hero-content relative z-10 w-full max-w-7xl justify-center px-4 py-12 md:px-8 md:py-16 opacity-95">
+						<div class="mx-auto w-full max-w-xl">
+							<div class="surface-card bg-base-100/90 px-6 py-7 text-center text-base-content md:px-9 md:py-8">
+								<h1 class="font-qestero text-4xl leading-tight md:text-5xl">
+									{t("app.services.pricing_title@@Services & Pricing")}
+								</h1>
+								<div class="mx-auto my-4 h-px w-16 bg-primary/40 md:my-5" />
+								<p class="mx-auto max-w-lg font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
+									{t(
+										"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
+									)}
+								</p>
 							</div>
-							<h1 class="font-qestero text-3xl md:text-6xl mt-4 md:mt-6 mb-3 md:mb-4 leading-tight">
-								{t("app.services.pricing_title@@Services & Pricing")}
-							</h1>
-							<p class="font-montserrat text-sm md:text-lg max-w-xl mx-auto opacity-90">
-								{t(
-									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
-								)}
-							</p>
-						</FadeUp>
+						</div>
 					</div>
-				</div>
+				</section>
 
 				{/* Pricing List */}
-				<div class="custom-container mx-auto max-w-6xl py-10 md:py-24">
-					{groupedServices.length > 1 ? (
-						<nav
-							class="sticky top-16 z-20 -mx-4 mb-8 border-y border-base-300/40 bg-base-100/92 px-4 py-3 backdrop-blur-md md:top-20 md:mb-12 md:rounded-full md:border md:px-5"
-							aria-label={categoryNavLabel}
-						>
-							<div class="scroll-fade-x scrollbar-none flex snap-x gap-2 overflow-x-auto pb-1">
-								{groupedServices.map(
-									({ groupId, displayCategoryName, anchorId }, index) => (
-										<a
-											key={groupId}
-											href={`#${anchorId}`}
-											class="btn btn-outline btn-primary btn-xs shrink-0 snap-start rounded-full font-montserrat uppercase tracking-wider md:btn-sm"
-										>
-											<span class="text-primary/60">
-												{getCategoryNumber(index)}
-											</span>
-											{displayCategoryName}
-										</a>
-									),
-								)}
+				<section class="section-shell border-y border-base-300/30 bg-base-200">
+					<div class="custom-container mx-auto max-w-6xl">
+						{groupedServices.length > 1 ? (
+							<nav
+								class="card surface-card sticky top-16 z-20 -mx-1 mb-8 bg-base-100/98 p-2 shadow-md md:top-20 md:mb-12 md:rounded-2xl md:p-3"
+								aria-label={categoryNavLabel}
+							>
+								<div class="scrollbar-none flex snap-x gap-2 overflow-x-auto overscroll-x-contain">
+									{groupedServices.map(
+										({ groupId, displayCategoryName, anchorId }, index) => (
+											<a
+												key={groupId}
+												href={`#${anchorId}`}
+												class="btn btn-outline btn-primary btn-sm min-h-11 shrink-0 snap-start rounded-full font-montserrat uppercase tracking-wider"
+											>
+												<span class="text-primary/60">
+													{getCategoryNumber(index)}
+												</span>
+												{displayCategoryName}
+											</a>
+										),
+									)}
+								</div>
+							</nav>
+						) : null}
+
+						{groupedServices.length === 0 ? (
+							<div
+								class="alert border border-base-300 bg-base-100"
+								role="status"
+							>
+								<span>
+									{t(
+										"app.pricelist.empty@@Pricing is temporarily unavailable. Please contact us for current treatment information.",
+									)}
+								</span>
 							</div>
-						</nav>
-					) : null}
+						) : null}
 
-					<div class="space-y-12 md:space-y-20">
-						{groupedServices.map(
-							(
-								{
-									groupId,
-									groupServices,
-									displayCategoryName,
-									anchorId,
-									startingPriceLabel,
+						<div class="space-y-8 md:space-y-12">
+							{groupedServices.map(
+								(
+									{
+										groupId,
+										groupServices,
+										displayCategoryName,
+										anchorId,
+										startingPriceLabel,
+									},
+									index,
+								) => {
+									return (
+										<FadeUp key={groupId} delay={Math.min(index, 5) * 60}>
+											<section
+												id={anchorId}
+												class="card surface-card scroll-mt-36 shadow-md"
+											>
+												<div class="card-body gap-0 p-4 md:p-8">
+													<div class="mb-6 flex flex-col gap-4 md:mb-8">
+														<div class="flex items-center gap-4">
+															<span class="badge badge-primary badge-lg size-11 shrink-0 rounded-full p-0 font-montserrat text-xs font-semibold tracking-[0.12em] md:size-12">
+																{getCategoryNumber(index)}
+															</span>
+															<div class="h-px flex-1 bg-base-300/50" />
+															{startingPriceLabel ? (
+																<span class="badge badge-primary badge-outline shrink-0 rounded-full font-montserrat">
+																	{startingPriceLabel}
+																</span>
+															) : null}
+														</div>
+														<div>
+															<p class="font-montserrat text-xs uppercase tracking-[0.2em] text-base-content/65 md:tracking-[0.24em]">
+																{categoryLabel}
+															</p>
+															<h2 class="font-qestero text-3xl text-base-content md:text-4xl">
+																{displayCategoryName}
+															</h2>
+														</div>
+													</div>
+
+													<div class="space-y-3 md:space-y-4">
+														{groupServices.map((service) => (
+															<PricelistServiceItem
+																key={service.id}
+																service={service}
+															/>
+														))}
+													</div>
+												</div>
+											</section>
+										</FadeUp>
+									);
 								},
-								index,
-							) => {
-								return (
-									<FadeUp key={groupId} delay={index * 100}>
-										<section id={anchorId} class="scroll-mt-36">
-											<div class="mb-6 flex flex-col gap-4 md:mb-8">
-												<div class="flex items-center gap-4">
-													<span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-base-100 font-montserrat text-xs font-semibold tracking-[0.18em] text-primary shadow-sm md:h-12 md:w-12">
-														{getCategoryNumber(index)}
-													</span>
-													<div class="h-px flex-1 bg-base-300/50" />
-													{startingPriceLabel ? (
-														<span class="badge badge-primary badge-outline shrink-0 rounded-full font-montserrat">
-															{startingPriceLabel}
-														</span>
-													) : null}
-												</div>
-												<div>
-													<p class="font-montserrat text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.25em] text-base-content/60">
-														{categoryLabel}
-													</p>
-													<h2 class="font-qestero text-xl md:text-4xl text-base-content">
-														{displayCategoryName}
-													</h2>
-												</div>
-											</div>
-
-											<div class="space-y-3 rounded-2xl border border-base-200 bg-base-100 p-3 shadow-sm md:space-y-8 md:rounded-3xl md:p-10">
-												{groupServices.map((service) => (
-													<PricelistServiceItem
-														key={service.id}
-														service={service}
-													/>
-												))}
-											</div>
-										</section>
-									</FadeUp>
-								);
-							},
-						)}
+							)}
+						</div>
 					</div>
-				</div>
+				</section>
 
 				{/* Bottom CTA */}
-				<section class="border-t border-base-200 bg-base-100 py-16 text-center md:py-24">
-					<FadeUp>
-						<p class="editorial-kicker mb-4">
-							{t("app.pricelist.ready@@Ready when you are")}
-						</p>
-						<h2 class="font-qestero mb-6 text-4xl">
-							{t("app.hero.book_visit@@Book Your Visit")}
-						</h2>
-						<Booking
-							id="bottom_pricelist_book"
-							text={t("app.hero.book_appointment@@Book Appointment")}
-							location={contact?.location.name || ""}
-							classes="btn btn-primary btn-md md:btn-lg rounded-full px-8 md:px-10 font-montserrat uppercase tracking-wider text-white"
-							analyticsPlacement="pricelist_bottom"
-						/>
+				<section class="bg-base-100 px-4 py-16 text-center md:py-24">
+					<FadeUp class="card surface-card mx-auto max-w-3xl bg-base-200/35">
+						<div class="card-body items-center px-5 py-10 md:p-14">
+							<p class="editorial-kicker mb-4">
+								{t("app.pricelist.ready@@Ready when you are")}
+							</p>
+							<h2 class="section-heading mb-6">
+								{t("app.hero.book_visit@@Book Your Visit")}
+							</h2>
+							<Booking
+								id="bottom_pricelist_book"
+								text={t("app.hero.book_appointment@@Book Appointment")}
+								location={contact?.location.name || ""}
+								classes="btn btn-primary btn-md h-12 min-h-12 rounded-full px-8 font-montserrat uppercase tracking-[0.12em] text-primary-content"
+								analyticsPlacement="pricelist_bottom"
+							/>
+						</div>
 					</FadeUp>
 				</section>
 			</main>

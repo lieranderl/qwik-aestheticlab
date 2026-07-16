@@ -9,16 +9,13 @@ import { config } from "../speak-config";
  * Avoid redirecting or throwing errors here, and prefer layouts or pages
  */
 export const onRequest: RequestHandler = ({ params, locale }) => {
-	let lang: string | undefined;
-
-	if (params.lang && validateLocale(params.lang)) {
-		// Check supported locales
-		lang = config.supportedLocales.find(
-			(value) => value.lang === params.lang,
-		)?.lang;
-	} else {
-		lang = config.defaultLocale.lang;
-	}
+	const requestedLocale = params.lang;
+	const lang =
+		requestedLocale &&
+		validateLocale(requestedLocale) &&
+		config.supportedLocales.some((locale) => locale.lang === requestedLocale)
+			? requestedLocale
+			: config.defaultLocale.lang;
 
 	// Set Speak context (optional: set the configuration on the server)
 	setSpeakContext(config);
