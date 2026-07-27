@@ -45,17 +45,20 @@ let pendingCheck: Promise<boolean> | undefined;
 
 export async function isSupabaseDependencyReady(
 	environment: RuntimeEnvironment,
+	fetchImplementation: FetchImplementation = fetch,
 ) {
 	const now = Date.now();
 	if (now < cacheExpiresAt) return cachedResult;
 	if (pendingCheck) return pendingCheck;
 
-	pendingCheck = checkSupabaseDependency(environment).then((result) => {
-		cachedResult = result;
-		cacheExpiresAt = Date.now() + (result ? 30_000 : 5_000);
-		pendingCheck = undefined;
-		return result;
-	});
+	pendingCheck = checkSupabaseDependency(environment, fetchImplementation).then(
+		(result) => {
+			cachedResult = result;
+			cacheExpiresAt = Date.now() + (result ? 30_000 : 5_000);
+			pendingCheck = undefined;
+			return result;
+		},
+	);
 
 	return pendingCheck;
 }
