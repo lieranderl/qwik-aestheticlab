@@ -124,7 +124,7 @@ export const Booking = component$<BookingProps>(
 								<iframe
 									title={t("app.booking.widget_title@@Booking Widget")}
 									src={iframeUrl}
-									class={`h-[75vh] w-full rounded-2xl border-0 transition-opacity duration-200 ${isLoaded.value ? "opacity-100" : "opacity-0"}`}
+									class={`h-[75vh] w-full rounded-2xl border-0 transition-[opacity,filter,transform] duration-200 ease-out motion-reduce:transition-none ${isLoaded.value ? "translate-y-0 opacity-100 blur-0" : "translate-y-2 opacity-0 blur-sm"}`}
 									onLoad$={$(() => {
 										isLoaded.value = true;
 										trackGoogleAnalyticsEvent(
