@@ -45,7 +45,7 @@ export interface FadeUpProps {
 	threshold?: number;
 	runOnce?: boolean;
 	rootMargin?: number;
-	easing?: "ease" | "ease-in" | "ease-out" | "ease-in-out" | "linear";
+	easing?: string;
 	distance?: number;
 	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
@@ -56,11 +56,11 @@ export interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		duration = 320,
+		duration = 300,
 		threshold = 0.1,
 		runOnce = true,
 		rootMargin = 50,
-		easing = "ease-out",
+		easing = "cubic-bezier(0.22, 1, 0.36, 1)",
 		distance = 16,
 		direction = "up",
 		disable = false,
