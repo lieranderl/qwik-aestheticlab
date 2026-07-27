@@ -197,16 +197,18 @@ export const MyWidget = component$<MyWidgetProps>(
 
 `FadeUp` is the standard animation wrapper used throughout the project. Understand it before building new animated components.
 
+Entrance motion combines opacity, blur, slight directional translation, and subtle scale (`0.98 → 1`). Avoid fade-only entrances, `scale(0)`, and layout-affecting properties such as width, height, top, or left.
+
 ### FadeUp Props
 
 | Prop | Type | Default | Purpose |
 | ------ | ------ | --------- | --------- |
 | `delay` | `number` | `0` | Milliseconds before animation starts after element enters viewport |
-| `duration` | `number` | `320` | Animation duration in ms |
+| `duration` | `number` | `300` | Animation duration in ms |
 | `threshold` | `number` | `0.1` | IntersectionObserver threshold (0–1) |
 | `runOnce` | `boolean` | `true` | Animate only on first intersection |
 | `rootMargin` | `number` | `50` | Viewport margin for triggering |
-| `easing` | `string` | `"ease-out"` | CSS timing function |
+| `easing` | `string` | `"cubic-bezier(0.22, 1, 0.36, 1)"` | CSS timing function |
 | `distance` | `number` | `16` | Travel distance in pixels |
 | `direction` | `"up" \| "down" \| "left" \| "right"` | `"up"` | Direction element enters from |
 | `disable` | `boolean` | `false` | Skip animation entirely |
