@@ -50,22 +50,19 @@ export default component$(() => {
 					crossOrigin="anonymous"
 				/>
 				{!isDev && (
-					<script
-						dangerouslySetInnerHTML={getGoogleAnalyticsBootstrapScript()}
-					/>
-				)}
-				{!isDev && (
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={JSON.stringify(JSON_LD)}
-					/>
-				)}
-
-				{!isDev && (
-					<link
-						rel="manifest"
-						href={`${import.meta.env.BASE_URL}manifest.json`}
-					/>
+					<>
+						<script
+							dangerouslySetInnerHTML={getGoogleAnalyticsBootstrapScript()}
+						/>
+						<script
+							type="application/ld+json"
+							dangerouslySetInnerHTML={JSON.stringify(JSON_LD)}
+						/>
+						<link
+							rel="manifest"
+							href={`${import.meta.env.BASE_URL}manifest.json`}
+						/>
+					</>
 				)}
 				<RouterHead />
 				{!isDev && <ServiceWorkerRegister />}

@@ -12,8 +12,11 @@ import { formatPrice } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import {
 	type GroupedServiceData,
+	getCategoryDescription,
+	getCategoryStartingPrice,
 	getServiceItemImage,
 	groupServicesAndCategories,
+	isLaserCategory,
 	resolveCoverImage,
 } from "~/shared/service-utils";
 import type { Service, ServiceGroup } from "~/types";
@@ -68,68 +71,12 @@ function revealServiceDetails() {
 	});
 }
 
-function isLaserCategory(category: ServiceGroup | undefined) {
-	const normalizedName = (
-		category?.name_en ||
-		category?.name ||
-		""
-	).toLowerCase();
-	return normalizedName.includes("laser") || normalizedName.includes("removal");
-}
-
-function getDisplayCategoryName(group: DisplayServiceGroup, fallback: string) {
+function getDisplayCategoryNameForGroup(
+	group: DisplayServiceGroup,
+	fallback: string,
+) {
 	const categoryName = group.displayTitle || group.category?.name || fallback;
 	return categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
-}
-
-function getCategoryDescription(
-	category: ServiceGroup | undefined,
-	labels: {
-		manicure: string;
-		pedicure: string;
-		brows: string;
-		laser: string;
-		general: string;
-	},
-) {
-	const normalizedName = (
-		category?.name_en ||
-		category?.name ||
-		""
-	).toLowerCase();
-
-	if (normalizedName.includes("manicure")) {
-		return labels.manicure;
-	}
-
-	if (normalizedName.includes("pedicure")) {
-		return labels.pedicure;
-	}
-
-	if (normalizedName.includes("brows") || normalizedName.includes("lashes")) {
-		return labels.brows;
-	}
-
-	if (normalizedName.includes("laser") || normalizedName.includes("removal")) {
-		return labels.laser;
-	}
-
-	return labels.general;
-}
-
-function formatPremiumPrice(price: number) {
-	const formattedPrice = formatPrice(price).replace(/\u00a0/g, " ");
-	const amount = formattedPrice.replace(/\s*€$/, "");
-	const englishAmount = amount.replace(/\./g, ",").replace(/,(\d{2})$/, ".$1");
-	return `€${englishAmount}`;
-}
-
-function getCategoryStartingPrice(groupServices: Service[], fromLabel: string) {
-	if (groupServices.length === 0) return undefined;
-	const startingPrice = Math.min(
-		...groupServices.map((service) => service.price),
-	);
-	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
 }
 
 export const ServiceGrid = component$<ServiceGridProps>(
@@ -424,7 +371,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 														tabIndex={-1}
 														class="text-balance font-qestero text-3xl leading-none text-base-content outline-none md:text-4xl"
 													>
-														{getDisplayCategoryName(
+														{getDisplayCategoryNameForGroup(
 															activeDetailGroup.value,
 															defaultCategoryLabel,
 														)}
@@ -445,10 +392,11 @@ export const ServiceGrid = component$<ServiceGridProps>(
 										>
 											<div class="flex w-max gap-2 px-3 md:px-0">
 												{displayGroups.value.map((group) => {
-													const displayCategoryName = getDisplayCategoryName(
-														group,
-														defaultCategoryLabel,
-													);
+													const displayCategoryName =
+														getDisplayCategoryNameForGroup(
+															group,
+															defaultCategoryLabel,
+														);
 
 													return (
 														<button
@@ -509,7 +457,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							!selectedLaserSubgroup.value ? (
 								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
 									{laserSubgroups.value.map((group, index) => {
-										const displayCategoryName = getDisplayCategoryName(
+										const displayCategoryName = getDisplayCategoryNameForGroup(
 											group,
 											laserCategoryLabel,
 										);
@@ -598,7 +546,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 					) : (
 						<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
 							{displayGroups.value.map((group, index) => {
-								const displayCategoryName = getDisplayCategoryName(
+								const displayCategoryName = getDisplayCategoryNameForGroup(
 									group,
 									defaultCategoryLabel,
 								);
