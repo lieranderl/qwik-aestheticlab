@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { checkSupabaseDependency } from "./supabase-readiness";
+import {
+	checkSupabaseDependency,
+	isSupabaseDependencyReady,
+} from "./supabase-readiness";
 
 const environment = {
 	SUPABASE_URL: "https://project.supabase.co",
@@ -39,5 +42,16 @@ describe("checkSupabaseDependency", () => {
 		await expect(
 			checkSupabaseDependency(environment, unreachable),
 		).resolves.toBe(false);
+	});
+});
+
+describe("isSupabaseDependencyReady", () => {
+	it("delegates to checkSupabaseDependency with the environment", async () => {
+		const fetchOk = vi.fn(async () => Response.json([{ id: 1 }]));
+
+		const result = await isSupabaseDependencyReady(environment, fetchOk);
+
+		expect(result).toBe(true);
+		expect(fetchOk).toHaveBeenCalledOnce();
 	});
 });

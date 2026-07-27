@@ -1,3 +1,4 @@
+import { formatPremiumPrice } from "~/consts";
 import type { Service, ServiceGroup } from "~/types";
 
 // ============================================================================
@@ -54,6 +55,64 @@ const GALLERY_IMAGE_NAMES = new Set([
 	"pedicure6",
 	"removal1",
 ]);
+
+// ============================================================================
+// Category Display Helpers
+// ============================================================================
+
+export function getDisplayCategoryName(
+	category: ServiceGroup | undefined,
+	fallback: string,
+): string {
+	const name = category?.name || fallback;
+	return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+export function getCategoryDescription(
+	category: ServiceGroup | undefined,
+	labels: {
+		manicure: string;
+		pedicure: string;
+		brows: string;
+		laser: string;
+		general: string;
+	},
+): string {
+	const normalizedName = (
+		category?.name_en ||
+		category?.name ||
+		""
+	).toLowerCase();
+
+	if (normalizedName.includes("manicure")) return labels.manicure;
+	if (normalizedName.includes("pedicure")) return labels.pedicure;
+	if (normalizedName.includes("brows") || normalizedName.includes("lashes"))
+		return labels.brows;
+	if (normalizedName.includes("laser") || normalizedName.includes("removal"))
+		return labels.laser;
+
+	return labels.general;
+}
+
+export function isLaserCategory(category: ServiceGroup | undefined): boolean {
+	const normalizedName = (
+		category?.name_en ||
+		category?.name ||
+		""
+	).toLowerCase();
+	return normalizedName.includes("laser") || normalizedName.includes("removal");
+}
+
+export function getCategoryStartingPrice(
+	groupServices: Service[],
+	fromLabel: string,
+): string | undefined {
+	if (groupServices.length === 0) return undefined;
+	const startingPrice = Math.min(
+		...groupServices.map((service) => service.price),
+	);
+	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
+}
 
 // ============================================================================
 // Helpers

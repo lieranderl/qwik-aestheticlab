@@ -2,9 +2,13 @@ import { describe, expect, test } from "vitest";
 
 import type { Service, ServiceGroup } from "~/types";
 import {
+	getCategoryDescription,
+	getCategoryStartingPrice,
+	getDisplayCategoryName,
 	getGroupCoverImage,
 	getServiceItemImage,
 	groupServicesAndCategories,
+	isLaserCategory,
 	resolveCoverImage,
 } from "./service-utils";
 
@@ -177,5 +181,130 @@ describe("service-utils image resolution", () => {
 				0,
 			),
 		).toEqual(expect.stringContaining("universal.jpg"));
+	});
+});
+
+describe("getDisplayCategoryName", () => {
+	test("returns capitalized category name when available", () => {
+		const category = createCategory({ name: "manicure" });
+		expect(getDisplayCategoryName(category, "Default")).toBe("Manicure");
+	});
+
+	test("returns fallback when category is undefined", () => {
+		expect(getDisplayCategoryName(undefined, "Fallback")).toBe("Fallback");
+	});
+
+	test("returns fallback when category name is empty", () => {
+		const category = createCategory({ name: "" });
+		expect(getDisplayCategoryName(category, "Default")).toBe("Default");
+	});
+});
+
+describe("getCategoryDescription", () => {
+	const labels = {
+		manicure: "Manicure description",
+		pedicure: "Pedicure description",
+		brows: "Brows description",
+		laser: "Laser description",
+		general: "General description",
+	};
+
+	test("matches manicure by name_en", () => {
+		const category = createCategory({ name_en: "Manicure" });
+		expect(getCategoryDescription(category, labels)).toBe(
+			"Manicure description",
+		);
+	});
+
+	test("matches pedicure by name fallback", () => {
+		const category = createCategory({ name: "Pedicure", name_en: "" });
+		expect(getCategoryDescription(category, labels)).toBe(
+			"Pedicure description",
+		);
+	});
+
+	test("matches brows by name_en", () => {
+		const category = createCategory({ name_en: "Brows & Lashes" });
+		expect(getCategoryDescription(category, labels)).toBe("Brows description");
+	});
+
+	test("matches laser by name_en", () => {
+		const category = createCategory({
+			name_en: "Laser Hair Removal Face",
+		});
+		expect(getCategoryDescription(category, labels)).toBe("Laser description");
+	});
+
+	test("matches removal as laser", () => {
+		const category = createCategory({ name_en: "Tattoo Removal" });
+		expect(getCategoryDescription(category, labels)).toBe("Laser description");
+	});
+
+	test("returns general description for unknown category", () => {
+		const category = createCategory({ name_en: "Unknown Service" });
+		expect(getCategoryDescription(category, labels)).toBe(
+			"General description",
+		);
+	});
+
+	test("returns general description when category is undefined", () => {
+		expect(getCategoryDescription(undefined, labels)).toBe(
+			"General description",
+		);
+	});
+});
+
+describe("isLaserCategory", () => {
+	test("returns true for laser categories", () => {
+		expect(
+			isLaserCategory(createCategory({ name_en: "Laser Hair Removal Face" })),
+		).toBe(true);
+	});
+
+	test("returns true for removal categories", () => {
+		expect(isLaserCategory(createCategory({ name_en: "Tattoo Removal" }))).toBe(
+			true,
+		);
+	});
+
+	test("returns false for manicure", () => {
+		expect(isLaserCategory(createCategory({ name_en: "Manicure" }))).toBe(
+			false,
+		);
+	});
+
+	test("returns false for undefined category", () => {
+		expect(isLaserCategory(undefined)).toBe(false);
+	});
+
+	test("is case-insensitive", () => {
+		expect(
+			isLaserCategory(createCategory({ name_en: "laser hair removal" })),
+		).toBe(true);
+	});
+});
+
+describe("getCategoryStartingPrice", () => {
+	test("returns formatted starting price for a group of services", () => {
+		const services = [
+			createService({ price: 70 }),
+			createService({ price: 40 }),
+			createService({ price: 55 }),
+		];
+
+		const result = getCategoryStartingPrice(services, "From");
+		expect(result).toContain("From");
+		expect(result).toContain("40");
+	});
+
+	test("returns undefined for empty service list", () => {
+		expect(getCategoryStartingPrice([], "From")).toBeUndefined();
+	});
+
+	test("formats single service price correctly", () => {
+		const services = [createService({ price: 35 })];
+		const result = getCategoryStartingPrice(services, "From");
+		expect(result).toBeDefined();
+		expect(result).toContain("35");
 	});
 });

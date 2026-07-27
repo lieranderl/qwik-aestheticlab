@@ -7,6 +7,13 @@ export const formatPrice = (price: number) => {
 	}).format(price);
 };
 
+export const formatPremiumPrice = (price: number) => {
+	const formattedPrice = formatPrice(price).replace(/\u00a0/g, " ");
+	const amount = formattedPrice.replace(/\s*€$/, "");
+	const englishAmount = amount.replace(/\./g, ",").replace(/,(\d{2})$/, ".$1");
+	return `€${englishAmount}`;
+};
+
 export const gaMeasurementId = "G-95QF984DPQ";
 
 export const baseUrlBooking =

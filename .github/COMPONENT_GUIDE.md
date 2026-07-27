@@ -143,16 +143,7 @@ export default component$(() => {
 
 ### 5. Add Navigation Anchor (if needed)
 
-If the section should appear in the main navigation, add it to `src/constants/navigation.ts`:
-
-```tsx
-export const getNavLinks = (t: TranslateFn) => [
-  // ... existing links ...
-  { label: t("app.nav.my_section@@My Section"), href: "#my-section" },
-];
-```
-
-And update the inline `navLinks` array in `src/components/sections/navigation.tsx` to include the new entry.
+If the section should appear in the main navigation, add it to the inline `navLinks` array in `src/components/sections/navigation.tsx`.
 
 ## Creating a New UI Component
 

@@ -11,9 +11,13 @@ import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
 import { FadeUp } from "~/components/ui/fade-up";
-import { formatPrice } from "~/consts";
+import { formatPremiumPrice } from "~/consts";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
+import {
+	getCategoryStartingPrice,
+	getDisplayCategoryName,
+} from "~/shared/service-utils";
 import type { Service, ServiceGroup } from "~/types";
 import {
 	useContactLoader,
@@ -25,36 +29,17 @@ interface PricelistServiceItemProps {
 	service: Service;
 }
 
-function formatPremiumPrice(price: number) {
-	const formattedPrice = formatPrice(price).replace(/\u00a0/g, " ");
-	const amount = formattedPrice.replace(/\s*€$/, "");
-	const englishAmount = amount.replace(/\./g, ",").replace(/,(\d{2})$/, ".$1");
-	return `€${englishAmount}`;
-}
-
-function getStartingPriceLabel(groupServices: Service[], fromLabel: string) {
-	if (groupServices.length === 0) return undefined;
-	const startingPrice = Math.min(
-		...groupServices.map((service) => service.price),
-	);
-	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
-}
-
-function getDisplayCategoryName(
+/** Pricelist-specific override for brows & lashes combined display name. */
+function getPricelistCategoryName(
 	category: ServiceGroup | undefined,
 	fallback: string,
 	browsAndLashesLabel: string,
-) {
-	const categoryName = category?.name || fallback;
-	const displayCategoryName =
-		categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
-
+): string {
 	const englishName = category?.name_en?.toLowerCase() || "";
 	if (englishName.includes("brows") || englishName.includes("lashes")) {
 		return browsAndLashesLabel;
 	}
-
-	return displayCategoryName;
+	return getDisplayCategoryName(category, fallback);
 }
 
 function getCategoryAnchorId(groupId: string) {
@@ -183,7 +168,7 @@ export default component$(() => {
 			const sortedServices = [...groupServices].sort(
 				(a, b) => a.price - b.price,
 			);
-			const displayCategoryName = getDisplayCategoryName(
+			const displayCategoryName = getPricelistCategoryName(
 				category,
 				defaultCategoryLabel,
 				browsAndLashesLabel,
@@ -195,7 +180,7 @@ export default component$(() => {
 				priority: category?.priority ?? 0,
 				displayCategoryName,
 				anchorId: getCategoryAnchorId(groupId),
-				startingPriceLabel: getStartingPriceLabel(
+				startingPriceLabel: getCategoryStartingPrice(
 					sortedServices,
 					fromPriceLabel,
 				),
