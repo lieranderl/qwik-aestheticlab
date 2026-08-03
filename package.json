@@ -60,7 +60,7 @@
 	},
 	"dependencies": {
 		"@supabase/ssr": "^0.12.3",
-		"@supabase/supabase-js": "^2.110.9"
+		"@supabase/supabase-js": "^2.111.0"
 	},
 	"overrides": {
 		"@builder.io/qwik": "1.20.0",
