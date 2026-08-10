@@ -14,6 +14,13 @@ const NAME_TO_FILE: Record<string, string> = {
 	"laser-hair-removal-male": "laser-male",
 };
 
+// Override specific cover image filenames (defaults to `{name}.webp`)
+const COVER_IMAGE_OVERRIDES: Record<string, string> = {
+	manicure: "manicure.jpg",
+	pedicure: "pedicure.jpg",
+	laser: "laser.jpg",
+};
+
 // Gallery images per category: { prefix, count }
 const GALLERY_CONFIG: Record<string, { prefix: string; count: number }> = {
 	pedicure: { prefix: "pedicure", count: 6 },
@@ -139,7 +146,8 @@ export function getGroupCoverImage(category: ServiceGroup | undefined): string {
 	const name = category?.name_en || category?.name || "";
 	const mapped = mapName(name);
 	if (SERVICE_COVER_IMAGE_NAMES.has(mapped)) {
-		return `service:${mapped}.webp`;
+		const filename = COVER_IMAGE_OVERRIDES[mapped] ?? `${mapped}.webp`;
+		return `service:${filename}`;
 	}
 	return "gallery:universal.jpg";
 }
@@ -168,7 +176,8 @@ export function resolveCoverImage(imageName: string): string {
 	const mapped = mapName(imageName);
 
 	if (SERVICE_COVER_IMAGE_NAMES.has(mapped)) {
-		return `service:${mapped}.webp`;
+		const filename = COVER_IMAGE_OVERRIDES[mapped] ?? `${mapped}.webp`;
+		return `service:${filename}`;
 	}
 	return "gallery:universal.jpg";
 }

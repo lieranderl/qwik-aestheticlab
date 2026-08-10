@@ -61,16 +61,16 @@ export const CookieBanner = component$(() => {
 		<>
 			{showBanner.value && (
 				<section
-					class="fixed top-[calc(env(safe-area-inset-top)+4.5rem)] right-3 left-3 z-120 md:top-auto md:right-6 md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-auto md:w-[min(28rem,calc(100vw-3rem))]"
+					class="fixed bottom-3 right-3 left-3 z-50 motion-safe:animate-fade-in md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-4 md:right-auto md:w-[min(28rem,calc(100vw-3rem))] motion-reduce:animate-none"
 					aria-labelledby={titleId}
 					aria-describedby={descriptionId}
 				>
-					<div class="surface-card max-h-[50svh] overflow-y-auto overscroll-contain bg-base-100/98 p-4 shadow-xl md:p-5">
+					<div class="max-h-[50svh] overflow-y-auto overscroll-contain rounded-2xl border border-base-content/10 bg-base-100/98 p-4 shadow-xl md:p-5">
 						<div class="flex flex-col gap-4">
 							<div class="space-y-2">
 								<p
 									id={titleId}
-									class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content"
+									class="font-main text-sm font-semibold uppercase tracking-wider text-base-content"
 								>
 									{t("app.cookies.title@@Cookie settings")}
 								</p>
@@ -79,12 +79,12 @@ export const CookieBanner = component$(() => {
 										"app.cookies.description@@We use strictly necessary cookies to run this site. Google Analytics runs in Consent Mode: analytics storage is denied unless you accept, and Google may receive cookieless consent and measurement pings before your choice.",
 									)}
 								</p>
-								<div class="text-xs text-base-content/70">
+								<div class="text-xs text-base-content">
 									{t(
 										"app.cookies.necessary@@Strictly necessary cookies are always active.",
 									)}{" "}
 									<a
-										class="link link-primary inline-flex min-h-11 items-center"
+										class="link inline-flex min-h-11 items-center"
 										href={privacyHref}
 									>
 										{t("app.cookies.privacy_link@@Read our Privacy Policy")}
@@ -114,7 +114,7 @@ export const CookieBanner = component$(() => {
 			)}
 
 			{hasChoice.value && !showBanner.value && (
-				<div class="fixed bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] left-2 z-110 md:bottom-[calc(env(safe-area-inset-bottom)+1rem)] md:left-4">
+				<div class="fixed bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] left-2 z-30 md:bottom-[calc(env(safe-area-inset-bottom)+1rem)] md:left-4">
 					<button
 						type="button"
 						class="btn btn-square btn-sm rounded-full border border-base-content/20 bg-base-100/95 text-xs opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100 md:w-auto md:px-4 md:opacity-90"

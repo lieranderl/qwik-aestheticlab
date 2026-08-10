@@ -113,7 +113,7 @@ export const MySection = component$<MySectionProps>(({ items }) => {
 - **Named export** — `export const MySection`, not `export default`.
 - **Section wrapper** — `<section id="my-section" class="section-shell bg-base-200">`.
 - **Container** — `<div class="custom-container">` for consistent max-width and padding.
-- **Section header** — `font-qestero` heading + `h-px w-20 bg-primary mx-auto` divider line + `font-montserrat` subtitle.
+- **Section header** — `font-qestero` heading + `h-px w-20 bg-primary mx-auto` divider line + `font-main` subtitle.
 - **Staggered animation** — `FadeUp` with incremental `delay={index * 60}` and cap long lists so content is not delayed excessively.
 - **Translations** — All user-facing strings wrapped with `t("app.section.key@@Default")`.
 - **Background alternation** — Sections alternate between `bg-base-200` (muted) and no background class (inherits page bg). Check adjacent sections in `index.tsx` to pick the right one.
@@ -168,7 +168,7 @@ export const MyWidget = component$<MyWidgetProps>(
   ({ label, variant = "default", class: className = "" }) => {
     return (
       <div class={`${variant === "compact" ? "p-2" : "p-4"} ${className}`}>
-        <span class="font-montserrat text-sm text-base-content">{label}</span>
+        <span class="font-main text-sm text-base-content">{label}</span>
       </div>
     );
   },
@@ -383,7 +383,7 @@ Before submitting a new component, verify:
 - [ ] All user-facing strings use `t("app.section.key@@Default")`.
 - [ ] Uses DaisyUI component classes where applicable.
 - [ ] Uses theme color tokens — no hardcoded hex values.
-- [ ] Uses `font-qestero` for display text, `font-montserrat` for body text.
+- [ ] Uses `font-qestero` for display text, `font-main` for body text.
 - [ ] Images have `alt` attributes.
 - [ ] Interactive elements have `type="button"` (non-submit buttons).
 - [ ] Decorative icons use `aria-hidden="true"`.

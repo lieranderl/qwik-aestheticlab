@@ -130,7 +130,6 @@ export function localizeServiceGroups(
 	locale: string,
 ): ServiceGroup[] {
 	if (!groups?.length) return [];
-
 	return groups.map((group) => localizeServiceGroup(group, locale));
 }
 
@@ -139,6 +138,5 @@ export function localizeServices(
 	locale: string,
 ): Service[] {
 	if (!services?.length) return [];
-
 	return services.map((service) => localizeService(service, locale));
 }

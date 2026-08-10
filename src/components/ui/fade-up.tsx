@@ -41,12 +41,9 @@ function getSharedObserver(rootMargin: number, threshold: number) {
 
 export interface FadeUpProps {
 	delay?: number;
-	duration?: number;
 	threshold?: number;
 	runOnce?: boolean;
 	rootMargin?: number;
-	easing?: string;
-	distance?: number;
 	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
 	class?: string;
@@ -56,12 +53,9 @@ export interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		duration = 300,
 		threshold = 0.1,
 		runOnce = true,
 		rootMargin = 50,
-		easing = "cubic-bezier(0.22, 1, 0.36, 1)",
-		distance = 16,
 		direction = "up",
 		disable = false,
 		class: className = "",
@@ -77,7 +71,10 @@ export const FadeUp = component$(
 			const el = elRef.value;
 			if (!el) return;
 
-			if (disable) {
+			if (
+				disable ||
+				window.matchMedia("(prefers-reduced-motion: reduce)").matches
+			) {
 				state.value = "disabled";
 				return;
 			}
@@ -120,23 +117,39 @@ export const FadeUp = component$(
 			});
 		});
 
-		const classMap = {
-			hidden: `fade-${direction}-hidden`,
-			visible: `fade-${direction}-visible`,
-			immediate: `fade-${direction}-immediate`,
-			disabled: `fade-${direction}-disabled`,
+		const hiddenClassMap = {
+			up: "motion-safe:[.js_&]:translate-y-12 motion-safe:[.js_&]:opacity-0",
+			down: "motion-safe:[.js_&]:-translate-y-12 motion-safe:[.js_&]:opacity-0",
+			left: "motion-safe:[.js_&]:translate-x-10 motion-safe:[.js_&]:opacity-0",
+			right:
+				"motion-safe:[.js_&]:-translate-x-10 motion-safe:[.js_&]:opacity-0",
 		};
+		const visibilityClass =
+			state.value === "hidden"
+				? hiddenClassMap[direction]
+				: "translate-x-0 translate-y-0 opacity-100";
+		const transitionClass =
+			state.value === "hidden" || state.value === "visible"
+				? "motion-safe:transition-[opacity,transform] motion-safe:duration-400 motion-safe:ease-[var(--ease-smooth)]"
+				: "transition-none";
+
+		// Clamp delay to 0-300 range, round to nearest 20ms
+		const clampedDelay = Math.min(
+			300,
+			Math.max(0, Math.round(delay / 20) * 20),
+		);
 
 		return (
 			<div
 				ref={elRef}
-				style={{
-					"--fade-duration": `${duration}ms`,
-					"--fade-delay": `${delay}ms`,
-					"--fade-distance": `${distance}px`,
-					"--fade-easing": easing,
-				}}
-				class={`fade-motion ${classMap[state.value]} ${className}`.trim()}
+				data-fade-up
+				class={[
+					transitionClass,
+					visibilityClass,
+					clampedDelay > 0 ? `motion-safe:delay-[${clampedDelay}ms]` : "",
+					"motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
+					className,
+				]}
 				onClick$={onClick$}
 			>
 				<Slot />

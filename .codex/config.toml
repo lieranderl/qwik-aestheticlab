@@ -1,2 +1,17 @@
 # Project-local Codex defaults are intentionally minimal.
 # Keep durable workflow guidance in `.codex/README.md` and shared policy in `AGENTS.md`.
+
+[sandbox_workspace_write]
+network_access = true
+
+# Run the stdio server outside this package tree so `npx` does not evaluate the
+# repository's npm overrides and fail with EOVERRIDE.
+[mcp_servers.daisyui-blueprint]
+command = "npx"
+args = ["-y", "daisyui-blueprint@latest"]
+cwd = "/private/tmp"
+
+[mcp_servers.daisyui-blueprint.env]
+NPM_CONFIG_CACHE = "/private/tmp/daisyui-blueprint-npm-cache"
+LICENSE = "8QVM8-DK37A-Q70VK-N2W5H-M19AS"
+EMAIL = "jfedotov@gmail.com"

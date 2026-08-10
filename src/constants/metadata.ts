@@ -2,7 +2,6 @@ export const SITE_METADATA = {
 	name: "Aesthetic Lab",
 	url: "https://aestheticlab.be",
 	email: "aestheticlabbe@gmail.com",
-	phone: "+32 (0) 470 00 00 00", // Example placeholder if needed later
 	address: {
 		street: "Diestsestraat 174",
 		city: "Leuven",
