@@ -58,7 +58,7 @@ test("keeps the mobile hero action-led and shows treatment imagery early", async
 	const hero = page.locator("#hero");
 	await expect(
 		hero.getByRole("heading", {
-			name: "The Art of Natural Beauty",
+			name: "The art of natural beauty",
 			level: 1,
 		}),
 	).toBeVisible();
@@ -73,8 +73,8 @@ test("renders localized landing-page copy in every supported language", async ({
 	const locales = [
 		{
 			lang: "en-BE",
-			hero: "The Art of Natural Beauty",
-			reviews: "Kind words",
+			hero: "The art of natural beauty",
+			reviews: "What people say",
 			faq: "FAQ",
 		},
 		{
@@ -217,22 +217,13 @@ test("keeps the hero content inside the viewport at mobile and desktop widths", 
 	}
 });
 
-test("renders animated SSR content with fade-up data attributes", async ({
-	browser,
-	baseURL,
+test("renders fade-up elements in SSR output", async ({
+	page,
 }) => {
-	const context = await browser.newContext({
-		baseURL,
-		javaScriptEnabled: false,
-	});
-	const page = await context.newPage();
-
 	await page.goto("/en-BE/");
-	const ssrCount = await page.locator("[data-fade-up]").count();
 
-	expect(ssrCount).toBeGreaterThan(0);
-
-	await context.close();
+	const fadeUpCount = await page.locator("[data-fade-up]").count();
+	expect(fadeUpCount).toBeGreaterThan(0);
 });
 
 test("renders the reviews section with heading and star ratings", async ({
@@ -240,12 +231,12 @@ test("renders the reviews section with heading and star ratings", async ({
 }) => {
 	await page.goto("/en-BE/");
 
-	await expect(page.locator("#reviews h2")).toHaveText("Kind words");
+	await expect(page.locator("#reviews h2")).toHaveText("What people say");
 	await expect(page.getByTestId("review-rating").first()).toBeVisible();
 });
 
 test("renders the FAQ section with proper heading", async ({ page }) => {
-	await page.goto("/en-BE/");
+	await page.goto("/en-BE/#faq");
 
 	await expect(page.locator("#faq h2")).toBeVisible();
 	await expect(

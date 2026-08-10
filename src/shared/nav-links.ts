@@ -10,7 +10,7 @@ export function getNavLinkKeys(includeHome = true) {
 	const links: { href: string; key: string }[] = [
 		{ href: "#services", key: "app.nav.services@@Services" },
 		{ href: "#reviews", key: "app.nav.reviews@@Reviews" },
-		{ href: "#gallery", key: "app.work.title@@Our Work" },
+		{ href: "#gallery", key: "app.nav.work@@Our Work" },
 		{ href: "#team", key: "app.nav.team@@Team" },
 		{ href: "#faq", key: "app.faq.title@@FAQ" },
 		{ href: "#contact", key: "app.nav.contact@@Contact" },
