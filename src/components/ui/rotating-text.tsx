@@ -29,10 +29,12 @@ export const RotatingText = component$(() => {
 				>
 					<span class="justify-items-center">
 						<span>{t("app.hero.manicure@@manicure")}</span>
-						<span>{t("app.hero.pedicure@@pedicure")}</span>
-						<span>{t("app.hero.brows@@brows")}</span>
-						<span>{t("app.hero.lashes@@lashes")}</span>
-						<span>{t("app.hero.laser@@laser")}</span>
+						<span class="text-secondary">
+							{t("app.hero.pedicure@@pedicure")}
+						</span>
+						<span class="text-accent">{t("app.hero.brows@@brows")}</span>
+						<span class="text-info">{t("app.hero.lashes@@lashes")}</span>
+						<span class="text-error">{t("app.hero.laser@@laser")}</span>
 					</span>
 				</span>
 
