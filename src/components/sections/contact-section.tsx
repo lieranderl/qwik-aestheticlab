@@ -37,7 +37,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 				</div>
 
 				{/* Main Card Container */}
-				<div class="card card-border overflow-hidden bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg lg:card-side lg:min-h-[34rem]">
+				<div class="card card-border overflow-hidden bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg lg:card-side lg:min-h-136">
 					<div class="card-body order-2 flex flex-col justify-start gap-6 p-5 md:gap-12 md:p-12 lg:order-1 lg:w-5/12">
 						<div>
 							<div class="flex flex-col gap-6 md:gap-8">
@@ -155,7 +155,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 
 					{/* Right Map Panel */}
 					<figure
-						class="relative order-1 h-64 bg-base-200 md:h-80 lg:order-2 lg:h-auto lg:min-h-[450px] lg:w-7/12"
+						class="relative order-1 h-64 bg-base-200 md:h-80 lg:order-2 lg:h-auto lg:min-h-112.5 lg:w-7/12"
 						aria-label={t("app.contact.map_location@@Location map")}
 					>
 						<div class="absolute inset-0 h-full w-full">

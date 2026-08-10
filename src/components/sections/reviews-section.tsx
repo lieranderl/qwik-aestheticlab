@@ -134,13 +134,13 @@ export const ReviewsSection = component$(() => {
 				</header>
 
 				<section
-					class="carousel -mx-4 w-[calc(100%+2rem)] max-w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:max-w-[calc(100%+3rem)] sm:gap-5 sm:px-6 lg:mx-0 lg:w-full lg:max-w-full lg:overflow-x-auto lg:gap-5 lg:px-0"
+					class="carousel -mx-4 w-[calc(100%+2rem)] max-w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:max-w-[calc(100%+3rem)] sm:gap-5 sm:px-6 lg:mx-0 lg:w-full lg:max-w-full lg:overflow-x-auto lg:gap-5 lg:px-0"
 					aria-label={t("app.reviews.section_title@@Kind words")}
 				>
 					{reviews.value.map((review, index) => (
 						<article
 							key={`${review.author}-${index}`}
-							class="carousel-item card card-border min-h-[22rem] min-w-0 w-[min(20rem,calc(100vw-3rem))] shrink-0 snap-start overflow-hidden bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg sm:w-[25rem] lg:w-[28rem]"
+							class="carousel-item card card-border min-h-88 min-w-0 w-[min(20rem,calc(100vw-3rem))] shrink-0 snap-start overflow-hidden bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg sm:w-100 lg:w-md"
 						>
 							<div class="card-body min-w-0 justify-between gap-8 p-6 md:p-8">
 								<div class="min-w-0">
@@ -163,7 +163,7 @@ export const ReviewsSection = component$(() => {
 										</div>
 									</div>
 									<div class="min-w-0">
-										<p class="break-words font-main text-sm font-semibold text-base-content">
+										<p class="wrap-break-word font-main text-sm font-semibold text-base-content">
 											{review.author}
 										</p>
 										<p class="text-xs text-base-content">

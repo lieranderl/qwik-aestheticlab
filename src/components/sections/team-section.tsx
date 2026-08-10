@@ -51,7 +51,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 
 			{/* Team Cards — carousel on mobile, grid on desktop */}
 			<section
-				class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
+				class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
 				aria-label={t("app.team.section_title@@Meet your beauty team")}
 			>
 				{sorted.map((tech, index) => (

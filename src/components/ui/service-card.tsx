@@ -1,5 +1,6 @@
 import type { PropFunction } from "@builder.io/qwik";
 import { component$, useId } from "@builder.io/qwik";
+import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { bookingLocationId } from "~/consts";
 import { resolveImageComponent } from "~/shared/image-resolver";
@@ -70,7 +71,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								: emphasis === "compact"
 									? "h-44 md:h-48"
 									: "h-56 md:h-64 lg:h-72"
-							: "h-[13rem] md:h-auto md:aspect-4/3",
+							: "h-52 md:h-auto md:aspect-4/3",
 					]}
 				>
 					{ImageComp ? (
@@ -139,52 +140,70 @@ export const ServiceCard = component$<ServiceCardProps>(
 						</div>
 					) : null}
 
-					<div
-						class={[
-							"card-actions items-center gap-2 border-t border-base-300 pt-4 md:gap-3 md:pt-5",
-							variant === "service"
-								? "mt-auto justify-between"
-								: "justify-stretch",
-						]}
-					>
-						{variant === "service" ? (
-							<div class="flex flex-wrap gap-2">
-								{price ? (
-									<span class="badge badge-secondary badge-outline rounded-full font-main">
-										{price}
-									</span>
-								) : null}
-								{duration ? (
-									<span class="badge badge-outline rounded-full border-base-300 font-main">
+					{variant === "service" ? (
+						<div class="mt-auto">
+							{duration ? (
+								<div class="mb-4 flex items-center gap-2 font-main text-xs font-medium uppercase tracking-wider text-base-content">
+									<HiClockOutline class="size-4" aria-hidden="true" />
+									<span>
 										{duration}&nbsp;{t("app.services.minutes@@min")}
 									</span>
+								</div>
+							) : null}
+							<div class="card-actions items-center justify-between border-t border-base-300 pt-4 md:pt-5">
+								<div class="flex flex-wrap gap-4">
+									{price ? (
+										<span class="badge badge-secondary badge-outline badge-soft rounded-full font-main">
+											{price}
+										</span>
+									) : null}
+								</div>
+								{customAction$ ? (
+									<button
+										type="button"
+										onClick$={customAction$}
+										class="btn btn-sm btn-outline h-11 min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
+									>
+										{buttonLabel || t("app.generic.view@@View")}
+									</button>
+								) : showBooking ? (
+									<Booking
+										id={`modal_service_${serviceId}`}
+										text={t("app.book.book_now@@Book Now")}
+										location={location}
+										classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
+										analyticsPlacement={analyticsPlacement || "service_card"}
+										analyticsServiceId={serviceId}
+										analyticsServiceName={title}
+										analyticsServiceCategory={analyticsServiceCategory}
+									/>
 								) : null}
 							</div>
-						) : null}
-						{customAction$ ? (
-							<button
-								type="button"
-								onClick$={customAction$}
-								class={[
-									"btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]",
-									variant === "category" ? "" : "btn-outline",
-								]}
-							>
-								{buttonLabel || t("app.generic.view@@View")}
-							</button>
-						) : showBooking ? (
-							<Booking
-								id={`modal_service_${serviceId}`}
-								text={t("app.book.book_now@@Book Now")}
-								location={location}
-								classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
-								analyticsPlacement={analyticsPlacement || "service_card"}
-								analyticsServiceId={serviceId}
-								analyticsServiceName={title}
-								analyticsServiceCategory={analyticsServiceCategory}
-							/>
-						) : null}
-					</div>
+						</div>
+					) : (
+						<div class="card-actions items-center gap-2 border-t border-base-300 pt-4 md:gap-3 md:pt-5 justify-stretch">
+							{customAction$ ? (
+								<button
+									type="button"
+									onClick$={customAction$}
+									class="btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
+								>
+									{buttonLabel || t("app.generic.view@@View")}
+								</button>
+							) : showBooking ? (
+								<Booking
+									id={`modal_service_${serviceId}`}
+									text={t("app.book.book_now@@Book Now")}
+									location={location}
+									classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
+									analyticsPlacement={analyticsPlacement || "service_card"}
+									analyticsServiceId={serviceId}
+									analyticsServiceName={title}
+									analyticsServiceCategory={analyticsServiceCategory}
+								/>
+							) : null}
+						</div>
+					)}
 				</div>
 			</article>
 		);

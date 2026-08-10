@@ -275,7 +275,7 @@ const DetailView = component$<DetailViewProps>(
 						</div>
 
 						<nav
-							class="mt-5 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6"
+							class="mt-5 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none [&::-webkit-scrollbar]:hidden md:mt-6"
 							aria-label={servicesAriaLabel}
 						>
 							<div class="flex w-max gap-2 px-3 md:px-0">

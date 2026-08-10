@@ -70,8 +70,7 @@ export const Footer = component$(() => {
 			{/* Bottom bar */}
 			<div class="mx-auto mt-12 max-w-7xl border-t border-base-300 pt-5 sm:flex sm:items-center sm:justify-between sm:gap-10">
 				<p class="font-main text-xs leading-6 text-base-content">
-					{t("app.footer.copyright@@Copyright")} © {new Date().getFullYear()}{" "}
-					Aesthetic Lab Leuven
+					&copy; {new Date().getFullYear()} Aesthetic Lab Leuven
 				</p>
 				<nav
 					aria-label={t("app.footer.legal@@Legal")}

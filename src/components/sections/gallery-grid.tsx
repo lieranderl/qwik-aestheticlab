@@ -72,7 +72,7 @@ export const GalleryGrid = component$(() => {
 			</div>
 
 			<section
-				class="carousel carousel-start -mx-4 mt-8 w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:mt-10 sm:w-[calc(100%+3rem)] sm:px-6 lg:mx-0 lg:grid lg:h-[60rem] lg:w-full lg:grid-cols-12 lg:[grid-template-rows:repeat(18,minmax(0,1fr))] lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
+				class="carousel carousel-start -mx-4 mt-8 w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:mt-10 sm:w-[calc(100%+3rem)] sm:px-6 lg:mx-0 lg:grid lg:h-240 lg:w-full lg:grid-cols-12 lg:grid-rows-18 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
 				aria-label={t("app.work.gallery_label@@Treatment result gallery")}
 			>
 				{/* 01 - Coral */}
@@ -271,7 +271,7 @@ export const GalleryGrid = component$(() => {
 			{/* ── Lightbox ── */}
 			{activeIndex.value >= 0 && (
 				<div
-					class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
+					class="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 p-4"
 					onClick$={close}
 					onKeyDown$={$((e: KeyboardEvent) => {
 						if (e.key === "Escape") close();
@@ -409,7 +409,7 @@ export const GalleryGrid = component$(() => {
 						sizes="(min-width: 1024px) 24rem, (min-width: 640px) 40vw, 100vw"
 					/>
 				</figure>
-				<div class="card-body min-w-0 justify-center gap-4 p-5 sm:p-7 md:gap-5 md:p-9">
+				<div class="card-body min-w-0 justify-center gap-4 p-5 sm:p-7 md:gap-5 md:p-9 bg-base-100 w-96 shadow-sm">
 					<div class="flex items-center gap-2 text-secondary">
 						<SiInstagram class="size-4" aria-hidden="true" />
 						<span class="font-main text-xs font-semibold uppercase tracking-[0.18em]">
@@ -425,7 +425,7 @@ export const GalleryGrid = component$(() => {
 						)}
 					</p>
 					<div class="card-actions mt-1">
-						<span class="btn btn-sm min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-[0.1em]">
+						<span class="btn btn-sm min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-widest">
 							@aestheticlabbe
 						</span>
 					</div>

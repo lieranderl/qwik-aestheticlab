@@ -119,7 +119,7 @@ const PricelistServiceItem = component$(
 							id={`pricelist_service_${service.id}`}
 							text={t("app.book.book_now@@Book Now")}
 							location={location}
-							classes="btn btn-primary btn-sm min-h-11 w-full rounded-full px-6 font-main text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
+							classes="btn btn-outline btn-sm min-h-11 w-full rounded-full px-6 font-main text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
 							analyticsPlacement="pricelist_service"
 							analyticsServiceId={service.id}
 							analyticsServiceName={service.name}
@@ -224,7 +224,7 @@ export default component$(() => {
 									id="hero_pricelist_book"
 									text={t("app.hero.book_appointment@@Book Appointment")}
 									location={contact?.location.name || ""}
-									classes="btn btn-primary btn-md min-h-12 rounded-full px-8 font-main text-xs font-semibold uppercase tracking-[0.12em]"
+									classes="btn btn-outline btn-md min-h-12 rounded-full px-8 font-main text-xs font-semibold uppercase tracking-[0.12em]"
 									analyticsPlacement="pricelist_hero"
 								/>
 							</div>
@@ -240,7 +240,7 @@ export default component$(() => {
 								class="card card-border sticky top-16 z-20 -mx-1 mb-8 bg-base-100/98 p-2 shadow-md transition-[box-shadow,border-color] duration-200 md:top-20 md:mb-12 md:p-3"
 								aria-label={categoryNavLabel}
 							>
-								<div class="flex snap-x gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+								<div class="flex snap-x gap-2 overflow-x-auto overscroll-x-contain scrollbar-none [&::-webkit-scrollbar]:hidden">
 									{groupedServices.map(
 										({ groupId, displayCategoryName, anchorId }, index) => (
 											<a
@@ -347,7 +347,7 @@ export default component$(() => {
 								id="bottom_pricelist_book"
 								text={t("app.hero.book_appointment@@Book Appointment")}
 								location={contact?.location.name || ""}
-								classes="btn btn-primary btn-md h-12 min-h-12 rounded-full px-8 font-main uppercase tracking-[0.12em] text-primary-content"
+								classes="btn btn-outline btn-md h-12 min-h-12 rounded-full px-8 font-main uppercase tracking-[0.12em]"
 								analyticsPlacement="pricelist_bottom"
 							/>
 						</div>

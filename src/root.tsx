@@ -56,7 +56,7 @@ export default component$(() => {
 			<body
 				lang={locale.lang}
 				data-theme="Aesthetic"
-				class="relative min-w-80 scroll-smooth bg-base-200 font-main text-base-content antialiased [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
+				class="relative min-w-80 scroll-smooth bg-base-200 font-main text-base-content antialiased scrollbar-thin [scrollbar-color:var(--color-base-300)_transparent]"
 			>
 				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />

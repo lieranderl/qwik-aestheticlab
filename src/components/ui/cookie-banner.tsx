@@ -84,7 +84,7 @@ export const CookieBanner = component$(() => {
 										"app.cookies.necessary@@Strictly necessary cookies are always active.",
 									)}{" "}
 									<a
-										class="link link-secondary inline-flex min-h-11 items-center"
+										class="link inline-flex min-h-11 items-center"
 										href={privacyHref}
 									>
 										{t("app.cookies.privacy_link@@Read our Privacy Policy")}
