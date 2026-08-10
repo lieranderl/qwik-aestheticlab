@@ -31,10 +31,10 @@
     "contact": {
       "appointment_only": "By appointment only",
       "contact": "Contact",
-      "description": "We're easy to reach whether you walk, drive, or arrive by public transport.",
+      "description": "Plan your visit with the current address, hours, directions, and nearby parking.",
       "directions": "Directions",
       "instagram": "Follow us on Instagram",
-      "kicker": "Visit us",
+      "kicker": "Your Leuven studio",
       "location": "Location",
       "map_location": "Aesthetic Lab location in Leuven",
       "map_title": "Our location",
@@ -43,7 +43,7 @@
       "parking": "Parking available",
       "saturday": "Saturday",
       "sunday": "Closed Sunday",
-      "visit_us": "Visit us"
+      "visit_us": "Visit Us"
     },
     "cookies": {
       "accept": "Accept analytics",

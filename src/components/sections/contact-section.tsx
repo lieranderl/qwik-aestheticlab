@@ -26,7 +26,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 							{t("app.contact.kicker@@Your Leuven studio")}
 						</KickerLabel>
 						<h2 class="text-balance font-cormorant text-4xl leading-none text-base-content md:text-6xl">
-							{t("app.contact.visit_us@@Visit Us")}
+							{t("app.contact.visit_us@@Find Us")}
 						</h2>
 					</div>
 					<p class="max-w-xl text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
