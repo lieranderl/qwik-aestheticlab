@@ -10,10 +10,10 @@ import { HiBars3Outline, HiXMarkOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { LanguageSwitcher } from "~/components/ui/language-switcher";
-import { bookingLocationId } from "~/consts";
+
 import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
-import { getNavLinks } from "~/shared/nav-links";
+import { getNavLinkKeys } from "~/shared/nav-links";
 
 export const Navigation = component$(() => {
 	const t = inlineTranslate();
@@ -27,7 +27,10 @@ export const Navigation = component$(() => {
 	const drawerCheckboxId = `${mobileMenuId}-toggle`;
 	const mobileMenuTitleId = `${mobileMenuId}-title`;
 
-	const navLinks = getNavLinks(t);
+	const navLinks = getNavLinkKeys().map(({ href, key }) => ({
+		label: t(key),
+		href,
+	}));
 
 	const closeMobileMenu = $(() => {
 		isMobileMenuOpen.value = false;
@@ -167,7 +170,6 @@ export const Navigation = component$(() => {
 									<Booking
 										id="nav-book-btn-mobile"
 										text={t("app.book.book_now@@Book Now")}
-										location={bookingLocationId}
 										analyticsPlacement="mobile_nav_center"
 										classes="btn btn-outline btn-sm min-h-8 border-primary-content/30 px-4 font-main text-xs font-semibold uppercase tracking-[0.08em] text-primary-content"
 									/>
@@ -181,7 +183,6 @@ export const Navigation = component$(() => {
 								<Booking
 									id="nav-book-btn"
 									text={t("app.book.book_now@@Book Now")}
-									location={bookingLocationId}
 									analyticsPlacement="desktop_nav"
 									classes="btn btn-neutral btn-sm min-h-11 px-5 font-main text-xs font-semibold uppercase tracking-[0.08em] transition-shadow duration-300 ease-out motion-safe:hover:shadow-md"
 								/>
@@ -266,7 +267,6 @@ export const Navigation = component$(() => {
 					<Booking
 						id="mobile-menu-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
-						location={bookingLocationId}
 						analyticsPlacement="mobile_menu"
 						classes="btn btn-neutral btn-lg min-h-12 w-full font-main text-xs font-semibold uppercase tracking-[0.1em]"
 					/>

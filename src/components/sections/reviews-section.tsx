@@ -1,5 +1,6 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { KickerLabel } from "~/components/ui/kicker-label";
 import { StarRating } from "~/components/ui/star-rating";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
@@ -102,9 +103,7 @@ export const ReviewsSection = component$(() => {
 		>
 			<div class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 md:gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16 lg:px-8">
 				<header>
-					<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
-						{t("app.reviews.kicker@@Loved in Leuven")}
-					</p>
+					<KickerLabel>{t("app.reviews.kicker@@Loved in Leuven")}</KickerLabel>
 					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-6xl lg:text-7xl">
 						{t("app.reviews.section_title@@Kind words")}
 					</h2>

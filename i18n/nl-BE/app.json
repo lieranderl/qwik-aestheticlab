@@ -25,7 +25,8 @@
       "next": "Volgende",
       "previous": "Vorige",
       "read_less": "Minder lezen",
-      "read_more": "Meer lezen"
+      "read_more": "Meer lezen",
+      "scroll_to_top": "Scroll to top"
     },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
@@ -59,8 +60,8 @@
     },
     "faq": {
       "booking": {
+        "answer_after": " om de actuele beschikbaarheid te openen en kies vervolgens je behandeling en favoriete specialist.",
         "answer_before": "Gebruik een ",
-                "answer_after": " om de actuele beschikbaarheid te openen en kies vervolgens je behandeling en favoriete specialist.",
         "question": "Hoe maak ik een afspraak?"
       },
       "cancellation": {
@@ -135,6 +136,8 @@
       "lashes": "wimpers",
       "manicure": "manicure",
       "pedicure": "pedicure",
+      "scroll": "Scroll",
+      "scroll_down": "Scroll down to see our services",
       "slogan": "De kunst van natuurlijke schoonheid",
       "the_best": "De beste",
       "title_end": "voor jou",
@@ -183,6 +186,7 @@
       "services": "Diensten",
       "skip_to_content": "Ga naar inhoud",
       "team": "Team",
+      "toggle_menu": "Toggle navigation menu",
       "work": "Werk"
     },
     "notice": {
@@ -291,7 +295,10 @@
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
+      "artist": "artist",
+      "artists": "artists",
       "kicker": "Studio-artiesten",
+      "leuven": "Leuven",
       "role": {
         "technician": "Technicus"
       },

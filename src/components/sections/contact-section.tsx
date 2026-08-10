@@ -1,6 +1,7 @@
 import { $, component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { MapEmbed } from "~/components/ui/google-map";
+import { KickerLabel } from "~/components/ui/kicker-label";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import type { Contact } from "~/types";
 
@@ -21,9 +22,9 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 			<div class="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div class="space-y-5 md:space-y-6 mb-8 md:mb-10">
 					<div>
-						<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+						<KickerLabel>
 							{t("app.contact.kicker@@Your Leuven studio")}
-						</p>
+						</KickerLabel>
 						<h2 class="text-balance font-cormorant text-4xl leading-none text-base-content md:text-6xl">
 							{t("app.contact.visit_us@@Visit Us")}
 						</h2>

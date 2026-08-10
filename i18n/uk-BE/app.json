@@ -25,7 +25,8 @@
       "next": "Далі",
       "previous": "Назад",
       "read_less": "Приховати",
-      "read_more": "Читати далі"
+      "read_more": "Читати далі",
+      "scroll_to_top": "Scroll to top"
     },
     "contact": {
       "appointment_only": "Відвідування лише за записом",
@@ -59,8 +60,8 @@
     },
     "faq": {
       "booking": {
+        "answer_after": ", щоб переглянути актуальний вільний час, а потім оберіть процедуру та фахівця.",
         "answer_before": "Натисніть ",
-                "answer_after": ", щоб переглянути актуальний вільний час, а потім оберіть процедуру та фахівця.",
         "question": "Як записатися на процедуру?"
       },
       "cancellation": {
@@ -135,6 +136,8 @@
       "lashes": "ресниці",
       "manicure": "манікюр",
       "pedicure": "педикюр",
+      "scroll": "Scroll",
+      "scroll_down": "Scroll down to see our services",
       "slogan": "Мистецтво природної краси",
       "the_best": "Найкращі",
       "title_end": "для вас",
@@ -183,6 +186,7 @@
       "services": "Послуги",
       "skip_to_content": "Перейти до вмісту",
       "team": "Команда",
+      "toggle_menu": "Toggle navigation menu",
       "work": "Галерея"
     },
     "notice": {
@@ -291,7 +295,10 @@
     "story": "Про нас",
     "story_text": "У Aesthetic Lab ми віримо у перетворюючу силу краси. Наш підхід поєднує майстерність з досвідом, створюючи місце, де ви можете розкрити своє найсяючіше «я».",
     "team": {
+      "artist": "artist",
+      "artists": "artists",
       "kicker": "Майстри студії",
+      "leuven": "Leuven",
       "role": {
         "technician": "Майстер"
       },

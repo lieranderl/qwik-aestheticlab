@@ -25,7 +25,8 @@
       "next": "Next",
       "previous": "Previous",
       "read_less": "Read less",
-      "read_more": "Read more"
+      "read_more": "Read more",
+      "scroll_to_top": "Scroll to top"
     },
     "contact": {
       "appointment_only": "By appointment only",
@@ -57,10 +58,11 @@
       "description": "We listen carefully, work cleanly, and focus on subtle enhancements that look and feel natural.",
       "title": "Ready to feel beautifully yourself?"
     },
+    "dates": {},
     "faq": {
       "booking": {
+        "answer_after": " button to open live availability, then choose your treatment and preferred artist.",
         "answer_before": "Use any ",
-                "answer_after": " button to open live availability, then choose your treatment and preferred artist.",
         "question": "How do I book an appointment?"
       },
       "cancellation": {
@@ -135,6 +137,8 @@
       "lashes": "lashes",
       "manicure": "manicure",
       "pedicure": "pedicure",
+      "scroll": "Scroll",
+      "scroll_down": "Scroll down to see our services",
       "slogan": "The art of natural beauty",
       "the_best": "The best",
       "title_end": "Lab",
@@ -183,6 +187,7 @@
       "services": "Services",
       "skip_to_content": "Skip to main content",
       "team": "Team",
+      "toggle_menu": "Toggle navigation menu",
       "work": "Our Work"
     },
     "notice": {
@@ -209,6 +214,7 @@
       "understanding": "Thank you for your understanding.",
       "water_contact": "Avoid prolonged contact with hot water during the first 24 hours after a service."
     },
+    "numbers": {},
     "policy": {
       "care": "Please note that your hand-washable garment bag should be thoroughly cleaned before your appointment.",
       "description": "We value your understanding and cooperation. By scheduling an appointment, you acknowledge that you have read and agree to these policies.",
@@ -288,7 +294,10 @@
     "story": "Our story",
     "story_text": "Aesthetic Lab opened its doors in 2024 with a simple promise — to do beautiful work in a space that feels genuinely calm, honest, and welcoming. Every service is performed with precision and care, every detail considered. We listen first, then create.",
     "team": {
+      "artist": "artist",
+      "artists": "artists",
       "kicker": "Who you'll meet",
+      "leuven": "Leuven",
       "role": {
         "technician": "Technician"
       },
@@ -323,8 +332,6 @@
       "gallery_label": "Gallery of recent work",
       "kicker": "Our work",
       "title": "Gallery"
-    },
-    "dates": {},
-    "numbers": {}
+    }
   }
 }

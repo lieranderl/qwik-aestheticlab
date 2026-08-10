@@ -2,7 +2,9 @@ import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
 import { ExpandableText } from "~/components/ui/expandable-text";
-import { bookingLocationId } from "~/consts";
+import { KickerLabel } from "~/components/ui/kicker-label";
+import { SectionWrapper } from "~/components/ui/section-wrapper";
+
 import { resolveTeamImage } from "~/shared/image-resolver";
 import type { Staff } from "~/types";
 
@@ -15,53 +17,48 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const sorted = [...technicians].sort((a, b) => a.id - b.id);
 
 	return (
-		<section
-			id="team"
-			class="scroll-mt-24 overflow-hidden bg-base-200 py-16 md:py-24 lg:py-28"
-		>
-			<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-				{/* Section Header */}
-				<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-					<div>
-						<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
-							{t("app.team.kicker@@The people behind your care")}
-						</p>
-						<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
-							{t("app.team.section_title@@Meet your beauty team")}
-						</h2>
-					</div>
-					<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
-						<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
-							{t(
-								"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
-							)}
-						</p>
-						{/* Team stat */}
-						<div class="mt-4">
-							<span class="text-3xl font-cormorant text-base-content">
-								{sorted.length}
-							</span>
-							<span class="ml-2 font-main text-sm text-base-content/80">
-								{sorted.length === 1
-									? t("app.team.artist@@artist")
-									: t("app.team.artists@@artists")}{" "}
-								&mdash; {t("app.team.leuven@@Leuven")}
-							</span>
-						</div>
+		<SectionWrapper id="team">
+			{/* Section Header */}
+			<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+				<div>
+					<KickerLabel>
+						{t("app.team.kicker@@The people behind your care")}
+					</KickerLabel>
+					<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
+						{t("app.team.section_title@@Meet your beauty team")}
+					</h2>
+				</div>
+				<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
+					<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+						{t(
+							"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
+						)}
+					</p>
+					{/* Team stat */}
+					<div class="mt-4">
+						<span class="text-3xl font-cormorant text-base-content">
+							{sorted.length}
+						</span>
+						<span class="ml-2 font-main text-sm text-base-content/80">
+							{sorted.length === 1
+								? t("app.team.artist@@artist")
+								: t("app.team.artists@@artists")}{" "}
+							&mdash; {t("app.team.leuven@@Leuven")}
+						</span>
 					</div>
 				</div>
-
-				{/* Team Cards — carousel on mobile, grid on desktop */}
-				<section
-					class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
-					aria-label={t("app.team.section_title@@Meet your beauty team")}
-				>
-					{sorted.map((tech, index) => (
-						<TeamMemberCard key={tech.id} tech={tech} index={index} />
-					))}
-				</section>
 			</div>
-		</section>
+
+			{/* Team Cards — carousel on mobile, grid on desktop */}
+			<section
+				class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
+				aria-label={t("app.team.section_title@@Meet your beauty team")}
+			>
+				{sorted.map((tech, index) => (
+					<TeamMemberCard key={tech.id} tech={tech} index={index} />
+				))}
+			</section>
+		</SectionWrapper>
 	);
 });
 
@@ -114,7 +111,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					{/* Name + role badge */}
 					<div>
 						<div class="mb-1.5">
-							<span class="badge badge-secondary badge-sm font-main">
+							<span class="badge badge-secondary badge-soft badge-sm font-main">
 								{tech.role || t("app.team.role.technician@@Technician")}
 							</span>
 						</div>
@@ -131,7 +128,6 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 						<Booking
 							id={`modal_tech_${tech.id}`}
 							text={t("app.book.book_now@@Book Now")}
-							location={bookingLocationId}
 							staff={String(tech.id)}
 							classes="btn btn-sm min-h-11 w-full font-main text-xs font-semibold uppercase tracking-wider"
 							analyticsPlacement="team"

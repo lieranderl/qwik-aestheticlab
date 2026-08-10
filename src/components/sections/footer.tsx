@@ -4,12 +4,15 @@ import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
 import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
-import { getNavLinks } from "~/shared/nav-links";
+import { getNavLinkKeys } from "~/shared/nav-links";
 
 export const Footer = component$(() => {
 	const t = inlineTranslate();
 	const location = useLocation();
-	const links = getNavLinks(t, false);
+	const links = getNavLinkKeys(false).map(({ href, key }) => ({
+		label: t(key),
+		href,
+	}));
 
 	return (
 		<footer class="border-t border-base-content/10 bg-base-200 px-6 pt-16 pb-6 lg:px-8">

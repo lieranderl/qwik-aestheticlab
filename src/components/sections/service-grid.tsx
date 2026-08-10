@@ -6,6 +6,8 @@ import {
 	useSignal,
 } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { KickerLabel } from "~/components/ui/kicker-label";
+import { SectionWrapper } from "~/components/ui/section-wrapper";
 import { ServiceCard } from "~/components/ui/service-card";
 import { formatPrice } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -616,84 +618,79 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		useOnWindow("hashchange", restoreTreatmentState);
 
 		return (
-			<section
-				id="services"
-				class="scroll-mt-24 bg-base-200 py-16 md:py-24 lg:py-28"
-			>
-				<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-					<div class="mb-9 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-						<div>
-							<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
-								{t("app.services.catalogue@@Our treatments")}
-							</p>
-							<h2 class="max-w-2xl text-balance font-cormorant text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
-								{titleLabel}
-							</h2>
-						</div>
-
-						<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
-							<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
-								{subtitleLabel}
-							</p>
-							<div class="mt-5">
-								<a
-									href="pricelist"
-									onClick$={$(() => {
-										trackGoogleAnalyticsEvent("pricing_link_clicked", {
-											placement: "services_cta",
-										});
-									})}
-									class="btn btn-sm min-h-11 border-base-content/25 font-main text-xs font-semibold uppercase tracking-wider"
-								>
-									{viewFullLabel}
-								</a>
-							</div>
-						</div>
+			<SectionWrapper id="services">
+				<div class="mb-9 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+					<div>
+						<KickerLabel>
+							{t("app.services.catalogue@@Our treatments")}
+						</KickerLabel>
+						<h2 class="max-w-2xl text-balance font-cormorant text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
+							{titleLabel}
+						</h2>
 					</div>
 
-					{showFullList.value ? (
-						<DetailView
-							displayGroups={displayGroups.value}
-							laserSubgroups={laserSubgroups.value}
-							selectedCategoryId={selectedCategoryId.value}
-							selectedLaserSubgroupId={selectedLaserSubgroupId.value}
-							treatmentsLabel={treatmentsLabel}
-							fromPriceLabel={fromPriceLabel}
-							defaultCategoryLabel={defaultCategoryLabel}
-							laserCategoryLabel={laserCategoryLabel}
-							viewTreatmentsLabel={viewTreatmentsLabel}
-							categoryDescriptionLabels={categoryDescriptionLabels}
-							servicesAriaLabel={servicesAriaLabel}
-							backLabel={backLabel}
-							backToLaserLabel={backToLaserLabel}
-							onCategoryOpen={openCategory}
-							onLaserSubgroupOpen={openLaserSubgroup}
-							onResetLaserSubgroup={resetLaserSubgroup}
-							onResetOverview={resetOverview}
-							categoryById={categoryById}
-							location={location}
-						/>
-					) : displayGroups.value.length === 0 ? (
-						<div class="alert border border-base-300 bg-base-100" role="status">
-							<span>
-								{t(
-									"app.services.empty@@Treatments are temporarily unavailable. Please contact us for current options.",
-								)}
-							</span>
+					<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
+						<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+							{subtitleLabel}
+						</p>
+						<div class="mt-5">
+							<a
+								href="pricelist"
+								onClick$={$(() => {
+									trackGoogleAnalyticsEvent("pricing_link_clicked", {
+										placement: "services_cta",
+									});
+								})}
+								class="btn btn-sm min-h-11 border-base-content/25 font-main text-xs font-semibold uppercase tracking-wider"
+							>
+								{viewFullLabel}
+							</a>
 						</div>
-					) : (
-						<OverviewGrid
-							displayGroups={displayGroups.value}
-							treatmentsLabel={treatmentsLabel}
-							viewTreatmentsLabel={viewTreatmentsLabel}
-							defaultCategoryLabel={defaultCategoryLabel}
-							fromPriceLabel={fromPriceLabel}
-							categoryDescriptionLabels={categoryDescriptionLabels}
-							onCategoryOpen={openCategory}
-						/>
-					)}
+					</div>
 				</div>
-			</section>
+
+				{showFullList.value ? (
+					<DetailView
+						displayGroups={displayGroups.value}
+						laserSubgroups={laserSubgroups.value}
+						selectedCategoryId={selectedCategoryId.value}
+						selectedLaserSubgroupId={selectedLaserSubgroupId.value}
+						treatmentsLabel={treatmentsLabel}
+						fromPriceLabel={fromPriceLabel}
+						defaultCategoryLabel={defaultCategoryLabel}
+						laserCategoryLabel={laserCategoryLabel}
+						viewTreatmentsLabel={viewTreatmentsLabel}
+						categoryDescriptionLabels={categoryDescriptionLabels}
+						servicesAriaLabel={servicesAriaLabel}
+						backLabel={backLabel}
+						backToLaserLabel={backToLaserLabel}
+						onCategoryOpen={openCategory}
+						onLaserSubgroupOpen={openLaserSubgroup}
+						onResetLaserSubgroup={resetLaserSubgroup}
+						onResetOverview={resetOverview}
+						categoryById={categoryById}
+						location={location}
+					/>
+				) : displayGroups.value.length === 0 ? (
+					<div class="alert border border-base-300 bg-base-100" role="status">
+						<span>
+							{t(
+								"app.services.empty@@Treatments are temporarily unavailable. Please contact us for current options.",
+							)}
+						</span>
+					</div>
+				) : (
+					<OverviewGrid
+						displayGroups={displayGroups.value}
+						treatmentsLabel={treatmentsLabel}
+						viewTreatmentsLabel={viewTreatmentsLabel}
+						defaultCategoryLabel={defaultCategoryLabel}
+						fromPriceLabel={fromPriceLabel}
+						categoryDescriptionLabels={categoryDescriptionLabels}
+						onCategoryOpen={openCategory}
+					/>
+				)}
+			</SectionWrapper>
 		);
 	},
 );

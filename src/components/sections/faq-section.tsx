@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
+import { KickerLabel } from "~/components/ui/kicker-label";
 
 export const FaqSection = component$(() => {
 	const t = inlineTranslate();
@@ -56,9 +57,7 @@ export const FaqSection = component$(() => {
 		<section id="faq" class="scroll-mt-24 bg-base-200 py-16 md:py-24 lg:py-28">
 			<div class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16 lg:px-8">
 				<div>
-					<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
-						{t("app.faq.kicker@@Before your visit")}
-					</p>
+					<KickerLabel>{t("app.faq.kicker@@Before your visit")}</KickerLabel>
 					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] font-light tracking-tight text-base-content md:text-7xl">
 						{t("app.faq.title@@FAQ")}
 					</h2>

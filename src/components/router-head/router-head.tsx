@@ -48,6 +48,8 @@ export const RouterHead = component$(() => {
 			<link rel="alternate" hreflang="x-default" href={seoLinks.xDefault} />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+			<link rel="apple-touch-icon" href="/icon-192.svg" />
+			<meta name="theme-color" content="#8b9687" />
 
 			{head.meta.map((m) => (
 				<meta key={m.key} {...m} />

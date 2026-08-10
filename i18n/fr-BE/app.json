@@ -25,7 +25,8 @@
       "next": "Suivant",
       "previous": "Précédent",
       "read_less": "Lire moins",
-      "read_more": "Lire plus"
+      "read_more": "Lire plus",
+      "scroll_to_top": "Scroll to top"
     },
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
@@ -59,8 +60,8 @@
     },
     "faq": {
       "booking": {
+        "answer_after": " pour consulter les disponibilités en temps réel, puis choisissez votre soin et votre spécialiste préférée.",
         "answer_before": "Utilisez le bouton ",
-                "answer_after": " pour consulter les disponibilités en temps réel, puis choisissez votre soin et votre spécialiste préférée.",
         "question": "Comment prendre rendez-vous ?"
       },
       "cancellation": {
@@ -135,6 +136,8 @@
       "lashes": "cils",
       "manicure": "manucure",
       "pedicure": "pédicure",
+      "scroll": "Scroll",
+      "scroll_down": "Scroll down to see our services",
       "slogan": "L'art de la beauté naturelle",
       "the_best": "Le meilleur",
       "title_end": "pour vous",
@@ -183,6 +186,7 @@
       "services": "Services",
       "skip_to_content": "Aller au contenu",
       "team": "Équipe",
+      "toggle_menu": "Toggle navigation menu",
       "work": "Travaux"
     },
     "notice": {
@@ -291,7 +295,10 @@
     "story": "Notre histoire",
     "story_text": "Chez Aesthetic Lab, nous croyons au pouvoir transformateur de la beauté. Notre approche combine art et expertise, créant un sanctuaire où vous pouvez découvrir votre moi le plus radieux.",
     "team": {
+      "artist": "artist",
+      "artists": "artists",
       "kicker": "Artistes du studio",
+      "leuven": "Leuven",
       "role": {
         "technician": "Technicienne"
       },
