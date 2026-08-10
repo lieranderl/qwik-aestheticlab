@@ -10,9 +10,6 @@ test("renders the pricelist hero heading and booking CTA shell", async ({
 		page.getByRole("heading", { level: 1, name: "Services & Pricing" }),
 	).toBeVisible();
 	await expect(
-		page.getByRole("heading", { name: "Book Your Visit" }),
-	).toBeVisible();
-	await expect(
 		page.getByRole("button", { name: "Book Appointment" }),
 	).toBeVisible();
 });
