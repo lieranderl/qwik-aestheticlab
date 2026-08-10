@@ -7,7 +7,7 @@ const GALLERY_IMAGES = import.meta.glob("../media/gallery/*.jpg", {
 	import: "default",
 }) as Record<string, ImageComponent>;
 
-const SERVICE_IMAGES = import.meta.glob("../media/services/*.webp", {
+const SERVICE_IMAGES = import.meta.glob("../media/services/*.{webp,jpg}", {
 	eager: true,
 	query: "?jsx",
 	import: "default",

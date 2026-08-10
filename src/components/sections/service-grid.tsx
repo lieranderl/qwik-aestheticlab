@@ -111,8 +111,8 @@ const OverviewGrid = component$<OverviewGridProps>(
 			<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
 				{displayGroups.map((group, index) => {
 					const displayCategoryName =
-						getDisplayCategoryName(group.category, defaultCategoryLabel) ||
 						group.displayTitle ||
+						getDisplayCategoryName(group.category, defaultCategoryLabel) ||
 						defaultCategoryLabel;
 					const description = getCategoryDescription(
 						group.category,
@@ -281,11 +281,11 @@ const DetailView = component$<DetailViewProps>(
 							<div class="flex w-max gap-2 px-3 md:px-0">
 								{displayGroups.map((group) => {
 									const categoryName =
+										group.displayTitle ||
 										getDisplayCategoryName(
 											group.category,
 											defaultCategoryLabel,
 										) ||
-										group.displayTitle ||
 										defaultCategoryLabel;
 
 									return (

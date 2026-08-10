@@ -149,7 +149,7 @@ describe("service-utils image resolution", () => {
 		});
 
 		expect(getGroupCoverImage(category)).toEqual(
-			expect.stringContaining("pedicure.webp"),
+			expect.stringContaining("pedicure.jpg"),
 		);
 	});
 

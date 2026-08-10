@@ -5,10 +5,11 @@ import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";
 import ImgChromeManicure from "~/media/gallery/atelier/chrome-manicure.jpg?jsx";
 import ImgCoralManicure from "~/media/gallery/atelier/coral-manicure.jpg?jsx";
+import ImgLashes from "~/media/gallery/atelier/lashes.jpg?jsx";
+import ImgLashlift from "~/media/gallery/atelier/lashlift.jpg?jsx";
 import ImgNudeManicure from "~/media/gallery/atelier/nude-manicure.jpg?jsx";
 import ImgPearlManicure from "~/media/gallery/atelier/pearl-manicure.jpg?jsx";
 import ImgPolishApplication from "~/media/gallery/atelier/polish-application.jpg?jsx";
-import ImgEyebrows2 from "~/media/gallery/eyebrows2.jpg?jsx";
 import ImgPedicure4 from "~/media/gallery/pedicure4.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -32,7 +33,8 @@ const LIGHTBOX_IMAGES = [
 	ImgPearlManicure,
 	ImgChromeManicure,
 	ImgPedicure5,
-	ImgEyebrows2,
+	ImgLashes,
+	ImgLashlift,
 ] as const;
 
 export const GalleryGrid = component$(() => {
@@ -219,7 +221,7 @@ export const GalleryGrid = component$(() => {
 					<figcaption class={CAPTION}>06</figcaption>
 				</figure>
 
-				{/* 07 - Eyebrows */}
+				{/* 07 - Lashes */}
 				<figure
 					class={[
 						GRID_ITEM,
@@ -232,14 +234,37 @@ export const GalleryGrid = component$(() => {
 						onClick$={() => open(6)}
 						aria-label={t(ENLARGE)}
 					>
-						<ImgEyebrows2
-							alt={t("app.work.alt.eyebrows2@@Natural brow shaping result")}
+						<ImgLashes
+							alt={t("app.work.alt.lashes@@Lash extensions result")}
 							class={[GRID_IMG, "object-[center_40%]"]}
 							loading="lazy"
 							sizes={SIZES}
 						/>
 					</button>
 					<figcaption class={CAPTION}>07</figcaption>
+				</figure>
+
+				{/* 08 - Lash Lift */}
+				<figure
+					class={[
+						GRID_ITEM,
+						"aspect-square lg:col-start-1 lg:col-span-4 lg:row-start-15 lg:row-span-4",
+					]}
+				>
+					<button
+						type="button"
+						class="contents cursor-zoom-in"
+						onClick$={() => open(7)}
+						aria-label={t(ENLARGE)}
+					>
+						<ImgLashlift
+							alt={t("app.work.alt.lashlift@@Lash lift result")}
+							class={[GRID_IMG, "object-[center_50%]"]}
+							loading="lazy"
+							sizes={SIZES}
+						/>
+					</button>
+					<figcaption class={CAPTION}>08</figcaption>
 				</figure>
 			</section>
 
@@ -351,7 +376,10 @@ export const GalleryGrid = component$(() => {
 							<ImgPedicure5 alt="" class={LIGHTBOX_IMG} />
 						)}
 						{activeIndex.value === 6 && (
-							<ImgEyebrows2 alt="" class={LIGHTBOX_IMG} />
+							<ImgLashes alt="" class={LIGHTBOX_IMG} />
+						)}
+						{activeIndex.value === 7 && (
+							<ImgLashlift alt="" class={LIGHTBOX_IMG} />
 						)}
 					</div>
 				</div>
