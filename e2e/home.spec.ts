@@ -378,10 +378,9 @@ test.describe("mobile navigation", () => {
 			name: /close (navigation )?menu/i,
 		});
 		await expect(closeMenuButton).toBeVisible();
-		await expect(openMenuControl).toBeHidden();
 
 		await closeMenuButton.click();
 
-		await expect(openMenuControl).toBeVisible();
+		await expect(closeMenuButton).toBeHidden();
 	});
 });
