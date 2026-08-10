@@ -42,9 +42,6 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 							<div class="flex flex-col gap-6 md:gap-8">
 								{/* Location */}
 								<div class="flex flex-col gap-1">
-									<span class="mb-2 text-xs font-bold uppercase text-secondary">
-										{t("app.contact.location@@Location")}
-									</span>
 									<p class="font-montserrat text-lg font-medium leading-tight text-base-content md:text-xl">
 										{contact.location.address}
 									</p>

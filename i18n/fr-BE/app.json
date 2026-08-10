@@ -22,6 +22,8 @@
     "changeLocale": "Changer de langue",
     "common": {
       "close": "Fermer",
+      "next": "Suivant",
+      "previous": "Précédent",
       "read_less": "Lire moins",
       "read_more": "Lire plus"
     },
@@ -301,19 +303,24 @@
       "alt": {
         "b1": "Mise en beauté précise des sourcils et des cils",
         "b2": "Résultat naturel de mise en forme des sourcils",
-        "chrome_manicure": "Détail d’une manucure chrome rose",
+        "chrome_manicure": "Détail d'une manucure chrome rose",
         "coral_manicure": "Manucure rouge corail vive sur les deux mains",
-        "m1": "Détail d’une manucure classique sur mesure",
+        "eyebrows": "Résultat de modelage précis des sourcils",
+        "eyebrows2": "Résultat naturel de mise en forme des sourcils",
+        "m1": "Détail d'une manucure classique sur mesure",
         "m2": "Manucure minimaliste au style « clean girl »",
         "m3": "Manucure élégante au fini mat",
         "m4": "Travail précis des cuticules et ongles en gel naturels",
+        "manicure1": "Manucure élégante à la finition brillante",
+        "manicure3": "Nail art détaillé en manucure",
         "manicure_process": "Application de vernis à ongles au studio Aesthetic Lab",
         "nude_manicure": "Manucure nude douce avec une finition brillante et nette",
         "p1": "Bain de pieds nourrissant et pédicure",
         "p2": "Finition soignée du vernis à ongles des pieds",
         "p3": "Soin de pédicure professionnel et hygiénique",
-        "p5": "Détails d’une pédicure esthétique",
-        "pearl_manicure": "Détail d’une manucure rose nacrée"
+        "p5": "Détails d'une pédicure esthétique",
+        "pearl_manicure": "Détail d'une manucure rose nacrée",
+        "pedicure1": "Pédicure soignée avec vernis rose tendre"
       },
       "description": "Des détails soignés, des finitions nettes et des résultats qui vous ressemblent.",
       "gallery_label": "Galerie des résultats de soins",
