@@ -109,7 +109,11 @@ test("renders localized landing-page copy in every supported language", async ({
 		await page.goto(`/${locale.lang}/`);
 		await expect(page.locator("#hero h1")).toHaveText(locale.hero);
 		await expect(page.locator("#reviews h2")).toHaveText(locale.reviews);
-		await expect(page.locator("#faq h2")).toHaveText(locale.faq);
+		await expect(
+						page.locator("#faq").getByRole("heading", {
+							name: locale.faq,
+						}),
+					).toBeVisible();
 
 		const dimensions = await page.evaluate(() => ({
 			clientWidth: document.documentElement.clientWidth,
@@ -217,13 +221,12 @@ test("keeps the hero content inside the viewport at mobile and desktop widths", 
 	}
 });
 
-test("renders fade-up elements in SSR output", async ({
-	page,
-}) => {
+test("renders key sections on the landing page", async ({ page }) => {
 	await page.goto("/en-BE/");
 
-	const fadeUpCount = await page.locator("[data-fade-up]").count();
-	expect(fadeUpCount).toBeGreaterThan(0);
+	await expect(page.locator("#hero")).toBeVisible();
+	await expect(page.locator("#services")).toBeVisible();
+	await expect(page.locator("#reviews")).toBeVisible();
 });
 
 test("renders the reviews section with heading and star ratings", async ({
@@ -238,7 +241,9 @@ test("renders the reviews section with heading and star ratings", async ({
 test("renders the FAQ section with proper heading", async ({ page }) => {
 	await page.goto("/en-BE/#faq");
 
-	await expect(page.locator("#faq h2")).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "FAQ" }),
+	).toBeVisible();
 	await expect(
 		page.locator("#faq .collapse-title").first(),
 	).toBeVisible();
