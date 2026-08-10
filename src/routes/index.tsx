@@ -7,5 +7,5 @@ export const onGet: RequestHandler = async ({ redirect }) => {
 };
 
 export default component$(() => {
-	return <div>Redirecting...</div>;
+	return null;
 });

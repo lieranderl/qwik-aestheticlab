@@ -2,8 +2,8 @@
   "app": {
     "about": {
       "alt": {
-        "artists": "Aesthetic Lab artists at work in Leuven studio",
-        "manicure_detail": "Close-up detail of premium gel manicure work"
+        "artists": "Les spécialistes d’Aesthetic Lab au travail dans le studio de Louvain",
+        "manicure_detail": "Gros plan sur une manucure gel haut de gamme"
       },
       "extra_text": "Nous nous engageons à fournir des soins de la plus haute qualité dans un environnement relaxant. Chaque détail est soigné pour assurer votre confort et votre satisfaction, faisant de votre visite une expérience véritablement régénérante.",
       "philosophy": "& Philosophie",
@@ -28,8 +28,10 @@
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
       "contact": "Contact",
+      "description": "Planifiez votre visite grâce à l’adresse actuelle, aux horaires, à l’itinéraire et aux parkings à proximité.",
       "directions": "Obtenir l'itinéraire",
       "instagram": "Suivez-nous sur Instagram",
+      "kicker": "Votre studio à Louvain",
       "location": "Lieu",
       "map_location": "Carte de localisation",
       "map_title": "Adresse d'Aesthetic Lab",
@@ -49,10 +51,47 @@
       "settings": "Paramètres des cookies",
       "title": "Paramètres des cookies"
     },
+    "cta": {
+      "description": "Réservez votre moment de soin personnalisé",
+      "title": "Prête à vous sentir pleinement vous-même ?"
+    },
+    "faq": {
+      "booking": {
+        "answer_before": "Utilisez le bouton ",
+                "answer_after": " pour consulter les disponibilités en temps réel, puis choisissez votre soin et votre spécialiste préférée.",
+        "question": "Comment prendre rendez-vous ?"
+      },
+      "cancellation": {
+        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "question": "Puis-je annuler ou reporter un rendez-vous ?"
+      },
+      "consultation": {
+        "answer": "Absolument. Si vous n'êtes pas sûr(e) du soin qui vous convient le mieux, <a href='#contact' class='link link-secondary'>contactez-nous</a> et nous vous aiderons à choisir lors d'une courte consultation gratuite.",
+        "question": "Proposez-vous des consultations avant de réserver ?"
+      },
+      "description": "Quelques informations utiles pour organiser facilement votre rendez-vous.",
+      "duration": {
+        "answer": "Ouvrez une <a href='./pricelist' class='link link-secondary'>catégorie de soins</a> pour comparer la durée et le prix actuels de chaque prestation avant de réserver.",
+        "question": "Combien de temps durent les soins ?"
+      },
+      "kicker": "Avant votre visite",
+      "laser_prep": {
+        "answer": "Rasez la zone 24 heures avant votre séance et évitez l'exposition au soleil, les UV et l'autobronzant pendant au moins 2 semaines. Veuillez lire notre <a href='./notice' class='link link-secondary'>politique de soins pré- et post-traitement</a> avant votre rendez-vous.",
+        "question": "Comment me préparer pour un soin laser ?"
+      },
+      "location": {
+        "answer": "Notre adresse, nos horaires, la carte et les liens vers les parkings à proximité sont disponibles dans la section <a href='#contact' class='link link-secondary'>Nous rendre visite</a> ci-dessous.",
+        "question": "Où se trouve le studio à Louvain ?"
+      },
+      "title": "FAQ"
+    },
     "footer": {
       "all_rights": "Tous droits réservés",
-      "copyright": "Copyright",
-      "navigation": "Navigation de pied de page"
+      "copyright": "Droits d’auteur",
+      "explore": "Découvrir",
+      "legal": "Mentions légales",
+      "navigation": "Navigation de pied de page",
+      "tagline": "Ongles, sourcils, cils et soins laser pensés autour de vous"
     },
     "generic": {
       "view": "Voir"
@@ -78,17 +117,34 @@
     "hero": {
       "according": "*selon nos clients",
       "and": "et",
+      "atelier": "Votre atelier beauté",
       "book_appointment": "Prendre rendez-vous",
       "book_visit": "Réservez votre visite",
       "brows": "sourcils",
       "description": "Un sanctuaire pour une beauté raffinée. Spécialisé dans l'art des ongles sur mesure, la précision des sourcils et les traitements laser avancés.",
+      "google_rating": "5,0 sur Google",
+      "image_brows": "Résultat précis pour les sourcils et les cils chez Aesthetic Lab",
+      "image_group": "Soins et résultats beauté réalisés par Aesthetic Lab",
+      "image_nails": "Manucure nude naturelle réalisée chez Aesthetic Lab",
+      "image_work": "Soin des ongles en cours chez Aesthetic Lab",
       "in_leuven": "à Louvain",
+      "intro": "Ongles, sourcils, cils et soins laser, soigneusement personnalisés dans notre studio paisible à Louvain.",
       "laser": "laser",
       "lashes": "cils",
       "manicure": "manucure",
       "pedicure": "pédicure",
       "slogan": "L'art de la beauté naturelle",
       "the_best": "Le meilleur",
+      "title_end": "pour vous",
+      "title_start": "La beauté, sublimée avec élégance,",
+      "trust": {
+        "appointment": "Uniquement sur rendez-vous",
+        "care": "Le soin dans chaque détail",
+        "clients": "Apprécié par nos clientes",
+        "google": "5,0 sur Google",
+        "leuven": "Au cœur de Louvain",
+        "results": "Des résultats naturels et précis"
+      },
       "view_services": "Voir les services"
     },
     "instagram": {
@@ -121,7 +177,9 @@
       "open_menu": "Ouvrir le menu",
       "policy": "Politique",
       "primary": "Navigation principale",
+      "reviews": "Avis",
       "services": "Services",
+      "skip_to_content": "Aller au contenu",
       "team": "Équipe",
       "work": "Travaux"
     },
@@ -135,7 +193,7 @@
       "hormonal_intro": "La durabilité des revêtements d'ongles peut varier en fonction des caractéristiques individuelles, y compris les fluctuations hormonales. Veuillez noter que pendant les périodes de changements hormonaux (tels que le SPM, la grossesse, l'allaitement, la prise de médicaments hormonaux ou des niveaux de stress élevés), l'adhérence du produit à la plaque de l'ongle peut diminuer, ce qui peut affecter la longévité du revêtement.",
       "hormonal_title": "Avis important",
       "however": "Cependant, veuillez noter :",
-      "important_info": "✨ Informations importantes pour les clients ✨",
+      "important_info": "Informations importantes pour les clients",
       "individual_features": "Caractéristiques individuelles des ongles (telles qu'une humidité accrue, une fragilité ou une tendance au décollement)",
       "intro": "Dans notre salon, nous nous efforçons de fournir des services d'ongles de haute qualité et durables en utilisant uniquement des produits et des techniques professionnels. Pour assurer la transparence et gérer les attentes, veuillez lire attentivement les informations suivantes :",
       "last_update": "Dernière mise à jour :",
@@ -145,7 +203,7 @@
       "policy_care": "Nous nous soucions de votre satisfaction et serons heureux de résoudre tout problème pouvant survenir au cours de cette période.",
       "policy_description": "Si vous rencontrez des problèmes avec votre manucure dans les 5 jours suivant votre rendez-vous, vous êtes invités à revenir pour une correction gratuite.",
       "policy_title": "Politique de correction gratuite",
-      "thank_you": "Merci de votre compréhension, de votre confiance et de votre coopération ! Nous avons hâte de rendre vos ongles beaux et durables. 💅✨",
+      "thank_you": "Merci de votre compréhension, de votre confiance et de votre coopération ! Nous avons hâte de rendre vos ongles beaux et durables.",
       "understanding": "Veuillez comprendre qu'en présence de ces facteurs, le salon ne peut garantir la durée de tenue standard du revêtement.",
       "water_contact": "Contact fréquent avec l'eau ou des produits chimiques agressifs sans gants"
     },
@@ -158,7 +216,7 @@
       "category_label": "Catégorie",
       "category_nav": "Catégories de services",
       "empty": "Les tarifs sont temporairement indisponibles. Contactez-nous pour connaître les soins actuels.",
-      "hero_alt": "Aesthetic Lab treatment catalog background",
+      "hero_alt": "Arrière-plan du catalogue de soins Aesthetic Lab",
       "ready": "Prête quand vous l’êtes"
     },
     "privacy": {
@@ -197,6 +255,7 @@
       "google_link": "Lire tous les avis sur Google",
       "kicker": "Notes clientes",
       "rating_aria": "5 étoiles sur 5",
+      "section_title": "Mots doux",
       "source": "Avis Google",
       "title": "Mots gentils"
     },
@@ -208,6 +267,7 @@
       "catalogue": "Catalogue des soins",
       "default_category": "Services",
       "duration": "Durée :",
+      "editorial_title": "Des soins experts, des résultats naturels",
       "empty": "Les soins sont temporairement indisponibles. Contactez-nous pour connaître les options actuelles.",
       "from_price": "À partir de",
       "general_desc": "Soins de beauté professionnels pour votre look raffiné.",
@@ -233,20 +293,31 @@
       "role": {
         "technician": "Technicienne"
       },
+      "section_title": "Rencontrez votre équipe beauté",
       "title": "Rencontrez notre équipe"
     },
     "title": "{{name}} démo",
     "work": {
       "alt": {
+        "b1": "Mise en beauté précise des sourcils et des cils",
+        "b2": "Résultat naturel de mise en forme des sourcils",
+        "chrome_manicure": "Détail d’une manucure chrome rose",
+        "coral_manicure": "Manucure rouge corail vive sur les deux mains",
         "m1": "Détail d’une manucure classique sur mesure",
         "m2": "Manucure minimaliste au style « clean girl »",
         "m3": "Manucure élégante au fini mat",
         "m4": "Travail précis des cuticules et ongles en gel naturels",
+        "manicure_process": "Application de vernis à ongles au studio Aesthetic Lab",
+        "nude_manicure": "Manucure nude douce avec une finition brillante et nette",
         "p1": "Bain de pieds nourrissant et pédicure",
         "p2": "Finition soignée du vernis à ongles des pieds",
         "p3": "Soin de pédicure professionnel et hygiénique",
-        "p5": "Détails d’une pédicure esthétique"
+        "p5": "Détails d’une pédicure esthétique",
+        "pearl_manicure": "Détail d’une manucure rose nacrée"
       },
+      "description": "Des détails soignés, des finitions nettes et des résultats qui vous ressemblent.",
+      "gallery_label": "Galerie des résultats de soins",
+      "kicker": "Depuis notre atelier",
       "title": "Nos réalisations"
     }
   },

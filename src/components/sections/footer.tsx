@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
+import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
 import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
@@ -7,46 +8,91 @@ import { getLocaleNavLink } from "~/shared/locale-navigation";
 export const Footer = component$(() => {
 	const t = inlineTranslate();
 	const location = useLocation();
-
-	/* Shared navigation logic imported from shared/locale-navigation.ts */
+	const links = [
+		{ label: t("app.nav.services@@Services"), href: "#services" },
+		{ label: t("app.nav.reviews@@Reviews"), href: "#reviews" },
+		{ label: t("app.work.title@@Our Work"), href: "#gallery" },
+		{ label: t("app.nav.team@@Team"), href: "#team" },
+		{ label: t("app.faq.title@@FAQ"), href: "#faq" },
+		{ label: t("app.nav.contact@@Contact"), href: "#contact" },
+	];
 
 	return (
-		<footer class="bg-base-200 text-base-content border-t border-base-content/10 pt-8 pb-8">
-			<div class="custom-container">
-				<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-					{/* Left: Brand & Copyright */}
-					<div class="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
+		<footer class="border-t border-base-content/10 bg-base-200 px-6 pt-16 pb-6 lg:px-8">
+			<div class="mx-auto grid w-full max-w-7xl gap-10 sm:grid-cols-[1fr_auto] sm:items-start">
+				{/* Brand */}
+				<aside class="max-w-sm">
+					<div class="flex items-center gap-3">
 						<BirdLogo
-							class="h-10 w-auto"
+							class="h-10 w-auto text-base-content [&_path]:fill-current"
 							role="img"
 							aria-label={t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")}
 						/>
-						<p class="font-montserrat text-xs tracking-wide text-base-content/90">
-							{t("app.footer.copyright@@Copyright")} ©{" "}
-							{new Date().getFullYear()} -{" "}
-							{t("app.footer.all_rights@@All right reserved")}
-						</p>
+						<div>
+							<p class="font-qestero text-2xl leading-none">Aesthetic Lab</p>
+							<p class="mt-1 font-montserrat text-[0.6rem] uppercase tracking-[0.24em] text-base-content">
+								Leuven
+							</p>
+						</div>
 					</div>
+					<p class="mt-4 font-montserrat text-xs leading-relaxed text-base-content">
+						{t(
+							"app.footer.tagline@@Nails, brows, lashes and laser treatments shaped around you",
+						)}
+					</p>
+				</aside>
 
-					{/* Right: Navigation */}
-					<nav
-						aria-label={t("app.footer.navigation@@Footer navigation")}
-						class="flex flex-wrap justify-center gap-6 font-montserrat text-sm tracking-wider md:justify-end md:gap-8"
+				{/* Navigation */}
+				<nav aria-label={t("app.footer.navigation@@Footer navigation")}>
+					<h2 class="mb-3 font-montserrat text-xs font-semibold uppercase tracking-wider text-base-content">
+						{t("app.footer.explore@@Explore")}
+					</h2>
+					<div class="grid grid-cols-2 gap-x-7 gap-y-2.5 font-montserrat text-sm sm:grid-cols-3">
+						{links.map((item) => (
+							<a
+								key={item.label}
+								class="link link-hover min-h-11 content-center text-base-content"
+								href={getLocaleNavLink(location.url.pathname, item.href)}
+							>
+								{item.label}
+							</a>
+						))}
+						<a
+							class="link link-hover inline-flex min-h-11 items-center gap-2 text-base-content"
+							href="https://www.instagram.com/aestheticlabbe"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<SiInstagram class="size-4 text-accent" aria-hidden="true" />
+							Instagram
+						</a>
+					</div>
+				</nav>
+			</div>
+
+			{/* Bottom bar */}
+			<div class="mx-auto mt-12 max-w-7xl border-t border-base-300 pt-5 sm:flex sm:items-center sm:justify-between sm:gap-10">
+				<p class="font-montserrat text-xs leading-6 text-base-content">
+					{t("app.footer.copyright@@Copyright")} © {new Date().getFullYear()}{" "}
+					Aesthetic Lab Leuven
+				</p>
+				<nav
+					aria-label={t("app.footer.legal@@Legal")}
+					class="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-montserrat text-xs sm:mt-0 sm:shrink-0"
+				>
+					<a
+						class="link link-hover min-h-11 content-center text-base-content"
+						href={getLocaleNavLink(location.url.pathname, "privacy-policy")}
 					>
-						<a
-							class="font-medium text-base-content underline decoration-base-content/30 underline-offset-4 transition-colors hover:text-primary"
-							href={getLocaleNavLink(location.url.pathname, "privacy-policy")}
-						>
-							{t("app.privacy.privacy_title@@Privacy Policy")}
-						</a>
-						<a
-							class="font-medium text-base-content underline decoration-base-content/30 underline-offset-4 transition-colors hover:text-primary"
-							href={getLocaleNavLink(location.url.pathname, "notice")}
-						>
-							{t("app.privacy.important_info@@Important Information")}
-						</a>
-					</nav>
-				</div>
+						{t("app.privacy.privacy_title@@Privacy Policy")}
+					</a>
+					<a
+						class="link link-hover min-h-11 content-center text-base-content"
+						href={getLocaleNavLink(location.url.pathname, "notice")}
+					>
+						{t("app.privacy.important_info@@Important Information")}
+					</a>
+				</nav>
 			</div>
 		</footer>
 	);

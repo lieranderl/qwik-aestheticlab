@@ -22,7 +22,9 @@ test("keeps the current locale prefix in primary navigation links", async ({
 		"/en-BE/#",
 	);
 	await expect(
-		page.getByRole("link", { name: "Services", exact: true }),
+		page
+			.getByRole("navigation", { name: "Primary navigation" })
+			.getByRole("link", { name: "Services", exact: true }),
 	).toHaveAttribute("href", "/en-BE/#services");
 	await expect(
 		page.getByRole("link", { name: "Privacy Policy", exact: true }),
@@ -37,28 +39,85 @@ test("uses the corporate light theme and keeps navigation aligned with page orde
 	await expect(page.locator("body")).toHaveAttribute("data-theme", "Aesthetic");
 	await expect(
 		page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link"),
-	).toHaveText(["Home", "Services", "Team", "Our Work", "About", "Contact"]);
+	).toHaveText([
+		"Home",
+		"Services",
+		"Reviews",
+		"Our Work",
+		"Team",
+		"FAQ",
+		"Contact",
+	]);
 });
 
-test("keeps the hero as the complete first viewport", async ({ page }) => {
-	await page.goto("/en-BE/");
-
-	const heroHeight = await page.locator("#hero").evaluate((element) => {
-		return element.getBoundingClientRect().height;
-	});
-	const viewportHeight = page.viewportSize()?.height ?? 0;
-
-	expect(heroHeight).toBeGreaterThanOrEqual(viewportHeight - 1);
-});
-
-test("uses a stable mobile viewport height when browser chrome changes", async ({
+test("keeps the mobile hero action-led and shows treatment imagery early", async ({
 	page,
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/");
 
-	await expect(page.locator("#hero")).toHaveClass(/\bmin-h-svh\b/);
-	await expect(page.locator("#hero")).not.toHaveClass(/\bmin-h-dvh\b/);
+	const hero = page.locator("#hero");
+	await expect(
+		hero.getByRole("heading", {
+			name: "The Art of Natural Beauty",
+			level: 1,
+		}),
+	).toBeVisible();
+	await expect(
+		hero.getByRole("button", { name: "Book Appointment" }),
+	).toBeVisible();
+});
+
+test("renders localized landing-page copy in every supported language", async ({
+	page,
+}) => {
+	const locales = [
+		{
+			lang: "en-BE",
+			hero: "The Art of Natural Beauty",
+			reviews: "Kind words",
+			faq: "FAQ",
+		},
+		{
+			lang: "nl-BE",
+			hero: "De kunst van natuurlijke schoonheid",
+			reviews: "Mooie woorden",
+			faq: "FAQ",
+		},
+		{
+			lang: "fr-BE",
+			hero: "L'art de la beauté naturelle",
+			reviews: "Mots doux",
+			faq: "FAQ",
+		},
+		{
+			lang: "ru-BE",
+			hero: "Искусство естественной красоты",
+			reviews: "Тёплые слова",
+			faq: "Частые вопросы",
+		},
+		{
+			lang: "uk-BE",
+			hero: "Мистецтво природної краси",
+			reviews: "Теплі слова",
+			faq: "Поширені запитання",
+		},
+	];
+
+	await page.setViewportSize({ width: 390, height: 844 });
+
+	for (const locale of locales) {
+		await page.goto(`/${locale.lang}/`);
+		await expect(page.locator("#hero h1")).toHaveText(locale.hero);
+		await expect(page.locator("#reviews h2")).toHaveText(locale.reviews);
+		await expect(page.locator("#faq h2")).toHaveText(locale.faq);
+
+		const dimensions = await page.evaluate(() => ({
+			clientWidth: document.documentElement.clientWidth,
+			scrollWidth: document.documentElement.scrollWidth,
+		}));
+		expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+	}
 });
 
 test("supports the audited responsive widths without horizontal overflow", async ({
@@ -109,18 +168,18 @@ test("keeps the Instagram profile card compact on desktop and fluid on mobile", 
 		if (viewport.width >= 1024) {
 			expect(metrics.width).toBeLessThanOrEqual(1024);
 			expect(metrics.height).toBeLessThanOrEqual(448.5);
-			expect(metrics.left).toBeCloseTo(
-				(metrics.viewportWidth - metrics.width) / 2,
-				0,
+			expect(metrics.left).toBeGreaterThanOrEqual(16);
+			expect(metrics.left + metrics.width).toBeLessThanOrEqual(
+				metrics.viewportWidth - 16,
 			);
 		} else {
 			expect(metrics.width).toBe(viewport.width - 32);
-			expect(metrics.height).toBeGreaterThan(400);
+			expect(metrics.height).toBeGreaterThan(300);
 		}
 	}
 });
 
-test("keeps hero service copy readable at mobile and desktop widths", async ({
+test("keeps the hero content inside the viewport at mobile and desktop widths", async ({
 	page,
 }) => {
 	for (const viewport of [
@@ -131,38 +190,31 @@ test("keeps hero service copy readable at mobile and desktop widths", async ({
 		await page.setViewportSize(viewport);
 		await page.goto("/en-BE/");
 
-		const result = await page.evaluate(() => {
-			const line = document.querySelector('[data-testid="hero-service-line"]');
-			const textRotate = document.querySelector(
-				'[data-testid="hero-text-rotate"]',
-			);
-			const track = textRotate?.firstElementChild;
-			const footnote = document.querySelector(
-				'[data-testid="hero-service-footnote"]',
-			);
-			if (!line || !textRotate || !track || !footnote) return null;
+		const result = await page.locator("#hero").evaluate((hero) => {
+			const heading = hero.querySelector("h1");
+			const primaryAction = hero.querySelector("button");
+			if (!heading || !primaryAction) return null;
 
-			const lineBox = line.getBoundingClientRect();
-			const textRotateBox = textRotate.getBoundingClientRect();
-			const footnoteBox = footnote.getBoundingClientRect();
+			const headingBox = heading.getBoundingClientRect();
+			const actionBox = primaryAction.getBoundingClientRect();
 			return {
-				animationName: getComputedStyle(track).animationName,
-				colorCount: new Set(
-					Array.from(track.children, (row) => getComputedStyle(row).color),
-				).size,
-				lineBottom: lineBox.bottom,
-				lineHeight: lineBox.height,
-				textRotateHeight: textRotateBox.height,
-				footnoteTop: footnoteBox.top,
+				actionLeft: actionBox.left,
+				actionRight: actionBox.right,
+				headingLeft: headingBox.left,
+				headingRight: headingBox.right,
+				viewportWidth: document.documentElement.clientWidth,
 			};
 		});
 
 		expect(result).not.toBeNull();
-		expect(result?.animationName).toBe("rotator");
-		expect(result?.colorCount).toBe(5);
-		expect(result?.lineHeight).toBeGreaterThan(0);
-		expect(result?.textRotateHeight).toBeGreaterThan(0);
-		expect(result?.lineBottom).toBeLessThanOrEqual(result?.footnoteTop ?? 0);
+		expect(result?.headingLeft).toBeGreaterThanOrEqual(0);
+		expect(result?.headingRight).toBeLessThanOrEqual(
+			result?.viewportWidth ?? 0,
+		);
+		expect(result?.actionLeft).toBeGreaterThanOrEqual(0);
+		expect(result?.actionRight).toBeLessThanOrEqual(
+			result?.viewportWidth ?? 0,
+		);
 	}
 });
 
@@ -177,7 +229,7 @@ test("keeps animated SSR content visible without client JavaScript", async ({
 	const page = await context.newPage();
 
 	await page.goto("/en-BE/");
-	const animationStyles = await page.locator(".fade-motion").evaluateAll((items) =>
+	const animationStyles = await page.locator("[data-fade-up]").evaluateAll((items) =>
 		items.map((item) => ({
 			opacity: getComputedStyle(item).opacity,
 			transform: getComputedStyle(item).transform,
@@ -197,13 +249,13 @@ test("keeps animated SSR content visible without client JavaScript", async ({
 test("uses one card radius and a non-looping review rail", async ({ page }) => {
 	await page.goto("/en-BE/");
 
-	const cardRadii = await page.locator(".surface-card").evaluateAll((cards) => {
+	const cardRadii = await page.locator(".card-border").evaluateAll((cards) => {
 		return [...new Set(cards.map((card) => getComputedStyle(card).borderRadius))];
 	});
 	const reviewRail = page.getByRole("region", { name: "Kind Words" });
 
 	expect(cardRadii).toEqual(["16px"]);
-	await expect(reviewRail.locator("article")).toHaveCount(11);
+	await expect(reviewRail.locator("article")).toHaveCount(13);
 	await expect(reviewRail).toHaveCSS("animation-name", "none");
 
 	const ratingStyles = await page
@@ -218,9 +270,9 @@ test("uses one card radius and a non-looping review rail", async ({ page }) => {
 			})),
 		);
 
-	expect(ratingStyles).toHaveLength(12);
+	expect(ratingStyles).toHaveLength(14);
 	expect(ratingStyles).toEqual(
-		Array.from({ length: 12 }, () => ({
+		Array.from({ length: 14 }, () => ({
 			current: "true",
 			opacities: ["1", "1", "1", "1", "1"],
 		})),

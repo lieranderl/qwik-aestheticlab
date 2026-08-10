@@ -1,7 +1,6 @@
 import { $, component$, useId, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
-import { FadeUp } from "~/components/ui/fade-up";
 import type { Staff } from "~/types";
 
 type TeamImageComponent = typeof import("~/media/zara.jpg?jsx").default;
@@ -16,9 +15,7 @@ function resolveImageComponent(image: string) {
 	if (!image) return null;
 	const imageName = image.replace(/\.jpg$/i, "");
 	for (const path in TEAM_IMAGES) {
-		if (path.endsWith(`/${imageName}.jpg`)) {
-			return TEAM_IMAGES[path];
-		}
+		if (path.endsWith(`/${imageName}.jpg`)) return TEAM_IMAGES[path];
 	}
 	return null;
 }
@@ -33,32 +30,54 @@ function compareStaffById(a: Staff, b: Staff) {
 
 export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const t = inlineTranslate();
+	const sorted = [...technicians].sort(compareStaffById);
 
 	return (
 		<section
 			id="team"
-			class="section-shell relative overflow-hidden bg-base-200"
+			class="scroll-mt-24 overflow-hidden bg-base-200 py-16 md:py-24 lg:py-28"
 		>
-			<div class="custom-container">
-				<FadeUp class="mb-9 grid gap-5 text-center md:mb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:text-left">
+			<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+				{/* Section Header */}
+				<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
 					<div>
-						<p class="editorial-kicker mb-4">
-							{t("app.team.kicker@@Studio artists")}
+						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+							{t("app.team.kicker@@The people behind your care")}
 						</p>
-						<h2 class="section-heading">
-							{t("app.team.title@@Meet Our Team")}
+						<h2 class="max-w-2xl text-balance font-qestero text-5xl leading-[0.9] text-base-content md:text-7xl">
+							{t("app.team.section_title@@Meet your beauty team")}
 						</h2>
 					</div>
-					<div class="editorial-rule mx-auto w-20 lg:mx-0 lg:w-full" />
-				</FadeUp>
-
-				<div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
-					{[...technicians].sort(compareStaffById).map((tech, index) => (
-						<FadeUp key={tech.id} delay={index * 60} class="group h-full">
-							<TeamMemberCard tech={tech} />
-						</FadeUp>
-					))}
+					<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
+						<p class="text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+							{t(
+								"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
+							)}
+						</p>
+						{/* Team stat */}
+						<div class="mt-4">
+							<span class="text-3xl font-qestero text-base-content">
+								{sorted.length}
+							</span>
+							<span class="ml-2 font-montserrat text-sm text-base-content/60">
+								{sorted.length === 1
+									? t("app.team.artist@@artist")
+									: t("app.team.artists@@artists")}{" "}
+								&mdash; {t("app.team.leuven@@Leuven")}
+							</span>
+						</div>
+					</div>
 				</div>
+
+				{/* Team Cards — carousel on mobile, grid on desktop */}
+				<section
+					class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
+					aria-label={t("app.team.section_title@@Meet your beauty team")}
+				>
+					{sorted.map((tech, index) => (
+						<TeamMemberCard key={tech.id} tech={tech} index={index} />
+					))}
+				</section>
 			</div>
 		</section>
 	);
@@ -66,88 +85,109 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 
 interface TeamMemberCardProps {
 	tech: Staff;
+	index: number;
 }
 
-export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
-	const t = inlineTranslate();
-	const isExpanded = useSignal(false);
-	const ImageComp = resolveImageComponent(tech.photo_url);
-	const bio = tech.about;
-	const bioId = useId();
-	const hasLongBio = bio.length > 180;
+export const TeamMemberCard = component$<TeamMemberCardProps>(
+	({ tech, index }) => {
+		const t = inlineTranslate();
+		const isExpanded = useSignal(false);
+		const ImageComp = resolveImageComponent(tech.photo_url);
+		const bioId = useId();
+		const hasLongBio = tech.about.length > 160;
 
-	return (
-		<article class="card surface-card flex h-full flex-col p-4 text-left transition-shadow duration-200 hover:shadow-md motion-reduce:transition-none md:p-6">
-			<div class="mx-auto mb-4 size-32 shrink-0 overflow-hidden rounded-full border border-base-300 bg-base-200 transition-colors duration-200 group-hover:border-primary/30 md:mb-6 md:aspect-4/5 md:h-auto md:w-full md:rounded-2xl">
-				{ImageComp ? (
-					<ImageComp
-						alt={tech.name}
-						class="interactive-media h-full w-full object-cover"
-						loading="lazy"
-						sizes="(min-width: 1152px) 16rem, (min-width: 1024px) calc(25vw - 2rem), (min-width: 768px) calc(33vw - 2rem), (min-width: 640px) calc(50vw - 2rem), 8rem"
-					/>
-				) : (
-					tech.photo_url && (
+		return (
+			<article
+				class={[
+					"group card card-border carousel-item w-[62%] shrink-0 snap-start bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg sm:w-[44%] md:w-auto",
+					index % 2 === 1 ? "lg:mt-12" : "",
+				]}
+			>
+				{/* Team photo */}
+				<figure class="aspect-3/4 overflow-hidden bg-base-300">
+					{ImageComp ? (
+						<ImageComp
+							alt={tech.name}
+							class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
+							loading="lazy"
+							sizes="(min-width: 1280px) 20rem, (min-width: 1024px) calc(33vw - 2rem), (min-width: 768px) calc(50vw - 2rem), 62vw"
+						/>
+					) : tech.photo_url ? (
 						<img
 							src={tech.photo_url}
 							alt={tech.name}
-							width={640}
-							height={800}
-							class="interactive-media h-full w-full object-cover"
+							width={400}
+							height={533}
+							class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
 							loading="lazy"
 						/>
-					)
-				)}
-			</div>
+					) : (
+						/* Placeholder when no photo */
+						<div class="flex h-full w-full items-center justify-center bg-base-200">
+							<span class="font-qestero text-6xl text-base-content/20">
+								{tech.name.charAt(0)}
+							</span>
+						</div>
+					)}
+				</figure>
 
-			<h3 class="mb-1 text-balance font-qestero text-2xl leading-none md:text-3xl">
-				{tech.name}
-			</h3>
-			<p class="font-montserrat mb-4 flex items-center gap-2 text-xs uppercase tracking-widest text-primary md:mb-5">
-				{tech.role || t("app.team.role.technician@@Technician")}
-			</p>
+				<div class="card-body min-w-0 gap-3 p-5">
+					{/* Name + role badge */}
+					<div>
+						<div class="mb-1.5">
+							<span class="badge badge-soft badge-sm font-montserrat text-accent">
+								{tech.role || t("app.team.role.technician@@Technician")}
+							</span>
+						</div>
+						<h3 class="font-qestero text-2xl leading-none text-base-content">
+							{tech.name}
+						</h3>
+					</div>
 
-			{/* Bio Description */}
-			<div class="mb-4 flex grow flex-col gap-3 md:mb-6">
-				<div
-					id={bioId}
-					class={[
-						"relative font-montserrat text-sm leading-relaxed text-base-content/85",
-						isExpanded.value
-							? "max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
-							: "line-clamp-3 md:line-clamp-4",
-					]}
-				>
-					{bio}
-				</div>
-				{hasLongBio ? (
-					<button
-						type="button"
-						onClick$={$(() => {
-							isExpanded.value = !isExpanded.value;
-						})}
-						class="btn btn-ghost btn-sm mt-auto min-h-11 w-fit px-2 font-montserrat text-xs uppercase tracking-wider text-primary"
-						aria-expanded={isExpanded.value}
-						aria-controls={bioId}
+					{/* Bio with expand/collapse */}
+					<div
+						id={bioId}
+						class={
+							isExpanded.value
+								? "font-montserrat text-sm leading-relaxed text-base-content/75"
+								: "line-clamp-3 font-montserrat text-sm leading-relaxed text-base-content/75"
+						}
 					>
-						{isExpanded.value
-							? t("app.common.read_less@@Read Less")
-							: t("app.common.read_more@@Read More")}
-					</button>
-				) : null}
-			</div>
+						{tech.about}
+					</div>
 
-			<Booking
-				id={`modal_tech_${tech.id}`}
-				text={t("app.book.book_now@@Book Now")}
-				location="372146"
-				staff={String(tech.id)}
-				classes="btn btn-outline btn-primary min-h-11 w-full rounded-full px-8 font-montserrat uppercase tracking-wider text-xs transition-colors duration-150"
-				analyticsPlacement="team"
-				analyticsServiceCategory="staff"
-				analyticsServiceId={String(tech.id)}
-				analyticsServiceName={tech.role || "Technician"}
-			/>
-		</article>
-	);
-});
+					{hasLongBio ? (
+						<button
+							type="button"
+							onClick$={$(() => {
+								isExpanded.value = !isExpanded.value;
+							})}
+							class="min-h-11 w-fit cursor-pointer px-0 font-montserrat text-xs font-semibold uppercase tracking-wider text-secondary"
+							aria-expanded={isExpanded.value}
+							aria-controls={bioId}
+						>
+							{isExpanded.value
+								? t("app.common.read_less@@Read Less")
+								: t("app.common.read_more@@Read More")}
+						</button>
+					) : null}
+
+					{/* Booking action */}
+					<div class="card-actions mt-auto border-t border-base-300 pt-3.5">
+						<Booking
+							id={`modal_tech_${tech.id}`}
+							text={t("app.book.book_now@@Book Now")}
+							location="372146"
+							staff={String(tech.id)}
+							classes="btn btn-sm min-h-11 w-full font-montserrat text-xs font-semibold uppercase tracking-wider"
+							analyticsPlacement="team"
+							analyticsServiceCategory="staff"
+							analyticsServiceId={String(tech.id)}
+							analyticsServiceName={tech.role || "Technician"}
+						/>
+					</div>
+				</div>
+			</article>
+		);
+	},
+);

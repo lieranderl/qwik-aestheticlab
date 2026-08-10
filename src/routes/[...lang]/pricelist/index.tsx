@@ -6,6 +6,7 @@ import {
 	useVisibleTask$,
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
 import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
@@ -27,6 +28,8 @@ import {
 
 interface PricelistServiceItemProps {
 	service: Service;
+	location: string;
+	categoryName: string;
 }
 
 /** Pricelist-specific override for brows & lashes combined display name. */
@@ -51,7 +54,7 @@ function getCategoryNumber(index: number) {
 }
 
 const PricelistServiceItem = component$(
-	({ service }: PricelistServiceItemProps) => {
+	({ service, location, categoryName }: PricelistServiceItemProps) => {
 		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
 		const descriptionId = useId();
@@ -59,70 +62,70 @@ const PricelistServiceItem = component$(
 		const readMoreLabel = t("app.common.read_more@@Read More");
 
 		return (
-			<article class="card card-sm border border-base-content/12 bg-base-100 shadow-sm">
-				<div class="card-body gap-3 px-4 py-4 md:px-6 md:py-5">
-					{/* Header Row: Title --- Price */}
-					<div class="flex flex-col gap-1.5 md:flex-row md:items-baseline md:justify-between md:gap-0">
-						<div class="flex min-w-0 grow items-baseline">
-							<h3 class="pr-3 font-montserrat text-base leading-snug font-semibold text-base-content md:pr-4 md:text-lg">
+			<article class="border-t border-base-300 py-5 first:border-t-0 first:pt-0 last:pb-0 md:py-6">
+				<div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-8 md:gap-y-3">
+					<div class="min-w-0">
+						<div class="flex items-start justify-between gap-4">
+							<h3 class="font-montserrat text-base leading-snug font-semibold text-base-content md:text-lg">
 								{service.name}
 							</h3>
-							<div class="relative -top-1.5 mx-2 hidden min-w-5 grow border-b border-dotted border-base-content/25 md:block" />
-						</div>
-						<span class="badge badge-primary badge-lg self-end shrink-0 font-montserrat font-semibold text-primary-content md:self-auto">
-							{formatPremiumPrice(service.price)}
-						</span>
-					</div>
-
-					{/* Description with expand/collapse on mobile */}
-					<div class="mb-2">
-						<p
-							id={descriptionId}
-							class={`max-w-4xl font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7 ${isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none"}`}
-						>
-							{service.description}
-						</p>
-						{service.description && service.description.length > 100 && (
-							<button
-								type="button"
-								onClick$={$(() => {
-									isExpanded.value = !isExpanded.value;
-								})}
-								class="btn btn-ghost btn-sm mt-1 min-h-11 px-0 font-montserrat text-xs text-primary md:hidden"
-								aria-expanded={isExpanded.value}
-								aria-controls={descriptionId}
-							>
-								{isExpanded.value ? readLessLabel : readMoreLabel}
-							</button>
-						)}
-					</div>
-
-					{/* Meta: Duration */}
-					{service.duration && (
-						<div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-base-content/75">
-							<span class="badge badge-outline badge-sm h-auto min-h-8 gap-2 border-base-content/25 px-3 text-base-content/75">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="12"
-									height="12"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									class="lucide lucide-clock"
-									aria-hidden="true"
-								>
-									<circle cx="12" cy="12" r="10" />
-									<polyline points="12 6 12 12 16 14" />
-								</svg>
-								<span class="ml-2">
-									{service.duration}&nbsp;{t("app.services.minutes@@min")}
-								</span>
+							<span class="shrink-0 font-montserrat text-lg leading-none font-semibold text-secondary tabular-nums md:hidden">
+								{formatPremiumPrice(service.price)}
 							</span>
 						</div>
-					)}
+
+						{service.description ? (
+							<div class="mt-2">
+								<p
+									id={descriptionId}
+									class={[
+										"max-w-3xl font-montserrat text-sm leading-6 text-base-content md:leading-7",
+										isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none",
+									]}
+								>
+									{service.description}
+								</p>
+								{service.description.length > 100 ? (
+									<button
+										type="button"
+										onClick$={$(() => {
+											isExpanded.value = !isExpanded.value;
+										})}
+										class="btn btn-ghost btn-sm mt-1 min-h-11 px-0 font-montserrat text-xs text-secondary md:hidden"
+										aria-expanded={isExpanded.value}
+										aria-controls={descriptionId}
+									>
+										{isExpanded.value ? readLessLabel : readMoreLabel}
+									</button>
+								) : null}
+							</div>
+						) : null}
+
+						{service.duration ? (
+							<div class="mt-3 flex items-center gap-2 font-montserrat text-xs font-medium uppercase tracking-wider text-base-content">
+								<HiClockOutline class="size-4" aria-hidden="true" />
+								<span>
+									{service.duration}&nbsp;{t("app.services.minutes@@min")}
+								</span>
+							</div>
+						) : null}
+					</div>
+
+					<div class="flex flex-col gap-3 md:min-w-40 md:items-end md:justify-between">
+						<span class="hidden font-montserrat text-2xl leading-none font-semibold text-secondary tabular-nums md:block">
+							{formatPremiumPrice(service.price)}
+						</span>
+						<Booking
+							id={`pricelist_service_${service.id}`}
+							text={t("app.book.book_now@@Book Now")}
+							location={location}
+							classes="btn btn-primary btn-sm min-h-11 w-full rounded-full px-6 font-montserrat text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
+							analyticsPlacement="pricelist_service"
+							analyticsServiceId={service.id}
+							analyticsServiceName={service.name}
+							analyticsServiceCategory={categoryName}
+						/>
+					</div>
 				</div>
 			</article>
 		);
@@ -193,7 +196,7 @@ export default component$(() => {
 
 			<main>
 				{/* Hero */}
-				<section class="hero relative min-h-96 overflow-hidden bg-base-200 pt-16 md:min-h-128 md:pt-20">
+				<section class="hero relative min-h-96 overflow-hidden bg-primary pt-16 md:min-h-128 md:pt-20">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
 							alt={t(
@@ -203,42 +206,49 @@ export default component$(() => {
 							loading="eager"
 							fetchPriority="high"
 						/>
-						<div class="hero-overlay absolute inset-0 bg-base-200/40" />
+						<div class="hero-overlay absolute inset-0 bg-primary/55" />
 					</div>
 					<div class="hero-content relative z-10 w-full max-w-7xl justify-center px-4 py-12 md:px-8 md:py-16 opacity-95">
-						<div class="mx-auto w-full max-w-xl">
-							<div class="surface-card bg-base-100/90 px-6 py-7 text-center text-base-content md:px-9 md:py-8">
-								<h1 class="font-qestero text-4xl leading-tight md:text-5xl">
-									{t("app.services.pricing_title@@Services & Pricing")}
-								</h1>
-								<div class="mx-auto my-4 h-px w-16 bg-primary/40 md:my-5" />
-								<p class="mx-auto max-w-lg font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
-									{t(
-										"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
-									)}
-								</p>
+						<div class="card card-border mx-auto w-full max-w-xl bg-base-100/90 p-6 text-center text-base-content shadow-sm md:p-9">
+							<h1 class="font-qestero text-4xl leading-tight md:text-5xl">
+								{t("app.services.pricing_title@@Services & Pricing")}
+							</h1>
+							<div class="mx-auto my-4 h-px w-16 bg-secondary/40 md:my-5" />
+							<p class="mx-auto max-w-lg font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
+								{t(
+									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
+								)}
+							</p>
+							<div class="mt-6 flex justify-center">
+								<Booking
+									id="hero_pricelist_book"
+									text={t("app.hero.book_appointment@@Book Appointment")}
+									location={contact?.location.name || ""}
+									classes="btn btn-primary btn-md min-h-12 rounded-full px-8 font-montserrat text-xs font-semibold uppercase tracking-[0.12em]"
+									analyticsPlacement="pricelist_hero"
+								/>
 							</div>
 						</div>
 					</div>
 				</section>
 
 				{/* Pricing List */}
-				<section class="section-shell border-y border-base-300/30 bg-base-200">
-					<div class="custom-container mx-auto max-w-6xl">
+				<section class="scroll-mt-24 border-y border-base-300/30 bg-base-200 py-16 md:py-24 lg:py-28">
+					<div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
 						{groupedServices.length > 1 ? (
 							<nav
-								class="card surface-card sticky top-16 z-20 -mx-1 mb-8 bg-base-100/98 p-2 shadow-md md:top-20 md:mb-12 md:rounded-2xl md:p-3"
+								class="card card-border sticky top-16 z-20 -mx-1 mb-8 bg-base-100/98 p-2 shadow-md transition-[box-shadow,border-color] duration-200 md:top-20 md:mb-12 md:p-3"
 								aria-label={categoryNavLabel}
 							>
-								<div class="scrollbar-none flex snap-x gap-2 overflow-x-auto overscroll-x-contain">
+								<div class="flex snap-x gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 									{groupedServices.map(
 										({ groupId, displayCategoryName, anchorId }, index) => (
 											<a
 												key={groupId}
 												href={`#${anchorId}`}
-												class="btn btn-outline btn-primary btn-sm min-h-11 shrink-0 snap-start rounded-full font-montserrat uppercase tracking-wider"
+												class="btn btn-ghost btn-sm min-h-11 shrink-0 snap-start rounded-full border border-base-300 bg-base-100 font-montserrat text-base-content uppercase tracking-wider hover:border-base-content/40 hover:bg-base-200"
 											>
-												<span class="text-primary/60">
+												<span class="text-secondary/90">
 													{getCategoryNumber(index)}
 												</span>
 												{displayCategoryName}
@@ -278,23 +288,23 @@ export default component$(() => {
 										<FadeUp key={groupId} delay={Math.min(index, 5) * 60}>
 											<section
 												id={anchorId}
-												class="card surface-card scroll-mt-36 shadow-md"
+												class="card card-border scroll-mt-36 bg-base-100 shadow-md transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg"
 											>
 												<div class="card-body gap-0 p-4 md:p-8">
 													<div class="mb-6 flex flex-col gap-4 md:mb-8">
 														<div class="flex items-center gap-4">
-															<span class="badge badge-primary badge-lg size-11 shrink-0 rounded-full p-0 font-montserrat text-xs font-semibold tracking-[0.12em] md:size-12">
+															<span class="badge badge-soft badge-lg size-11 shrink-0 rounded-full p-0 font-montserrat text-xs font-semibold tracking-[0.12em] md:size-12">
 																{getCategoryNumber(index)}
 															</span>
 															<div class="h-px flex-1 bg-base-300/50" />
 															{startingPriceLabel ? (
-																<span class="badge badge-primary badge-outline shrink-0 rounded-full font-montserrat">
+																<span class="badge badge-soft shrink-0 rounded-full font-montserrat">
 																	{startingPriceLabel}
 																</span>
 															) : null}
 														</div>
 														<div>
-															<p class="font-montserrat text-xs uppercase tracking-[0.2em] text-base-content/65 md:tracking-[0.24em]">
+															<p class="font-montserrat text-xs uppercase tracking-[0.2em] text-base-content md:tracking-[0.24em]">
 																{categoryLabel}
 															</p>
 															<h2 class="font-qestero text-3xl text-base-content md:text-4xl">
@@ -303,11 +313,13 @@ export default component$(() => {
 														</div>
 													</div>
 
-													<div class="space-y-3 md:space-y-4">
+													<div>
 														{groupServices.map((service) => (
 															<PricelistServiceItem
 																key={service.id}
 																service={service}
+																location={contact?.location.name || ""}
+																categoryName={displayCategoryName}
 															/>
 														))}
 													</div>
@@ -322,13 +334,13 @@ export default component$(() => {
 				</section>
 
 				{/* Bottom CTA */}
-				<section class="bg-base-100 px-4 py-16 text-center md:py-24">
-					<FadeUp class="card surface-card mx-auto max-w-3xl bg-base-200/35">
+				<section class="bg-base-100 px-4 py-16 text-center md:py-24 lg:py-28">
+					<FadeUp class="card card-border mx-auto max-w-3xl bg-base-200/35 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg">
 						<div class="card-body items-center px-5 py-10 md:p-14">
-							<p class="editorial-kicker mb-4">
+							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 								{t("app.pricelist.ready@@Ready when you are")}
 							</p>
-							<h2 class="section-heading mb-6">
+							<h2 class="mb-6 text-balance font-qestero text-4xl leading-none text-base-content md:text-5xl">
 								{t("app.hero.book_visit@@Book Your Visit")}
 							</h2>
 							<Booking

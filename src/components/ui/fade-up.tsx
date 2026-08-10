@@ -13,6 +13,28 @@ interface SharedObserverEntry {
 
 const sharedObservers = new Map<string, SharedObserverEntry>();
 
+const delayClasses: Record<number, string> = {
+	0: "",
+	40: "motion-safe:delay-[40ms]",
+	60: "motion-safe:delay-[60ms]",
+	80: "motion-safe:delay-[80ms]",
+	100: "motion-safe:delay-[100ms]",
+	120: "motion-safe:delay-[120ms]",
+	140: "motion-safe:delay-[140ms]",
+	160: "motion-safe:delay-[160ms]",
+	180: "motion-safe:delay-[180ms]",
+	200: "motion-safe:delay-[200ms]",
+	220: "motion-safe:delay-[220ms]",
+	240: "motion-safe:delay-[240ms]",
+	300: "motion-safe:delay-300",
+};
+
+function getDelayClass(delay: number) {
+	if (delay <= 0) return delayClasses[0];
+	const normalized = Math.min(300, Math.round(delay / 20) * 20);
+	return delayClasses[normalized] ?? delayClasses[300];
+}
+
 function getSharedObserver(rootMargin: number, threshold: number) {
 	const key = `${rootMargin}:${threshold}`;
 	const existing = sharedObservers.get(key);
@@ -41,12 +63,9 @@ function getSharedObserver(rootMargin: number, threshold: number) {
 
 export interface FadeUpProps {
 	delay?: number;
-	duration?: number;
 	threshold?: number;
 	runOnce?: boolean;
 	rootMargin?: number;
-	easing?: string;
-	distance?: number;
 	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
 	class?: string;
@@ -56,12 +75,9 @@ export interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		duration = 300,
 		threshold = 0.1,
 		runOnce = true,
 		rootMargin = 50,
-		easing = "cubic-bezier(0.22, 1, 0.36, 1)",
-		distance = 16,
 		direction = "up",
 		disable = false,
 		class: className = "",
@@ -77,7 +93,10 @@ export const FadeUp = component$(
 			const el = elRef.value;
 			if (!el) return;
 
-			if (disable) {
+			if (
+				disable ||
+				window.matchMedia("(prefers-reduced-motion: reduce)").matches
+			) {
 				state.value = "disabled";
 				return;
 			}
@@ -120,23 +139,33 @@ export const FadeUp = component$(
 			});
 		});
 
-		const classMap = {
-			hidden: `fade-${direction}-hidden`,
-			visible: `fade-${direction}-visible`,
-			immediate: `fade-${direction}-immediate`,
-			disabled: `fade-${direction}-disabled`,
+		const hiddenClassMap = {
+			up: "motion-safe:[.js_&]:translate-y-12 motion-safe:[.js_&]:opacity-0",
+			down: "motion-safe:[.js_&]:-translate-y-12 motion-safe:[.js_&]:opacity-0",
+			left: "motion-safe:[.js_&]:translate-x-10 motion-safe:[.js_&]:opacity-0",
+			right:
+				"motion-safe:[.js_&]:-translate-x-10 motion-safe:[.js_&]:opacity-0",
 		};
+		const visibilityClass =
+			state.value === "hidden"
+				? hiddenClassMap[direction]
+				: "translate-x-0 translate-y-0 opacity-100";
+		const transitionClass =
+			state.value === "hidden" || state.value === "visible"
+				? "motion-safe:transition-[opacity,transform] motion-safe:duration-400 motion-safe:ease-[var(--ease-smooth)]"
+				: "transition-none";
 
 		return (
 			<div
 				ref={elRef}
-				style={{
-					"--fade-duration": `${duration}ms`,
-					"--fade-delay": `${delay}ms`,
-					"--fade-distance": `${distance}px`,
-					"--fade-easing": easing,
-				}}
-				class={`fade-motion ${classMap[state.value]} ${className}`.trim()}
+				data-fade-up
+				class={[
+					transitionClass,
+					visibilityClass,
+					getDelayClass(delay),
+					"motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
+					className,
+				]}
 				onClick$={onClick$}
 			>
 				<Slot />

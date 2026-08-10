@@ -31,7 +31,7 @@ export default component$(() => {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<script
 					dangerouslySetInnerHTML={
-						'document.documentElement.classList.add("js");'
+						'document.documentElement.classList.add("js","scroll-smooth");'
 					}
 				/>
 
@@ -67,7 +67,11 @@ export default component$(() => {
 				<RouterHead />
 				{!isDev && <ServiceWorkerRegister />}
 			</head>
-			<body lang={locale.lang} data-theme="Aesthetic" class="font-montserrat">
+			<body
+				lang={locale.lang}
+				data-theme="Aesthetic"
+				class="relative min-w-80 scroll-smooth bg-base-200 font-montserrat text-base-content antialiased [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
+			>
 				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />
 			</body>

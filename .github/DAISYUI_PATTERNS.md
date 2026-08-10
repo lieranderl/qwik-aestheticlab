@@ -23,15 +23,15 @@ The custom theme is defined in `src/global.css` inside the `@plugin "daisyui/the
 
 | Token | Hex | Usage |
 | ------- | ----- | ------- |
-| `base-100` | `#f0f2f0` | Card backgrounds, light surfaces |
-| `base-200` | `#8b9687` | Page background, muted surfaces |
-| `base-300` | `#6b7568` | Borders, dividers |
-| `base-content` | `#0d1f12` | Primary text |
-| `primary` | `#1f3828` | CTAs, headings, brand accent |
-| `primary-content` | `#ffffff` | Text on primary backgrounds |
-| `secondary` | `#3e2b22` | Warm accents, subheadings |
-| `accent` | `#8a4f68` | Highlight accents |
-| `neutral` | `#5c635a` | Subtle UI elements |
+| `base-100` | `#fffaf3` | Warm ivory cards and navigation surfaces |
+| `base-200` | `#f1f0e9` | Warm stone supporting surfaces |
+| `base-300` | `#d9dcd4` | Soft sage-grey borders and dividers |
+| `base-content` | `#39443a` | Soft botanical ink text |
+| `primary` | `#a8b1a2` | Warm sage backgrounds and brand identity |
+| `primary-content` | `#2f382f` | Deep olive text on warm sage |
+| `secondary` | `#5a4640` | Warm walnut headings and restrained accents |
+| `accent` | `#9a6173` | Dusty berry highlights |
+| `neutral` | `#2f382f` | Deep olive primary actions |
 
 **Rule:** Always use these tokens via DaisyUI classes (`bg-primary`, `text-base-content`, etc.) rather than hardcoding hex values.
 

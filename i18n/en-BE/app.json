@@ -2,43 +2,45 @@
   "app": {
     "about": {
       "alt": {
-        "artists": "Aesthetic Lab artists at work in Leuven studio",
-        "manicure_detail": "Close-up detail of premium gel manicure work"
+        "artists": "Aesthetic Lab artists at work in the Leuven studio",
+        "manicure_detail": "Close-up of a fresh manicure at Aesthetic Lab Leuven"
       },
-      "extra_text": "We are dedicated to providing the highest quality treatments in a relaxing environment. Every detail is curated to ensure your comfort and satisfaction, making your visit a truly rejuvenating experience.",
-      "philosophy": "& Philosophy",
-      "subtitle": "Since 2025"
+      "extra_text": "Honesty and quality in every detail.",
+      "philosophy": "We believe beauty thrives in a calm, honest space. At Aesthetic Lab, every visit balances precision with warmth — where expertise meets real listening, and you leave feeling truly cared for.",
+      "subtitle": "A space designed for calm, care, and quiet confidence."
     },
     "book": {
-      "book_app": "Book Appointment",
-      "book_appointment": "Book Appointment",
-      "book_new_app": "Book New Appointment",
-      "book_now": "Book Now"
+      "book_app": "Book appointment",
+      "book_appointment": "Book appointment",
+      "book_new_app": "Book a new appointment",
+      "book_now": "Book now"
     },
     "booking": {
-      "loading": "Loading booking options",
-      "widget_title": "Booking Widget"
+      "loading": "Loading booking widget…",
+      "widget_title": "Book your appointment"
     },
     "changeLocale": "Change language",
     "common": {
       "close": "Close",
-      "read_less": "Read Less",
-      "read_more": "Read More"
+      "read_less": "Read less",
+      "read_more": "Read more"
     },
     "contact": {
-      "appointment_only": "Visits are by appointment only",
+      "appointment_only": "By appointment only",
       "contact": "Contact",
-      "directions": "Get Directions",
+      "description": "We're easy to reach whether you walk, drive, or arrive by public transport.",
+      "directions": "Directions",
       "instagram": "Follow us on Instagram",
-      "location": "Location",
-      "map_location": "Location map",
-      "map_title": "Aesthetic Lab Location",
-      "monday": "Monday",
-      "opening_hours": "Opening Hours",
-      "parking": "Parking available at",
+      "kicker": "Visit us",
+      "location": "Leuven, BE 3000 — near the ring, with easy parking and public transport access.",
+      "map_location": "Aesthetic Lab location in Leuven",
+      "map_title": "Our location",
+      "monday": "Open Mon – Sat, call for hours and availability.",
+      "opening_hours": "Opening hours",
+      "parking": "Parking available",
       "saturday": "Saturday",
-      "sunday": "Sunday",
-      "visit_us": "Visit Us"
+      "sunday": "Closed Sunday",
+      "visit_us": "Visit us"
     },
     "cookies": {
       "accept": "Accept analytics",
@@ -49,204 +51,273 @@
       "settings": "Cookie settings",
       "title": "Cookie settings"
     },
+    "cta": {
+      "description": "We listen carefully, work cleanly, and focus on subtle enhancements that look and feel natural.",
+      "title": "Ready to feel beautifully yourself?"
+    },
+    "faq": {
+      "booking": {
+        "answer_before": "Use any ",
+                "answer_after": " button to open live availability, then choose your treatment and preferred artist.",
+        "question": "How do I book an appointment?"
+      },
+      "cancellation": {
+        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "question": "Can I cancel or reschedule an appointment?"
+      },
+      "consultation": {
+        "answer": "Absolutely. If you are unsure which treatment suits you best, <a href='#contact' class='link link-secondary'>reach out</a> and we will help you choose the right option during a short complimentary consultation.",
+        "question": "Do you offer consultations before booking?"
+      },
+      "description": "A few useful details to make planning your appointment simple.",
+      "duration": {
+        "answer": "Open a <a href='./pricelist' class='link link-secondary'>treatment category</a> to compare the current duration and price of every available service before booking.",
+        "question": "How long do treatments take?"
+      },
+      "kicker": "Before your visit",
+      "laser_prep": {
+        "answer": "Shave the area 24 hours before your session and avoid sun exposure, tanning, and self-tanner for at least 2 weeks. Please read our full <a href='./notice' class='link link-secondary'>pre- and post-care policy</a> before your appointment.",
+        "question": "How should I prepare for a laser treatment?"
+      },
+      "location": {
+        "answer": "Our address, opening hours, map, and nearby parking links are available in the <a href='#contact' class='link link-secondary'>Visit us</a> section below.",
+        "question": "Where is the studio in Leuven?"
+      },
+      "title": "FAQ"
+    },
     "footer": {
-      "all_rights": "All right reserved",
-      "copyright": "Copyright",
-      "navigation": "Footer navigation"
+      "all_rights": "All rights reserved.",
+      "copyright": "Aesthetic Lab",
+      "explore": "Explore",
+      "legal": "Legal",
+      "navigation": "Site navigation",
+      "tagline": "Manicure · Pedicure · Brows · Lashes · Laser"
     },
     "generic": {
       "view": "View"
     },
     "head": {
       "home": {
-        "description": "Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
-        "title": "Aesthetic Lab | Nail Design, Brows & Laser"
+        "description": "Manicure, pedicure, brows, lashes, and laser in Leuven. Book your appointment online.",
+        "title": "Aesthetic Lab — Manicure · Pedicure · Brows · Lashes · Laser in Leuven"
       },
       "notice": {
-        "description": "Important treatment durability, aftercare, and complimentary fix information for Aesthetic Lab clients.",
-        "title": "Client Information | Aesthetic Lab"
+        "description": "Important pre- and post-care instructions for your appointment at Aesthetic Lab.",
+        "title": "Important Notice — Aesthetic Lab"
       },
       "pricelist": {
-        "description": "Full price list for manicures, pedicures, brows, and laser treatments.",
-        "title": "Services & Pricing | Aesthetic Lab"
+        "description": "Up-to-date treatment duration and pricing for every service at Aesthetic Lab.",
+        "title": "Pricelist — Aesthetic Lab"
       },
       "privacy": {
-        "description": "How Aesthetic Lab collects, uses, and protects your personal information.",
-        "title": "Privacy Policy | Aesthetic Lab"
+        "description": "How we collect, use, and protect your personal data at Aesthetic Lab.",
+        "title": "Privacy Policy — Aesthetic Lab"
       }
     },
     "hero": {
       "according": "*according to our clients",
       "and": "and",
-      "book_appointment": "Book Appointment",
-      "book_visit": "Book Your Visit",
+      "atelier": "Atelier",
+      "book_appointment": "Book appointment",
+      "book_visit": "Book your visit",
       "brows": "brows",
-      "description": "A sanctuary for refined beauty. Specializing in bespoke nail artistry, precision brows, and advanced laser treatments.",
+      "description": "Honest beauty. Subtle enhancements. A calm studio where you feel truly seen.",
+      "google_rating": "Google rating",
+      "image_brows": "Brow shaping at Aesthetic Lab",
+      "image_group": "Manicure, pedicure, brows, lashes, and laser treatments at Aesthetic Lab Leuven",
+      "image_nails": "Fresh manicure at Aesthetic Lab Leuven",
+      "image_work": "Aesthetic Lab nail artistry examples",
       "in_leuven": "in Leuven",
+      "intro": "Manicure, pedicure, brows, lashes, and laser",
       "laser": "laser",
       "lashes": "lashes",
       "manicure": "manicure",
       "pedicure": "pedicure",
-      "slogan": "The Art of Natural Beauty",
+      "slogan": "The art of natural beauty",
       "the_best": "The best",
-      "view_services": "View Services"
+      "title_end": "Lab",
+      "title_start": "Aesthetic",
+      "trust": {
+        "appointment": "By appointment",
+        "care": "Gentle, personalised care",
+        "clients": "Happy clients & counting",
+        "google": "★★★★★ 5.0",
+        "leuven": "Leuven-based",
+        "results": "Visible, lasting results"
+      },
+      "view_services": "View services"
     },
     "instagram": {
       "alt": {
-        "brows": "Aesthetic Lab brows detail",
-        "manicure": "Aesthetic Lab manicure detail",
-        "studio": "Aesthetic Lab studio work"
+        "brows": "Brow shaping result at Aesthetic Lab",
+        "manicure": "Fresh manicure at Aesthetic Lab",
+        "studio": "Aesthetic Lab studio interior"
       },
-      "cta": "Visit profile",
-      "description": "Our latest work, quiet studio moments, and the details that shape Aesthetic Lab continue on Instagram.",
-      "eyebrow": "Instagram",
-      "shared_by": "A post shared by AESTHETIC LAB | MANICURE | PEDICURE | LEUVEN",
-      "title": "Follow the studio beyond your appointment",
-      "view_post": "View this post on Instagram"
+      "cta": "Follow us",
+      "description": "Get a closer look at our work, studio, and day-to-day atmosphere.",
+      "eyebrow": "eyebrow",
+      "shared_by": "Shared by",
+      "title": "Aesthetic Lab on Instagram",
+      "view_post": "View post"
     },
     "language": {
       "options": "Language options",
-      "select": "Select language"
+      "select": "Select your language"
     },
     "modal": {
-      "close": "close"
+      "close": "Close modal"
     },
     "nav": {
       "about": "About",
-      "close_menu": "Close menu",
+      "close_menu": "Close navigation menu",
       "contact": "Contact",
       "home": "Home",
-      "logo_bird": "Aesthetic Lab Bird Logo",
-      "mobile_menu": "Mobile navigation",
-      "open_menu": "Open menu",
+      "logo_bird": "Aesthetic Lab logo icon",
+      "mobile_menu": "Open navigation menu",
+      "open_menu": "Open navigation menu",
       "policy": "Policy",
       "primary": "Primary navigation",
+      "reviews": "Reviews",
       "services": "Services",
+      "skip_to_content": "Skip to main content",
       "team": "Team",
-      "work": "Work"
+      "work": "Our Work"
     },
     "notice": {
-      "durability_intro": "Our salon works exclusively with professional materials, including gel polishes, builder gels, and hard gels from trusted brands. According to manufacturers, these products are designed to last up to 3 weeks with proper application and aftercare.",
-      "durability_title": "Product Durability Disclaimer",
-      "factor1": "The declared durability depends not only on the quality of the products but also on individual nail characteristics and aftercare.",
-      "factor2": "External factors such as frequent water exposure, harsh chemicals, and mechanical damage may reduce wear time.",
-      "factor3": "Personal physiology, including hormonal changes, can also affect product adhesion and durability.",
-      "guarantee": "The salon guarantees proper and professional application of materials, but we cannot guarantee maximum wear time if external or individual factors interfere.",
-      "hormonal_intro": "The durability of nail coatings may vary depending on individual characteristics, including hormonal fluctuations. Please be aware that during periods of hormonal changes (such as PMS, pregnancy, breastfeeding, taking hormonal medications, or experiencing high stress levels), the adhesion of the product to the nail plate may decrease, which can affect the longevity of the coating.",
-      "hormonal_title": "Important Notice",
-      "however": "However, please note:",
-      "important_info": "✨ Important Client Information ✨",
-      "individual_features": "Individual nail features (such as increased moisture, brittleness, or tendency to peeling)",
-      "intro": "At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
-      "last_update": "Last updated:",
-      "last_update_date": "Last updated: 01.07.2025",
-      "mechanical_damage": "Mechanical damage to the nails",
-      "other_factors": "Other factors that may affect durability:",
-      "policy_care": "We care about your satisfaction and will be happy to fix any issues that may arise within this period.",
-      "policy_description": "If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
-      "policy_title": "Complimentary Fix Policy",
-      "thank_you": "Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting. 💅✨",
-      "understanding": "Please understand that in the presence of these factors, the salon cannot guarantee standard wear time of the coating.",
-      "water_contact": "Frequent contact with water or aggressive chemicals without gloves"
+      "durability_intro": "Several factors influence the final outcome:",
+      "durability_title": "Service durability",
+      "factor1": "Your lifestyle, activity level, and overall health",
+      "factor2": "Your individual nail features (structure, oiliness, growth rate)",
+      "factor3": "The level of mechanical damage you expose your nails to",
+      "guarantee": "We do not guarantee specific results for our work, including any predictions regarding how long a treatment will last.",
+      "hormonal_intro": "Hormonal changes during pregnancy, breastfeeding, or the menstrual cycle may affect how long your service lasts.",
+      "hormonal_title": "Hormonal impact",
+      "however": "However, we will do everything possible to ensure your comfort.",
+      "important_info": "Important information",
+      "individual_features": "Individual features",
+      "intro": "Thank you for choosing Aesthetic Lab. Please read the following information to ensure the best results from your visit.",
+      "last_update": "Last update",
+      "last_update_date": "15 January 2026",
+      "mechanical_damage": "Mechanical damage",
+      "other_factors": "Other factors",
+      "policy_care": "Policy & Care",
+      "policy_description": "This English version is a courtesy translation. The Dutch-language version of the Important Notice prevails.",
+      "policy_title": "Important notice",
+      "thank_you": "Thank you",
+      "understanding": "Thank you for your understanding.",
+      "water_contact": "Avoid prolonged contact with hot water during the first 24 hours after a service."
     },
     "policy": {
-      "care": "We care about your satisfaction and will be happy to fix any problems that may arise.",
-      "description": "If you experience any issues with your manicure within the first 3 days after your appointment, you are welcome to come back for a free correction.",
-      "title": "Complimentary Fix Policy"
+      "care": "Please note that your hand-washable garment bag should be thoroughly cleaned before your appointment.",
+      "description": "We value your understanding and cooperation. By scheduling an appointment, you acknowledge that you have read and agree to these policies.",
+      "title": "Cancellation policy: we require at least 24 hours' notice for cancellations."
     },
     "pricelist": {
-      "category_label": "Category",
+      "category_label": "Choose a category",
       "category_nav": "Service categories",
-      "empty": "Pricing is temporarily unavailable. Please contact us for current treatment information.",
-      "hero_alt": "Aesthetic Lab treatment catalog background",
-      "ready": "Ready when you are"
+      "empty": "No treatments listed in this category yet. Check back soon or contact us for details.",
+      "hero_alt": "Aesthetic Lab price list and treatment catalogue",
+      "ready": "Ready to book?"
     },
     "privacy": {
-      "changes": "7. Changes to This Policy",
-      "changes_text": "We may update this Privacy Policy from time to time. The latest version will always be available on our website.",
-      "cookies": "6. Cookies & Tracking Technologies",
-      "cookies_analytics": "Analytics cookies: optional; analytics storage is granted only after your consent.",
-      "cookies_necessary": "Strictly necessary cookies: always active for basic website functionality.",
-      "cookies_text": "We use strictly necessary cookies to operate the website. Google Analytics runs in Consent Mode v2. Before consent or if you reject analytics, analytics storage and advertising-related consent stay denied; Google may receive cookieless consent and measurement pings, and analytics cookies are not set. If you accept analytics, Google Analytics may use analytics cookies to understand website usage and improve our services. You can change your choice at any time via Cookie settings.",
-      "email": "Email address",
-      "important_info": "Important Information",
-      "improve": "Improve our services",
-      "info": "1. Information We Collect",
-      "info_text": "We collect the following personal information when you book an appointment or contact us:",
-      "last_update": "Last updated:",
+      "changes": "Changes to this policy",
+      "changes_text": "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.",
+      "cookies": "Cookies & similar technologies",
+      "cookies_analytics": "Analytics cookies (optional): help us understand how visitors use the site so we can improve it.",
+      "cookies_necessary": "Necessary cookies (always active): enable core functionality such as page navigation and access to secure areas.",
+      "cookies_text": "We use cookies and similar technologies to enhance your browsing experience. Cookies are small text files stored on your device when you visit a website.",
+      "email": "Email",
+      "important_info": "Important information",
+      "improve": "To improve our services and tailor your experience",
+      "info": "Information we collect",
+      "info_text": "We may collect the following types of information:",
+      "last_update": "Last update",
       "last_update_date": "Last updated: 19.02.2026",
-      "legal": "Legal authorities if required by law",
+      "legal": "Legal basis for processing",
       "name": "Name",
-      "phone": "Phone number",
+      "phone": "Phone",
       "privacy_title": "Privacy Policy",
-      "respond": "Respond to your inquiries",
-      "rights": "5. Your Rights",
-      "rights_text": "You can request to access, update, or delete your personal data. To make a request, contact us at:",
-      "schedule": "Schedule and confirm appointments",
-      "security": "3. Data Protection & Security",
-      "security_text": "We take reasonable measures to protect your personal data from unauthorized access, loss, or misuse.",
-      "send": "Send appointment reminders and updates",
-      "service": "Service providers (e.g., booking platforms)",
-      "sharing": "4. Sharing Your Information",
-      "sharing_text": "We do not sell or rent your personal information. We may share it with:",
-      "use": "2. How We Use Your Information",
-      "use_text": "we use your information to:"
+      "respond": "To respond to your inquiries and bookings",
+      "rights": "Your rights",
+      "rights_text": "Under applicable data protection laws, you have the following rights: access and obtain a copy of your data on request; correct any inaccurate or incomplete data; request deletion of your data when it is no longer necessary for the purposes for which it was collected; restrict processing in certain circumstances; object to processing for direct marketing purposes.",
+      "schedule": "Schedule your appointment at info@aestheticlab.be",
+      "security": "Data security",
+      "security_text": "We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction.",
+      "send": "How we use your information — we use the information we collect to: process and confirm your appointment bookings; communicate with you about your appointment and related services",
+      "service": "Service details (type of treatment, appointment date/time)",
+      "sharing": "Data sharing",
+      "sharing_text": "We do not sell, rent, or trade your personal data to third parties. We may share your information with: service providers who help us operate our booking system (such as our online scheduling platform); legal authorities when required by applicable law.",
+      "use": "Cookies & usage information (how you interact with our website, collected via standard web analytics tools)",
+      "use_text": "Contact information (name, phone number, email address, social media handle)"
     },
     "reviews": {
       "featured": "Featured review",
       "google_link": "Read all reviews on Google",
-      "kicker": "Client notes",
-      "rating_aria": "5 out of 5 stars",
-      "source": "Google Review",
-      "title": "Kind Words"
+      "kicker": "Kind words",
+      "rating_aria": "Rated 5 out of 5 stars",
+      "section_title": "What people say",
+      "source": "Google reviews",
+      "title": "Reviews"
     },
     "services": {
-      "back": "Back to Overview",
-      "back_laser": "Back to Laser",
-      "brows_desc": "Shaping, tinting, and lamination for the perfect arch.",
+      "back": "Back to categories",
+      "back_laser": "Back to laser category",
+      "brows_desc": "From natural shaping and tinting to lamination that defines and lifts — expert brow and lash services that enhance your features with a clean, refined finish.",
       "brows_lashes_title": "Brows & Lashes",
-      "catalogue": "Treatment catalogue",
-      "default_category": "Services",
-      "duration": "Duration:",
-      "empty": "Treatments are temporarily unavailable. Please contact us for current options.",
+      "catalogue": "Catalogue",
+      "default_category": "All services listed alphabetically — select a category above to filter by treatment type.",
+      "duration": "Duration",
+      "editorial_title": "Our services",
+      "empty": "No treatments listed yet.",
       "from_price": "From",
-      "general_desc": "Professional beauty treatments for your refined look.",
+      "general_desc": "Every treatment is performed with care and precision. Choose a category to explore what we offer.",
       "laser_category": "Laser",
-      "laser_desc": "Safe, effective, and painless technology for smooth skin.",
-      "manicure_desc": "Expert gel artistry and precision Russian techniques for naturally flawless nails.",
-      "minutes": "minutes",
-      "pedicure_desc": "Professional therapeutic care and aesthetic refinement for healthy, radiant feet.",
-      "pricing_title": "Services & Pricing",
-      "subtitle": "Comprehensive beauty treatments delivered with precision and care.",
-      "title": "Our Services",
+      "laser_desc": "Effective diode laser hair removal performed by trained professionals in a calm, clinical setting. Treatment packages designed for real, lasting results.",
+      "manicure_desc": "Clean, precise manicure care — from classic polish to structured gel — tailored to your nail health and style. Every finish is checked under magnification.",
+      "minutes": "min",
+      "pedicure_desc": "Thorough, hygienic pedicure treatments that focus on foot health, comfort, and a polished look. Performed with attention to detail and a gentle touch.",
+      "pricing_title": "Pricing & duration",
+      "subtitle": "Timeless beauty with a personal touch. Each service is designed with your comfort and confidence in mind.",
+      "title": "Treatments",
       "treatments": "Treatments",
       "view_full": "View full price list",
-      "view_treatments": "View Treatments"
+      "view_treatments": "View treatments"
     },
-    "story": "Our Story",
-    "story_text": "At Aesthetic Lab, we believe in the transformative power of beauty. Our approach combines artistry with expertise, creating a sanctuary where you can discover your most radiant self.",
+    "story": "Our story",
+    "story_text": "Aesthetic Lab opened its doors in 2024 with a simple promise — to do beautiful work in a space that feels genuinely calm, honest, and welcoming. Every service is performed with precision and care, every detail considered. We listen first, then create.",
     "team": {
-      "kicker": "Studio artists",
+      "kicker": "Who you'll meet",
       "role": {
         "technician": "Technician"
       },
-      "title": "Meet Our Team"
+      "section_title": "Our team",
+      "title": "People"
     },
-    "title": "{{name}} demo",
+    "title": "Aesthetic Lab",
     "work": {
       "alt": {
-        "m1": "Bespoke classic manicure detail",
-        "m2": "Minimalist clean girl manicure styling",
-        "m3": "Elegant matte finish manicure",
-        "m4": "Precision cuticle work and natural gel nails",
-        "p1": "Nourishing foot bath and pedicure",
-        "p2": "Refined toenail polish finish",
-        "p3": "Professional hygienic pedicure treatment",
-        "p5": "Aesthetic pedicure detailing"
+        "b1": "Brow shaping detail at Aesthetic Lab",
+        "b2": "Brow and lash styling at Aesthetic Lab",
+        "chrome_manicure": "Chrome manicure at Aesthetic Lab",
+        "coral_manicure": "Coral manicure at Aesthetic Lab",
+        "m1": "Nude manicure at Aesthetic Lab",
+        "m2": "White manicure at Aesthetic Lab",
+        "m3": "French manicure at Aesthetic Lab",
+        "m4": "Pink manicure at Aesthetic Lab",
+        "manicure_process": "Manicure process at Aesthetic Lab",
+        "nude_manicure": "Nude manicure at Aesthetic Lab",
+        "p1": "Pedicure station at Aesthetic Lab",
+        "p2": "Pedicure detail at Aesthetic Lab",
+        "p3": "Pedicure treatment at Aesthetic Lab",
+        "p5": "Pedicure preparation at Aesthetic Lab",
+        "pearl_manicure": "Pearl manicure at Aesthetic Lab"
       },
-      "title": "Our Work"
-    }
-  },
-  "dates": "Dates",
-  "numbers": "Numbers"
+      "description": "A glimpse into the work we do every day.",
+      "gallery_label": "Gallery of recent work",
+      "kicker": "Our work",
+      "title": "Gallery"
+    },
+    "dates": {},
+    "numbers": {}
+  }
 }

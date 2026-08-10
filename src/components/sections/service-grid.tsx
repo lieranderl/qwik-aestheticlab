@@ -6,7 +6,6 @@ import {
 	useSignal,
 } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { FadeUp } from "~/components/ui/fade-up";
 import { ServiceCard } from "~/components/ui/service-card";
 import { formatPrice } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -56,19 +55,26 @@ function updateTreatmentUrl(categoryId?: string, subgroupId?: string) {
 }
 
 function revealServiceDetails() {
-	requestAnimationFrame(() => {
-		requestAnimationFrame(() => {
-			document.getElementById(serviceDetailsCardId)?.scrollIntoView({
-				behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-					? "auto"
-					: "smooth",
+	const reducedMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
+
+	function tryScroll() {
+		const card = document.getElementById(serviceDetailsCardId);
+		if (card) {
+			card.scrollIntoView({
+				behavior: reducedMotion ? "auto" : "smooth",
 				block: "start",
 			});
 			document
 				.getElementById(serviceDetailsHeadingId)
 				?.focus({ preventScroll: true });
-		});
-	});
+		} else {
+			requestAnimationFrame(tryScroll);
+		}
+	}
+
+	requestAnimationFrame(tryScroll);
 }
 
 function getDisplayCategoryNameForGroup(
@@ -122,7 +128,9 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		const viewFullLabel = t("app.services.view_full@@View full price list");
 		const backLabel = t("app.services.back@@Back to Overview");
 		const backToLaserLabel = t("app.services.back_laser@@Back to Laser");
-		const titleLabel = t("app.services.title@@Our Services");
+		const titleLabel = t(
+			"app.services.editorial_title@@Expert care, natural results",
+		);
 		const subtitleLabel = t(
 			"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
 		);
@@ -307,20 +315,26 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		useOnWindow("hashchange", restoreTreatmentState);
 
 		return (
-			<section id="services" class="section-shell bg-base-200">
-				<div class="custom-container">
-					<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-						<FadeUp class="text-center lg:text-left">
-							<p class="editorial-kicker mb-4">
-								{t("app.services.catalogue@@Treatment catalogue")}
+			<section
+				id="services"
+				class="scroll-mt-24 bg-base-200 py-16 md:py-24 lg:py-28"
+			>
+				<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+					<div class="mb-9 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+						<div>
+							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+								{t("app.services.catalogue@@Our treatments")}
 							</p>
-							<h2 class="section-heading mb-4 md:mb-5">{titleLabel}</h2>
-							<div class="editorial-rule mx-auto w-20 lg:mx-0 lg:w-32" />
-						</FadeUp>
+							<h2 class="max-w-2xl text-balance font-qestero text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
+								{titleLabel}
+							</h2>
+						</div>
 
-						<FadeUp delay={60} class="lg:justify-self-end">
-							<div class="mx-auto flex max-w-xl flex-col items-center gap-4 text-center md:gap-5 lg:mx-0 lg:items-end lg:text-right">
-								<p class="section-lead">{subtitleLabel}</p>
+						<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
+							<p class="text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+								{subtitleLabel}
+							</p>
+							<div class="mt-5">
 								<a
 									href="pricelist"
 									onClick$={$(() => {
@@ -328,135 +342,131 @@ export const ServiceGrid = component$<ServiceGridProps>(
 											placement: "services_cta",
 										});
 									})}
-									class="btn btn-outline btn-primary btn-sm rounded-full font-montserrat uppercase tracking-wider"
+									class="btn btn-sm min-h-11 border-base-content/25 font-montserrat text-xs font-semibold uppercase tracking-wider"
 								>
 									{viewFullLabel}
 								</a>
 							</div>
-						</FadeUp>
+						</div>
 					</div>
 
 					{showFullList.value ? (
 						<div class="space-y-6 md:space-y-8">
 							{activeDetailGroup.value ? (
-								<FadeUp>
-									<section
-										id={serviceDetailsCardId}
-										data-testid={serviceDetailsCardId}
-										aria-labelledby={serviceDetailsHeadingId}
-										class="card surface-card scroll-mt-24 p-4 md:p-6"
-									>
-										<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-											<div class="space-y-3 md:space-y-4">
-												<div class="flex flex-wrap gap-2">
-													<span class="badge badge-primary badge-outline rounded-full font-montserrat">
-														{activeDetailGroup.value.groupServices.length}{" "}
-														{treatmentsLabel}
+								<section
+									id={serviceDetailsCardId}
+									data-testid={serviceDetailsCardId}
+									aria-labelledby={serviceDetailsHeadingId}
+									class="card card-border scroll-mt-24 bg-base-100 p-4 shadow-sm md:p-6"
+								>
+									<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+										<div class="space-y-3 md:space-y-4">
+											<div class="flex flex-wrap gap-2">
+												<span class="badge badge-secondary badge-outline rounded-full font-montserrat">
+													{activeDetailGroup.value.groupServices.length}{" "}
+													{treatmentsLabel}
+												</span>
+												{getCategoryStartingPrice(
+													activeDetailGroup.value.groupServices,
+													fromPriceLabel,
+												) ? (
+													<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
+														{getCategoryStartingPrice(
+															activeDetailGroup.value.groupServices,
+															fromPriceLabel,
+														)}
 													</span>
-													{getCategoryStartingPrice(
-														activeDetailGroup.value.groupServices,
-														fromPriceLabel,
-													) ? (
-														<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
-															{getCategoryStartingPrice(
-																activeDetailGroup.value.groupServices,
-																fromPriceLabel,
-															)}
-														</span>
-													) : null}
-												</div>
-												<div>
-													<h3
-														id={serviceDetailsHeadingId}
-														tabIndex={-1}
-														class="text-balance font-qestero text-3xl leading-none text-base-content outline-none md:text-4xl"
-													>
-														{getDisplayCategoryNameForGroup(
-															activeDetailGroup.value,
-															defaultCategoryLabel,
-														)}
-													</h3>
-													<p class="section-lead mt-2 max-w-2xl md:mt-3">
-														{getCategoryDescription(
-															activeDetailGroup.value.category,
-															categoryDescriptionLabels,
-														)}
-													</p>
-												</div>
+												) : null}
+											</div>
+											<div>
+												<h3
+													id={serviceDetailsHeadingId}
+													tabIndex={-1}
+													class="text-balance font-qestero text-3xl leading-none text-base-content md:text-4xl"
+												>
+													{getDisplayCategoryNameForGroup(
+														activeDetailGroup.value,
+														defaultCategoryLabel,
+													)}
+												</h3>
+												<p class="mt-2 max-w-2xl text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:mt-3 md:text-base">
+													{getCategoryDescription(
+														activeDetailGroup.value.category,
+														categoryDescriptionLabels,
+													)}
+												</p>
 											</div>
 										</div>
+									</div>
 
-										<nav
-											class="scrollbar-none mt-5 overflow-x-auto overscroll-x-contain pb-1 md:mt-6"
-											aria-label={servicesAriaLabel}
-										>
-											<div class="flex w-max gap-2 px-3 md:px-0">
-												{displayGroups.value.map((group) => {
-													const displayCategoryName =
-														getDisplayCategoryNameForGroup(
-															group,
-															defaultCategoryLabel,
-														);
-
-													return (
-														<button
-															key={group.groupId}
-															type="button"
-															onClick$={$(() => {
-																openCategory(
-																	group.groupId,
-																	displayCategoryName,
-																	group.groupServices.length,
-																);
-															})}
-															class={[
-																"btn btn-sm min-h-11 shrink-0 rounded-full px-4 font-montserrat uppercase tracking-wider whitespace-nowrap",
-																group.groupId === selectedCategoryId.value
-																	? "btn-primary"
-																	: "btn-outline btn-primary",
-															]}
-															aria-pressed={
-																group.groupId === selectedCategoryId.value
-															}
-														>
-															{displayCategoryName}
-														</button>
+									<nav
+										class="mt-5 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6"
+										aria-label={servicesAriaLabel}
+									>
+										<div class="flex w-max gap-2 px-3 md:px-0">
+											{displayGroups.value.map((group) => {
+												const displayCategoryName =
+													getDisplayCategoryNameForGroup(
+														group,
+														defaultCategoryLabel,
 													);
-												})}
-											</div>
-										</nav>
-									</section>
-								</FadeUp>
+
+												return (
+													<button
+														key={group.groupId}
+														type="button"
+														onClick$={$(() => {
+															openCategory(
+																group.groupId,
+																displayCategoryName,
+																group.groupServices.length,
+															);
+														})}
+														class={[
+															"btn btn-sm min-h-11 shrink-0 rounded-full px-4 font-montserrat uppercase tracking-wider whitespace-nowrap",
+															group.groupId === selectedCategoryId.value
+																? "btn-primary"
+																: "btn-outline",
+														]}
+														aria-pressed={
+															group.groupId === selectedCategoryId.value
+														}
+													>
+														{displayCategoryName}
+													</button>
+												);
+											})}
+										</div>
+									</nav>
+								</section>
 							) : null}
 
-							<FadeUp delay={60}>
-								<div
-									data-testid="service-back-actions"
-									class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
-								>
-									{selectedLaserSubgroupId.value ? (
-										<button
-											type="button"
-											onClick$={resetLaserSubgroup}
-											class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
-										>
-											{backToLaserLabel}
-										</button>
-									) : null}
+							<div
+								data-testid="service-back-actions"
+								class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
+							>
+								{selectedLaserSubgroupId.value ? (
 									<button
 										type="button"
-										onClick$={resetOverview}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-primary"
+										onClick$={resetLaserSubgroup}
+										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-secondary"
 									>
-										{backLabel}
+										{backToLaserLabel}
 									</button>
-								</div>
-							</FadeUp>
+								) : null}
+								<button
+									type="button"
+									onClick$={resetOverview}
+									class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-secondary"
+								>
+									{backLabel}
+								</button>
+							</div>
 
 							{selectedGroup.value?.groupId === "laser" &&
 							!selectedLaserSubgroup.value ? (
 								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
-									{laserSubgroups.value.map((group, index) => {
+									{laserSubgroups.value.map((group, _index) => {
 										const displayCategoryName = getDisplayCategoryNameForGroup(
 											group,
 											laserCategoryLabel,
@@ -485,7 +495,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 													);
 												})}
 												buttonLabel={viewTreatmentsLabel}
-												delay={index * 60}
 												serviceId={`laser-${group.groupId}`}
 												location={location}
 												showBooking={false}
@@ -519,7 +528,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 																serviceCategory,
 																index,
 															)}
-															delay={60 + Math.min(index, 4) * 40}
 															serviceId={service.id}
 															location={location}
 															analyticsServiceCategory={
@@ -544,7 +552,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							</span>
 						</div>
 					) : (
-						<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
+						<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
 							{displayGroups.value.map((group, index) => {
 								const displayCategoryName = getDisplayCategoryNameForGroup(
 									group,
@@ -556,30 +564,37 @@ export const ServiceGrid = component$<ServiceGridProps>(
 								);
 
 								return (
-									<ServiceCard
+									<div
 										key={group.groupId}
-										variant="category"
-										title={displayCategoryName}
-										description={description}
-										image={resolveCoverImage(group.coverImageName)}
-										price={getCategoryStartingPrice(
-											group.groupServices,
-											fromPriceLabel,
-										)}
-										supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
-										customAction$={$(() => {
-											openCategory(
-												group.groupId,
-												displayCategoryName,
-												group.groupServices.length,
-											);
-										})}
-										buttonLabel={viewTreatmentsLabel}
-										delay={index * 60}
-										serviceId={`cat-${group.groupId}`}
-										location={location}
-										showBooking={false}
-									/>
+										class={
+											index % 4 === 0 || index % 4 === 3
+												? "lg:col-span-7"
+												: "lg:col-span-5"
+										}
+									>
+										<ServiceCard
+											variant="category"
+											title={displayCategoryName}
+											description={description}
+											image={resolveCoverImage(group.coverImageName)}
+											price={getCategoryStartingPrice(
+												group.groupServices,
+												fromPriceLabel,
+											)}
+											supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
+											customAction$={$(() => {
+												openCategory(
+													group.groupId,
+													displayCategoryName,
+													group.groupServices.length,
+												);
+											})}
+											buttonLabel={viewTreatmentsLabel}
+											serviceId={`cat-${group.groupId}`}
+											location={location}
+											showBooking={false}
+										/>
+									</div>
 								);
 							})}
 						</div>
