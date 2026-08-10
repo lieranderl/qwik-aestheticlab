@@ -325,7 +325,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 								{t("app.services.catalogue@@Our treatments")}
 							</p>
-							<h2 class="max-w-2xl text-balance font-qestero text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
+							<h2 class="max-w-2xl text-balance font-cormorant text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
 								{titleLabel}
 							</h2>
 						</div>
@@ -382,7 +382,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 												<h3
 													id={serviceDetailsHeadingId}
 													tabIndex={-1}
-													class="text-balance font-qestero text-3xl leading-none text-base-content md:text-4xl"
+													class="text-balance font-cormorant text-3xl leading-none text-base-content md:text-4xl"
 												>
 													{getDisplayCategoryNameForGroup(
 														activeDetailGroup.value,

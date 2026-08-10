@@ -14,7 +14,7 @@ export const BookingCtaSection = component$(() => {
 							<span class="status status-sm" aria-hidden="true" />
 							{t("app.contact.appointment_only@@By appointment only")}
 						</div>
-						<h2 class="text-balance font-qestero text-4xl leading-[0.95] text-base-content sm:text-5xl lg:text-6xl">
+						<h2 class="text-balance font-cormorant text-4xl leading-[0.95] text-base-content sm:text-5xl lg:text-6xl">
 							{t("app.cta.title@@Ready to feel beautifully yourself?")}
 						</h2>
 						<p class="mt-4 max-w-xl font-montserrat text-sm leading-7 text-base-content/80 md:text-base">

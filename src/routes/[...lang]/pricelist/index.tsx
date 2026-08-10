@@ -210,7 +210,7 @@ export default component$(() => {
 					</div>
 					<div class="hero-content relative z-10 w-full max-w-7xl justify-center px-4 py-12 md:px-8 md:py-16 opacity-95">
 						<div class="card card-border mx-auto w-full max-w-xl bg-base-100/90 p-6 text-center text-base-content shadow-sm md:p-9">
-							<h1 class="font-qestero text-4xl leading-tight md:text-5xl">
+							<h1 class="font-cormorant text-4xl leading-tight md:text-5xl">
 								{t("app.services.pricing_title@@Services & Pricing")}
 							</h1>
 							<div class="mx-auto my-4 h-px w-16 bg-secondary/40 md:my-5" />
@@ -307,7 +307,7 @@ export default component$(() => {
 															<p class="font-montserrat text-xs uppercase tracking-[0.2em] text-base-content md:tracking-[0.24em]">
 																{categoryLabel}
 															</p>
-															<h2 class="font-qestero text-3xl text-base-content md:text-4xl">
+															<h2 class="font-cormorant text-3xl text-base-content md:text-4xl">
 																{displayCategoryName}
 															</h2>
 														</div>
@@ -340,7 +340,7 @@ export default component$(() => {
 							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 								{t("app.pricelist.ready@@Ready when you are")}
 							</p>
-							<h2 class="mb-6 text-balance font-qestero text-4xl leading-none text-base-content md:text-5xl">
+							<h2 class="mb-6 text-balance font-cormorant text-4xl leading-none text-base-content md:text-5xl">
 								{t("app.hero.book_visit@@Book Your Visit")}
 							</h2>
 							<Booking

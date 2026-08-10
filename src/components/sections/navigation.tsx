@@ -225,12 +225,12 @@ export const Navigation = component$(() => {
 					<div class="flex min-h-14 items-center justify-between border-b border-primary-content/15 pb-3">
 						<div class="flex items-center gap-3">
 							<BirdLogo
-								class="h-9 w-auto text-white [&_path]:fill-current"
+								class="h-9 w-auto [&_path]:fill-current text-primary-content"
 								aria-hidden="true"
 							/>
 							<h2
 								id={mobileMenuTitleId}
-								class="font-qestero text-2xl text-white"
+								class="font-qestero text-2xl text-primary-content"
 							>
 								Aesthetic Lab
 							</h2>
@@ -256,7 +256,7 @@ export const Navigation = component$(() => {
 								<li key={item.label}>
 									<a
 										href={getLocaleNavLink(location.url.pathname, item.href)}
-										class="grid min-h-14 grid-cols-[2.5rem_minmax(0,1fr)] items-center rounded-none border-b border-primary-content/15 px-0 font-qestero text-3xl leading-tight text-primary-content"
+										class="grid min-h-14 grid-cols-[2.5rem_minmax(0,1fr)] items-center rounded-none border-b border-primary-content/15 px-0 font-cormorant text-3xl leading-tight text-primary-content"
 										onClick$={closeMobileMenu}
 									>
 										<span class="font-montserrat text-[0.65rem] text-primary-content">

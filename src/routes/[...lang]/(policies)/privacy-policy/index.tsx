@@ -80,7 +80,7 @@ export default component$(() => {
 				<p class="font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
 					Aesthetic Lab Leuven
 				</p>
-				<h1 class="mt-4 text-balance font-qestero text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
+				<h1 class="mt-4 text-balance font-cormorant text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
 					{t("app.privacy.privacy_title@@Privacy Policy")}
 				</h1>
 				<div class="my-6 h-px w-20 bg-primary" />

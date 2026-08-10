@@ -103,12 +103,12 @@ export const ReviewsSection = component$(() => {
 					<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 						{t("app.reviews.kicker@@Loved in Leuven")}
 					</p>
-					<h2 class="text-balance font-qestero text-5xl leading-[0.9] text-base-content md:text-6xl lg:text-7xl">
+					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-6xl lg:text-7xl">
 						{t("app.reviews.section_title@@Kind words")}
 					</h2>
 					<div class="stats mt-8 w-full rounded-none border-t border-base-300 bg-transparent shadow-none">
 						<div class="stat px-0 pt-5 pb-0">
-							<div class="stat-value font-qestero text-5xl font-normal leading-none text-base-content motion-safe:animate-bounce-in motion-reduce:animate-none motion-reduce:opacity-100">
+							<div class="stat-value font-cormorant text-5xl font-normal leading-none text-base-content motion-safe:animate-bounce-in motion-reduce:animate-none motion-reduce:opacity-100">
 								5.0
 							</div>
 							<div class="stat-desc mt-2">
@@ -188,7 +188,7 @@ export const ReviewsSection = component$(() => {
 								<div class="flex min-w-0 items-center gap-3">
 									<div aria-hidden="true" class="avatar avatar-placeholder">
 										<div class="w-10 rounded-full bg-base-300 text-base-content">
-											<span class="font-qestero font-bold">
+											<span class="font-cormorant font-bold">
 												{review.author.charAt(0)}
 											</span>
 										</div>

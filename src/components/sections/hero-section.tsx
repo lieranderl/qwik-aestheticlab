@@ -13,7 +13,7 @@ export const HeroSection = component$(() => {
 			class="hero relative flex min-h-svh w-full items-center justify-center overflow-hidden bg-primary pt-[calc(env(safe-area-inset-top)+5.25rem)] pb-20 md:pt-[calc(env(safe-area-inset-top)+6.5rem)] md:pb-24"
 		>
 			<div class="hero-content flex flex-col items-center gap-8 text-center md:gap-14">
-				<h1 class="max-w-none font-['Cormorant_Garamond'] text-3xl leading-[1.1] font-normal italic whitespace-nowrap text-primary-content/80 md:text-5xl lg:text-6xl">
+				<h1 class="max-w-none font-cormorant text-3xl leading-[1.1] font-normal italic whitespace-nowrap text-primary-content/80 md:text-5xl lg:text-6xl">
 					{t("app.hero.slogan@@The Art of Natural Beauty")}
 				</h1>
 

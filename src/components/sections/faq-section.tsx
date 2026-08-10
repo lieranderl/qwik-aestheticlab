@@ -63,7 +63,7 @@ export const FaqSection = component$(() => {
 					<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 						{t("app.faq.kicker@@Before your visit")}
 					</p>
-					<h2 class="text-balance font-qestero text-5xl leading-[0.9] font-light tracking-tight text-base-content md:text-7xl">
+					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] font-light tracking-tight text-base-content md:text-7xl">
 						{t("app.faq.title@@FAQ")}
 					</h2>
 					<p class="mt-5 max-w-sm text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">

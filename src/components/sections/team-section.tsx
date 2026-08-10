@@ -44,7 +44,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 							{t("app.team.kicker@@The people behind your care")}
 						</p>
-						<h2 class="max-w-2xl text-balance font-qestero text-5xl leading-[0.9] text-base-content md:text-7xl">
+						<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
 							{t("app.team.section_title@@Meet your beauty team")}
 						</h2>
 					</div>
@@ -56,7 +56,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 						</p>
 						{/* Team stat */}
 						<div class="mt-4">
-							<span class="text-3xl font-qestero text-base-content">
+							<span class="text-3xl font-cormorant text-base-content">
 								{sorted.length}
 							</span>
 							<span class="ml-2 font-montserrat text-sm text-base-content/60">
@@ -124,7 +124,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					) : (
 						/* Placeholder when no photo */
 						<div class="flex h-full w-full items-center justify-center bg-base-200">
-							<span class="font-qestero text-6xl text-base-content/20">
+							<span class="font-cormorant text-6xl text-base-content/20">
 								{tech.name.charAt(0)}
 							</span>
 						</div>
@@ -139,7 +139,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 								{tech.role || t("app.team.role.technician@@Technician")}
 							</span>
 						</div>
-						<h3 class="font-qestero text-2xl leading-none text-base-content">
+						<h3 class="font-cormorant text-2xl leading-none text-base-content">
 							{tech.name}
 						</h3>
 					</div>

@@ -140,7 +140,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 					<div class="space-y-2.5 md:space-y-3">
 						<h3
 							class={[
-								"text-balance font-qestero leading-none text-base-content",
+								"text-balance font-cormorant leading-none text-base-content",
 								variant === "category" && emphasis === "lead"
 									? "text-3xl md:text-4xl"
 									: "text-2xl md:text-3xl",

@@ -84,7 +84,7 @@ export const GalleryGrid = component$(() => {
 						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 							{t("app.work.kicker@@From our atelier")}
 						</p>
-						<h2 class="max-w-2xl text-balance font-qestero text-5xl leading-[0.9] text-base-content md:text-7xl lg:text-8xl">
+						<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl lg:text-8xl">
 							{t("app.work.title@@Our Work")}
 						</h2>
 					</div>
