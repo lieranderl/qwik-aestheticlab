@@ -1,84 +1,26 @@
 @import "tailwindcss";
 
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @theme {
   --font-qestero: "qestero", "Cormorant Garamond", serif;
-  --font-montserrat: "Montserrat", sans-serif;
-}
+  --font-main: "Raleway", sans-serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --animate-hero-slide-up: hero-slide-up 500ms var(--ease-smooth) both;
+  --animate-hero-fade-in: hero-fade-in 600ms var(--ease-smooth) both;
+  --animate-bounce-in: bounce-in 600ms var(--ease-spring) both;
+  --animate-underline-expand: underline-expand 200ms var(--ease-smooth) both;
+  --animate-subtle-pulse: subtle-pulse 3000ms ease-in-out infinite;
+  --animate-fade-in: fade-in 200ms var(--ease-snappy) both;
 
-:root {
-  --motion-fast: 150ms;
-  --motion-base: 200ms;
-  --motion-enter: 320ms;
-}
-
-@layer components {
-  .custom-container {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  .editorial-kicker {
-    @apply font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-primary md:tracking-[0.24em];
-  }
-
-  .editorial-rule {
-    @apply h-px bg-primary/60;
-  }
-
-  .section-shell {
-    @apply scroll-mt-24 py-16 md:py-24;
-  }
-
-  .section-heading {
-    @apply text-balance font-qestero text-4xl leading-none text-base-content md:text-5xl;
-  }
-
-  .section-lead {
-    @apply text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base;
-  }
-
-  .surface-card {
-    @apply rounded-2xl border border-base-content/10 bg-base-100 shadow-sm;
-  }
-
-  .hero-rotate-accent {
-    color: color-mix(in srgb, var(--color-accent) 45%, var(--color-base-content));
-  }
-
-  .interactive-media {
-    transition-duration: var(--motion-base);
-    transition-property: transform;
-    transition-timing-function: ease-out;
-  }
-
-  .scroll-fade-x {
-    mask-image: linear-gradient(90deg, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent 100%);
-  }
-
-  .scrollbar-none {
-    scrollbar-width: none;
-  }
-
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/* Montserrat - Variable Font */
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/fonts/montserrat-var-cyrillic.woff2') format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/fonts/montserrat-var.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* Cormorant Garamond - Weights 400, 500, 600 */
@@ -139,139 +81,13 @@
   font-display: swap;
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: var(--color-base-200);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-body {
-  min-width: 320px;
-  position: relative;
-  background-color: var(--color-base-200);
-  color: var(--color-base-content);
-  text-rendering: optimizeLegibility;
-}
-
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 3px;
-}
-
-/* Animation Base */
-.fade-motion {
-  transition-property: opacity, transform, filter;
-  transition-duration: var(--fade-duration, var(--motion-enter));
-  transition-timing-function: var(--fade-easing, cubic-bezier(0.22, 1, 0.36, 1));
-  transition-delay: var(--fade-delay, 0ms);
-}
-
-/* Directional Variants */
-.js .fade-up-hidden {
-  opacity: 0;
-  filter: blur(var(--fade-blur, 8px));
-  transform: translate3d(0, var(--fade-distance, 40px), 0);
-}
-.js .fade-down-hidden {
-  opacity: 0;
-  filter: blur(var(--fade-blur, 8px));
-  transform: translate3d(0, calc(var(--fade-distance, 40px) * -1), 0);
-}
-.js .fade-left-hidden {
-  opacity: 0;
-  filter: blur(var(--fade-blur, 8px));
-  transform: translate3d(var(--fade-distance, 40px), 0, 0);
-}
-.js .fade-right-hidden {
-  opacity: 0;
-  filter: blur(var(--fade-blur, 8px));
-  transform: translate3d(calc(var(--fade-distance, 40px) * -1), 0, 0);
-}
-
-.fade-up-visible,
-.fade-down-visible,
-.fade-left-visible,
-.fade-right-visible {
-  opacity: 1;
-  filter: blur(0);
-  transform: translate3d(0, 0, 0);
-}
-
-.fade-up-immediate,
-.fade-down-immediate,
-.fade-left-immediate,
-.fade-right-immediate,
-.fade-up-disabled,
-.fade-down-disabled,
-.fade-left-disabled,
-.fade-right-disabled {
-  opacity: 1;
-  filter: blur(0);
-  transform: translate3d(0, 0, 0);
-  transition: none !important;
-}
-
-/* Mobile & Touch Tweaks */
-@media (max-width: 768px), (pointer: coarse) {
-  .js .fade-up-hidden {
-    filter: blur(calc(var(--fade-blur, 8px) * 0.7));
-    transform: translate3d(0, calc(var(--fade-distance, 40px) * 0.7), 0);
-  }
-  .js .fade-down-hidden {
-    filter: blur(calc(var(--fade-blur, 8px) * 0.7));
-    transform: translate3d(0, calc(var(--fade-distance, 40px) * -0.7), 0);
-  }
-  .js .fade-left-hidden {
-    filter: blur(calc(var(--fade-blur, 8px) * 0.7));
-    transform: translate3d(calc(var(--fade-distance, 40px) * 0.7), 0, 0);
-  }
-  .js .fade-right-hidden {
-    filter: blur(calc(var(--fade-blur, 8px) * 0.7));
-    transform: translate3d(calc(var(--fade-distance, 40px) * -0.7), 0, 0);
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .fade-motion {
-    filter: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-
-  .hero-text-rotate-track {
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .interactive-media:hover,
-  .group:hover .interactive-media {
-    transform: scale(1.02);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .interactive-media {
-    animation: none !important;
-    transform: none !important;
-  }
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/raleway-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @plugin "daisyui";
@@ -281,18 +97,18 @@ body {
   default: true;
   prefersdark: false;
   color-scheme: "light";
-  --color-base-100: #f0f2f0;
-  --color-base-200: #8b9687;
-  --color-base-300: #6b7568;
-  --color-base-content: #0d1f12;
-  --color-primary: #1f3828;
-  --color-primary-content: #ffffff;
-  --color-secondary: #3e2b22;
-  --color-secondary-content: #f4e9e4;
-  --color-accent: #8a4f68;
-  --color-accent-content: #ffffff;
-  --color-neutral: #5c635a;
-  --color-neutral-content: #f1f4f1;
+  --color-base-100: #fffaf3;
+  --color-base-200: #f1f0e9;
+  --color-base-300: #d9dcd4;
+  --color-base-content: #39443a;
+  --color-primary: #8b9687;
+  --color-primary-content: #1a241a;
+  --color-secondary: #5a4640;
+  --color-secondary-content: #fffaf3;
+  --color-accent: #9a6173;
+  --color-accent-content: #fffaf3;
+  --color-neutral: #2f382f;
+  --color-neutral-content: #fffaf3;
   --color-info: #475569;
   --color-info-content: #f1f6f8;
   --color-success: #3a7a6a;
@@ -311,20 +127,4 @@ body {
   --noise: 1;
 }
 
-/* Keep every DaisyUI button spatially stable across hover and press states. */
-.btn,
-.btn:hover,
-.btn:active {
-  min-height: 2.75rem;
-  transform: none;
-  translate: none;
-  scale: 1;
-}
 
-.btn {
-  transition-duration: var(--motion-fast);
-}
-
-.rating > * {
-  animation-duration: var(--motion-base);
-}

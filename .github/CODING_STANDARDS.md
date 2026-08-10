@@ -193,15 +193,15 @@ The project uses a two-font system with a clear typographic scale. Every new com
 | Role | Class | Font | Size | Weight | Use |
 | --- | --- | --- | --- | --- | --- |
 | Display heading | `section-heading` | `font-qestero` | `text-4xl md:text-5xl` | — | Section titles (`h2`) |
-| Body lead | `section-lead` | `font-montserrat` | `text-[0.9375rem] md:text-base` | — | Section subtitles/descriptions |
-| Section label | `editorial-kicker` | `font-montserrat` | `text-xs md:text-sm` | `font-semibold` | Above-heading labels |
+| Body lead | `section-lead` | `font-main` | `text-[0.9375rem] md:text-base` | — | Section subtitles/descriptions |
+| Section label | `editorial-kicker` | `font-main` | `text-xs md:text-sm` | `font-semibold` | Above-heading labels |
 | Card heading | — | `font-qestero` | `text-2xl md:text-3xl` | — | Card titles (`h3`) |
-| Body text | — | `font-montserrat` | `text-sm` / `text-base` | — | Paragraphs, descriptions |
-| UI labels | — | `font-montserrat` | `text-xs` / `text-sm` | `font-semibold` / `font-medium` | Badges, buttons, meta |
+| Body text | — | `font-main` | `text-sm` / `text-base` | — | Paragraphs, descriptions |
+| UI labels | — | `font-main` | `text-xs` / `text-sm` | `font-semibold` / `font-medium` | Badges, buttons, meta |
 
 **Rules:**
 - `font-qestero` is for display/heading text only — never for body copy or UI labels.
-- `font-montserrat` is for everything else: body, buttons, badges, navigation.
+- `font-main` is for everything else: body, buttons, badges, navigation.
 - Card headings use `text-balance` + `leading-none` for consistent multi-line wrapping.
 - Body text uses `text-pretty` + `leading-relaxed` for readability.
 - Never mix serif and sans-serif within a single text element.

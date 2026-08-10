@@ -1,31 +1,30 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { HiHomeOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate, localizePath, useSpeakLocale } from "qwik-speak";
-import { LanguageSwitcher } from "~/components/ui/language-switcher";
+import { inlineTranslate } from "qwik-speak";
+import { Footer } from "~/components/sections/footer";
+import { Navigation } from "~/components/sections/navigation";
 
 export default component$(() => {
-	const locale = useSpeakLocale();
-	const getPath = localizePath();
-	const pathToHome = getPath("/", locale.lang);
 	const t = inlineTranslate();
+
 	return (
-		<div class="min-h-screen bg-base-200 px-4 text-base-content sm:px-6 md:px-8">
-			<div class="mx-auto max-w-3xl py-3 sm:py-4 md:py-6">
-				<header class="surface-card sticky top-3 z-30 mb-8 flex items-center justify-between bg-base-100/98 p-2 md:mb-10">
-					<a
-						href={pathToHome}
-						class="btn btn-ghost min-h-11 gap-2 px-3"
-						aria-label={t("app.nav.home@@Home")}
-					>
-						<HiHomeOutline class="text-xl text-primary" aria-hidden="true" />
-						<span class="font-montserrat text-sm font-semibold">
-							{t("app.nav.home@@Home")}
-						</span>
-					</a>
-					<LanguageSwitcher />
-				</header>
-				<Slot />
-			</div>
+		<div class="min-h-screen bg-base-200 text-base-content">
+			<a
+				href="#main-content"
+				class="btn btn-neutral btn-sm fixed top-3 left-4 z-50 -translate-y-24 opacity-0 transition-[opacity,transform] duration-150 focus-visible:translate-y-0 focus-visible:opacity-100 motion-reduce:transition-none"
+			>
+				{t("app.nav.skip_to_content@@Skip to content")}
+			</a>
+			<Navigation />
+			<main
+				id="main-content"
+				tabIndex={-1}
+				class="px-4 pt-24 pb-16 sm:px-6 sm:pt-28 sm:pb-20 lg:px-8 lg:pt-32 lg:pb-24"
+			>
+				<div class="mx-auto w-full max-w-6xl">
+					<Slot />
+				</div>
+			</main>
+			<Footer />
 		</div>
 	);
 });

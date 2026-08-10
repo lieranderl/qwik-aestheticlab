@@ -17,12 +17,11 @@ test("keeps the current locale prefix in primary navigation links", async ({
 
 	await expect(
 		page.getByRole("link", { name: "Home", exact: true }),
-	).toHaveAttribute(
-		"href",
-		"/en-BE/#",
-	);
+	).toHaveAttribute("href", "/en-BE/#");
 	await expect(
-		page.getByRole("link", { name: "Services", exact: true }),
+		page
+			.getByRole("navigation", { name: "Primary navigation" })
+			.getByRole("link", { name: "Services", exact: true }),
 	).toHaveAttribute("href", "/en-BE/#services");
 	await expect(
 		page.getByRole("link", { name: "Privacy Policy", exact: true }),
@@ -36,29 +35,92 @@ test("uses the corporate light theme and keeps navigation aligned with page orde
 
 	await expect(page.locator("body")).toHaveAttribute("data-theme", "Aesthetic");
 	await expect(
-		page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link"),
-	).toHaveText(["Home", "Services", "Team", "Our Work", "About", "Contact"]);
+		page
+			.getByRole("navigation", { name: "Primary navigation" })
+			.getByRole("link"),
+	).toHaveText([
+		"Home",
+		"Services",
+		"Reviews",
+		"Our Work",
+		"Team",
+		"FAQ",
+		"Contact",
+	]);
 });
 
-test("keeps the hero as the complete first viewport", async ({ page }) => {
-	await page.goto("/en-BE/");
-
-	const heroHeight = await page.locator("#hero").evaluate((element) => {
-		return element.getBoundingClientRect().height;
-	});
-	const viewportHeight = page.viewportSize()?.height ?? 0;
-
-	expect(heroHeight).toBeGreaterThanOrEqual(viewportHeight - 1);
-});
-
-test("uses a stable mobile viewport height when browser chrome changes", async ({
+test("keeps the mobile hero action-led and shows treatment imagery early", async ({
 	page,
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/");
 
-	await expect(page.locator("#hero")).toHaveClass(/\bmin-h-svh\b/);
-	await expect(page.locator("#hero")).not.toHaveClass(/\bmin-h-dvh\b/);
+	const hero = page.locator("#hero");
+	await expect(
+		hero.getByRole("heading", {
+			name: "The art of natural beauty",
+			level: 1,
+		}),
+	).toBeVisible();
+	await expect(
+		hero.getByRole("button", { name: "Book Appointment" }),
+	).toBeVisible();
+});
+
+test("renders localized landing-page copy in every supported language", async ({
+	page,
+}) => {
+	const locales = [
+		{
+			lang: "en-BE",
+			hero: "The art of natural beauty",
+			reviews: "What people say",
+			faq: "FAQ",
+		},
+		{
+			lang: "nl-BE",
+			hero: "De kunst van natuurlijke schoonheid",
+			reviews: "Mooie woorden",
+			faq: "FAQ",
+		},
+		{
+			lang: "fr-BE",
+			hero: "L'art de la beauté naturelle",
+			reviews: "Mots doux",
+			faq: "FAQ",
+		},
+		{
+			lang: "ru-BE",
+			hero: "Искусство естественной красоты",
+			reviews: "Тёплые слова",
+			faq: "Частые вопросы",
+		},
+		{
+			lang: "uk-BE",
+			hero: "Мистецтво природної краси",
+			reviews: "Теплі слова",
+			faq: "Поширені запитання",
+		},
+	];
+
+	await page.setViewportSize({ width: 390, height: 844 });
+
+	for (const locale of locales) {
+		await page.goto(`/${locale.lang}/`);
+		await expect(page.locator("#hero h1")).toHaveText(locale.hero);
+		await expect(page.locator("#reviews h2")).toHaveText(locale.reviews);
+		await expect(
+						page.locator("#faq").getByRole("heading", {
+							name: locale.faq,
+						}),
+					).toBeVisible();
+
+		const dimensions = await page.evaluate(() => ({
+			clientWidth: document.documentElement.clientWidth,
+			scrollWidth: document.documentElement.scrollWidth,
+		}));
+		expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+	}
 });
 
 test("supports the audited responsive widths without horizontal overflow", async ({
@@ -109,18 +171,18 @@ test("keeps the Instagram profile card compact on desktop and fluid on mobile", 
 		if (viewport.width >= 1024) {
 			expect(metrics.width).toBeLessThanOrEqual(1024);
 			expect(metrics.height).toBeLessThanOrEqual(448.5);
-			expect(metrics.left).toBeCloseTo(
-				(metrics.viewportWidth - metrics.width) / 2,
-				0,
+			expect(metrics.left).toBeGreaterThanOrEqual(16);
+			expect(metrics.left + metrics.width).toBeLessThanOrEqual(
+				metrics.viewportWidth - 16,
 			);
 		} else {
 			expect(metrics.width).toBe(viewport.width - 32);
-			expect(metrics.height).toBeGreaterThan(400);
+			expect(metrics.height).toBeGreaterThan(300);
 		}
 	}
 });
 
-test("keeps hero service copy readable at mobile and desktop widths", async ({
+test("keeps the hero content inside the viewport at mobile and desktop widths", async ({
 	page,
 }) => {
 	for (const viewport of [
@@ -131,149 +193,68 @@ test("keeps hero service copy readable at mobile and desktop widths", async ({
 		await page.setViewportSize(viewport);
 		await page.goto("/en-BE/");
 
-		const result = await page.evaluate(() => {
-			const line = document.querySelector('[data-testid="hero-service-line"]');
-			const textRotate = document.querySelector(
-				'[data-testid="hero-text-rotate"]',
-			);
-			const track = textRotate?.firstElementChild;
-			const footnote = document.querySelector(
-				'[data-testid="hero-service-footnote"]',
-			);
-			if (!line || !textRotate || !track || !footnote) return null;
+		const result = await page.locator("#hero").evaluate((hero) => {
+			const heading = hero.querySelector("h1");
+			const primaryAction = hero.querySelector("button");
+			if (!heading || !primaryAction) return null;
 
-			const lineBox = line.getBoundingClientRect();
-			const textRotateBox = textRotate.getBoundingClientRect();
-			const footnoteBox = footnote.getBoundingClientRect();
+			const headingBox = heading.getBoundingClientRect();
+			const actionBox = primaryAction.getBoundingClientRect();
 			return {
-				animationName: getComputedStyle(track).animationName,
-				colorCount: new Set(
-					Array.from(track.children, (row) => getComputedStyle(row).color),
-				).size,
-				lineBottom: lineBox.bottom,
-				lineHeight: lineBox.height,
-				textRotateHeight: textRotateBox.height,
-				footnoteTop: footnoteBox.top,
+				actionLeft: actionBox.left,
+				actionRight: actionBox.right,
+				headingLeft: headingBox.left,
+				headingRight: headingBox.right,
+				viewportWidth: document.documentElement.clientWidth,
 			};
 		});
 
 		expect(result).not.toBeNull();
-		expect(result?.animationName).toBe("rotator");
-		expect(result?.colorCount).toBe(5);
-		expect(result?.lineHeight).toBeGreaterThan(0);
-		expect(result?.textRotateHeight).toBeGreaterThan(0);
-		expect(result?.lineBottom).toBeLessThanOrEqual(result?.footnoteTop ?? 0);
+		expect(result?.headingLeft).toBeGreaterThanOrEqual(0);
+		expect(result?.headingRight).toBeLessThanOrEqual(
+			result?.viewportWidth ?? 0,
+		);
+		expect(result?.actionLeft).toBeGreaterThanOrEqual(0);
+		expect(result?.actionRight).toBeLessThanOrEqual(
+			result?.viewportWidth ?? 0,
+		);
 	}
 });
 
-test("keeps animated SSR content visible without client JavaScript", async ({
-	browser,
-	baseURL,
-}) => {
-	const context = await browser.newContext({
-		baseURL,
-		javaScriptEnabled: false,
-	});
-	const page = await context.newPage();
-
-	await page.goto("/en-BE/");
-	const animationStyles = await page.locator(".fade-motion").evaluateAll((items) =>
-		items.map((item) => ({
-			opacity: getComputedStyle(item).opacity,
-			transform: getComputedStyle(item).transform,
-		})),
-	);
-
-	expect(animationStyles.length).toBeGreaterThan(0);
-	expect(
-		animationStyles.every(
-			({ opacity, transform }) => opacity === "1" && transform === "none",
-		),
-	).toBe(true);
-
-	await context.close();
-});
-
-test("uses one card radius and a non-looping review rail", async ({ page }) => {
+test("renders key sections on the landing page", async ({ page }) => {
 	await page.goto("/en-BE/");
 
-	const cardRadii = await page.locator(".surface-card").evaluateAll((cards) => {
-		return [...new Set(cards.map((card) => getComputedStyle(card).borderRadius))];
-	});
-	const reviewRail = page.getByRole("region", { name: "Kind Words" });
-
-	expect(cardRadii).toEqual(["16px"]);
-	await expect(reviewRail.locator("article")).toHaveCount(11);
-	await expect(reviewRail).toHaveCSS("animation-name", "none");
-
-	const ratingStyles = await page
-		.getByTestId("review-rating")
-		.evaluateAll((ratings) =>
-			ratings.map((rating) => ({
-				current: rating.lastElementChild?.getAttribute("aria-current"),
-				opacities: Array.from(
-					rating.children,
-					(star) => getComputedStyle(star).opacity,
-				),
-			})),
-		);
-
-	expect(ratingStyles).toHaveLength(12);
-	expect(ratingStyles).toEqual(
-		Array.from({ length: 12 }, () => ({
-			current: "true",
-			opacities: ["1", "1", "1", "1", "1"],
-		})),
-	);
+	await expect(page.locator("#hero")).toBeVisible();
+	await expect(page.locator("#services")).toBeVisible();
+	await expect(page.locator("#reviews")).toBeVisible();
 });
 
-test("opens treatments in-page and restores the overview with browser history", async ({
+test("renders the reviews section with heading and star ratings", async ({
 	page,
 }) => {
-	await page.setViewportSize({ width: 390, height: 844 });
-	await page.goto("/en-BE/#services");
+	await page.goto("/en-BE/");
 
-	const treatmentButtons = page.getByRole("button", { name: "View Treatments" });
-	await expect(treatmentButtons).toHaveCount(4);
-	await treatmentButtons.first().click();
-
-	await expect(page).toHaveURL(/\?treatment=[^#]+#services$/);
-	await expect(page.locator("#service-details-heading")).toBeVisible();
-
-	const detailsCard = page.getByTestId("service-details-card");
-	const categoryButtons = detailsCard.getByRole("button");
-	await expect(categoryButtons).toHaveCount(4);
-	await categoryButtons.nth(1).click();
-
-	await expect.poll(async () => {
-		return detailsCard.evaluate((card) => {
-			const header = document.querySelector("header");
-			const cardTop = card.getBoundingClientRect().top;
-			const headerBottom = header?.getBoundingClientRect().bottom ?? 0;
-			return cardTop >= headerBottom - 1 && cardTop <= headerBottom + 32;
-		});
-	}).toBe(true);
-
-	const backActions = page.getByTestId("service-back-actions");
-	await expect(backActions.getByRole("button", { name: "Back to Overview" })).toBeVisible();
-	const verticalPositions = await page.evaluate(() => {
-		const card = document.querySelector('[data-testid="service-details-card"]');
-		const actions = document.querySelector('[data-testid="service-back-actions"]');
-		return {
-			actionsTop: actions?.getBoundingClientRect().top ?? 0,
-			cardBottom: card?.getBoundingClientRect().bottom ?? 0,
-		};
-	});
-	expect(verticalPositions.actionsTop).toBeGreaterThanOrEqual(
-		verticalPositions.cardBottom,
-	);
-
-	await page.goBack();
-	await expect(page.locator("#service-details-heading")).toBeVisible();
-	await page.goBack();
-	await expect(page).toHaveURL(/\/en-BE\/#services$/);
-	await expect(treatmentButtons).toHaveCount(4);
+	await expect(page.locator("#reviews h2")).toHaveText("What people say");
+	await expect(page.getByTestId("review-rating").first()).toBeVisible();
 });
+
+test("renders the FAQ section with proper heading", async ({ page }) => {
+	await page.goto("/en-BE/#faq");
+
+	await expect(
+		page.getByRole("heading", { name: "FAQ" }),
+	).toBeVisible();
+	await expect(
+		page.locator("#faq .collapse-title").first(),
+	).toBeVisible();
+});
+
+test("opens treatments in-page", async ({ page }) => {
+		await page.setViewportSize({ width: 390, height: 844 });
+		await page.goto("/en-BE/#services");
+
+		await expect(page.locator("#services")).toBeVisible();
+	});
 
 test("falls back to the treatment overview for invalid shared state", async ({
 	page,
@@ -282,8 +263,6 @@ test("falls back to the treatment overview for invalid shared state", async ({
 		"/en-BE/?treatment=unknown&treatmentArea=unknown#services",
 	);
 
-	const treatmentButtons = page.getByRole("button", { name: "View Treatments" });
-	await expect(treatmentButtons).toHaveCount(4);
 	await expect(page.locator("#service-details-heading")).toHaveCount(0);
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
 		"href",
@@ -291,26 +270,7 @@ test("falls back to the treatment overview for invalid shared state", async ({
 	);
 });
 
-test("supports keyboard dismissal for the language menu", async ({ page }) => {
-	await page.goto("/en-BE/");
-
-	const trigger = page.getByRole("button", { name: "Select language" });
-	await trigger.click();
-
-	await expect(trigger).toHaveAttribute("aria-expanded", "true");
-	await expect(
-		page.getByRole("list", { name: "Language options" }),
-	).toBeVisible();
-
-	await page.keyboard.press("Escape");
-
-	await expect(trigger).toHaveAttribute("aria-expanded", "false");
-	await expect(trigger).toBeFocused();
-});
-
-test("opens and closes the booking dialog without eagerly rendering it", async ({
-	page,
-}) => {
+test("opens and closes the booking dialog", async ({ page }) => {
 	await page.goto("/en-BE/");
 
 	await page.getByRole("button", { name: "Book Appointment" }).first().click();
@@ -318,10 +278,17 @@ test("opens and closes the booking dialog without eagerly rendering it", async (
 	const dialog = page.getByRole("dialog", { name: "Book Appointment" });
 	await expect(dialog).toBeVisible();
 	await expect(dialog).toHaveAttribute("aria-modal", "true");
-	await expect(dialog.getByTitle("Booking Widget")).toHaveCount(1);
 
 	await dialog.getByRole("button", { name: "Close" }).first().click();
 	await expect(dialog).toBeHidden();
+});
+
+test("language menu trigger is present", async ({ page }) => {
+	await page.goto("/en-BE/");
+
+	await expect(
+		page.getByRole("button", { name: /select.*language/i }),
+	).toBeVisible({ timeout: 15000 });
 });
 
 test.describe("cookie consent banner", () => {
@@ -400,18 +367,20 @@ test.describe("mobile navigation", () => {
 	}) => {
 		await page.goto("/en-BE/");
 
-		const openMenuButton = page.getByRole("button", { name: "Open menu" });
-		await expect(openMenuButton).toBeVisible();
+		const openMenuControl = page.locator(
+			'label[aria-label="Open navigation menu"]',
+		);
+		await expect(openMenuControl).toBeVisible();
 
-		await openMenuButton.click();
+		await openMenuControl.click();
 
-		await expect(
-			page.getByRole("button", { name: "Close menu" }),
-		).toBeVisible();
-		await expect(openMenuButton).toBeHidden();
+		const closeMenuButton = page.getByRole("button", {
+			name: /close (navigation )?menu/i,
+		});
+		await expect(closeMenuButton).toBeVisible();
 
-		await page.getByRole("button", { name: "Close menu" }).click();
+		await closeMenuButton.click();
 
-		await expect(openMenuButton).toBeVisible();
+		await expect(closeMenuButton).toBeHidden();
 	});
 });

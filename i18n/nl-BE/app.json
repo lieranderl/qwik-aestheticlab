@@ -2,8 +2,8 @@
   "app": {
     "about": {
       "alt": {
-        "artists": "Aesthetic Lab artists at work in Leuven studio",
-        "manicure_detail": "Close-up detail of premium gel manicure work"
+        "artists": "Aesthetic Lab-specialisten aan het werk in de studio in Leuven",
+        "manicure_detail": "Close-up van een hoogwaardige gelmanicure"
       },
       "extra_text": "We streven ernaar behandelingen van de hoogste kwaliteit te bieden in een ontspannen omgeving. Elk detail is curatie om uw comfort en tevredenheid te garanderen.",
       "philosophy": "& Filosofie",
@@ -22,14 +22,19 @@
     "changeLocale": "Verander taal",
     "common": {
       "close": "Sluiten",
+      "next": "Volgende",
+      "previous": "Vorige",
       "read_less": "Minder lezen",
-      "read_more": "Meer lezen"
+      "read_more": "Meer lezen",
+      "scroll_to_top": "Scroll to top"
     },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
       "contact": "Contact",
+      "description": "Plan je bezoek met het actuele adres, de openingstijden, routebeschrijving en parkeermogelijkheden in de buurt.",
       "directions": "Routebeschrijving",
       "instagram": "Volg ons op Instagram",
+      "kicker": "Jouw studio in Leuven",
       "location": "Locatie",
       "map_location": "Locatiekaart",
       "map_title": "Aesthetic Lab Locatie",
@@ -49,10 +54,47 @@
       "settings": "Cookie-instellingen",
       "title": "Cookie-instellingen"
     },
+    "cta": {
+      "description": "Boek jouw moment van persoonlijke verzorging",
+      "title": "Klaar om je op je mooist jezelf te voelen?"
+    },
+    "faq": {
+      "booking": {
+        "answer_after": " om de actuele beschikbaarheid te openen en kies vervolgens je behandeling en favoriete specialist.",
+        "answer_before": "Gebruik een ",
+        "question": "Hoe maak ik een afspraak?"
+      },
+      "cancellation": {
+        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "question": "Kan ik een afspraak annuleren of verzetten?"
+      },
+      "consultation": {
+        "answer": "Zeker. Als je niet weet welke behandeling het beste bij je past, <a href='#contact' class='link link-secondary'>neem dan contact op</a> en we helpen je de juiste keuze te maken tijdens een korte gratis consultatie.",
+        "question": "Bieden jullie consultaties aan vóór het boeken?"
+      },
+      "description": "Enkele praktische details om je afspraak eenvoudig te plannen.",
+      "duration": {
+        "answer": "Open een <a href='./pricelist' class='link link-secondary'>behandelingscategorie</a> om vóór het boeken de actuele duur en prijs van elke beschikbare behandeling te vergelijken.",
+        "question": "Hoe lang duren de behandelingen?"
+      },
+      "kicker": "Voor je bezoek",
+      "laser_prep": {
+        "answer": "Scheer het gebied 24 uur voor je sessie en vermijd blootstelling aan de zon, zonnebank en zelfbruiner gedurende minstens 2 weken. Lees ons volledige <a href='./notice' class='link link-secondary'>voor- en nazorgbeleid</a> vóór je afspraak.",
+        "question": "Hoe bereid ik me voor op een laserbehandeling?"
+      },
+      "location": {
+        "answer": "Ons adres, de openingstijden, kaart en links naar parkeermogelijkheden in de buurt vind je hieronder bij <a href='#contact' class='link link-secondary'>Bezoek ons</a>.",
+        "question": "Waar is de studio in Leuven?"
+      },
+      "title": "FAQ"
+    },
     "footer": {
       "all_rights": "Alle rechten voorbehouden",
-      "copyright": "Copyright",
-      "navigation": "Navigatie in voettekst"
+      "copyright": "Auteursrecht",
+      "explore": "Ontdek",
+      "legal": "Juridisch",
+      "navigation": "Navigatie in voettekst",
+      "tagline": "Nagels, wenkbrauwen, wimpers en laserbehandelingen, helemaal afgestemd op jou"
     },
     "generic": {
       "view": "Bekijken"
@@ -78,17 +120,36 @@
     "hero": {
       "according": "*volgens onze klanten",
       "and": "en",
+      "atelier": "Jouw beautyatelier",
       "book_appointment": "Afspraak maken",
       "book_visit": "Boek uw bezoek",
       "brows": "wenkbrauwen",
       "description": "Een toevluchtsoord voor verfijnde schoonheid. Gespecialiseerd in nagelkunst op maat, precisie wenkbrauwen en geavanceerde laserbehandelingen.",
+      "google_rating": "5,0 op Google",
+      "image_brows": "Precies resultaat van wenkbrauw- en wimperstyling bij Aesthetic Lab",
+      "image_group": "Behandelingen en afgewerkte beautylooks van Aesthetic Lab",
+      "image_nails": "Natuurlijke nude manicure gecreëerd bij Aesthetic Lab",
+      "image_work": "Nagelbehandeling in uitvoering bij Aesthetic Lab",
       "in_leuven": "in Leuven",
+      "intro": "Nagels, wenkbrauwen, wimpers en laserbehandelingen, met aandacht op maat gemaakt in onze rustige studio in Leuven.",
       "laser": "laser",
       "lashes": "wimpers",
       "manicure": "manicure",
       "pedicure": "pedicure",
+      "scroll": "Scroll",
+      "scroll_down": "Scroll down to see our services",
       "slogan": "De kunst van natuurlijke schoonheid",
       "the_best": "De beste",
+      "title_end": "voor jou",
+      "title_start": "Schoonheid, prachtig gemaakt",
+      "trust": {
+        "appointment": "Alleen op afspraak",
+        "care": "Zorg in elk detail",
+        "clients": "Geliefd bij onze klanten",
+        "google": "5,0 op Google",
+        "leuven": "In het hart van Leuven",
+        "results": "Natuurlijke, precieze resultaten"
+      },
       "view_services": "Bekijk diensten"
     },
     "instagram": {
@@ -115,14 +176,17 @@
       "about": "Over ons",
       "close_menu": "Menu sluiten",
       "contact": "Contact",
-      "home": "Home",
+      "home": "Start",
       "logo_bird": "Aesthetic Lab Vogel Logo",
       "mobile_menu": "Mobiele navigatie",
       "open_menu": "Menu openen",
       "policy": "Beleid",
       "primary": "Hoofdnavigatie",
+      "reviews": "Beoordelingen",
       "services": "Diensten",
+      "skip_to_content": "Ga naar inhoud",
       "team": "Team",
+      "toggle_menu": "Toggle navigation menu",
       "work": "Werk"
     },
     "notice": {
@@ -135,7 +199,7 @@
       "hormonal_intro": "De duurzaamheid van nagelcoatings kan variëren afhankelijk van individuele kenmerken, waaronder hormonale schommelingen. Houd er rekening mee dat tijdens periodes van hormonale veranderingen (zoals PMS, zwangerschap, borstvoeding, het nemen van hormonale medicatie of het ervaren van hoge stressniveaus), de hechting van het product aan de nagelplaat kan afnemen, wat de levensduur van de coating kan beïnvloeden.",
       "hormonal_title": "Belangrijke mededeling",
       "however": "Let echter op:",
-      "important_info": "✨ Belangrijke klantinformatie ✨",
+      "important_info": "Belangrijke klantinformatie",
       "individual_features": "Individuele nagelkenmerken (zoals verhoogd vochtgehalte, broosheid of neiging tot afbladderen)",
       "intro": "In onze salon streven we ernaar om nageldiensten van hoge kwaliteit en lange duurzaamheid te leveren met uitsluitend professionele producten en technieken. Om transparantie te waarborgen en verwachtingen te managen, lees de volgende informatie zorgvuldig door:",
       "last_update": "Laatst bijgewerkt:",
@@ -145,7 +209,7 @@
       "policy_care": "We geven om uw tevredenheid en lossen eventuele problemen die zich binnen deze periode voordoen graag op.",
       "policy_description": "Als u binnen de eerste 5 dagen na uw afspraak problemen ondervindt met uw manicure, bent u welkom om terug te komen voor een gratis correctie.",
       "policy_title": "Gratis herstelbeleid",
-      "thank_you": "Dank u voor uw begrip, vertrouwen en samenwerking! We kijken ernaar uit om uw nagels mooi en langdurig te maken. 💅✨",
+      "thank_you": "Dank u voor uw begrip, vertrouwen en samenwerking! We kijken ernaar uit om uw nagels mooi en langdurig te maken.",
       "understanding": "Begrijp alstublieft dat in aanwezigheid van deze factoren de salon de standaard draagtijd van de coating niet kan garanderen.",
       "water_contact": "Frequent contact met water of agressieve chemicaliën zonder handschoenen"
     },
@@ -158,7 +222,7 @@
       "category_label": "Categorie",
       "category_nav": "Servicecategorieën",
       "empty": "De prijzen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor actuele informatie.",
-      "hero_alt": "Aesthetic Lab treatment catalog background",
+      "hero_alt": "Achtergrond van de behandelcatalogus van Aesthetic Lab",
       "ready": "Klaar wanneer u dat bent"
     },
     "privacy": {
@@ -197,6 +261,7 @@
       "google_link": "Lees alle beoordelingen op Google",
       "kicker": "Klantnotities",
       "rating_aria": "5 van 5 sterren",
+      "section_title": "Mooie woorden",
       "source": "Google-review",
       "title": "Vriendelijke woorden"
     },
@@ -208,6 +273,7 @@
       "catalogue": "Behandelcatalogus",
       "default_category": "Diensten",
       "duration": "Duur:",
+      "editorial_title": "Deskundige zorg, natuurlijke resultaten",
       "empty": "De behandelingen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor de actuele opties.",
       "from_price": "Vanaf",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
@@ -229,24 +295,45 @@
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
+      "artist": "artist",
+      "artists": "artists",
       "kicker": "Studio-artiesten",
+      "leuven": "Leuven",
       "role": {
         "technician": "Technicus"
       },
+      "section_title": "Maak kennis met je beautyteam",
       "title": "Ontmoet ons team"
     },
-    "title": "{{name}} demo",
+    "title": "Demo van {{name}}",
     "work": {
       "alt": {
+        "b1": "Precieze styling van wenkbrauwen en wimpers",
+        "b2": "Natuurlijk resultaat van wenkbrauwstyling",
+        "chrome_manicure": "Detail van een roze chromen manicure",
+        "coral_manicure": "Fel koraalrode manicure op beide handen",
+        "eyebrows": "Resultaat van nauwkeurige wenkbrauwstyling",
+        "eyebrows2": "Natuurlijk resultaat van wenkbrauwstyling",
+        "lashes": "Lash extensions result",
+        "lashlift": "Lash lift result",
         "m1": "Detail van klassieke manicure op maat",
         "m2": "Minimalistische clean-girl-manicure",
         "m3": "Elegante manicure met matte afwerking",
         "m4": "Precisiewerk aan nagelriemen en natuurlijke gelnagels",
-        "p1": "Verzorgend voetbad en pedicure",
-        "p2": "Verfijnde afwerking met teennagellak",
+        "manicure1": "Elegante manicure met glanzende afwerking",
+        "manicure3": "Gedetailleerde nail art manicure",
+        "manicure_process": "Aanbrengen van nagellak in de Aesthetic Lab-studio",
+        "nude_manicure": "Zachte nude manicure met een strakke glanzende afwerking",
+        "p1": "Voedend voetbad en pedicure",
+        "p2": "Verzorgde afwerking van teennagellak",
         "p3": "Professionele hygiënische pedicurebehandeling",
-        "p5": "Esthetische pedicuredetails"
+        "p5": "Esthetische pedicuredetails",
+        "pearl_manicure": "Detail van een parelroze manicure",
+        "pedicure1": "Verzorgde pedicure met zachtroze lak"
       },
+      "description": "Doordachte details, een verzorgde afwerking en resultaten die echt bij jou passen.",
+      "gallery_label": "Galerij met behandelresultaten",
+      "kicker": "Uit ons atelier",
       "title": "Ons werk"
     }
   },

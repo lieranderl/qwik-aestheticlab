@@ -1,13 +1,13 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { baseUrlBooking } from "~/consts";
+import { baseUrlBooking, bookingLocationId } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export interface BookingProps {
 	id: string; // unique per service
 	text: string;
 	classes?: string;
-	location: string;
+	location?: string;
 	category?: string;
 	product?: string;
 	staff?: string;
@@ -22,7 +22,7 @@ export const Booking = component$<BookingProps>(
 		id,
 		text,
 		classes = "btn btn-primary",
-		location,
+		location = bookingLocationId,
 		category,
 		product,
 		staff,
@@ -59,32 +59,30 @@ export const Booking = component$<BookingProps>(
 				isOpen.value = true;
 				isLoaded.value = false;
 				modal.showModal();
-
 				trackGoogleAnalyticsEvent("booking_opened", eventParams);
-				if (
-					analyticsServiceId ||
-					analyticsServiceName ||
-					analyticsServiceCategory ||
-					category ||
-					product ||
-					staff
-				) {
-					trackGoogleAnalyticsEvent("service_booking_opened", eventParams);
-				}
 			}
 		});
 
 		return (
 			<>
 				{/* Trigger button */}
-				<button type="button" class={classes} onClick$={openModal}>
+				<button
+					type="button"
+					class={[
+						classes,
+						"motion-safe:active:scale-[0.97] motion-safe:transition-transform motion-safe:duration-100",
+					]
+						.filter(Boolean)
+						.join(" ")}
+					onClick$={openModal}
+				>
 					{text}
 				</button>
 
 				{/* Modal with iframe */}
 				<dialog
 					id={id}
-					class="modal"
+					class="modal modal-bottom sm:modal-middle"
 					aria-labelledby={titleId}
 					aria-modal="true"
 					onClose$={$(() => {
@@ -92,7 +90,7 @@ export const Booking = component$<BookingProps>(
 						isLoaded.value = false;
 					})}
 				>
-					<div class="modal-box relative flex min-h-[50vh] w-[calc(100%-1rem)] max-w-5xl flex-col rounded-2xl bg-base-100 p-2 pt-12">
+					<div class="modal-box relative flex min-h-[70vh] w-full max-w-5xl flex-col rounded-t-3xl bg-base-100 p-2 pt-12 sm:min-h-[50vh] sm:w-[calc(100%-1rem)] sm:rounded-2xl">
 						<h2 id={titleId} class="sr-only">
 							{text}
 						</h2>
@@ -115,7 +113,7 @@ export const Booking = component$<BookingProps>(
 										class="absolute inset-0 flex items-center justify-center"
 										role="status"
 									>
-										<span class="loading loading-spinner loading-lg text-primary" />
+										<span class="loading loading-spinner loading-lg text-secondary" />
 										<span class="sr-only">
 											{t("app.booking.loading@@Loading booking options")}
 										</span>
@@ -124,7 +122,11 @@ export const Booking = component$<BookingProps>(
 								<iframe
 									title={t("app.booking.widget_title@@Booking Widget")}
 									src={iframeUrl}
-									class={`h-[75vh] w-full rounded-2xl border-0 transition-[opacity,filter,transform] duration-200 ease-out motion-reduce:transition-none ${isLoaded.value ? "translate-y-0 opacity-100 blur-0" : "translate-y-2 opacity-0 blur-sm"}`}
+									class={
+										isLoaded.value
+											? "h-[75vh] w-full translate-y-0 rounded-2xl border-0 opacity-100 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+											: "h-[75vh] w-full translate-y-2 rounded-2xl border-0 opacity-0 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+									}
 									onLoad$={$(() => {
 										isLoaded.value = true;
 										trackGoogleAnalyticsEvent(

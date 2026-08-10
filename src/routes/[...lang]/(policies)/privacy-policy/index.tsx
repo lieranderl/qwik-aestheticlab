@@ -75,60 +75,66 @@ export default component$(() => {
 	];
 
 	return (
-		<section class="w-full bg-base-200 pb-12 sm:pb-16 md:pb-20">
-			<div class="mx-auto max-w-3xl">
-				<header class="mb-8 sm:mb-10">
-					<h1 class="text-balance font-qestero text-4xl leading-tight text-base-content sm:text-5xl">
-						{t("app.privacy.privacy_title@@Privacy Policy")}
-					</h1>
-					<div class="my-5 h-px w-16 bg-primary" />
-					<p class="badge badge-outline min-h-7 border-base-300 px-3 font-montserrat text-xs font-medium uppercase tracking-wider text-base-content sm:text-sm">
-						{t("app.privacy.last_update_date@@Last updated: 19.02.2026")}
-					</p>
-				</header>
+		<section class="grid gap-10 lg:grid-cols-[minmax(15rem,0.62fr)_minmax(0,1.38fr)] lg:gap-16 xl:gap-24">
+			<header class="lg:sticky lg:top-32 lg:self-start">
+				<p class="font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+					Aesthetic Lab Leuven
+				</p>
+				<h1 class="mt-4 text-balance font-cormorant text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
+					{t("app.privacy.privacy_title@@Privacy Policy")}
+				</h1>
+				<div class="my-6 h-px w-20 bg-primary" />
+				<p class="max-w-sm font-main text-sm leading-7 text-base-content">
+					{t(
+						"app.head.privacy.description@@How Aesthetic Lab collects, uses, and protects your personal information.",
+					)}
+				</p>
+				<p class="badge badge-outline mt-6 min-h-7 border-base-300 px-3 font-main text-xs font-medium uppercase tracking-wider text-base-content">
+					{t("app.privacy.last_update_date@@Last updated: 19.02.2026")}
+				</p>
+			</header>
 
-				<div class="card surface-card">
-					<div class="card-body gap-0 p-5 sm:p-8 md:p-10">
-						{sections.map((section, idx) => (
-							<article
-								key={section.title}
-								class={
-									idx < sections.length - 1
-										? "border-b border-base-300/50 py-7 first:pt-0 sm:py-9"
-										: "pt-7 sm:pt-9"
-								}
-							>
-								<h2 class="font-qestero text-2xl leading-tight text-secondary sm:text-3xl">
-									{section.title}
-								</h2>
-								<p class="mt-4 font-montserrat text-sm leading-7 text-base-content sm:text-base">
-									{section.text}
-								</p>
-								{section.list && (
-									<ul class="list mt-5 rounded-box bg-base-200/45 py-1 font-montserrat text-sm text-base-content sm:text-base">
-										{section.list.map((item) => (
-											<li key={item} class="list-row gap-3 px-4 py-3">
-												<span aria-hidden="true" class="pt-0.5 text-primary">
-													✦
-												</span>
-												<span class="leading-6">{item}</span>
-											</li>
-										))}
-									</ul>
-								)}
-								{section.link && (
-									<div class="card-actions mt-5">
-										<a
-											class="btn btn-outline btn-primary min-h-11 max-w-full rounded-full px-4 text-sm normal-case"
-											href={section.link.url}
-										>
-											<span class="truncate">{section.link.label}</span>
-										</a>
-									</div>
-								)}
-							</article>
-						))}
-					</div>
+			<div class="card card-border overflow-hidden border-base-300 bg-base-100 shadow-sm">
+				<div class="card-body gap-0 p-5 sm:p-8 md:p-10">
+					{sections.map((section, idx) => (
+						<article
+							key={section.title}
+							class={
+								idx < sections.length - 1
+									? "border-b border-base-300/50 py-7 first:pt-0 sm:py-9"
+									: "pt-7 sm:pt-9"
+							}
+						>
+							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
+								{section.title}
+							</h2>
+							<p class="mt-4 font-main text-sm leading-7 text-base-content sm:text-base">
+								{section.text}
+							</p>
+							{section.list && (
+								<ul class="list mt-5 rounded-box bg-base-200/45 py-1 font-main text-sm text-base-content sm:text-base">
+									{section.list.map((item) => (
+										<li key={item} class="list-row gap-3 px-4 py-3">
+											<span aria-hidden="true" class="pt-0.5 text-secondary">
+												✦
+											</span>
+											<span class="leading-6">{item}</span>
+										</li>
+									))}
+								</ul>
+							)}
+							{section.link && (
+								<div class="card-actions mt-5">
+									<a
+										class="btn btn-outline btn-primary min-h-11 max-w-full rounded-full px-4 text-sm normal-case"
+										href={section.link.url}
+									>
+										<span class="truncate">{section.link.label}</span>
+									</a>
+								</div>
+							)}
+						</article>
+					))}
 				</div>
 			</div>
 		</section>

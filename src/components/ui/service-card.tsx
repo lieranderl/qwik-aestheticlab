@@ -1,47 +1,19 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { $, component$, useId, useSignal } from "@builder.io/qwik";
+import { component$, useId } from "@builder.io/qwik";
+import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { inlineTranslate } from "qwik-speak";
+import { bookingLocationId } from "~/consts";
+import { resolveImageComponent } from "~/shared/image-resolver";
 import { Booking } from "./booking-modal";
-import { FadeUp } from "./fade-up";
-
-type ServiceImageComponent =
-	typeof import("~/media/gallery/universal.jpg?jsx").default;
-
-const GALLERY_IMAGES = import.meta.glob("../../media/gallery/*.jpg", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, ServiceImageComponent>;
-
-const SERVICE_IMAGES = import.meta.glob("../../media/services/*.webp", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, ServiceImageComponent>;
-
-const IMAGE_COMPONENTS = new Map<string, ServiceImageComponent>([
-	...Object.entries(GALLERY_IMAGES).map(
-		([path, component]) =>
-			[`gallery:${path.split("/").at(-1)}`, component] as const,
-	),
-	...Object.entries(SERVICE_IMAGES).map(
-		([path, component]) =>
-			[`service:${path.split("/").at(-1)}`, component] as const,
-	),
-]);
-
-function resolveImageComponent(image: string) {
-	return IMAGE_COMPONENTS.get(image) ?? null;
-}
+import { ExpandableText } from "./expandable-text";
 
 export interface ServiceCardProps {
 	title: string;
 	description: string;
 	price?: string;
 	image: string;
-	delay?: number;
 	serviceId: string;
-	location: string;
+	location?: string;
 	customAction$?: PropFunction<() => void>;
 	buttonLabel?: string;
 	showBooking?: boolean;
@@ -51,6 +23,7 @@ export interface ServiceCardProps {
 	analyticsPlacement?: string;
 	analyticsServiceCategory?: string;
 	eager?: boolean;
+	emphasis?: "lead" | "standard" | "compact";
 }
 
 export const ServiceCard = component$<ServiceCardProps>(
@@ -59,9 +32,8 @@ export const ServiceCard = component$<ServiceCardProps>(
 		description,
 		price,
 		image,
-		delay = 0,
 		serviceId,
-		location,
+		location = bookingLocationId,
 		customAction$,
 		buttonLabel,
 		showBooking = true,
@@ -71,11 +43,10 @@ export const ServiceCard = component$<ServiceCardProps>(
 		analyticsPlacement,
 		analyticsServiceCategory,
 		eager = false,
+		emphasis = "standard",
 	}) => {
 		const t = inlineTranslate();
-		const isExpanded = useSignal(false);
 		const descriptionId = useId();
-		const hasLongDescription = description.length > 140;
 		const ImageComp = resolveImageComponent(image);
 		const imageSizes =
 			variant === "category"
@@ -83,122 +54,139 @@ export const ServiceCard = component$<ServiceCardProps>(
 				: "(min-width: 1280px) 25rem, (min-width: 1024px) calc(33.333vw - 2rem), (min-width: 768px) calc(50vw - 2.25rem), calc(100vw - 2rem)";
 
 		return (
-			<FadeUp delay={delay} class="h-full">
-				<article class="card surface-card h-full overflow-hidden transition-shadow duration-200 hover:shadow-lg">
-					<figure
-						class={[
-							"group relative overflow-hidden bg-base-200",
-							variant === "category"
-								? "h-[9.5rem] md:h-auto md:aspect-5/4"
-								: "h-[13rem] md:h-auto md:aspect-4/3",
-						]}
-					>
-						{ImageComp ? (
-							<ImageComp
-								alt={title}
-								class="interactive-media h-full w-full object-cover object-center"
-								loading={eager ? "eager" : "lazy"}
-								fetchPriority={eager ? "high" : "auto"}
-								sizes={imageSizes}
-							/>
-						) : (
-							<img
-								src={image}
-								alt={title}
-								class="interactive-media h-full w-full object-cover object-center"
-								width="400"
-								height="500"
-								loading={eager ? "eager" : "lazy"}
-								fetchPriority={eager ? "high" : "auto"}
-							/>
-						)}
-						<div class="absolute inset-0 bg-linear-to-t from-base-content/75 via-base-content/10 to-transparent" />
-						<div class="absolute top-3 right-3 left-3 flex flex-wrap items-start justify-between gap-2 md:top-4 md:right-4 md:left-4">
-							{supportingText ? (
-								<span class="badge badge-neutral badge-xs rounded-full border-none font-montserrat uppercase tracking-wider shadow-sm md:badge-sm">
-									{supportingText}
-								</span>
-							) : null}
-						</div>
-					</figure>
+			<article
+				class={[
+					"group card card-border h-full overflow-hidden bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg",
+					variant === "category" && emphasis === "lead"
+						? "lg:grid lg:grid-rows-[minmax(0,1fr)_auto]"
+						: "",
+				]}
+			>
+				<figure
+					class={[
+						"group relative overflow-hidden bg-base-200",
+						variant === "category"
+							? emphasis === "lead"
+								? "h-56 md:h-64 lg:h-80"
+								: emphasis === "compact"
+									? "h-44 md:h-48"
+									: "h-56 md:h-64 lg:h-72"
+							: "h-52 md:h-auto md:aspect-4/3",
+					]}
+				>
+					{ImageComp ? (
+						<ImageComp
+							alt={title}
+							class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
+							loading={eager ? "eager" : "lazy"}
+							fetchPriority={eager ? "high" : "auto"}
+							sizes={imageSizes}
+						/>
+					) : (
+						<img
+							src={image}
+							alt={title}
+							class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
+							width="400"
+							height="500"
+							loading={eager ? "eager" : "lazy"}
+							fetchPriority={eager ? "high" : "auto"}
+						/>
+					)}
+					<div class="absolute inset-0 bg-linear-to-t from-base-content/60 via-base-content/15 to-transparent" />
+					<div class="absolute top-3 right-3 left-3 flex flex-wrap items-start justify-between gap-2 md:top-4 md:right-4 md:left-4">
+						{supportingText ? (
+							<span class="badge badge-neutral badge-sm hidden border-none font-main uppercase tracking-wider shadow-sm md:inline-flex">
+								{supportingText}
+							</span>
+						) : null}
+					</div>
+				</figure>
 
-					<div class="card-body gap-3 p-4 md:gap-4 md:p-6">
-						<div class="space-y-2.5 md:space-y-3">
-							<h3 class="text-balance font-qestero text-2xl leading-none text-base-content md:text-3xl">
-								{title.charAt(0).toUpperCase() + title.slice(1)}
-							</h3>
+				<div
+					class={[
+						"card-body min-w-0 gap-4 p-5 md:gap-5 md:p-6",
+						variant === "category" && emphasis === "compact" ? "lg:p-5" : "",
+					]}
+				>
+					<div class="space-y-2.5 md:space-y-3">
+						<h3
+							class={[
+								"text-balance font-cormorant leading-none text-base-content",
+								variant === "category" && emphasis === "lead"
+									? "text-3xl md:text-4xl"
+									: "text-2xl md:text-3xl",
+							]}
+						>
+							{title.charAt(0).toUpperCase() + title.slice(1)}
+						</h3>
+						{variant === "category" ? (
 							<p
 								id={descriptionId}
-								class={[
-									"text-pretty font-montserrat text-sm leading-relaxed text-base-content/80",
-									variant === "category"
-										? "line-clamp-2 md:line-clamp-none"
-										: isExpanded.value
-											? ""
-											: "line-clamp-3 md:line-clamp-4",
-								]}
+								class="text-pretty font-main text-sm leading-relaxed text-base-content/80 line-clamp-3 md:line-clamp-none"
 							>
 								{description}
 							</p>
-							{variant === "service" && hasLongDescription ? (
-								<button
-									type="button"
-									onClick$={$(() => {
-										isExpanded.value = !isExpanded.value;
-									})}
-									class="btn btn-ghost btn-sm min-h-11 w-fit rounded-full px-0 font-montserrat uppercase tracking-wider text-primary"
-									aria-expanded={isExpanded.value}
-									aria-controls={descriptionId}
-								>
-									{isExpanded.value
-										? t("app.common.read_less@@Read Less")
-										: t("app.common.read_more@@Read More")}
-								</button>
+						) : (
+							<ExpandableText text={description} />
+						)}
+					</div>
+
+					{variant === "category" ? (
+						<div class="mt-auto min-h-6">
+							{price ? (
+								<span class="badge badge-soft badge-sm font-main">{price}</span>
 							) : null}
 						</div>
+					) : null}
 
-						{variant === "category" ? (
-							<div class="mt-auto min-h-6">
-								{price ? (
-									<span class="badge badge-accent badge-outline rounded-full font-montserrat">
-										{price}
+					{variant === "service" ? (
+						<div class="mt-auto">
+							{duration ? (
+								<div class="mb-4 flex items-center gap-2 font-main text-xs font-medium uppercase tracking-wider text-base-content">
+									<HiClockOutline class="size-4" aria-hidden="true" />
+									<span>
+										{duration}&nbsp;{t("app.services.minutes@@min")}
 									</span>
-								) : null}
-							</div>
-						) : null}
-
-						<div
-							class={[
-								"card-actions items-center gap-2 border-t border-base-300 pt-3 md:gap-3 md:pt-4",
-								variant === "service"
-									? "mt-auto justify-between"
-									: "justify-stretch",
-							]}
-						>
-							{variant === "service" ? (
-								<div class="flex flex-wrap gap-2">
+								</div>
+							) : null}
+							<div class="card-actions items-center justify-between border-t border-base-300 pt-4 md:pt-5">
+								<div class="flex flex-wrap gap-4">
 									{price ? (
-										<span class="badge badge-primary badge-outline rounded-full font-montserrat">
+										<span class="badge badge-secondary badge-outline badge-soft rounded-full font-main">
 											{price}
 										</span>
 									) : null}
-									{duration ? (
-										<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
-											{duration}&nbsp;{t("app.services.minutes@@min")}
-										</span>
-									) : null}
 								</div>
-							) : null}
+								{customAction$ ? (
+									<button
+										type="button"
+										onClick$={customAction$}
+										class="btn btn-sm btn-outline h-11 min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
+									>
+										{buttonLabel || t("app.generic.view@@View")}
+									</button>
+								) : showBooking ? (
+									<Booking
+										id={`modal_service_${serviceId}`}
+										text={t("app.book.book_now@@Book Now")}
+										location={location}
+										classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
+										analyticsPlacement={analyticsPlacement || "service_card"}
+										analyticsServiceId={serviceId}
+										analyticsServiceName={title}
+										analyticsServiceCategory={analyticsServiceCategory}
+									/>
+								) : null}
+							</div>
+						</div>
+					) : (
+						<div class="card-actions items-center gap-2 border-t border-base-300 pt-4 md:gap-3 md:pt-5 justify-stretch">
 							{customAction$ ? (
 								<button
 									type="button"
 									onClick$={customAction$}
-									class={[
-										"btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap rounded-full px-4 font-montserrat text-xs uppercase tracking-[0.08em]",
-										variant === "category"
-											? "btn-primary"
-											: "btn-outline btn-primary",
-									]}
+									class="btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
 								>
 									{buttonLabel || t("app.generic.view@@View")}
 								</button>
@@ -207,7 +195,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 									id={`modal_service_${serviceId}`}
 									text={t("app.book.book_now@@Book Now")}
 									location={location}
-									classes="btn btn-sm btn-outline btn-primary min-h-11 rounded-full font-montserrat uppercase tracking-wider"
+									classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
 									analyticsPlacement={analyticsPlacement || "service_card"}
 									analyticsServiceId={serviceId}
 									analyticsServiceName={title}
@@ -215,9 +203,9 @@ export const ServiceCard = component$<ServiceCardProps>(
 								/>
 							) : null}
 						</div>
-					</div>
-				</article>
-			</FadeUp>
+					)}
+				</div>
+			</article>
 		);
 	},
 );
