@@ -1,4 +1,4 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { StarRating } from "~/components/ui/star-rating";
@@ -89,12 +89,7 @@ function shuffle<T>(arr: readonly T[]): T[] {
 
 export const ReviewsSection = component$(() => {
 	const t = inlineTranslate();
-	const reviews = useSignal<Review[]>([...ALL_REVIEWS]);
-
-	// eslint-disable-next-line qwik/no-use-visible-task
-	useVisibleTask$(() => {
-		reviews.value = shuffle(ALL_REVIEWS);
-	});
+	const reviews = useSignal<Review[]>(shuffle([...ALL_REVIEWS]));
 
 	return (
 		<section
