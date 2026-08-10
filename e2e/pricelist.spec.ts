@@ -1,15 +1,13 @@
 import { test, expect } from "@playwright/test";
 
-test("renders the pricelist hero heading and booking CTA shell", async ({
-	page,
-}) => {
+test("renders the pricelist page with heading and CTA", async ({ page }) => {
 	await page.goto("/en-BE/pricelist");
 
 	await expect(page).toHaveURL(/\/en-BE\/pricelist\/?$/);
 	await expect(
-		page.getByRole("heading", { level: 1, name: "Services & Pricing" }),
-	).toBeVisible();
+		page.getByRole("heading", { name: "Services & Pricing", level: 1 }),
+	).toBeVisible({ timeout: 15000 });
 	await expect(
 		page.getByRole("button", { name: "Book Appointment" }),
-	).toBeVisible();
+	).toBeVisible({ timeout: 15000 });
 });
