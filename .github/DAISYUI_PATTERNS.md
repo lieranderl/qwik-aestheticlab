@@ -53,7 +53,7 @@ The custom theme is defined in `src/global.css` inside the `@plugin "daisyui/the
 <button class="btn btn-sm btn-square btn-ghost">✕</button>
 
 // Large CTA with custom tracking
-<button class="btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase">
+<button class="btn btn-primary btn-lg font-main font-medium tracking-widest uppercase">
   Book Appointment
 </button>
 
@@ -69,7 +69,7 @@ The custom theme is defined in `src/global.css` inside the `@plugin "daisyui/the
 - **Destructive/dismiss** → `btn btn-ghost` or `btn btn-outline`
 - **Size** → default for main CTAs, `btn-sm` for inline/card actions, `btn-lg` for hero CTAs
 - Always add `type="button"` on non-submit buttons.
-- Add `font-montserrat uppercase tracking-wider` for branded button text.
+- Add `font-main uppercase tracking-wider` for branded button text.
 
 ## Modals (`modal`)
 
@@ -265,9 +265,9 @@ Uses DaisyUI button patterns within a fixed-position card:
 DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 
 ```tsx
-<button class="btn btn-primary btn-lg font-montserrat font-medium tracking-widest uppercase transition-colors duration-150">
+<button class="btn btn-primary btn-lg font-main font-medium tracking-widest uppercase transition-colors duration-150">
   {/* DaisyUI: btn btn-primary btn-lg */}
-  {/* Tailwind: font-montserrat font-medium tracking-widest uppercase */}
+  {/* Tailwind: font-main font-medium tracking-widest uppercase */}
   {/* Interaction feedback stays within the shared 150–200 ms motion scale. */}
 </button>
 ```
@@ -294,7 +294,7 @@ DaisyUI classes and Tailwind utilities coexist freely. The established pattern:
 | Tooltips | DaisyUI `tooltip` |
 | Form inputs | DaisyUI `input`, `select`, `textarea`, `checkbox`, `toggle` |
 | Layout/spacing | Tailwind utilities |
-| Typography | Tailwind + project font classes (`font-qestero`, `font-montserrat`) |
+| Typography | Tailwind + project font classes (`font-qestero`, `font-main`) |
 | Animations | `FadeUp` component + Tailwind transitions |
 | Responsive design | Tailwind breakpoints (`md:`, `lg:`, `xl:`) |
 

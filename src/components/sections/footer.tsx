@@ -4,18 +4,12 @@ import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
 import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
+import { getNavLinks } from "~/shared/nav-links";
 
 export const Footer = component$(() => {
 	const t = inlineTranslate();
 	const location = useLocation();
-	const links = [
-		{ label: t("app.nav.services@@Services"), href: "#services" },
-		{ label: t("app.nav.reviews@@Reviews"), href: "#reviews" },
-		{ label: t("app.work.title@@Our Work"), href: "#gallery" },
-		{ label: t("app.nav.team@@Team"), href: "#team" },
-		{ label: t("app.faq.title@@FAQ"), href: "#faq" },
-		{ label: t("app.nav.contact@@Contact"), href: "#contact" },
-	];
+	const links = getNavLinks(t, false);
 
 	return (
 		<footer class="border-t border-base-content/10 bg-base-200 px-6 pt-16 pb-6 lg:px-8">
@@ -30,12 +24,12 @@ export const Footer = component$(() => {
 						/>
 						<div>
 							<p class="font-qestero text-2xl leading-none">Aesthetic Lab</p>
-							<p class="mt-1 font-montserrat text-[0.6rem] uppercase tracking-[0.24em] text-base-content">
+							<p class="mt-1 font-main text-[0.6rem] uppercase tracking-[0.24em] text-base-content">
 								Leuven
 							</p>
 						</div>
 					</div>
-					<p class="mt-4 font-montserrat text-xs leading-relaxed text-base-content">
+					<p class="mt-4 font-main text-xs leading-relaxed text-base-content">
 						{t(
 							"app.footer.tagline@@Nails, brows, lashes and laser treatments shaped around you",
 						)}
@@ -44,10 +38,10 @@ export const Footer = component$(() => {
 
 				{/* Navigation */}
 				<nav aria-label={t("app.footer.navigation@@Footer navigation")}>
-					<h2 class="mb-3 font-montserrat text-xs font-semibold uppercase tracking-wider text-base-content">
+					<h2 class="mb-3 font-main text-xs font-semibold uppercase tracking-wider text-base-content">
 						{t("app.footer.explore@@Explore")}
 					</h2>
-					<div class="grid grid-cols-2 gap-x-7 gap-y-2.5 font-montserrat text-sm sm:grid-cols-3">
+					<div class="grid grid-cols-2 gap-x-7 gap-y-2.5 font-main text-sm sm:grid-cols-3">
 						{links.map((item) => (
 							<a
 								key={item.label}
@@ -72,13 +66,13 @@ export const Footer = component$(() => {
 
 			{/* Bottom bar */}
 			<div class="mx-auto mt-12 max-w-7xl border-t border-base-300 pt-5 sm:flex sm:items-center sm:justify-between sm:gap-10">
-				<p class="font-montserrat text-xs leading-6 text-base-content">
+				<p class="font-main text-xs leading-6 text-base-content">
 					{t("app.footer.copyright@@Copyright")} © {new Date().getFullYear()}{" "}
 					Aesthetic Lab Leuven
 				</p>
 				<nav
 					aria-label={t("app.footer.legal@@Legal")}
-					class="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-montserrat text-xs sm:mt-0 sm:shrink-0"
+					class="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-main text-xs sm:mt-0 sm:shrink-0"
 				>
 					<a
 						class="link link-hover min-h-11 content-center text-base-content"

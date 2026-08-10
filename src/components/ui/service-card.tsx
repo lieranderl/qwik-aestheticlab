@@ -1,37 +1,10 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { $, component$, useId, useSignal } from "@builder.io/qwik";
+import { component$, useId } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { bookingLocationId } from "~/consts";
+import { resolveImageComponent } from "~/shared/image-resolver";
 import { Booking } from "./booking-modal";
-
-type ServiceImageComponent =
-	typeof import("~/media/gallery/universal.jpg?jsx").default;
-
-const GALLERY_IMAGES = import.meta.glob("../../media/gallery/*.jpg", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, ServiceImageComponent>;
-
-const SERVICE_IMAGES = import.meta.glob("../../media/services/*.webp", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, ServiceImageComponent>;
-
-const IMAGE_COMPONENTS = new Map<string, ServiceImageComponent>([
-	...Object.entries(GALLERY_IMAGES).map(
-		([path, component]) =>
-			[`gallery:${path.split("/").at(-1)}`, component] as const,
-	),
-	...Object.entries(SERVICE_IMAGES).map(
-		([path, component]) =>
-			[`service:${path.split("/").at(-1)}`, component] as const,
-	),
-]);
-
-function resolveImageComponent(image: string) {
-	return IMAGE_COMPONENTS.get(image) ?? null;
-}
+import { ExpandableText } from "./expandable-text";
 
 export interface ServiceCardProps {
 	title: string;
@@ -39,7 +12,7 @@ export interface ServiceCardProps {
 	price?: string;
 	image: string;
 	serviceId: string;
-	location: string;
+	location?: string;
 	customAction$?: PropFunction<() => void>;
 	buttonLabel?: string;
 	showBooking?: boolean;
@@ -59,7 +32,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 		price,
 		image,
 		serviceId,
-		location,
+		location = bookingLocationId,
 		customAction$,
 		buttonLabel,
 		showBooking = true,
@@ -72,9 +45,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 		emphasis = "standard",
 	}) => {
 		const t = inlineTranslate();
-		const isExpanded = useSignal(false);
 		const descriptionId = useId();
-		const hasLongDescription = description.length > 140;
 		const ImageComp = resolveImageComponent(image);
 		const imageSizes =
 			variant === "category"
@@ -124,7 +95,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 					<div class="absolute inset-0 bg-linear-to-t from-base-content/60 via-base-content/15 to-transparent" />
 					<div class="absolute top-3 right-3 left-3 flex flex-wrap items-start justify-between gap-2 md:top-4 md:right-4 md:left-4">
 						{supportingText ? (
-							<span class="badge badge-neutral badge-sm hidden border-none font-montserrat uppercase tracking-wider shadow-sm md:inline-flex">
+							<span class="badge badge-neutral badge-sm hidden border-none font-main uppercase tracking-wider shadow-sm md:inline-flex">
 								{supportingText}
 							</span>
 						) : null}
@@ -148,42 +119,22 @@ export const ServiceCard = component$<ServiceCardProps>(
 						>
 							{title.charAt(0).toUpperCase() + title.slice(1)}
 						</h3>
-						<p
-							id={descriptionId}
-							class={[
-								"text-pretty font-montserrat text-sm leading-relaxed text-base-content/80",
-								variant === "category"
-									? "line-clamp-3 md:line-clamp-none"
-									: isExpanded.value
-										? ""
-										: "line-clamp-3 md:line-clamp-4",
-							]}
-						>
-							{description}
-						</p>
-						{variant === "service" && hasLongDescription ? (
-							<button
-								type="button"
-								onClick$={$(() => {
-									isExpanded.value = !isExpanded.value;
-								})}
-								class="btn btn-ghost btn-sm min-h-11 w-fit rounded-full px-0 font-montserrat uppercase tracking-wider text-secondary"
-								aria-expanded={isExpanded.value}
-								aria-controls={descriptionId}
+						{variant === "category" ? (
+							<p
+								id={descriptionId}
+								class="text-pretty font-main text-sm leading-relaxed text-base-content/80 line-clamp-3 md:line-clamp-none"
 							>
-								{isExpanded.value
-									? t("app.common.read_less@@Read Less")
-									: t("app.common.read_more@@Read More")}
-							</button>
-						) : null}
+								{description}
+							</p>
+						) : (
+							<ExpandableText text={description} />
+						)}
 					</div>
 
 					{variant === "category" ? (
 						<div class="mt-auto min-h-6">
 							{price ? (
-								<span class="badge badge-soft badge-sm font-montserrat">
-									{price}
-								</span>
+								<span class="badge badge-soft badge-sm font-main">{price}</span>
 							) : null}
 						</div>
 					) : null}
@@ -199,12 +150,12 @@ export const ServiceCard = component$<ServiceCardProps>(
 						{variant === "service" ? (
 							<div class="flex flex-wrap gap-2">
 								{price ? (
-									<span class="badge badge-secondary badge-outline rounded-full font-montserrat">
+									<span class="badge badge-secondary badge-outline rounded-full font-main">
 										{price}
 									</span>
 								) : null}
 								{duration ? (
-									<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
+									<span class="badge badge-outline rounded-full border-base-300 font-main">
 										{duration}&nbsp;{t("app.services.minutes@@min")}
 									</span>
 								) : null}
@@ -215,7 +166,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								type="button"
 								onClick$={customAction$}
 								class={[
-									"btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-montserrat text-xs font-semibold uppercase tracking-[0.08em]",
+									"btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]",
 									variant === "category" ? "" : "btn-outline",
 								]}
 							>
@@ -226,7 +177,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								id={`modal_service_${serviceId}`}
 								text={t("app.book.book_now@@Book Now")}
 								location={location}
-								classes="btn btn-sm btn-outline min-h-11 font-montserrat uppercase tracking-wider"
+								classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
 								analyticsPlacement={analyticsPlacement || "service_card"}
 								analyticsServiceId={serviceId}
 								analyticsServiceName={title}

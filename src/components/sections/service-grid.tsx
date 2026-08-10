@@ -13,12 +13,15 @@ import {
 	type GroupedServiceData,
 	getCategoryDescription,
 	getCategoryStartingPrice,
+	getDisplayCategoryName,
 	getServiceItemImage,
 	groupServicesAndCategories,
 	isLaserCategory,
 	resolveCoverImage,
 } from "~/shared/service-utils";
 import type { Service, ServiceGroup } from "~/types";
+
+// ── Types ────────────────────────────────────────────────────────────────────
 
 interface ServiceGridProps {
 	services: Service[];
@@ -32,24 +35,19 @@ interface DisplayServiceGroup extends GroupedServiceData {
 	displayTitle: string;
 }
 
+// ── Constants ────────────────────────────────────────────────────────────────
+
 const serviceDetailsCardId = "service-details-card";
 const serviceDetailsHeadingId = "service-details-heading";
 
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
 function updateTreatmentUrl(categoryId?: string, subgroupId?: string) {
 	const url = new URL(window.location.href);
-
-	if (categoryId) {
-		url.searchParams.set("treatment", categoryId);
-	} else {
-		url.searchParams.delete("treatment");
-	}
-
-	if (subgroupId) {
-		url.searchParams.set("treatmentArea", subgroupId);
-	} else {
-		url.searchParams.delete("treatmentArea");
-	}
-
+	if (categoryId) url.searchParams.set("treatment", categoryId);
+	else url.searchParams.delete("treatment");
+	if (subgroupId) url.searchParams.set("treatmentArea", subgroupId);
+	else url.searchParams.delete("treatmentArea");
 	url.hash = "services";
 	history.pushState(null, "", url);
 }
@@ -58,7 +56,6 @@ function revealServiceDetails() {
 	const reducedMotion = window.matchMedia(
 		"(prefers-reduced-motion: reduce)",
 	).matches;
-
 	function tryScroll() {
 		const card = document.getElementById(serviceDetailsCardId);
 		if (card) {
@@ -73,17 +70,355 @@ function revealServiceDetails() {
 			requestAnimationFrame(tryScroll);
 		}
 	}
-
 	requestAnimationFrame(tryScroll);
 }
 
-function getDisplayCategoryNameForGroup(
-	group: DisplayServiceGroup,
-	fallback: string,
-) {
-	const categoryName = group.displayTitle || group.category?.name || fallback;
-	return categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+// ── Sub-components ───────────────────────────────────────────────────────────
+
+interface OverviewGridProps {
+	displayGroups: DisplayServiceGroup[];
+	treatmentsLabel: string;
+	viewTreatmentsLabel: string;
+	defaultCategoryLabel: string;
+	fromPriceLabel: string;
+	categoryDescriptionLabels: {
+		manicure: string;
+		pedicure: string;
+		brows: string;
+		laser: string;
+		general: string;
+	};
+	onCategoryOpen: (
+		groupId: string,
+		categoryName: string,
+		serviceCount: number,
+	) => void;
 }
+
+const OverviewGrid = component$<OverviewGridProps>(
+	({
+		displayGroups,
+		treatmentsLabel,
+		viewTreatmentsLabel,
+		defaultCategoryLabel,
+		fromPriceLabel,
+		categoryDescriptionLabels,
+		onCategoryOpen,
+	}) => {
+		return (
+			<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
+				{displayGroups.map((group, index) => {
+					const displayCategoryName =
+						getDisplayCategoryName(group.category, defaultCategoryLabel) ||
+						group.displayTitle ||
+						defaultCategoryLabel;
+					const description = getCategoryDescription(
+						group.category,
+						categoryDescriptionLabels,
+					);
+
+					return (
+						<div
+							key={group.groupId}
+							class={
+								index % 4 === 0 || index % 4 === 3
+									? "lg:col-span-7"
+									: "lg:col-span-5"
+							}
+						>
+							<ServiceCard
+								variant="category"
+								title={displayCategoryName}
+								description={description}
+								image={resolveCoverImage(group.coverImageName)}
+								price={getCategoryStartingPrice(
+									group.groupServices,
+									fromPriceLabel,
+								)}
+								supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
+								customAction$={$(() => {
+									onCategoryOpen(
+										group.groupId,
+										displayCategoryName,
+										group.groupServices.length,
+									);
+								})}
+								buttonLabel={viewTreatmentsLabel}
+								serviceId={`cat-${group.groupId}`}
+								showBooking={false}
+							/>
+						</div>
+					);
+				})}
+			</div>
+		);
+	},
+);
+
+interface DetailViewProps {
+	displayGroups: DisplayServiceGroup[];
+	laserSubgroups: DisplayServiceGroup[];
+	selectedCategoryId: string | null;
+	selectedLaserSubgroupId: string | null;
+	treatmentsLabel: string;
+	fromPriceLabel: string;
+	defaultCategoryLabel: string;
+	laserCategoryLabel: string;
+	viewTreatmentsLabel: string;
+	categoryDescriptionLabels: {
+		manicure: string;
+		pedicure: string;
+		brows: string;
+		laser: string;
+		general: string;
+	};
+	servicesAriaLabel: string;
+	backLabel: string;
+	backToLaserLabel: string;
+	onCategoryOpen: (
+		groupId: string,
+		categoryName: string,
+		serviceCount: number,
+	) => void;
+	onLaserSubgroupOpen: (
+		groupId: string,
+		categoryName: string,
+		serviceCount: number,
+	) => void;
+	onResetLaserSubgroup: () => void;
+	onResetOverview: () => void;
+	categoryById: Map<string, ServiceGroup>;
+	location: string;
+}
+
+const DetailView = component$<DetailViewProps>(
+	({
+		displayGroups,
+		laserSubgroups,
+		selectedCategoryId,
+		selectedLaserSubgroupId,
+		treatmentsLabel,
+		fromPriceLabel,
+		defaultCategoryLabel,
+		laserCategoryLabel,
+		viewTreatmentsLabel,
+		categoryDescriptionLabels,
+		servicesAriaLabel,
+		backLabel,
+		backToLaserLabel,
+		onCategoryOpen,
+		onLaserSubgroupOpen,
+		onResetLaserSubgroup,
+		onResetOverview,
+		categoryById,
+		location,
+	}) => {
+		const selectedGroup = displayGroups.find(
+			(g) => g.groupId === selectedCategoryId,
+		);
+		const selectedLaserSubgroup = laserSubgroups.find(
+			(g) => g.groupId === selectedLaserSubgroupId,
+		);
+		const activeDetailGroup =
+			selectedGroup?.groupId === "laser" && selectedLaserSubgroup
+				? selectedLaserSubgroup
+				: selectedGroup;
+
+		return (
+			<div class="space-y-6 md:space-y-8">
+				{activeDetailGroup ? (
+					<section
+						id={serviceDetailsCardId}
+						data-testid={serviceDetailsCardId}
+						aria-labelledby={serviceDetailsHeadingId}
+						class="card card-border scroll-mt-24 bg-base-100 p-4 shadow-sm md:p-6"
+					>
+						<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+							<div class="space-y-3 md:space-y-4">
+								<div class="flex flex-wrap gap-2">
+									<span class="badge badge-secondary badge-outline rounded-full font-main">
+										{activeDetailGroup.groupServices.length} {treatmentsLabel}
+									</span>
+									{getCategoryStartingPrice(
+										activeDetailGroup.groupServices,
+										fromPriceLabel,
+									) ? (
+										<span class="badge badge-outline rounded-full border-base-300 font-main">
+											{getCategoryStartingPrice(
+												activeDetailGroup.groupServices,
+												fromPriceLabel,
+											)}
+										</span>
+									) : null}
+								</div>
+								<div>
+									<h3
+										id={serviceDetailsHeadingId}
+										tabIndex={-1}
+										class="text-balance font-cormorant text-3xl leading-none text-base-content md:text-4xl"
+									>
+										{getDisplayCategoryName(
+											activeDetailGroup.category,
+											activeDetailGroup.displayTitle || defaultCategoryLabel,
+										)}
+									</h3>
+									<p class="mt-2 max-w-2xl text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:mt-3 md:text-base">
+										{getCategoryDescription(
+											activeDetailGroup.category,
+											categoryDescriptionLabels,
+										)}
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<nav
+							class="mt-5 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6"
+							aria-label={servicesAriaLabel}
+						>
+							<div class="flex w-max gap-2 px-3 md:px-0">
+								{displayGroups.map((group) => {
+									const categoryName =
+										getDisplayCategoryName(
+											group.category,
+											defaultCategoryLabel,
+										) ||
+										group.displayTitle ||
+										defaultCategoryLabel;
+
+									return (
+										<button
+											key={group.groupId}
+											type="button"
+											onClick$={$(() => {
+												onCategoryOpen(
+													group.groupId,
+													categoryName,
+													group.groupServices.length,
+												);
+											})}
+											class={[
+												"btn btn-sm min-h-11 shrink-0 rounded-full px-4 font-main uppercase tracking-wider whitespace-nowrap",
+												group.groupId === selectedCategoryId
+													? "btn-primary"
+													: "btn-outline",
+											]}
+											aria-pressed={group.groupId === selectedCategoryId}
+										>
+											{categoryName}
+										</button>
+									);
+								})}
+							</div>
+						</nav>
+					</section>
+				) : null}
+
+				<div
+					data-testid="service-back-actions"
+					class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
+				>
+					{selectedLaserSubgroupId ? (
+						<button
+							type="button"
+							onClick$={onResetLaserSubgroup}
+							class="btn btn-ghost btn-sm rounded-full font-main uppercase tracking-wider text-secondary"
+						>
+							{backToLaserLabel}
+						</button>
+					) : null}
+					<button
+						type="button"
+						onClick$={onResetOverview}
+						class="btn btn-ghost btn-sm rounded-full font-main uppercase tracking-wider text-secondary"
+					>
+						{backLabel}
+					</button>
+				</div>
+
+				{selectedGroup?.groupId === "laser" && !selectedLaserSubgroup ? (
+					<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
+						{laserSubgroups.map((group) => {
+							const displayCategoryName =
+								getDisplayCategoryName(group.category, laserCategoryLabel) ||
+								group.displayTitle ||
+								laserCategoryLabel;
+
+							return (
+								<ServiceCard
+									key={group.groupId}
+									variant="category"
+									title={displayCategoryName}
+									description={getCategoryDescription(
+										group.category,
+										categoryDescriptionLabels,
+									)}
+									image={resolveCoverImage(group.coverImageName)}
+									price={getCategoryStartingPrice(
+										group.groupServices,
+										fromPriceLabel,
+									)}
+									supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
+									customAction$={$(() => {
+										onLaserSubgroupOpen(
+											group.groupId,
+											displayCategoryName,
+											group.groupServices.length,
+										);
+									})}
+									buttonLabel={viewTreatmentsLabel}
+									serviceId={`laser-${group.groupId}`}
+									showBooking={false}
+								/>
+							);
+						})}
+					</div>
+				) : (
+					displayGroups
+						.filter((group) =>
+							selectedCategoryId ? group.groupId === selectedCategoryId : true,
+						)
+						.map((group) => {
+							const groupsToRender =
+								group.groupId === "laser" && selectedLaserSubgroup
+									? [selectedLaserSubgroup]
+									: [group];
+
+							return groupsToRender.map((renderGroup) => (
+								<div key={renderGroup.groupId} class="space-y-6">
+									<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+										{renderGroup.groupServices.map((service, index) => {
+											const serviceCategory =
+												categoryById.get(String(service.group_id)) ||
+												renderGroup.category;
+											return (
+												<ServiceCard
+													key={service.id}
+													variant="service"
+													title={service.name}
+													description={service.description}
+													price={formatPrice(service.price)}
+													duration={service.duration}
+													image={getServiceItemImage(serviceCategory, index)}
+													serviceId={service.id}
+													location={location}
+													analyticsServiceCategory={
+														serviceCategory?.name || renderGroup.displayTitle
+													}
+												/>
+											);
+										})}
+									</div>
+								</div>
+							));
+						})
+				)}
+			</div>
+		);
+	},
+);
+
+// ── Main Component ───────────────────────────────────────────────────────────
 
 export const ServiceGrid = component$<ServiceGridProps>(
 	({
@@ -122,6 +457,8 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		const selectedLaserSubgroupId = useSignal<string | null>(
 			hasInitialLaserSubgroup ? initialSubgroupId || null : null,
 		);
+
+		// ── Labels ──
 		const defaultCategoryLabel = t("app.services.default_category@@Services");
 		const treatmentsLabel = t("app.services.treatments@@Treatments");
 		const servicesAriaLabel = t("app.nav.services@@Services");
@@ -156,6 +493,8 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				"app.services.general_desc@@Professional beauty treatments for your refined look.",
 			),
 		};
+
+		// ── Computed data ──
 		const groupedServices = useComputed$(() => {
 			return groupServicesAndCategories(services, serviceCategories);
 		});
@@ -208,43 +547,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				}));
 		});
 
-		const filteredGroups = useComputed$(() => {
-			return displayGroups.value.filter((group) =>
-				selectedCategoryId.value
-					? group.groupId === selectedCategoryId.value
-					: true,
-			);
-		});
-
-		const selectedGroup = useComputed$<DisplayServiceGroup | null>(() => {
-			return (
-				displayGroups.value.find(
-					(group) => group.groupId === selectedCategoryId.value,
-				) || null
-			);
-		});
-
-		const selectedLaserSubgroup = useComputed$<DisplayServiceGroup | null>(
-			() => {
-				return (
-					laserSubgroups.value.find(
-						(group) => group.groupId === selectedLaserSubgroupId.value,
-					) || null
-				);
-			},
-		);
-
-		const activeDetailGroup = useComputed$<DisplayServiceGroup | null>(() => {
-			if (
-				selectedGroup.value?.groupId === "laser" &&
-				selectedLaserSubgroup.value
-			) {
-				return selectedLaserSubgroup.value;
-			}
-
-			return selectedGroup.value;
-		});
-
+		// ── Actions ──
 		const resetOverview = $(() => {
 			showFullList.value = false;
 			selectedCategoryId.value = null;
@@ -309,8 +612,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 			showFullList.value = hasCategory;
 		});
 
-		// URL state keeps the drill-down shareable, restores Back/Forward, and
-		// falls back to the overview when a query references an unknown category.
 		useOnWindow("popstate", restoreTreatmentState);
 		useOnWindow("hashchange", restoreTreatmentState);
 
@@ -322,7 +623,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 				<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div class="mb-9 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
 						<div>
-							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+							<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 								{t("app.services.catalogue@@Our treatments")}
 							</p>
 							<h2 class="max-w-2xl text-balance font-cormorant text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
@@ -331,7 +632,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 						</div>
 
 						<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
-							<p class="text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+							<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
 								{subtitleLabel}
 							</p>
 							<div class="mt-5">
@@ -342,7 +643,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 											placement: "services_cta",
 										});
 									})}
-									class="btn btn-sm min-h-11 border-base-content/25 font-montserrat text-xs font-semibold uppercase tracking-wider"
+									class="btn btn-sm min-h-11 border-base-content/25 font-main text-xs font-semibold uppercase tracking-wider"
 								>
 									{viewFullLabel}
 								</a>
@@ -351,198 +652,27 @@ export const ServiceGrid = component$<ServiceGridProps>(
 					</div>
 
 					{showFullList.value ? (
-						<div class="space-y-6 md:space-y-8">
-							{activeDetailGroup.value ? (
-								<section
-									id={serviceDetailsCardId}
-									data-testid={serviceDetailsCardId}
-									aria-labelledby={serviceDetailsHeadingId}
-									class="card card-border scroll-mt-24 bg-base-100 p-4 shadow-sm md:p-6"
-								>
-									<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-										<div class="space-y-3 md:space-y-4">
-											<div class="flex flex-wrap gap-2">
-												<span class="badge badge-secondary badge-outline rounded-full font-montserrat">
-													{activeDetailGroup.value.groupServices.length}{" "}
-													{treatmentsLabel}
-												</span>
-												{getCategoryStartingPrice(
-													activeDetailGroup.value.groupServices,
-													fromPriceLabel,
-												) ? (
-													<span class="badge badge-outline rounded-full border-base-300 font-montserrat">
-														{getCategoryStartingPrice(
-															activeDetailGroup.value.groupServices,
-															fromPriceLabel,
-														)}
-													</span>
-												) : null}
-											</div>
-											<div>
-												<h3
-													id={serviceDetailsHeadingId}
-													tabIndex={-1}
-													class="text-balance font-cormorant text-3xl leading-none text-base-content md:text-4xl"
-												>
-													{getDisplayCategoryNameForGroup(
-														activeDetailGroup.value,
-														defaultCategoryLabel,
-													)}
-												</h3>
-												<p class="mt-2 max-w-2xl text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:mt-3 md:text-base">
-													{getCategoryDescription(
-														activeDetailGroup.value.category,
-														categoryDescriptionLabels,
-													)}
-												</p>
-											</div>
-										</div>
-									</div>
-
-									<nav
-										class="mt-5 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-6"
-										aria-label={servicesAriaLabel}
-									>
-										<div class="flex w-max gap-2 px-3 md:px-0">
-											{displayGroups.value.map((group) => {
-												const displayCategoryName =
-													getDisplayCategoryNameForGroup(
-														group,
-														defaultCategoryLabel,
-													);
-
-												return (
-													<button
-														key={group.groupId}
-														type="button"
-														onClick$={$(() => {
-															openCategory(
-																group.groupId,
-																displayCategoryName,
-																group.groupServices.length,
-															);
-														})}
-														class={[
-															"btn btn-sm min-h-11 shrink-0 rounded-full px-4 font-montserrat uppercase tracking-wider whitespace-nowrap",
-															group.groupId === selectedCategoryId.value
-																? "btn-primary"
-																: "btn-outline",
-														]}
-														aria-pressed={
-															group.groupId === selectedCategoryId.value
-														}
-													>
-														{displayCategoryName}
-													</button>
-												);
-											})}
-										</div>
-									</nav>
-								</section>
-							) : null}
-
-							<div
-								data-testid="service-back-actions"
-								class="flex flex-wrap items-center justify-center gap-2 md:justify-end"
-							>
-								{selectedLaserSubgroupId.value ? (
-									<button
-										type="button"
-										onClick$={resetLaserSubgroup}
-										class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-secondary"
-									>
-										{backToLaserLabel}
-									</button>
-								) : null}
-								<button
-									type="button"
-									onClick$={resetOverview}
-									class="btn btn-ghost btn-sm rounded-full font-montserrat uppercase tracking-wider text-secondary"
-								>
-									{backLabel}
-								</button>
-							</div>
-
-							{selectedGroup.value?.groupId === "laser" &&
-							!selectedLaserSubgroup.value ? (
-								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
-									{laserSubgroups.value.map((group, _index) => {
-										const displayCategoryName = getDisplayCategoryNameForGroup(
-											group,
-											laserCategoryLabel,
-										);
-
-										return (
-											<ServiceCard
-												key={group.groupId}
-												variant="category"
-												title={displayCategoryName}
-												description={getCategoryDescription(
-													group.category,
-													categoryDescriptionLabels,
-												)}
-												image={resolveCoverImage(group.coverImageName)}
-												price={getCategoryStartingPrice(
-													group.groupServices,
-													fromPriceLabel,
-												)}
-												supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
-												customAction$={$(() => {
-													openLaserSubgroup(
-														group.groupId,
-														displayCategoryName,
-														group.groupServices.length,
-													);
-												})}
-												buttonLabel={viewTreatmentsLabel}
-												serviceId={`laser-${group.groupId}`}
-												location={location}
-												showBooking={false}
-											/>
-										);
-									})}
-								</div>
-							) : (
-								filteredGroups.value.map((group) => {
-									const groupsToRender =
-										group.groupId === "laser" && selectedLaserSubgroup.value
-											? [selectedLaserSubgroup.value]
-											: [group];
-
-									return groupsToRender.map((renderGroup) => (
-										<div key={renderGroup.groupId} class="space-y-6">
-											<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-												{renderGroup.groupServices.map((service, index) => {
-													const serviceCategory =
-														categoryById.get(String(service.group_id)) ||
-														renderGroup.category;
-													return (
-														<ServiceCard
-															key={service.id}
-															variant="service"
-															title={service.name}
-															description={service.description}
-															price={formatPrice(service.price)}
-															duration={service.duration}
-															image={getServiceItemImage(
-																serviceCategory,
-																index,
-															)}
-															serviceId={service.id}
-															location={location}
-															analyticsServiceCategory={
-																serviceCategory?.name ||
-																renderGroup.displayTitle
-															}
-														/>
-													);
-												})}
-											</div>
-										</div>
-									));
-								})
-							)}
-						</div>
+						<DetailView
+							displayGroups={displayGroups.value}
+							laserSubgroups={laserSubgroups.value}
+							selectedCategoryId={selectedCategoryId.value}
+							selectedLaserSubgroupId={selectedLaserSubgroupId.value}
+							treatmentsLabel={treatmentsLabel}
+							fromPriceLabel={fromPriceLabel}
+							defaultCategoryLabel={defaultCategoryLabel}
+							laserCategoryLabel={laserCategoryLabel}
+							viewTreatmentsLabel={viewTreatmentsLabel}
+							categoryDescriptionLabels={categoryDescriptionLabels}
+							servicesAriaLabel={servicesAriaLabel}
+							backLabel={backLabel}
+							backToLaserLabel={backToLaserLabel}
+							onCategoryOpen={openCategory}
+							onLaserSubgroupOpen={openLaserSubgroup}
+							onResetLaserSubgroup={resetLaserSubgroup}
+							onResetOverview={resetOverview}
+							categoryById={categoryById}
+							location={location}
+						/>
 					) : displayGroups.value.length === 0 ? (
 						<div class="alert border border-base-300 bg-base-100" role="status">
 							<span>
@@ -552,52 +682,15 @@ export const ServiceGrid = component$<ServiceGridProps>(
 							</span>
 						</div>
 					) : (
-						<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
-							{displayGroups.value.map((group, index) => {
-								const displayCategoryName = getDisplayCategoryNameForGroup(
-									group,
-									defaultCategoryLabel,
-								);
-								const description = getCategoryDescription(
-									group.category,
-									categoryDescriptionLabels,
-								);
-
-								return (
-									<div
-										key={group.groupId}
-										class={
-											index % 4 === 0 || index % 4 === 3
-												? "lg:col-span-7"
-												: "lg:col-span-5"
-										}
-									>
-										<ServiceCard
-											variant="category"
-											title={displayCategoryName}
-											description={description}
-											image={resolveCoverImage(group.coverImageName)}
-											price={getCategoryStartingPrice(
-												group.groupServices,
-												fromPriceLabel,
-											)}
-											supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
-											customAction$={$(() => {
-												openCategory(
-													group.groupId,
-													displayCategoryName,
-													group.groupServices.length,
-												);
-											})}
-											buttonLabel={viewTreatmentsLabel}
-											serviceId={`cat-${group.groupId}`}
-											location={location}
-											showBooking={false}
-										/>
-									</div>
-								);
-							})}
-						</div>
+						<OverviewGrid
+							displayGroups={displayGroups.value}
+							treatmentsLabel={treatmentsLabel}
+							viewTreatmentsLabel={viewTreatmentsLabel}
+							defaultCategoryLabel={defaultCategoryLabel}
+							fromPriceLabel={fromPriceLabel}
+							categoryDescriptionLabels={categoryDescriptionLabels}
+							onCategoryOpen={openCategory}
+						/>
 					)}
 				</div>
 			</section>

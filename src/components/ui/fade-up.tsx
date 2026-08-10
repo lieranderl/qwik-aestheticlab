@@ -13,28 +13,6 @@ interface SharedObserverEntry {
 
 const sharedObservers = new Map<string, SharedObserverEntry>();
 
-const delayClasses: Record<number, string> = {
-	0: "",
-	40: "motion-safe:delay-[40ms]",
-	60: "motion-safe:delay-[60ms]",
-	80: "motion-safe:delay-[80ms]",
-	100: "motion-safe:delay-[100ms]",
-	120: "motion-safe:delay-[120ms]",
-	140: "motion-safe:delay-[140ms]",
-	160: "motion-safe:delay-[160ms]",
-	180: "motion-safe:delay-[180ms]",
-	200: "motion-safe:delay-[200ms]",
-	220: "motion-safe:delay-[220ms]",
-	240: "motion-safe:delay-[240ms]",
-	300: "motion-safe:delay-300",
-};
-
-function getDelayClass(delay: number) {
-	if (delay <= 0) return delayClasses[0];
-	const normalized = Math.min(300, Math.round(delay / 20) * 20);
-	return delayClasses[normalized] ?? delayClasses[300];
-}
-
 function getSharedObserver(rootMargin: number, threshold: number) {
 	const key = `${rootMargin}:${threshold}`;
 	const existing = sharedObservers.get(key);
@@ -155,6 +133,12 @@ export const FadeUp = component$(
 				? "motion-safe:transition-[opacity,transform] motion-safe:duration-400 motion-safe:ease-[var(--ease-smooth)]"
 				: "transition-none";
 
+		// Clamp delay to 0-300 range, round to nearest 20ms
+		const clampedDelay = Math.min(
+			300,
+			Math.max(0, Math.round(delay / 20) * 20),
+		);
+
 		return (
 			<div
 				ref={elRef}
@@ -162,7 +146,7 @@ export const FadeUp = component$(
 				class={[
 					transitionClass,
 					visibilityClass,
-					getDelayClass(delay),
+					clampedDelay > 0 ? `motion-safe:delay-[${clampedDelay}ms]` : "",
 					"motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
 					className,
 				]}

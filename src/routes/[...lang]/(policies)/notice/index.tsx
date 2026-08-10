@@ -28,24 +28,24 @@ export default component$(() => {
 	return (
 		<section class="grid gap-10 lg:grid-cols-[minmax(15rem,0.62fr)_minmax(0,1.38fr)] lg:gap-16 xl:gap-24">
 			<header class="lg:sticky lg:top-32 lg:self-start">
-				<p class="font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+				<p class="font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
 					Aesthetic Lab Leuven
 				</p>
 				<h1 class="mt-4 text-balance font-cormorant text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
 					{t("app.notice.important_info@@Important Client Information")}
 				</h1>
 				<div class="my-6 h-px w-20 bg-primary" />
-				<p class="max-w-sm font-montserrat text-sm leading-7 text-base-content">
+				<p class="max-w-sm font-main text-sm leading-7 text-base-content">
 					{t(
 						"app.head.notice.description@@Important treatment durability, aftercare, and complimentary fix information for Aesthetic Lab clients.",
 					)}
 				</p>
-				<p class="badge badge-outline mt-6 min-h-7 border-base-300 px-3 font-montserrat text-xs font-medium uppercase tracking-wider text-base-content">
+				<p class="badge badge-outline mt-6 min-h-7 border-base-300 px-3 font-main text-xs font-medium uppercase tracking-wider text-base-content">
 					{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
 				</p>
 			</header>
 
-			<div class="space-y-6 font-montserrat text-base-content sm:space-y-8">
+			<div class="space-y-6 font-main text-base-content sm:space-y-8">
 				<div class="alert border border-base-300 bg-base-100 px-5 py-5 shadow-sm sm:px-8 sm:py-6">
 					<p class="text-sm leading-7 sm:text-base">
 						{t(
@@ -57,7 +57,7 @@ export default component$(() => {
 				<div class="card card-border overflow-hidden border-base-300 bg-base-100 shadow-sm">
 					<div class="card-body gap-0 p-5 sm:p-8 md:p-10">
 						<section class="border-b border-base-300/50 pb-8 sm:pb-10">
-							<h2 class="font-montserrat text-xl leading-snug font-semibold text-secondary sm:text-2xl">
+							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
 								{t(
 									"app.notice.durability_title@@Product Durability Disclaimer",
 								)}
@@ -93,7 +93,7 @@ export default component$(() => {
 						</section>
 
 						<section class="border-b border-base-300/50 py-8 sm:py-10">
-							<h2 class="font-montserrat text-xl leading-snug font-semibold text-secondary sm:text-2xl">
+							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
 								{t("app.notice.hormonal_title@@Important Notice")}
 							</h2>
 							<p class="mt-4 text-sm leading-7 sm:text-base">
@@ -129,7 +129,7 @@ export default component$(() => {
 						</section>
 
 						<section class="pt-8 sm:pt-10">
-							<h2 class="font-montserrat text-xl leading-snug font-semibold text-secondary sm:text-2xl">
+							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
 								{t("app.notice.policy_title@@Complimentary Fix Policy")}
 							</h2>
 							<p class="mt-4 text-sm leading-7 sm:text-base">
@@ -147,7 +147,7 @@ export default component$(() => {
 				</div>
 
 				<div class="alert border border-base-300 bg-base-100 px-5 py-5 text-center shadow-sm sm:px-8 sm:py-6">
-					<p class="w-full font-montserrat text-lg leading-relaxed font-medium text-secondary sm:text-xl">
+					<p class="w-full font-main text-lg leading-relaxed font-medium text-secondary sm:text-xl">
 						{t(
 							"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting.",
 						)}

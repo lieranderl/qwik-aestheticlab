@@ -18,15 +18,25 @@ const GRID_IMG =
 	"h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none";
 const LIGHTBOX_IMG = "max-h-[85vh] max-w-[90vw] rounded-box object-contain";
 const CAPTION =
-	"pointer-events-none absolute right-3 bottom-3 rounded-field bg-base-100/90 px-2 py-1 font-montserrat text-[0.6rem] font-semibold tracking-[0.16em] text-base-content shadow-sm";
+	"pointer-events-none absolute right-3 bottom-3 rounded-field bg-base-100/90 px-2 py-1 font-main text-[0.6rem] font-semibold tracking-[0.16em] text-base-content shadow-sm";
 const ENLARGE = "app.work.enlarge@@Enlarge image";
 const SIZES =
 	"(min-width: 1280px) 38rem, (min-width: 1024px) calc(33vw - 1rem), 78vw";
 
+const LIGHTBOX_IMAGES = [
+	ImgCoralManicure,
+	ImgPedicure4,
+	ImgNudeManicure,
+	ImgPearlManicure,
+	ImgChromeManicure,
+	ImgPedicure5,
+	ImgEyebrows2,
+] as const;
+
 export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
 	const activeIndex = useSignal(-1);
-	const COUNT = 7;
+	const COUNT = LIGHTBOX_IMAGES.length;
 
 	const open = $((n: number) => {
 		activeIndex.value = n;
@@ -41,8 +51,6 @@ export const GalleryGrid = component$(() => {
 		activeIndex.value = (activeIndex.value + 1) % COUNT;
 	});
 
-	const i = activeIndex.value;
-
 	return (
 		<section
 			id="gallery"
@@ -51,14 +59,14 @@ export const GalleryGrid = component$(() => {
 			<div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div class="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-end">
 					<div>
-						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+						<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 							{t("app.work.kicker@@From our atelier")}
 						</p>
 						<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl lg:text-8xl">
 							{t("app.work.title@@Our Work")}
 						</h2>
 					</div>
-					<p class="max-w-md border-l border-base-300 pl-5 text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
+					<p class="max-w-md border-l border-base-300 pl-5 text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
 						{t(
 							"app.work.description@@Thoughtful details, clean finishes, and results that still feel like you.",
 						)}
@@ -240,7 +248,7 @@ export const GalleryGrid = component$(() => {
 				</section>
 
 				{/* ── Lightbox ── */}
-				{i >= 0 && (
+				{activeIndex.value >= 0 && (
 					<div
 						class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
 						onClick$={close}
@@ -253,7 +261,7 @@ export const GalleryGrid = component$(() => {
 						<button
 							type="button"
 							class="btn btn-ghost absolute top-4 right-4 z-10 text-white hover:bg-white/10"
-							onClick$={(e: Event, target: Element) => {
+							onClick$={(e: Event) => {
 								e.stopPropagation();
 								close();
 							}}
@@ -274,8 +282,8 @@ export const GalleryGrid = component$(() => {
 							</svg>
 						</button>
 
-						<span class="absolute top-4 left-4 z-10 font-montserrat text-sm text-white/60">
-							{i + 1} / {COUNT}
+						<span class="absolute top-4 left-4 z-10 font-main text-sm text-white/60">
+							{activeIndex.value + 1} / {COUNT}
 						</span>
 
 						<button
@@ -328,13 +336,27 @@ export const GalleryGrid = component$(() => {
 							class="flex max-h-[85vh] max-w-[90vw] items-center justify-center"
 							onClick$={(e: Event) => e.stopPropagation()}
 						>
-							{i === 0 && <ImgCoralManicure alt="" class={LIGHTBOX_IMG} />}
-							{i === 1 && <ImgPedicure4 alt="" class={LIGHTBOX_IMG} />}
-							{i === 2 && <ImgNudeManicure alt="" class={LIGHTBOX_IMG} />}
-							{i === 3 && <ImgPearlManicure alt="" class={LIGHTBOX_IMG} />}
-							{i === 4 && <ImgChromeManicure alt="" class={LIGHTBOX_IMG} />}
-							{i === 5 && <ImgPedicure5 alt="" class={LIGHTBOX_IMG} />}
-							{i === 6 && <ImgEyebrows2 alt="" class={LIGHTBOX_IMG} />}
+							{activeIndex.value === 0 && (
+								<ImgCoralManicure alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 1 && (
+								<ImgPedicure4 alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 2 && (
+								<ImgNudeManicure alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 3 && (
+								<ImgPearlManicure alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 4 && (
+								<ImgChromeManicure alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 5 && (
+								<ImgPedicure5 alt="" class={LIGHTBOX_IMG} />
+							)}
+							{activeIndex.value === 6 && (
+								<ImgEyebrows2 alt="" class={LIGHTBOX_IMG} />
+							)}
 						</div>
 					</div>
 				)}
@@ -366,7 +388,7 @@ export const GalleryGrid = component$(() => {
 					<div class="card-body min-w-0 justify-center gap-4 p-5 sm:p-7 md:gap-5 md:p-9">
 						<div class="flex items-center gap-2 text-secondary">
 							<SiInstagram class="size-4" aria-hidden="true" />
-							<span class="font-montserrat text-xs font-semibold uppercase tracking-[0.18em]">
+							<span class="font-main text-xs font-semibold uppercase tracking-[0.18em]">
 								instagram
 							</span>
 						</div>
@@ -375,13 +397,13 @@ export const GalleryGrid = component$(() => {
 								"app.instagram.title@@Follow the studio beyond the appointment",
 							)}
 						</h3>
-						<p class="font-montserrat text-sm leading-relaxed text-base-content">
+						<p class="font-main text-sm leading-relaxed text-base-content">
 							{t(
 								"app.instagram.description@@Fresh sets, studio moments, and new work from our team.",
 							)}
 						</p>
 						<div class="card-actions mt-1">
-							<span class="btn btn-sm min-h-11 px-4 font-montserrat text-xs font-semibold uppercase tracking-[0.1em]">
+							<span class="btn btn-sm min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-[0.1em]">
 								@aestheticlabbe
 							</span>
 						</div>

@@ -21,14 +21,14 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 			<div class="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div class="space-y-5 md:space-y-6 mb-8 md:mb-10">
 					<div>
-						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+						<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 							{t("app.contact.kicker@@Your Leuven studio")}
 						</p>
 						<h2 class="text-balance font-cormorant text-4xl leading-none text-base-content md:text-6xl">
 							{t("app.contact.visit_us@@Visit Us")}
 						</h2>
 					</div>
-					<p class="max-w-xl text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
+					<p class="max-w-xl text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
 						{t(
 							"app.contact.description@@Plan your visit with the current address, hours, directions, and nearby parking.",
 						)}
@@ -42,7 +42,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 							<div class="flex flex-col gap-6 md:gap-8">
 								{/* Location */}
 								<div class="flex flex-col gap-1">
-									<p class="font-montserrat text-lg font-medium leading-tight text-base-content md:text-xl">
+									<p class="font-main text-lg font-medium leading-tight text-base-content md:text-xl">
 										{contact.location.address}
 									</p>
 									<p class="mt-1 text-sm text-base-content">
@@ -91,7 +91,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 																aria-hidden="true"
 																class="size-1.5 rounded-full bg-primary/40 transition-colors duration-150 group-hover:bg-primary"
 															/>
-															<span class="font-montserrat text-sm text-base-content/80 decoration-secondary/30 underline-offset-4 transition-colors duration-150 group-hover:text-secondary group-hover:underline">
+															<span class="font-main text-sm text-base-content/80 decoration-secondary/30 underline-offset-4 transition-colors duration-150 group-hover:text-secondary group-hover:underline">
 																{p.name}
 															</span>
 														</a>
@@ -110,11 +110,11 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 										{t("app.contact.opening_hours@@Hours")}
 									</span>
 									<div class="flex items-baseline gap-4">
-										<span class="font-montserrat text-xl text-base-content md:text-2xl">
+										<span class="font-main text-xl text-base-content md:text-2xl">
 											{contact.open_hours.from}–{contact.open_hours.to}
 										</span>
 									</div>
-									<p class="font-montserrat text-sm text-base-content mt-1">
+									<p class="font-main text-sm text-base-content mt-1">
 										{t("app.contact.monday@@Mon")} -{" "}
 										{t("app.contact.saturday@@Sat")}
 									</p>
@@ -122,7 +122,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 									{/* Refined Appointment Badge */}
 									<div class="mt-3 flex items-center gap-2 text-base-content md:mt-4">
 										<span class="status status-sm" aria-hidden="true" />
-										<span class="font-montserrat text-xs font-semibold uppercase tracking-wide">
+										<span class="font-main text-xs font-semibold uppercase tracking-wide">
 											{t("app.contact.appointment_only@@By appointment only")}
 										</span>
 									</div>
@@ -143,7 +143,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 												contact_method: "email",
 											});
 										})}
-										class="link link-hover w-fit font-montserrat text-base text-base-content md:text-lg"
+										class="link link-hover w-fit font-main text-base text-base-content md:text-lg"
 									>
 										{contact.email}
 									</a>

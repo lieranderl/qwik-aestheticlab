@@ -70,7 +70,7 @@ export const CookieBanner = component$(() => {
 							<div class="space-y-2">
 								<p
 									id={titleId}
-									class="font-montserrat text-sm font-semibold uppercase tracking-wider text-base-content"
+									class="font-main text-sm font-semibold uppercase tracking-wider text-base-content"
 								>
 									{t("app.cookies.title@@Cookie settings")}
 								</p>

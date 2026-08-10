@@ -1,5 +1,6 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
+import { StarRating } from "~/components/ui/star-rating";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 interface Review {
@@ -93,6 +94,7 @@ export const ReviewsSection = component$(() => {
 	useVisibleTask$(() => {
 		reviews.value = shuffle(ALL_REVIEWS);
 	});
+
 	return (
 		<section
 			id="reviews"
@@ -100,7 +102,7 @@ export const ReviewsSection = component$(() => {
 		>
 			<div class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 md:gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16 lg:px-8">
 				<header>
-					<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+					<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 						{t("app.reviews.kicker@@Loved in Leuven")}
 					</p>
 					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-6xl lg:text-7xl">
@@ -112,21 +114,7 @@ export const ReviewsSection = component$(() => {
 								5.0
 							</div>
 							<div class="stat-desc mt-2">
-								<div
-									class="rating rating-sm gap-0.5"
-									data-testid="review-rating"
-									role="img"
-									aria-label={t("app.reviews.rating_aria@@5 out of 5 stars")}
-								>
-									{[1, 2, 3, 4, 5].map((i) => (
-										<div
-											key={i}
-											class="mask mask-star-2 size-4 bg-accent"
-											aria-hidden="true"
-											aria-current={i === 5 ? "true" : undefined}
-										/>
-									))}
-								</div>
+								<StarRating rating={5} />
 							</div>
 						</div>
 					</div>
@@ -140,7 +128,7 @@ export const ReviewsSection = component$(() => {
 								link_url: "https://maps.app.goo.gl/bsdNssGY4YTJeR7j6",
 							});
 						})}
-						class="link link-hover mt-5 inline-flex min-h-11 items-center font-montserrat text-sm font-medium text-secondary"
+						class="link link-hover mt-5 inline-flex min-h-11 items-center font-main text-sm font-medium text-secondary"
 					>
 						{t("app.reviews.google_link@@Read all reviews on Google")}
 					</a>
@@ -158,31 +146,13 @@ export const ReviewsSection = component$(() => {
 							<div class="card-body min-w-0 justify-between gap-8 p-6 md:p-8">
 								<div class="min-w-0">
 									<div class="mb-8 flex items-start justify-between border-b border-base-300 pb-4">
-										<div
-											class="rating rating-sm gap-0.5"
-											data-testid="review-rating"
-											role="img"
-											aria-label={t(
-												"app.reviews.rating_aria@@5 out of 5 stars",
-											)}
-										>
-											{[1, 2, 3, 4, 5].map((i) => (
-												<div
-													key={i}
-													class="mask mask-star-2 size-4 bg-accent"
-													aria-hidden="true"
-													aria-current={
-														i === review.rating ? "true" : undefined
-													}
-												/>
-											))}
-										</div>
-										<span class="font-montserrat text-[0.65rem] font-semibold tracking-[0.18em] text-base-content">
+										<StarRating rating={review.rating} />
+										<span class="font-main text-[0.65rem] font-semibold tracking-[0.18em] text-base-content">
 											{String(index + 1).padStart(2, "0")}
 										</span>
 									</div>
-									<blockquote class="line-clamp-7 whitespace-pre-line text-pretty font-montserrat text-base font-medium leading-7 tracking-[-0.01em] text-base-content/90 md:text-[1.0625rem] md:leading-8">
-										“{review.text}”
+									<blockquote class="line-clamp-7 whitespace-pre-line text-pretty font-main text-base font-medium leading-7 tracking-[-0.01em] text-base-content/90 md:text-[1.0625rem] md:leading-8">
+										"{review.text}"
 									</blockquote>
 								</div>
 								<div class="flex min-w-0 items-center gap-3">
@@ -194,7 +164,7 @@ export const ReviewsSection = component$(() => {
 										</div>
 									</div>
 									<div class="min-w-0">
-										<p class="break-words font-montserrat text-sm font-semibold text-base-content">
+										<p class="break-words font-main text-sm font-semibold text-base-content">
 											{review.author}
 										</p>
 										<p class="text-xs text-base-content">
@@ -208,7 +178,7 @@ export const ReviewsSection = component$(() => {
 				</section>
 				<div aria-hidden="true" class="mt-3 flex items-center gap-3">
 					<span class="h-px grow bg-base-300" />
-					<span class="font-montserrat text-[0.65rem] font-semibold tracking-[0.18em] text-base-content">
+					<span class="font-main text-[0.65rem] font-semibold tracking-[0.18em] text-base-content">
 						01 — {String(reviews.value.length).padStart(2, "0")}
 					</span>
 				</div>

@@ -37,7 +37,7 @@ export default component$(() => {
 
 				<link
 					rel="preload"
-					href="/fonts/montserrat-var.woff2"
+					href="/fonts/raleway-var.woff2"
 					as="font"
 					type="font/woff2"
 					crossOrigin="anonymous"
@@ -70,7 +70,7 @@ export default component$(() => {
 			<body
 				lang={locale.lang}
 				data-theme="Aesthetic"
-				class="relative min-w-80 scroll-smooth bg-base-200 font-montserrat text-base-content antialiased [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
+				class="relative min-w-80 scroll-smooth bg-base-200 font-main text-base-content antialiased [scrollbar-width:thin] [scrollbar-color:var(--color-base-300)_transparent]"
 			>
 				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />

@@ -1,13 +1,13 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { baseUrlBooking } from "~/consts";
+import { baseUrlBooking, bookingLocationId } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export interface BookingProps {
 	id: string; // unique per service
 	text: string;
 	classes?: string;
-	location: string;
+	location?: string;
 	category?: string;
 	product?: string;
 	staff?: string;
@@ -22,7 +22,7 @@ export const Booking = component$<BookingProps>(
 		id,
 		text,
 		classes = "btn btn-primary",
-		location,
+		location = bookingLocationId,
 		category,
 		product,
 		staff,
@@ -59,18 +59,7 @@ export const Booking = component$<BookingProps>(
 				isOpen.value = true;
 				isLoaded.value = false;
 				modal.showModal();
-
 				trackGoogleAnalyticsEvent("booking_opened", eventParams);
-				if (
-					analyticsServiceId ||
-					analyticsServiceName ||
-					analyticsServiceCategory ||
-					category ||
-					product ||
-					staff
-				) {
-					trackGoogleAnalyticsEvent("service_booking_opened", eventParams);
-				}
 			}
 		});
 

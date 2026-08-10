@@ -1,36 +1,18 @@
-import { $, component$, useId, useSignal } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
+import { ExpandableText } from "~/components/ui/expandable-text";
+import { bookingLocationId } from "~/consts";
+import { resolveTeamImage } from "~/shared/image-resolver";
 import type { Staff } from "~/types";
-
-type TeamImageComponent = typeof import("~/media/zara.jpg?jsx").default;
-
-const TEAM_IMAGES = import.meta.glob("../../media/*.jpg", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, TeamImageComponent>;
-
-function resolveImageComponent(image: string) {
-	if (!image) return null;
-	const imageName = image.replace(/\.jpg$/i, "");
-	for (const path in TEAM_IMAGES) {
-		if (path.endsWith(`/${imageName}.jpg`)) return TEAM_IMAGES[path];
-	}
-	return null;
-}
 
 interface TeamSectionProps {
 	technicians: Staff[];
 }
 
-function compareStaffById(a: Staff, b: Staff) {
-	return a.id - b.id;
-}
-
 export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const t = inlineTranslate();
-	const sorted = [...technicians].sort(compareStaffById);
+	const sorted = [...technicians].sort((a, b) => a.id - b.id);
 
 	return (
 		<section
@@ -41,7 +23,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 				{/* Section Header */}
 				<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
 					<div>
-						<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+						<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 							{t("app.team.kicker@@The people behind your care")}
 						</p>
 						<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
@@ -49,7 +31,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 						</h2>
 					</div>
 					<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
-						<p class="text-pretty font-montserrat text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
+						<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
 							{t(
 								"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
 							)}
@@ -59,7 +41,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 							<span class="text-3xl font-cormorant text-base-content">
 								{sorted.length}
 							</span>
-							<span class="ml-2 font-montserrat text-sm text-base-content/60">
+							<span class="ml-2 font-main text-sm text-base-content/80">
 								{sorted.length === 1
 									? t("app.team.artist@@artist")
 									: t("app.team.artists@@artists")}{" "}
@@ -91,10 +73,7 @@ interface TeamMemberCardProps {
 export const TeamMemberCard = component$<TeamMemberCardProps>(
 	({ tech, index }) => {
 		const t = inlineTranslate();
-		const isExpanded = useSignal(false);
-		const ImageComp = resolveImageComponent(tech.photo_url);
-		const bioId = useId();
-		const hasLongBio = tech.about.length > 160;
+		const ImageComp = resolveTeamImage(tech.photo_url);
 
 		return (
 			<article
@@ -135,7 +114,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					{/* Name + role badge */}
 					<div>
 						<div class="mb-1.5">
-							<span class="badge badge-soft badge-sm font-montserrat text-accent">
+							<span class="badge badge-secondary badge-sm font-main">
 								{tech.role || t("app.team.role.technician@@Technician")}
 							</span>
 						</div>
@@ -145,41 +124,16 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					</div>
 
 					{/* Bio with expand/collapse */}
-					<div
-						id={bioId}
-						class={
-							isExpanded.value
-								? "font-montserrat text-sm leading-relaxed text-base-content/75"
-								: "line-clamp-3 font-montserrat text-sm leading-relaxed text-base-content/75"
-						}
-					>
-						{tech.about}
-					</div>
-
-					{hasLongBio ? (
-						<button
-							type="button"
-							onClick$={$(() => {
-								isExpanded.value = !isExpanded.value;
-							})}
-							class="min-h-11 w-fit cursor-pointer px-0 font-montserrat text-xs font-semibold uppercase tracking-wider text-secondary"
-							aria-expanded={isExpanded.value}
-							aria-controls={bioId}
-						>
-							{isExpanded.value
-								? t("app.common.read_less@@Read Less")
-								: t("app.common.read_more@@Read More")}
-						</button>
-					) : null}
+					<ExpandableText text={tech.about} maxLength={160} />
 
 					{/* Booking action */}
 					<div class="card-actions mt-auto border-t border-base-300 pt-3.5">
 						<Booking
 							id={`modal_tech_${tech.id}`}
 							text={t("app.book.book_now@@Book Now")}
-							location="372146"
+							location={bookingLocationId}
 							staff={String(tech.id)}
-							classes="btn btn-sm min-h-11 w-full font-montserrat text-xs font-semibold uppercase tracking-wider"
+							classes="btn btn-sm min-h-11 w-full font-main text-xs font-semibold uppercase tracking-wider"
 							analyticsPlacement="team"
 							analyticsServiceCategory="staff"
 							analyticsServiceId={String(tech.id)}

@@ -66,10 +66,10 @@ const PricelistServiceItem = component$(
 				<div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-8 md:gap-y-3">
 					<div class="min-w-0">
 						<div class="flex items-start justify-between gap-4">
-							<h3 class="font-montserrat text-base leading-snug font-semibold text-base-content md:text-lg">
+							<h3 class="font-main text-base leading-snug font-semibold text-base-content md:text-lg">
 								{service.name}
 							</h3>
-							<span class="shrink-0 font-montserrat text-lg leading-none font-semibold text-secondary tabular-nums md:hidden">
+							<span class="shrink-0 font-main text-lg leading-none font-semibold text-secondary tabular-nums md:hidden">
 								{formatPremiumPrice(service.price)}
 							</span>
 						</div>
@@ -79,7 +79,7 @@ const PricelistServiceItem = component$(
 								<p
 									id={descriptionId}
 									class={[
-										"max-w-3xl font-montserrat text-sm leading-6 text-base-content md:leading-7",
+										"max-w-3xl font-main text-sm leading-6 text-base-content md:leading-7",
 										isExpanded.value ? "" : "line-clamp-2 md:line-clamp-none",
 									]}
 								>
@@ -91,7 +91,7 @@ const PricelistServiceItem = component$(
 										onClick$={$(() => {
 											isExpanded.value = !isExpanded.value;
 										})}
-										class="btn btn-ghost btn-sm mt-1 min-h-11 px-0 font-montserrat text-xs text-secondary md:hidden"
+										class="btn btn-ghost btn-sm mt-1 min-h-11 px-0 font-main text-xs text-secondary md:hidden"
 										aria-expanded={isExpanded.value}
 										aria-controls={descriptionId}
 									>
@@ -102,7 +102,7 @@ const PricelistServiceItem = component$(
 						) : null}
 
 						{service.duration ? (
-							<div class="mt-3 flex items-center gap-2 font-montserrat text-xs font-medium uppercase tracking-wider text-base-content">
+							<div class="mt-3 flex items-center gap-2 font-main text-xs font-medium uppercase tracking-wider text-base-content">
 								<HiClockOutline class="size-4" aria-hidden="true" />
 								<span>
 									{service.duration}&nbsp;{t("app.services.minutes@@min")}
@@ -112,14 +112,14 @@ const PricelistServiceItem = component$(
 					</div>
 
 					<div class="flex flex-col gap-3 md:min-w-40 md:items-end md:justify-between">
-						<span class="hidden font-montserrat text-2xl leading-none font-semibold text-secondary tabular-nums md:block">
+						<span class="hidden font-main text-2xl leading-none font-semibold text-secondary tabular-nums md:block">
 							{formatPremiumPrice(service.price)}
 						</span>
 						<Booking
 							id={`pricelist_service_${service.id}`}
 							text={t("app.book.book_now@@Book Now")}
 							location={location}
-							classes="btn btn-primary btn-sm min-h-11 w-full rounded-full px-6 font-montserrat text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
+							classes="btn btn-primary btn-sm min-h-11 w-full rounded-full px-6 font-main text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
 							analyticsPlacement="pricelist_service"
 							analyticsServiceId={service.id}
 							analyticsServiceName={service.name}
@@ -214,7 +214,7 @@ export default component$(() => {
 								{t("app.services.pricing_title@@Services & Pricing")}
 							</h1>
 							<div class="mx-auto my-4 h-px w-16 bg-secondary/40 md:my-5" />
-							<p class="mx-auto max-w-lg font-montserrat text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
+							<p class="mx-auto max-w-lg font-main text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
 								{t(
 									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
 								)}
@@ -224,7 +224,7 @@ export default component$(() => {
 									id="hero_pricelist_book"
 									text={t("app.hero.book_appointment@@Book Appointment")}
 									location={contact?.location.name || ""}
-									classes="btn btn-primary btn-md min-h-12 rounded-full px-8 font-montserrat text-xs font-semibold uppercase tracking-[0.12em]"
+									classes="btn btn-primary btn-md min-h-12 rounded-full px-8 font-main text-xs font-semibold uppercase tracking-[0.12em]"
 									analyticsPlacement="pricelist_hero"
 								/>
 							</div>
@@ -246,7 +246,7 @@ export default component$(() => {
 											<a
 												key={groupId}
 												href={`#${anchorId}`}
-												class="btn btn-ghost btn-sm min-h-11 shrink-0 snap-start rounded-full border border-base-300 bg-base-100 font-montserrat text-base-content uppercase tracking-wider hover:border-base-content/40 hover:bg-base-200"
+												class="btn btn-ghost btn-sm min-h-11 shrink-0 snap-start rounded-full border border-base-300 bg-base-100 font-main text-base-content uppercase tracking-wider hover:border-base-content/40 hover:bg-base-200"
 											>
 												<span class="text-secondary/90">
 													{getCategoryNumber(index)}
@@ -293,18 +293,18 @@ export default component$(() => {
 												<div class="card-body gap-0 p-4 md:p-8">
 													<div class="mb-6 flex flex-col gap-4 md:mb-8">
 														<div class="flex items-center gap-4">
-															<span class="badge badge-soft badge-lg size-11 shrink-0 rounded-full p-0 font-montserrat text-xs font-semibold tracking-[0.12em] md:size-12">
+															<span class="badge badge-soft badge-lg size-11 shrink-0 rounded-full p-0 font-main text-xs font-semibold tracking-[0.12em] md:size-12">
 																{getCategoryNumber(index)}
 															</span>
 															<div class="h-px flex-1 bg-base-300/50" />
 															{startingPriceLabel ? (
-																<span class="badge badge-soft shrink-0 rounded-full font-montserrat">
+																<span class="badge badge-soft shrink-0 rounded-full font-main">
 																	{startingPriceLabel}
 																</span>
 															) : null}
 														</div>
 														<div>
-															<p class="font-montserrat text-xs uppercase tracking-[0.2em] text-base-content md:tracking-[0.24em]">
+															<p class="font-main text-xs uppercase tracking-[0.2em] text-base-content md:tracking-[0.24em]">
 																{categoryLabel}
 															</p>
 															<h2 class="font-cormorant text-3xl text-base-content md:text-4xl">
@@ -337,7 +337,7 @@ export default component$(() => {
 				<section class="bg-base-100 px-4 py-16 text-center md:py-24 lg:py-28">
 					<FadeUp class="card card-border mx-auto max-w-3xl bg-base-200/35 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg">
 						<div class="card-body items-center px-5 py-10 md:p-14">
-							<p class="mb-4 font-montserrat text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
+							<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
 								{t("app.pricelist.ready@@Ready when you are")}
 							</p>
 							<h2 class="mb-6 text-balance font-cormorant text-4xl leading-none text-base-content md:text-5xl">
@@ -347,7 +347,7 @@ export default component$(() => {
 								id="bottom_pricelist_book"
 								text={t("app.hero.book_appointment@@Book Appointment")}
 								location={contact?.location.name || ""}
-								classes="btn btn-primary btn-md h-12 min-h-12 rounded-full px-8 font-montserrat uppercase tracking-[0.12em] text-primary-content"
+								classes="btn btn-primary btn-md h-12 min-h-12 rounded-full px-8 font-main uppercase tracking-[0.12em] text-primary-content"
 								analyticsPlacement="pricelist_bottom"
 							/>
 						</div>

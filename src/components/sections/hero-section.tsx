@@ -30,8 +30,7 @@ export const HeroSection = component$(() => {
 					<Booking
 						id="hero-book-btn"
 						text={t("app.book.book_app@@Book Appointment")}
-						location="372146"
-						classes="btn btn-neutral btn-lg min-h-12 px-8 font-montserrat text-xs font-semibold uppercase tracking-[0.12em] transition-shadow duration-200 motion-safe:hover:shadow-lg"
+						classes="btn btn-neutral btn-lg min-h-12 px-8 font-main text-xs font-semibold uppercase tracking-[0.12em] transition-shadow duration-200 motion-safe:hover:shadow-lg"
 						analyticsPlacement="hero"
 					/>
 				</div>

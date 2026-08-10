@@ -8,7 +8,7 @@
 
 @theme {
   --font-qestero: "qestero", "Cormorant Garamond", serif;
-  --font-montserrat: "Raleway", sans-serif;
+  --font-main: "Raleway", sans-serif;
   --font-cormorant: "Cormorant Garamond", serif;
   --animate-hero-slide-up: hero-slide-up 500ms var(--ease-smooth) both;
   --animate-hero-fade-in: hero-fade-in 600ms var(--ease-smooth) both;
