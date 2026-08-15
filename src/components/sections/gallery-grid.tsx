@@ -3,6 +3,7 @@ import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
 import {
 	GalleryLightbox,
+	galleryLightboxCloseId,
 	galleryLightboxId,
 } from "~/components/ui/gallery-lightbox";
 import { KickerLabel } from "~/components/ui/kicker-label";
@@ -100,9 +101,14 @@ export const GalleryGrid = component$(() => {
 		activeIndex.value = index;
 		openerId.value = element.id;
 		requestAnimationFrame(() => {
-			(
-				document.getElementById(galleryLightboxId) as HTMLDialogElement
-			)?.showModal();
+			const dialog = document.getElementById(
+				galleryLightboxId,
+			) as HTMLDialogElement;
+			if (!dialog) return;
+			dialog.showModal();
+			requestAnimationFrame(() => {
+				document.getElementById(galleryLightboxCloseId)?.focus();
+			});
 		});
 	});
 

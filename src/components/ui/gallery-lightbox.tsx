@@ -10,6 +10,7 @@ import ImgPedicure4 from "~/media/gallery/pedicure4.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
 
 export const galleryLightboxId = "gallery-lightbox";
+export const galleryLightboxCloseId = "gallery-lightbox-close";
 const galleryItemCount = 8;
 
 interface GalleryLightboxProps {
@@ -107,6 +108,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 			>
 				<div class="modal-box flex h-dvh max-h-none w-screen max-w-none items-center justify-center overflow-hidden rounded-none bg-transparent p-4 shadow-none">
 					<button
+						id={galleryLightboxCloseId}
 						type="button"
 						class="btn btn-ghost btn-square absolute top-4 right-4 z-10 min-h-11 min-w-11 text-white hover:bg-white/10"
 						onClick$={close}
