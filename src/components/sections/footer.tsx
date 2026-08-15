@@ -9,8 +9,16 @@ import { getNavLinkKeys } from "~/shared/nav-links";
 export const Footer = component$(() => {
 	const t = inlineTranslate();
 	const location = useLocation();
+	const navLabels: Record<string, string> = {
+		"app.nav.services@@Services": t("app.nav.services@@Services"),
+		"app.nav.reviews@@Reviews": t("app.nav.reviews@@Reviews"),
+		"app.nav.work@@Our Work": t("app.nav.work@@Our Work"),
+		"app.nav.team@@Team": t("app.nav.team@@Team"),
+		"app.faq.title@@FAQ": t("app.faq.title@@FAQ"),
+		"app.nav.contact@@Contact": t("app.nav.contact@@Contact"),
+	};
 	const links = getNavLinkKeys(false).map(({ href, key }) => ({
-		label: t(key),
+		label: navLabels[key],
 		href,
 	}));
 

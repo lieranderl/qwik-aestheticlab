@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 const localeRedirectPattern = /\/[a-z]{2}-[A-Z]{2}(?:\/|$)/;
 const consentStorageKey = "aestheticlab_cookie_consent_v2";
@@ -110,10 +110,10 @@ test("renders localized landing-page copy in every supported language", async ({
 		await expect(page.locator("#hero h1")).toHaveText(locale.hero);
 		await expect(page.locator("#reviews h2")).toHaveText(locale.reviews);
 		await expect(
-						page.locator("#faq").getByRole("heading", {
-							name: locale.faq,
-						}),
-					).toBeVisible();
+			page.locator("#faq").getByRole("heading", {
+				name: locale.faq,
+			}),
+		).toBeVisible();
 
 		const dimensions = await page.evaluate(() => ({
 			clientWidth: document.documentElement.clientWidth,
@@ -158,15 +158,17 @@ test("keeps the Instagram profile card compact on desktop and fluid on mobile", 
 		await page.setViewportSize(viewport);
 		await page.goto("/en-BE/#gallery");
 
-		const metrics = await page.getByTestId("instagram-card").evaluate((card) => {
-			const box = card.getBoundingClientRect();
-			return {
-				height: box.height,
-				left: box.left,
-				viewportWidth: document.documentElement.clientWidth,
-				width: box.width,
-			};
-		});
+		const metrics = await page
+			.getByTestId("instagram-card")
+			.evaluate((card) => {
+				const box = card.getBoundingClientRect();
+				return {
+					height: box.height,
+					left: box.left,
+					viewportWidth: document.documentElement.clientWidth,
+					width: box.width,
+				};
+			});
 
 		if (viewport.width >= 1024) {
 			expect(metrics.width).toBeLessThanOrEqual(1024);
@@ -215,9 +217,7 @@ test("keeps the hero content inside the viewport at mobile and desktop widths", 
 			result?.viewportWidth ?? 0,
 		);
 		expect(result?.actionLeft).toBeGreaterThanOrEqual(0);
-		expect(result?.actionRight).toBeLessThanOrEqual(
-			result?.viewportWidth ?? 0,
-		);
+		expect(result?.actionRight).toBeLessThanOrEqual(result?.viewportWidth ?? 0);
 	}
 });
 
@@ -241,27 +241,30 @@ test("renders the reviews section with heading and star ratings", async ({
 test("renders the FAQ section with proper heading", async ({ page }) => {
 	await page.goto("/en-BE/#faq");
 
-	await expect(
-		page.getByRole("heading", { name: "FAQ" }),
-	).toBeVisible();
-	await expect(
-		page.locator("#faq .collapse-title").first(),
-	).toBeVisible();
+	await expect(page.getByRole("heading", { name: "FAQ" })).toBeVisible();
+	await expect(page.locator("#faq .collapse-title").first()).toBeVisible();
 });
 
 test("opens treatments in-page", async ({ page }) => {
-		await page.setViewportSize({ width: 390, height: 844 });
-		await page.goto("/en-BE/#services");
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/en-BE/#services");
 
-		await expect(page.locator("#services")).toBeVisible();
-	});
+	await page
+		.locator("#services")
+		.getByRole("button", { name: "View Treatments" })
+		.first()
+		.click();
+
+	await expect(page.locator("#service-details-heading")).toHaveText("Manicure");
+	await expect(
+		page.locator("#services").getByRole("button", { name: "Book Now" }).first(),
+	).toBeVisible();
+});
 
 test("falls back to the treatment overview for invalid shared state", async ({
 	page,
 }) => {
-	await page.goto(
-		"/en-BE/?treatment=unknown&treatmentArea=unknown#services",
-	);
+	await page.goto("/en-BE/?treatment=unknown&treatmentArea=unknown#services");
 
 	await expect(page.locator("#service-details-heading")).toHaveCount(0);
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -362,25 +365,58 @@ test.describe("mobile navigation", () => {
 		},
 	});
 
-	test("opens and closes the mobile menu with user-visible controls", async ({
+	test("opens and closes the mobile menu from the keyboard", async ({
 		page,
 	}) => {
 		await page.goto("/en-BE/");
 
-		const openMenuControl = page.locator(
-			'label[aria-label="Open navigation menu"]',
-		);
-		await expect(openMenuControl).toBeVisible();
-
-		await openMenuControl.click();
-
-		const closeMenuButton = page.getByRole("button", {
-			name: /close (navigation )?menu/i,
+		const openMenuControl = page.getByRole("button", {
+			name: "Open navigation menu",
 		});
-		await expect(closeMenuButton).toBeVisible();
+		await expect(openMenuControl).toBeVisible();
+		await openMenuControl.focus();
+		await page.keyboard.press("Enter");
 
-		await closeMenuButton.click();
-
-		await expect(closeMenuButton).toBeHidden();
+		await expect(openMenuControl).toHaveAttribute("aria-expanded", "true");
+		await expect(
+			page.getByRole("dialog", { name: "Aesthetic Lab" }),
+		).toBeVisible();
+		await page.keyboard.press("Escape");
+		await expect(openMenuControl).toHaveAttribute("aria-expanded", "false");
+		await expect(openMenuControl).toBeFocused();
 	});
+});
+
+test("operates the gallery lightbox with the keyboard and restores focus", async ({
+	page,
+}) => {
+	await page.goto("/en-BE/#gallery");
+	const firstImage = page.locator("#gallery-lightbox-trigger-0");
+	await firstImage.scrollIntoViewIfNeeded();
+	await firstImage.click();
+
+	const dialog = page.getByRole("dialog", { name: "Gallery image viewer" });
+	await expect(dialog).toBeVisible();
+	await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
+	const image = dialog.locator("img");
+	const firstImageSource = await image.getAttribute("src");
+	await dialog.getByRole("button", { name: "Next" }).click();
+	await expect(dialog).toContainText("2 / 8");
+	await expect(image).not.toHaveAttribute("src", firstImageSource ?? "");
+	await dialog.getByRole("button", { name: "Previous" }).click();
+	await expect(dialog).toContainText("1 / 8");
+	await page.keyboard.press("ArrowRight");
+	await expect(dialog).toContainText("2 / 8");
+	await page.keyboard.press("Escape");
+	await expect(dialog).toBeHidden();
+	await expect(firstImage).toBeFocused();
+});
+
+test("localizes gallery and rating accessibility labels", async ({ page }) => {
+	await page.goto("/fr-BE/");
+
+	await expect(
+		page.getByRole("button", { name: "Agrandir l’image" }).first(),
+	).toBeVisible();
+	await expect(page.getByLabel("5 étoiles sur 5").first()).toBeVisible();
 });

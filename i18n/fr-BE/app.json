@@ -26,13 +26,14 @@
       "previous": "Précédent",
       "read_less": "Lire moins",
       "read_more": "Lire plus",
-      "scroll_to_top": "Scroll to top"
+      "scroll_to_top": "Haut de page"
     },
     "contact": {
       "appointment_only": "Les visites se font uniquement sur rendez-vous",
       "contact": "Contact",
       "description": "Planifiez votre visite grâce à l’adresse actuelle, aux horaires, à l’itinéraire et aux parkings à proximité.",
       "directions": "Obtenir l'itinéraire",
+      "email_us": "Nous écrire",
       "instagram": "Suivez-nous sur Instagram",
       "kicker": "Votre studio à Louvain",
       "location": "Lieu",
@@ -43,6 +44,8 @@
       "parking": "Parking disponible à",
       "saturday": "Samedi",
       "sunday": "Dimanche",
+      "unavailable_description": "Vous pouvez toujours nous joindre par e-mail pendant que nous rétablissons les dernières informations du studio.",
+      "unavailable_title": "Coordonnées temporairement indisponibles",
       "visit_us": "Rendez-nous visite"
     },
     "cookies": {
@@ -65,7 +68,7 @@
         "question": "Comment prendre rendez-vous ?"
       },
       "cancellation": {
-        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "answer": "Oui — veuillez annuler ou reporter votre rendez-vous au moins 24 heures à l’avance via le système de réservation. Vous pouvez aussi nous contacter directement sur <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> ou par <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>e-mail</a>. Des frais peuvent s’appliquer en cas d’annulation tardive.",
         "question": "Puis-je annuler ou reporter un rendez-vous ?"
       },
       "consultation": {
@@ -186,7 +189,7 @@
       "services": "Services",
       "skip_to_content": "Aller au contenu",
       "team": "Équipe",
-      "toggle_menu": "Toggle navigation menu",
+      "toggle_menu": "Afficher ou masquer le menu de navigation",
       "work": "Travaux"
     },
     "notice": {
@@ -261,6 +264,7 @@
       "google_link": "Lire tous les avis sur Google",
       "kicker": "Notes clientes",
       "rating_aria": "5 étoiles sur 5",
+      "rating_label": "{{rating}} étoiles sur {{max}}",
       "section_title": "Mots doux",
       "source": "Avis Google",
       "title": "Mots gentils"
@@ -295,8 +299,8 @@
     "story": "Notre histoire",
     "story_text": "Chez Aesthetic Lab, nous croyons au pouvoir transformateur de la beauté. Notre approche combine art et expertise, créant un sanctuaire où vous pouvez découvrir votre moi le plus radieux.",
     "team": {
-      "artist": "artist",
-      "artists": "artists",
+      "artist": "artiste",
+      "artists": "artistes",
       "kicker": "Artistes du studio",
       "leuven": "Leuven",
       "role": {
@@ -314,8 +318,8 @@
         "coral_manicure": "Manucure rouge corail vive sur les deux mains",
         "eyebrows": "Résultat de modelage précis des sourcils",
         "eyebrows2": "Résultat naturel de mise en forme des sourcils",
-        "lashes": "Lash extensions result",
-        "lashlift": "Lash lift result",
+        "lashes": "Résultat d’extensions de cils",
+        "lashlift": "Résultat de rehaussement de cils",
         "m1": "Détail d'une manucure classique sur mesure",
         "m2": "Manucure minimaliste au style « clean girl »",
         "m3": "Manucure élégante au fini mat",
@@ -332,8 +336,10 @@
         "pedicure1": "Pédicure soignée avec vernis rose tendre"
       },
       "description": "Des détails soignés, des finitions nettes et des résultats qui vous ressemblent.",
+      "enlarge": "Agrandir l’image",
       "gallery_label": "Galerie des résultats de soins",
       "kicker": "Depuis notre atelier",
+      "lightbox_label": "Visionneuse d’images de la galerie",
       "title": "Nos réalisations"
     }
   },

@@ -5,14 +5,20 @@ import {
 	useOnWindow,
 	useSignal,
 } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { inlineTranslate, useSpeakLocale } from "qwik-speak";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";
 import { ServiceCard } from "~/components/ui/service-card";
 import { formatPrice } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import {
-	type GroupedServiceData,
+	buildDisplayGroups,
+	buildLaserSubgroups,
+	createCategoryIndex,
+	type DisplayServiceGroup,
+	resolveTreatmentSelection,
+} from "~/shared/service-catalog";
+import {
 	getCategoryDescription,
 	getCategoryStartingPrice,
 	getDisplayCategoryName,
@@ -31,10 +37,6 @@ interface ServiceGridProps {
 	location: string;
 	initialCategoryId?: string;
 	initialSubgroupId?: string;
-}
-
-interface DisplayServiceGroup extends GroupedServiceData {
-	displayTitle: string;
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -107,6 +109,7 @@ const OverviewGrid = component$<OverviewGridProps>(
 		categoryDescriptionLabels,
 		onCategoryOpen,
 	}) => {
+		const priceLocale = useSpeakLocale().lang;
 		return (
 			<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
 				{displayGroups.map((group, index) => {
@@ -136,6 +139,7 @@ const OverviewGrid = component$<OverviewGridProps>(
 								price={getCategoryStartingPrice(
 									group.groupServices,
 									fromPriceLabel,
+									priceLocale,
 								)}
 								supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 								customAction$={$(() => {
@@ -215,6 +219,7 @@ const DetailView = component$<DetailViewProps>(
 		categoryById,
 		location,
 	}) => {
+		const priceLocale = useSpeakLocale().lang;
 		const selectedGroup = displayGroups.find(
 			(g) => g.groupId === selectedCategoryId,
 		);
@@ -244,11 +249,13 @@ const DetailView = component$<DetailViewProps>(
 									{getCategoryStartingPrice(
 										activeDetailGroup.groupServices,
 										fromPriceLabel,
+										priceLocale,
 									) ? (
 										<span class="badge badge-outline rounded-full border-base-300 font-main">
 											{getCategoryStartingPrice(
 												activeDetailGroup.groupServices,
 												fromPriceLabel,
+												priceLocale,
 											)}
 										</span>
 									) : null}
@@ -359,6 +366,7 @@ const DetailView = component$<DetailViewProps>(
 									price={getCategoryStartingPrice(
 										group.groupServices,
 										fromPriceLabel,
+										priceLocale,
 									)}
 									supportingText={`${group.groupServices.length} ${treatmentsLabel}`}
 									customAction$={$(() => {
@@ -399,7 +407,7 @@ const DetailView = component$<DetailViewProps>(
 													variant="service"
 													title={service.name}
 													description={service.description}
-													price={formatPrice(service.price)}
+													price={formatPrice(service.price, priceLocale)}
 													duration={service.duration}
 													image={getServiceItemImage(serviceCategory, index)}
 													serviceId={service.id}
@@ -431,9 +439,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		initialSubgroupId,
 	}) => {
 		const t = inlineTranslate();
-		const categoryById = new Map(
-			serviceCategories.map((category) => [String(category.id), category]),
-		);
+		const categoryById = createCategoryIndex(serviceCategories);
 		const hasInitialCategory = initialCategoryId
 			? initialCategoryId === "laser"
 				? services.some((service) =>
@@ -502,51 +508,15 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		});
 
 		const laserSubgroups = useComputed$<DisplayServiceGroup[]>(() => {
-			return groupedServices.value
-				.filter((group) => isLaserCategory(group.category))
-				.sort((a, b) => b.priority - a.priority)
-				.map((group) => ({
-					...group,
-					displayTitle: group.category?.name || laserCategoryLabel,
-				}));
+			return buildLaserSubgroups(groupedServices.value, laserCategoryLabel);
 		});
 
 		const displayGroups = useComputed$<DisplayServiceGroup[]>(() => {
-			const laserGroups = groupedServices.value.filter((group) =>
-				isLaserCategory(group.category),
+			return buildDisplayGroups(
+				groupedServices.value,
+				defaultCategoryLabel,
+				laserCategoryLabel,
 			);
-			const standardGroups = groupedServices.value.filter(
-				(group) => !isLaserCategory(group.category),
-			);
-
-			if (laserGroups.length === 0) {
-				return groupedServices.value.map((group) => ({
-					...group,
-					displayTitle: group.category?.name || defaultCategoryLabel,
-				}));
-			}
-
-			const mergedLaserGroup: DisplayServiceGroup = {
-				...laserGroups[0],
-				groupId: "laser",
-				realGroupId: "laser",
-				groupServices: laserGroups
-					.flatMap((group) => group.groupServices)
-					.sort((a, b) => a.price - b.price),
-				priority: Math.max(...laserGroups.map((group) => group.priority)),
-				displayTitle: laserCategoryLabel,
-				coverImageName: "laser",
-			};
-
-			return [...standardGroups, mergedLaserGroup]
-				.sort((a, b) => b.priority - a.priority)
-				.map((group) => ({
-					...group,
-					displayTitle:
-						"displayTitle" in group
-							? (group as DisplayServiceGroup).displayTitle
-							: group.category?.name || defaultCategoryLabel,
-				}));
 		});
 
 		// ── Actions ──
@@ -601,17 +571,16 @@ export const ServiceGrid = component$<ServiceGridProps>(
 			const url = new URL(window.location.href);
 			const categoryId = url.searchParams.get("treatment");
 			const subgroupId = url.searchParams.get("treatmentArea");
-			const hasCategory = displayGroups.value.some(
-				(group) => group.groupId === categoryId,
+			const selection = resolveTreatmentSelection(
+				displayGroups.value,
+				laserSubgroups.value,
+				categoryId,
+				subgroupId,
 			);
 
-			selectedCategoryId.value = hasCategory ? categoryId : null;
-			selectedLaserSubgroupId.value =
-				categoryId === "laser" &&
-				laserSubgroups.value.some((group) => group.groupId === subgroupId)
-					? subgroupId
-					: null;
-			showFullList.value = hasCategory;
+			selectedCategoryId.value = selection.selectedCategoryId;
+			selectedLaserSubgroupId.value = selection.selectedLaserSubgroupId;
+			showFullList.value = selection.showFullList;
 		});
 
 		useOnWindow("popstate", restoreTreatmentState);

@@ -113,12 +113,13 @@ export function isLaserCategory(category: ServiceGroup | undefined): boolean {
 export function getCategoryStartingPrice(
 	groupServices: Service[],
 	fromLabel: string,
+	locale = "en-BE",
 ): string | undefined {
 	if (groupServices.length === 0) return undefined;
 	const startingPrice = Math.min(
 		...groupServices.map((service) => service.price),
 	);
-	return `${fromLabel} ${formatPremiumPrice(startingPrice)}`;
+	return `${fromLabel} ${formatPremiumPrice(startingPrice, locale)}`;
 }
 
 // ============================================================================

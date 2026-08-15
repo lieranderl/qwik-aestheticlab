@@ -26,13 +26,14 @@
       "previous": "Vorige",
       "read_less": "Minder lezen",
       "read_more": "Meer lezen",
-      "scroll_to_top": "Scroll to top"
+      "scroll_to_top": "Naar boven"
     },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
       "contact": "Contact",
       "description": "Plan je bezoek met het actuele adres, de openingstijden, routebeschrijving en parkeermogelijkheden in de buurt.",
       "directions": "Routebeschrijving",
+      "email_us": "E-mail ons",
       "instagram": "Volg ons op Instagram",
       "kicker": "Jouw studio in Leuven",
       "location": "Locatie",
@@ -43,6 +44,8 @@
       "parking": "Parkeren beschikbaar bij",
       "saturday": "Zaterdag",
       "sunday": "Zondag",
+      "unavailable_description": "Je kunt ons nog steeds per e-mail bereiken terwijl we de actuele studiogegevens herstellen.",
+      "unavailable_title": "Contactgegevens tijdelijk niet beschikbaar",
       "visit_us": "Bezoek ons"
     },
     "cookies": {
@@ -65,7 +68,7 @@
         "question": "Hoe maak ik een afspraak?"
       },
       "cancellation": {
-        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "answer": "Ja — annuleer of verplaats je afspraak minstens 24 uur vooraf via het boekingssysteem. Je kunt ons ook rechtstreeks bereiken via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> of per <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>e-mail</a>. Bij een late annulering kunnen kosten worden aangerekend.",
         "question": "Kan ik een afspraak annuleren of verzetten?"
       },
       "consultation": {
@@ -186,7 +189,7 @@
       "services": "Diensten",
       "skip_to_content": "Ga naar inhoud",
       "team": "Team",
-      "toggle_menu": "Toggle navigation menu",
+      "toggle_menu": "Navigatiemenu openen of sluiten",
       "work": "Werk"
     },
     "notice": {
@@ -261,6 +264,7 @@
       "google_link": "Lees alle beoordelingen op Google",
       "kicker": "Klantnotities",
       "rating_aria": "5 van 5 sterren",
+      "rating_label": "{{rating}} van {{max}} sterren",
       "section_title": "Mooie woorden",
       "source": "Google-review",
       "title": "Vriendelijke woorden"
@@ -295,8 +299,8 @@
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
-      "artist": "artist",
-      "artists": "artists",
+      "artist": "specialist",
+      "artists": "specialisten",
       "kicker": "Studio-artiesten",
       "leuven": "Leuven",
       "role": {
@@ -314,8 +318,8 @@
         "coral_manicure": "Fel koraalrode manicure op beide handen",
         "eyebrows": "Resultaat van nauwkeurige wenkbrauwstyling",
         "eyebrows2": "Natuurlijk resultaat van wenkbrauwstyling",
-        "lashes": "Lash extensions result",
-        "lashlift": "Lash lift result",
+        "lashes": "Resultaat van wimperextensions",
+        "lashlift": "Resultaat van een wimperlift",
         "m1": "Detail van klassieke manicure op maat",
         "m2": "Minimalistische clean-girl-manicure",
         "m3": "Elegante manicure met matte afwerking",
@@ -332,8 +336,10 @@
         "pedicure1": "Verzorgde pedicure met zachtroze lak"
       },
       "description": "Doordachte details, een verzorgde afwerking en resultaten die echt bij jou passen.",
+      "enlarge": "Afbeelding vergroten",
       "gallery_label": "Galerij met behandelresultaten",
       "kicker": "Uit ons atelier",
+      "lightbox_label": "Galerijviewer",
       "title": "Ons werk"
     }
   },

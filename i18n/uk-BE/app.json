@@ -26,13 +26,14 @@
       "previous": "Назад",
       "read_less": "Приховати",
       "read_more": "Читати далі",
-      "scroll_to_top": "Scroll to top"
+      "scroll_to_top": "Нагору"
     },
     "contact": {
       "appointment_only": "Відвідування лише за записом",
       "contact": "Контакти",
       "description": "Сплануйте візит: актуальна адреса, години роботи, маршрут і найближчі паркінги.",
       "directions": "Маршрут",
+      "email_us": "Написати нам",
       "instagram": "Стежте за нами в Instagram",
       "kicker": "Ваша студія в Левені",
       "location": "Локація",
@@ -43,6 +44,8 @@
       "parking": "Парковка доступна за адресою",
       "saturday": "Субота",
       "sunday": "Неділя",
+      "unavailable_description": "Поки ми відновлюємо актуальну інформацію про студію, ви можете зв’язатися з нами електронною поштою.",
+      "unavailable_title": "Контактні дані тимчасово недоступні",
       "visit_us": "Завітайте до нас"
     },
     "cookies": {
@@ -65,7 +68,7 @@
         "question": "Як записатися на процедуру?"
       },
       "cancellation": {
-        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "answer": "Так — будь ласка, скасуйте або перенесіть запис через систему бронювання щонайменше за 24 години. Ви також можете зв’язатися з нами безпосередньо через <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> або <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>електронною поштою</a>. За пізнє скасування може стягуватися плата.",
         "question": "Чи можна скасувати або перенести запис?"
       },
       "consultation": {
@@ -186,7 +189,7 @@
       "services": "Послуги",
       "skip_to_content": "Перейти до вмісту",
       "team": "Команда",
-      "toggle_menu": "Toggle navigation menu",
+      "toggle_menu": "Відкрити або закрити меню навігації",
       "work": "Галерея"
     },
     "notice": {
@@ -261,6 +264,7 @@
       "google_link": "Читати всі відгуки в Google",
       "kicker": "Відгуки клієнтів",
       "rating_aria": "5 із 5 зірок",
+      "rating_label": "{{rating}} із {{max}} зірок",
       "section_title": "Теплі слова",
       "source": "Відгук Google",
       "title": "Теплі слова"
@@ -295,8 +299,8 @@
     "story": "Про нас",
     "story_text": "У Aesthetic Lab ми віримо у перетворюючу силу краси. Наш підхід поєднує майстерність з досвідом, створюючи місце, де ви можете розкрити своє найсяючіше «я».",
     "team": {
-      "artist": "artist",
-      "artists": "artists",
+      "artist": "майстер",
+      "artists": "майстри",
       "kicker": "Майстри студії",
       "leuven": "Leuven",
       "role": {
@@ -314,8 +318,8 @@
         "coral_manicure": "Яскравий коралово-червоний манікюр на обох руках",
         "eyebrows": "Результат точної корекції брів",
         "eyebrows2": "Природний результат оформлення брів",
-        "lashes": "Lash extensions result",
-        "lashlift": "Lash lift result",
+        "lashes": "Результат нарощування вій",
+        "lashlift": "Результат ламінування вій",
         "m1": "Деталі індивідуального класичного манікюру",
         "m2": "Мінімалістичний манікюр у стилі clean girl",
         "m3": "Елегантний манікюр із матовим покриттям",
@@ -332,8 +336,10 @@
         "pedicure1": "Акуратний педикюр із ніжно-рожевим лаком"
       },
       "description": "Продумані деталі, акуратне виконання й результат, який залишається вашим.",
+      "enlarge": "Збільшити зображення",
       "gallery_label": "Галерея результатів процедур",
       "kicker": "З нашого ательє",
+      "lightbox_label": "Перегляд зображень галереї",
       "title": "Наші роботи"
     }
   },

@@ -33,16 +33,19 @@
       "contact": "Contact",
       "description": "Plan your visit with the current address, hours, directions, and nearby parking.",
       "directions": "Directions",
+      "email_us": "Email us",
       "instagram": "Follow us on Instagram",
       "kicker": "Your Leuven studio",
       "location": "Location",
       "map_location": "Aesthetic Lab location in Leuven",
       "map_title": "Our location",
-      "monday": "Open Mon – Sat, call for hours and availability.",
+      "monday": "Monday",
       "opening_hours": "Opening hours",
       "parking": "Parking available",
       "saturday": "Saturday",
       "sunday": "Closed Sunday",
+      "unavailable_description": "You can still reach us by email while we restore the latest studio details.",
+      "unavailable_title": "Contact details are temporarily unavailable",
       "visit_us": "Visit Us"
     },
     "cookies": {
@@ -263,6 +266,7 @@
       "google_link": "Read all reviews on Google",
       "kicker": "Kind words",
       "rating_aria": "Rated 5 out of 5 stars",
+      "rating_label": "{{rating}} out of {{max}} stars",
       "section_title": "What people say",
       "source": "Google reviews",
       "title": "Reviews"
@@ -331,8 +335,10 @@
         "pedicure1": "Clean pedicure with soft pink polish"
       },
       "description": "A glimpse into the work we do every day.",
+      "enlarge": "Enlarge image",
       "gallery_label": "Gallery of recent work",
       "kicker": "Our work",
+      "lightbox_label": "Gallery image viewer",
       "title": "Gallery"
     }
   }

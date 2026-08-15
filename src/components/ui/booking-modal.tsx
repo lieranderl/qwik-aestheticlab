@@ -1,6 +1,7 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
-import { baseUrlBooking, bookingLocationId } from "~/consts";
+import { baseUrlBooking } from "~/consts";
+import { resolveBookingLocation } from "~/shared/booking";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 export interface BookingProps {
@@ -22,7 +23,7 @@ export const Booking = component$<BookingProps>(
 		id,
 		text,
 		classes = "btn btn-primary",
-		location = bookingLocationId,
+		location,
 		category,
 		product,
 		staff,
@@ -32,13 +33,14 @@ export const Booking = component$<BookingProps>(
 		analyticsServiceCategory,
 	}) => {
 		const t = inlineTranslate();
+		const resolvedLocation = resolveBookingLocation(location);
 		const isOpen = useSignal(false);
 		const isLoaded = useSignal(false);
 		const titleId = `${id}-title`;
 		const eventParams = {
 			booking_id: id,
 			placement: analyticsPlacement || id,
-			booking_location: location,
+			booking_location: resolvedLocation,
 			service_id: analyticsServiceId,
 			service_name: analyticsServiceName,
 			service_category: analyticsServiceCategory || category,
@@ -47,7 +49,7 @@ export const Booking = component$<BookingProps>(
 		};
 
 		// Build iframe URL
-		const params = new URLSearchParams({ location });
+		const params = new URLSearchParams({ location: resolvedLocation });
 		if (category) params.set("category", category);
 		if (product) params.set("product", product);
 		if (staff) params.set("staff", staff);
