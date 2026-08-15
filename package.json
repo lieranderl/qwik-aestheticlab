@@ -76,7 +76,7 @@
 		"vite": "7.3.6",
 		"ws": "8.21.0",
 		"undici": "8.9.0",
-		"nanoid": "3.3.17"
+		"nanoid": "3.3.18"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx,json,css,md,yml,yaml}": [
