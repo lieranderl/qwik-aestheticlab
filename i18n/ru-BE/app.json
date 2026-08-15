@@ -26,13 +26,14 @@
       "previous": "Назад",
       "read_less": "Свернуть",
       "read_more": "Читать далее",
-      "scroll_to_top": "Scroll to top"
+      "scroll_to_top": "Наверх"
     },
     "contact": {
       "appointment_only": "Посещение только по записи",
       "contact": "Контакты",
       "description": "Спланируйте визит: актуальный адрес, часы работы, маршрут и ближайшие парковки.",
       "directions": "Маршрут",
+      "email_us": "Написать нам",
       "instagram": "Подпишитесь на нас в Instagram",
       "kicker": "Ваша студия в Лёвене",
       "location": "Локация",
@@ -43,6 +44,8 @@
       "parking": "Парковка доступна по адресу",
       "saturday": "Суббота",
       "sunday": "Воскресенье",
+      "unavailable_description": "Пока мы восстанавливаем актуальную информацию о студии, вы можете связаться с нами по электронной почте.",
+      "unavailable_title": "Контактные данные временно недоступны",
       "visit_us": "Посетите нас"
     },
     "cookies": {
@@ -65,7 +68,7 @@
         "question": "Как записаться на процедуру?"
       },
       "cancellation": {
-        "answer": "Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
+        "answer": "Да — пожалуйста, отмените или перенесите запись через систему бронирования не позднее чем за 24 часа. Вы также можете связаться с нами напрямую через <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> или по <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>электронной почте</a>. За позднюю отмену может взиматься плата.",
         "question": "Можно ли отменить или перенести запись?"
       },
       "consultation": {
@@ -186,7 +189,7 @@
       "services": "Услуги",
       "skip_to_content": "Перейти к содержимому",
       "team": "Команда",
-      "toggle_menu": "Toggle navigation menu",
+      "toggle_menu": "Открыть или закрыть меню навигации",
       "work": "Галерея"
     },
     "notice": {
@@ -261,6 +264,7 @@
       "google_link": "Читать все отзывы в Google",
       "kicker": "Отзывы клиентов",
       "rating_aria": "5 из 5 звёзд",
+      "rating_label": "{{rating}} из {{max}} звёзд",
       "section_title": "Тёплые слова",
       "source": "Отзыв Google",
       "title": "Теплые слова"
@@ -295,8 +299,8 @@
     "story": "О нас",
     "story_text": "В Aesthetic Lab мы верим в преобразующую силу красоты. Наш подход сочетает мастерство с опытом, создавая место, где вы можете раскрыть свое самое сияющее «я».",
     "team": {
-      "artist": "artist",
-      "artists": "artists",
+      "artist": "мастер",
+      "artists": "мастера",
       "kicker": "Мастера студии",
       "leuven": "Leuven",
       "role": {
@@ -314,8 +318,8 @@
         "coral_manicure": "Яркий кораллово-красный маникюр на обеих руках",
         "eyebrows": "Результат точной коррекции бровей",
         "eyebrows2": "Естественный результат оформления бровей",
-        "lashes": "Lash extensions result",
-        "lashlift": "Lash lift result",
+        "lashes": "Результат наращивания ресниц",
+        "lashlift": "Результат ламинирования ресниц",
         "m1": "Детали индивидуального классического маникюра",
         "m2": "Минималистичный маникюр в стиле clean girl",
         "m3": "Элегантный маникюр с матовым покрытием",
@@ -332,8 +336,10 @@
         "pedicure1": "Аккуратный педикюр с нежно-розовым лаком"
       },
       "description": "Продуманные детали, аккуратное исполнение и результат, который остаётся вашим.",
+      "enlarge": "Увеличить изображение",
       "gallery_label": "Галерея результатов процедур",
       "kicker": "Из нашего ателье",
+      "lightbox_label": "Просмотр изображений галереи",
       "title": "Наши работы"
     }
   },

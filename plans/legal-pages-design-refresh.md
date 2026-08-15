@@ -34,7 +34,7 @@ Give the privacy policy and client notice the same navigation, footer, typograph
 ## Phase-wise Gating
 
 - After phases 1–3: inspect the scoped diff and run Biome on changed source files.
-- After phase 3: run the DaisyUI Quality Inspector and address in-scope findings.
+- After phase 3: run focused desktop and mobile visual checks and address in-scope findings.
 - Final: run `bun run qwik-speak-extract`, `bun run verify`, and a focused route smoke check if browser preview is available.
 
 ## Verification

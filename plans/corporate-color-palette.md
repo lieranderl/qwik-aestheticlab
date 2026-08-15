@@ -25,13 +25,13 @@ Make corporate sage `#8b9687` unmistakably dominant across the site while preser
 
 1. Audit semantic color usage and contrast.
 2. Refine theme tokens and promote corporate sage to key backgrounds.
-3. Run the DaisyUI quality audit and full project verification.
+3. Run a focused visual and contrast audit plus full project verification.
 
 ## Gates
 
 - Palette pairs meet WCAG AA contrast for their intended text sizes.
 - Biome, type checking, tests, and production build pass.
-- DaisyUI Quality Inspector allows finalization.
+- Focused desktop and mobile visual review finds no in-scope regressions.
 
 ## Verification
 

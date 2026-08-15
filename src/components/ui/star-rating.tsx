@@ -1,4 +1,5 @@
 import { component$ } from "@builder.io/qwik";
+import { inlineTranslate } from "qwik-speak";
 
 interface StarRatingProps {
 	rating?: number;
@@ -7,12 +8,16 @@ interface StarRatingProps {
 
 export const StarRating = component$<StarRatingProps>(
 	({ rating = 5, max = 5 }) => {
+		const t = inlineTranslate();
 		return (
 			<div
 				class="rating rating-sm gap-0.5"
 				data-testid="review-rating"
 				role="img"
-				aria-label={`${rating} out of ${max} stars`}
+				aria-label={t(
+					"app.reviews.rating_label@@{{rating}} out of {{max}} stars",
+					{ rating, max },
+				)}
 			>
 				{Array.from({ length: max }, (_, i) => (
 					<div

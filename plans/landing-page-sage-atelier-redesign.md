@@ -24,8 +24,8 @@ functional work, but correct the page-level visual hierarchy section by section:
    that belongs to the surrounding page.
 4. Give each remaining section an identifiable composition while maintaining one
    shared type, spacing, color, radius, and motion system.
-5. Review the complete page at desktop and mobile sizes, then run DaisyUI Blueprint
-   Quality Inspector and the repository verification suite.
+5. Review the complete page at desktop and mobile sizes, then run focused
+   accessibility checks and the repository verification suite.
 
 Non-goals: no new dependencies, no data-model changes, no booking-flow changes,
 and no invented claims or policy content.
@@ -41,7 +41,7 @@ Completion notes:
   effects.
 - Hover motion never translates cards or controls; feedback is limited to color,
   border, shadow, and clipped image scaling.
-- DaisyUI Blueprint Quality Inspector passed with no findings, `bun run verify`
+- Focused visual and accessibility checks passed with no findings, `bun run verify`
   passed, and all 17 Chromium landing-page tests passed.
 
 The design will use daisyUI 5 as its component and semantic-token foundation,
@@ -197,10 +197,9 @@ Explicitly omitted:
 - inline booking form: the established GetTimely modal remains the booking path;
 - equal repeated feature-card grid: weakens the editorial hierarchy.
 
-Before any JSX is written, run DaisyUI Blueprint's Component Syntax Expert for
-the selected component IDs and consume all returned batches. After the cohesive
-implementation, run Blueprint's Quality Inspector and apply every returned
-`fix_changes` item before verification.
+Before any JSX is written, review the selected components against the project
+DaisyUI patterns and current DaisyUI 5 documentation. After the cohesive
+implementation, perform focused visual and accessibility checks before verification.
 
 ## Photography and Media Direction
 
@@ -286,14 +285,14 @@ first implementation.
 
 ## Implementation Phases and Gates
 
-### Phase 0 — Approval and Blueprint Syntax
+### Phase 0 — Approval and Component Review
 
 1. Approve this concept, palette, architecture, and copy direction.
 2. Confirm any salon policy content intended for the FAQ.
-3. Run Blueprint Component Syntax Expert for every selected component.
+3. Review every selected component against the project patterns and DaisyUI 5 documentation.
 
-Gate: no source implementation begins before design approval and complete component
-syntax output.
+Gate: no source implementation begins before design approval and component-pattern
+review.
 
 ### Phase 1 — Theme and Shell
 
@@ -332,10 +331,10 @@ and responsive image inspection.
 Gate: translation extraction, affected locale review, booking analytics smoke test,
 and relevant Playwright flow.
 
-### Phase 5 — Blueprint and Repository Verification
+### Phase 5 — UI and Repository Verification
 
-1. Run Blueprint Quality Inspector on the complete landing-page change.
-2. Apply every returned `fix_changes` item.
+1. Perform desktop and mobile visual and accessibility checks on the complete landing-page change.
+2. Address every in-scope finding.
 3. Run `bun run qwik-speak-extract` and `bun run verify`.
 4. Run the relevant Playwright spec and manual browser review at phone, tablet,
    laptop, and wide desktop sizes.

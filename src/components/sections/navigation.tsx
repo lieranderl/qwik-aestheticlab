@@ -21,20 +21,31 @@ export const Navigation = component$(() => {
 	const isScrolled = useSignal(false);
 	const isMobileMenuOpen = useSignal(false);
 	const showMobileBookNow = useSignal(false);
-	const mobileMenuToggleRef = useSignal<HTMLElement>();
+	const mobileMenuToggleRef = useSignal<HTMLButtonElement>();
 	const mobileMenuCloseRef = useSignal<HTMLButtonElement>();
 	const mobileMenuId = "mobile-navigation-menu";
-	const drawerCheckboxId = `${mobileMenuId}-toggle`;
 	const mobileMenuTitleId = `${mobileMenuId}-title`;
 
+	const navLabels: Record<string, string> = {
+		"app.nav.home@@Home": t("app.nav.home@@Home"),
+		"app.nav.services@@Services": t("app.nav.services@@Services"),
+		"app.nav.reviews@@Reviews": t("app.nav.reviews@@Reviews"),
+		"app.nav.work@@Our Work": t("app.nav.work@@Our Work"),
+		"app.nav.team@@Team": t("app.nav.team@@Team"),
+		"app.faq.title@@FAQ": t("app.faq.title@@FAQ"),
+		"app.nav.contact@@Contact": t("app.nav.contact@@Contact"),
+	};
 	const navLinks = getNavLinkKeys().map(({ href, key }) => ({
-		label: t(key),
+		label: navLabels[key],
 		href,
 	}));
 
 	const closeMobileMenu = $(() => {
 		isMobileMenuOpen.value = false;
 		requestAnimationFrame(() => mobileMenuToggleRef.value?.focus());
+	});
+	const openMobileMenu = $(() => {
+		isMobileMenuOpen.value = true;
 	});
 
 	useOnWindow(
@@ -116,10 +127,10 @@ export const Navigation = component$(() => {
 	return (
 		<div class="drawer drawer-end">
 			<input
-				id={drawerCheckboxId}
 				type="checkbox"
 				class="drawer-toggle"
-				aria-label={t("app.nav.toggle_menu@@Toggle navigation menu")}
+				aria-hidden="true"
+				tabIndex={-1}
 				bind:checked={isMobileMenuOpen}
 			/>
 
@@ -190,15 +201,17 @@ export const Navigation = component$(() => {
 
 							<div class="flex items-center gap-1 lg:hidden">
 								<LanguageSwitcher />
-								<label
+								<button
+									type="button"
 									ref={mobileMenuToggleRef}
-									for={drawerCheckboxId}
 									class="btn btn-ghost btn-square drawer-button min-h-11 min-w-11 text-primary-content"
 									aria-label={t("app.nav.open_menu@@Open menu")}
 									aria-controls={mobileMenuId}
+									aria-expanded={isMobileMenuOpen.value}
+									onClick$={openMobileMenu}
 								>
 									<HiBars3Outline class="size-6" aria-hidden="true" />
-								</label>
+								</button>
 							</div>
 						</div>
 					</div>
@@ -206,10 +219,11 @@ export const Navigation = component$(() => {
 			</div>
 
 			<div id={mobileMenuId} class="drawer-side z-120 lg:hidden">
-				<label
-					for={drawerCheckboxId}
+				<button
+					type="button"
 					aria-label={t("app.nav.close_menu@@Close menu")}
 					class="drawer-overlay"
+					onClick$={closeMobileMenu}
 				/>
 				<div
 					role="dialog"

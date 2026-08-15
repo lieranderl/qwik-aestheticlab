@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate } from "qwik-speak";
+import { inlineTranslate, useSpeakLocale } from "qwik-speak";
 import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
@@ -56,6 +56,7 @@ function getCategoryNumber(index: number) {
 const PricelistServiceItem = component$(
 	({ service, location, categoryName }: PricelistServiceItemProps) => {
 		const t = inlineTranslate();
+		const priceLocale = useSpeakLocale().lang;
 		const isExpanded = useSignal(false);
 		const descriptionId = useId();
 		const readLessLabel = t("app.common.read_less@@Read Less");
@@ -70,7 +71,7 @@ const PricelistServiceItem = component$(
 								{service.name}
 							</h3>
 							<span class="shrink-0 font-main text-lg leading-none font-semibold text-secondary tabular-nums md:hidden">
-								{formatPremiumPrice(service.price)}
+								{formatPremiumPrice(service.price, priceLocale)}
 							</span>
 						</div>
 
@@ -113,7 +114,7 @@ const PricelistServiceItem = component$(
 
 					<div class="flex flex-col gap-3 md:min-w-40 md:items-end md:justify-between">
 						<span class="hidden font-main text-2xl leading-none font-semibold text-secondary tabular-nums md:block">
-							{formatPremiumPrice(service.price)}
+							{formatPremiumPrice(service.price, priceLocale)}
 						</span>
 						<Booking
 							id={`pricelist_service_${service.id}`}
@@ -134,6 +135,7 @@ const PricelistServiceItem = component$(
 
 export default component$(() => {
 	const t = inlineTranslate();
+	const priceLocale = useSpeakLocale().lang;
 	const services = useServicesLoader().value;
 	const categories = useServiceGroupsLoader().value;
 	const contact = useContactLoader().value;
@@ -186,6 +188,7 @@ export default component$(() => {
 				startingPriceLabel: getCategoryStartingPrice(
 					sortedServices,
 					fromPriceLabel,
+					priceLocale,
 				),
 			};
 		})

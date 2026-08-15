@@ -16,7 +16,15 @@ export const ScrollToTop = component$(() => {
 	return (
 		<button
 			type="button"
-			onClick$={$(() => window.scrollTo({ top: 0, behavior: "smooth" }))}
+			onClick$={$(() => {
+				const reducedMotion = window.matchMedia(
+					"(prefers-reduced-motion: reduce)",
+				).matches;
+				window.scrollTo({
+					top: 0,
+					behavior: reducedMotion ? "auto" : "smooth",
+				});
+			})}
 			class={[
 				"btn btn-circle btn-ghost fixed right-4 bottom-24 z-30 shadow-sm backdrop-blur-sm transition-all duration-300 md:bottom-28",
 				isVisible.value

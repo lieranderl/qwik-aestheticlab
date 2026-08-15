@@ -23,7 +23,7 @@ Make `/pricelist/` easier to scan and let visitors book from the treatment they 
 2. Rework the page hierarchy and treatment rows.
    - Gate: focused formatting and type checking for the changed route.
 3. Audit the changed UI and perform rendered responsive checks where available.
-   - Gate: DaisyUI Quality Inspector and a focused `/pricelist/` browser check.
+   - Gate: focused desktop and mobile `/pricelist/` browser checks.
 4. Run project verification and inspect the final diff.
    - Gate: `bun run verify` succeeds, or any unrelated pre-existing failure is recorded precisely.
 

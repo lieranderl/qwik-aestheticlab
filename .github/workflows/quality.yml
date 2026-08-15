@@ -56,11 +56,11 @@ jobs:
       - name: Production build
         run: bun run build
 
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
+      - name: Install supported browsers
+        run: bunx playwright install --with-deps chromium firefox webkit
 
-      - name: Chromium smoke tests
-        run: bunx playwright test --project=chromium
+      - name: Cross-browser interaction tests
+        run: bun run test.e2e
         env:
           SUPABASE_URL: https://example.invalid
           SUPABASE_KEY: sb_publishable_ci_placeholder

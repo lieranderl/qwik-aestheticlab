@@ -61,14 +61,6 @@
 - Route files own `DocumentHead`; preserve Consent Mode v2, accessibility, meaningful image `alt`, and stable image sizing.
 - Biome owns formatting. Do not add ESLint or Prettier.
 
-## DaisyUI Blueprint MCP
-
-- Use the `daisyui-blueprint` MCP for every task that creates, converts, changes, or audits DaisyUI UI.
-- For UI generation or edits, call Setup Expert first, Rules Enforcer second, optional Creative Director or Page Architect as needed, and Component Syntax Expert before writing code. Retrieve every remaining component-syntax batch before implementation.
-- After cohesive, non-trivial UI changes, run Quality Inspector with `auditIntent: "fix_changes"`; for explicitly review-only work, use `auditIntent: "report_only"` and do not edit files.
-- For conversion workflows, call the relevant `convert_*` tool, then Setup Expert, Rules Enforcer, and Component Syntax Expert; skip optional Blueprint tools and Quality Inspector.
-- Pass project-relative paths to Blueprint. If the MCP is unavailable or fails initialization, stop and report the exact failure instead of silently bypassing it.
-
 ## Dependencies, Env, and Generated Files
 
 - Use the Bun version pinned in `package.json`; change dependencies and `bun.lock` only when required by the task.

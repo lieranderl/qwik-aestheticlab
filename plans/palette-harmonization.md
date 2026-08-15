@@ -23,14 +23,14 @@ Create a smoother warm-sage palette across every public route while retaining th
 2. Define a warm tonal ladder and verify foreground/background contrast.
 3. Update the DaisyUI theme and its project documentation.
 4. Render representative desktop and mobile views for every route family.
-5. Run DaisyUI inspection and the full project verification suite.
+5. Run focused visual and contrast inspection plus the full project verification suite.
 
 ## Phase Gates
 
 - Palette gate: normal text contrast remains at least 4.5:1 on its paired semantic background.
 - Route gate: no abrupt cool/dark surface remains without an intentional semantic purpose.
 - Responsive gate: no new overflow or unreadable content at mobile and desktop widths.
-- Quality gate: DaisyUI Quality Inspector permits finalization.
+- Quality gate: focused desktop and mobile review finds no in-scope regressions.
 
 ## Verification
 

@@ -1,4 +1,4 @@
-export const formatPrice = (price: number, locale = "de-DE") => {
+export const formatPrice = (price: number, locale = "en-BE") => {
 	return new Intl.NumberFormat(locale, {
 		style: "currency",
 		currency: "EUR",
@@ -8,8 +8,8 @@ export const formatPrice = (price: number, locale = "de-DE") => {
 
 export const gaMeasurementId = "G-95QF984DPQ";
 
-export const formatPremiumPrice = (price: number) =>
-	formatPrice(price, "fr-BE");
+export const formatPremiumPrice = (price: number, locale = "en-BE") =>
+	formatPrice(price, locale);
 
 export const baseUrlBooking =
 	"https://bookings.gettimely.com/aestheticlab2/bb/book";
