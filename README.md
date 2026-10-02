@@ -24,7 +24,7 @@ Aesthetic Lab is a multilingual marketing and booking site for a beauty studio i
 
 | Area | Technology |
 | --- | --- |
-| Runtime | Bun `1.4.0` |
+| Runtime | Bun `1.4.2` |
 | Framework | Qwik `1.20`, Qwik City |
 | Language | TypeScript `7` |
 | Styling | Tailwind CSS `4`, DaisyUI `5` |
