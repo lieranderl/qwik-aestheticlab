@@ -40,8 +40,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.14",
-		"@builder.io/qwik": "^1.20.0",
-		"@builder.io/qwik-city": "^1.20.0",
+		"@builder.io/qwik": "^1.20.1",
+		"@builder.io/qwik-city": "^1.20.1",
 		"@playwright/test": "^1.63.0",
 		"@qwikest/icons": "^0.0.13",
 		"@tailwindcss/vite": "^4.3.3",
@@ -63,12 +63,12 @@
 		"@supabase/supabase-js": "^2.117.2"
 	},
 	"overrides": {
-		"@builder.io/qwik": "1.20.0",
+		"@builder.io/qwik": "1.20.1",
 		"launch-editor": "2.14.1",
 		"mdast-util-to-hast": "13.2.1",
 		"picomatch": "4.0.4",
 		"postcss": "8.5.23",
-		"rollup": "4.59.0",
+		"rollup": "4.62.5",
 		"sharp": "0.35.5",
 		"shell-quote": "1.10.0",
 		"svgo": "3.3.5",
