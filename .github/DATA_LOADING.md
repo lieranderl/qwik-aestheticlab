@@ -39,6 +39,7 @@ export const supabase = (event: RequestEventAction) => {
 - Environment variables `SUPABASE_URL` and `SUPABASE_KEY` are required — accessed via `event.env.get()`, not `process.env`.
 - Cookie methods are no-ops because this project uses Supabase as a read-only data source (no auth sessions).
 - A new client is created per request — do not cache or share clients across requests.
+- Each query is bounded by `SUPABASE_REQUEST_TIMEOUT_MS` (3s) with PostgREST retries disabled; a timeout returns `{ error }`, so loaders fail soft instead of stalling SSR.
 
 ## routeLoader$ Pattern
 
@@ -149,17 +150,17 @@ HTTP caching is configured in the `onGet` handler in `layout.tsx`:
 ```tsx
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
-    staleWhileRevalidate: 60 * 60 * 24 * 7, // 7 days
-    maxAge: 60 * 5, // 5 minutes
+    staleWhileRevalidate: 60 * 10, // 10 minutes
+    maxAge: 60, // 1 minute
   });
 };
 ```
 
 This means:
 
-- Fresh data is served for 300 seconds.
+- Fresh data is served for 60 seconds.
 - After that, stale data is served while revalidation happens in the background.
-- The stale window is 7 days.
+- The stale window is 10 minutes. Keep it short: each Cloud Run revision only ships its own hashed `/build/` chunks, so long-lived stale HTML can reference chunks that no longer exist after a deploy.
 
 Do not add per-loader caching. The HTTP cache layer handles it globally.
 
