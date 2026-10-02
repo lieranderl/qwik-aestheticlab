@@ -32,6 +32,8 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: 1,
 	reporter: "html",
+	// CI runners (WebKit on Linux in particular) render the dev server more slowly.
+	expect: { timeout: process.env.CI ? 10_000 : 5_000 },
 	use: {
 		baseURL: "http://localhost:5173",
 		trace: "on-first-retry",

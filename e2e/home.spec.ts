@@ -158,29 +158,33 @@ test("keeps the Instagram profile card compact on desktop and fluid on mobile", 
 		await page.setViewportSize(viewport);
 		await page.goto("/en-BE/#gallery");
 
-		const metrics = await page
-			.getByTestId("instagram-card")
-			.evaluate((card) => {
-				const box = card.getBoundingClientRect();
-				return {
-					height: box.height,
-					left: box.left,
-					viewportWidth: document.documentElement.clientWidth,
-					width: box.width,
-				};
-			});
+		// The dev server injects CSS via JavaScript after the load event, so retry the
+		// measurement until the layout has settled instead of reading it once.
+		await expect(async () => {
+			const metrics = await page
+				.getByTestId("instagram-card")
+				.evaluate((card) => {
+					const box = card.getBoundingClientRect();
+					return {
+						height: box.height,
+						left: box.left,
+						viewportWidth: document.documentElement.clientWidth,
+						width: box.width,
+					};
+				});
 
-		if (viewport.width >= 1024) {
-			expect(metrics.width).toBeLessThanOrEqual(1024);
-			expect(metrics.height).toBeLessThanOrEqual(448.5);
-			expect(metrics.left).toBeGreaterThanOrEqual(16);
-			expect(metrics.left + metrics.width).toBeLessThanOrEqual(
-				metrics.viewportWidth - 16,
-			);
-		} else {
-			expect(metrics.width).toBe(viewport.width - 32);
-			expect(metrics.height).toBeGreaterThan(300);
-		}
+			if (viewport.width >= 1024) {
+				expect(metrics.width).toBeLessThanOrEqual(1024);
+				expect(metrics.height).toBeLessThanOrEqual(448.5);
+				expect(metrics.left).toBeGreaterThanOrEqual(16);
+				expect(metrics.left + metrics.width).toBeLessThanOrEqual(
+					metrics.viewportWidth - 16,
+				);
+			} else {
+				expect(metrics.width).toBe(viewport.width - 32);
+				expect(metrics.height).toBeGreaterThan(300);
+			}
+		}).toPass({ timeout: 15_000 });
 	}
 });
 
@@ -246,16 +250,25 @@ test("renders the FAQ section with proper heading", async ({ page }) => {
 });
 
 test("opens treatments in-page", async ({ page }) => {
+	// In the dev server the click handler pulls ~47 unbundled modules on demand,
+	// which can take well over 15s on slow CI WebKit runners.
+	test.setTimeout(60_000);
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/#services");
 
-	await page
-		.locator("#services")
-		.getByRole("button", { name: "View Treatments" })
-		.first()
-		.click();
-
-	await expect(page.locator("#service-details-heading")).toHaveText("Manicure");
+	const heading = page.locator("#service-details-heading");
+	// Click again only while the details view has not opened, in case the first
+	// click landed before the handler was available.
+	await expect(async () => {
+		if (!(await heading.isVisible())) {
+			await page
+				.locator("#services")
+				.getByRole("button", { name: "View Treatments" })
+				.first()
+				.click({ timeout: 2_000 });
+		}
+		await expect(heading).toHaveText("Manicure", { timeout: 3_000 });
+	}).toPass({ timeout: 30_000 });
 	await expect(
 		page.locator("#services").getByRole("button", { name: "Book Now" }).first(),
 	).toBeVisible();
