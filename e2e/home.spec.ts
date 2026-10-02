@@ -151,6 +151,8 @@ test("supports the audited responsive widths without horizontal overflow", async
 test("keeps the Instagram profile card compact on desktop and fluid on mobile", async ({
 	page,
 }) => {
+	// Two viewports, each with up to 15s of layout retries plus navigation.
+	test.setTimeout(60_000);
 	for (const viewport of [
 		{ width: 390, height: 844 },
 		{ width: 1440, height: 900 },
@@ -256,19 +258,18 @@ test("opens treatments in-page", async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/#services");
 
-	const heading = page.locator("#service-details-heading");
-	// Click again only while the details view has not opened, in case the first
-	// click landed before the handler was available.
-	await expect(async () => {
-		if (!(await heading.isVisible())) {
-			await page
-				.locator("#services")
-				.getByRole("button", { name: "View Treatments" })
-				.first()
-				.click({ timeout: 2_000 });
-		}
-		await expect(heading).toHaveText("Manicure", { timeout: 3_000 });
-	}).toPass({ timeout: 30_000 });
+	// Click once: a dropped first interaction is a real UX regression. Only the
+	// heading gets the long wait while the handler's modules load.
+	await page
+		.locator("#services")
+		.getByRole("button", { name: "View Treatments" })
+		.first()
+		.click();
+
+	await expect(page.locator("#service-details-heading")).toHaveText(
+		"Manicure",
+		{ timeout: 30_000 },
+	);
 	await expect(
 		page.locator("#services").getByRole("button", { name: "Book Now" }).first(),
 	).toBeVisible();
