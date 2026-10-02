@@ -26,7 +26,7 @@ Ship the changes merged to `staging` since v3.0.3 (`95de22d`) to production.
 ## Phases
 
 1. Merge this PR to `staging` after all checks pass; confirm the staging deployment for the merge SHA succeeds.
-2. Run `gh release create v3.0.4 --target <merge-sha> --title "v3.0.4" --generate-notes`.
+2. Confirm `v3.0.4` does not exist (`git ls-remote --tags origin v3.0.4`), create annotated tag `v3.0.4` at the merge SHA, push only the tag, verify `git rev-parse v3.0.4^{commit}` equals the merge SHA, then run `gh release create v3.0.4 --verify-tag --title "v3.0.4" --generate-notes`.
 3. Approve `production`. Require candidate smoke test, 10/90 canary, 300-second bake, clean 5xx and cross-revision asset 404 gates, canonical-domain smoke test, 100% promotion, and watchdog success.
 4. Confirm 100% traffic on the new candidate revision and run `./scripts/smoke-deployment.sh https://aestheticlab.be`.
 5. Spot-check `/en-BE/pricelist/` and `/ru-BE/pricelist/` for localized service names, including Face Waxing.
