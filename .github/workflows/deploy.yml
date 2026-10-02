@@ -328,7 +328,9 @@ jobs:
           PREVIOUS: ${{ needs.production_prepare.outputs.previous }}
           CANDIDATE_URL: ${{ needs.production_prepare.outputs.candidate_url }}
           URL: ${{ env.PROD_URL }}
-          CANARY_BAKE_SECONDS: "300"
+          # Temporarily 60s for v3.0.3: the live v3.0.1 revision predates session affinity,
+          # so its visitors can still be split onto the candidate. Restore 300 afterwards.
+          CANARY_BAKE_SECONDS: "60"
           CANARY_MAX_ASSET_404: "5"
         run: |
           promotion_complete=false
