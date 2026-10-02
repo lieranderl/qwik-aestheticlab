@@ -4,8 +4,8 @@ import {
 	useId,
 	useSignal,
 	useVisibleTask$,
-} from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+} from "@qwik.dev/core";
+import type { DocumentHead } from "@qwik.dev/router";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { _ } from "compiled-i18n";
 import { Footer } from "~/components/sections/footer";
@@ -15,7 +15,7 @@ import { FadeUp } from "~/components/ui/fade-up";
 import { formatPremiumPrice } from "~/consts";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
-import { getCurrentLocale } from "~/shared/i18n";
+import { getCurrentLocale, localizeHead } from "~/shared/i18n";
 import {
 	getCategoryStartingPrice,
 	getDisplayCategoryName,
@@ -352,7 +352,7 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = () => {
+export const head: DocumentHead = localizeHead(() => {
 	return {
 		title: _`head.pricelist.title`,
 		meta: [
@@ -362,4 +362,4 @@ export const head: DocumentHead = () => {
 			},
 		],
 	};
-};
+});

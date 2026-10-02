@@ -1,6 +1,6 @@
-import { component$, Slot } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { component$, Slot } from "@qwik.dev/core";
+import type { RequestHandler } from "@qwik.dev/router";
+import { routeLoader$ } from "@qwik.dev/router";
 import { CookieBanner } from "~/components/ui/cookie-banner";
 import { config } from "~/i18n-config";
 import { logServerEvent } from "~/shared/server-logging";
@@ -27,11 +27,16 @@ export const onRequest: RequestHandler = ({ params, error }) => {
 
 // Keep the HTML window short: each Cloud Run revision only ships its own hashed
 // /build/ chunks, so long-lived stale HTML can reference chunks that no longer exist.
-export const onGet: RequestHandler = async ({ cacheControl }) => {
-	cacheControl({
-		staleWhileRevalidate: 60 * 10,
-		maxAge: 60,
-	});
+export const onGet: RequestHandler = async ({
+	cacheControl,
+	internalRequest,
+}) => {
+	if (internalRequest !== "loader") {
+		cacheControl({
+			staleWhileRevalidate: 60 * 10,
+			maxAge: 60,
+		});
+	}
 };
 
 export const useContactLoader = routeLoader$<Contact | null>(async (event) => {

@@ -1,6 +1,7 @@
-import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import type { DocumentHead } from "@qwik.dev/router";
 import { _ } from "compiled-i18n";
+import { localizeHead } from "~/shared/i18n";
 
 export default component$(() => {
 	const sections = [
@@ -112,7 +113,7 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = () => {
+export const head: DocumentHead = localizeHead(() => {
 	return {
 		title: _`head.privacy.title`,
 		meta: [
@@ -122,4 +123,4 @@ export const head: DocumentHead = () => {
 			},
 		],
 	};
-};
+});

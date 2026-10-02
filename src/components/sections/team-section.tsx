@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
 import { ExpandableText } from "~/components/ui/expandable-text";

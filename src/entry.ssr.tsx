@@ -1,14 +1,15 @@
-import { getLocale } from "@builder.io/qwik";
-import { isDev } from "@builder.io/qwik/build";
+import { getClientManifest, getLocale } from "@qwik.dev/core";
+import { isDev } from "@qwik.dev/core/build";
 import {
 	type RenderOptions,
 	type RenderToStreamOptions,
 	renderToStream,
-} from "@builder.io/qwik/server";
-import { manifest } from "@qwik-client-manifest";
+} from "@qwik.dev/core/server";
 import { setLocaleGetter } from "compiled-i18n";
 import { config } from "./i18n-config";
 import Root from "./root";
+
+const manifest = getClientManifest();
 
 // compiled-i18n resolves the locale per translation from Qwik's request context.
 setLocaleGetter(() => getLocale(config.defaultLocale.lang));
@@ -29,6 +30,14 @@ export default function (opts: RenderToStreamOptions) {
 		containerAttributes: {
 			lang: serverData?.locale || config.defaultLocale.lang,
 			...containerAttributes,
+		},
+		streaming: {
+			...opts.streaming,
+			inOrder: {
+				strategy: "auto",
+				maximumInitialChunk: 50000,
+				maximumChunk: 30000,
+			},
 		},
 	});
 }

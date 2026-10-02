@@ -1,5 +1,6 @@
-import { component$ } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import type { RequestHandler } from "@qwik.dev/router";
+import { routeLoader$ } from "@qwik.dev/router";
 import { config } from "~/i18n-config";
 
 export const onGet: RequestHandler = async ({ redirect }) => {
@@ -9,3 +10,4 @@ export const onGet: RequestHandler = async ({ redirect }) => {
 export default component$(() => {
 	return null;
 });
+export const useV1NavigationProbe = routeLoader$(() => null);

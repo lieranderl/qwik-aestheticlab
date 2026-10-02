@@ -1,5 +1,4 @@
-import type { PropFunction } from "@builder.io/qwik";
-import { component$, useId } from "@builder.io/qwik";
+import { component$, type QRL, useId } from "@qwik.dev/core";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
 import { _ } from "compiled-i18n";
 import { bookingLocationId } from "~/consts";
@@ -14,7 +13,7 @@ export interface ServiceCardProps {
 	image: string;
 	serviceId: string;
 	location?: string;
-	customAction$?: PropFunction<() => void>;
+	customAction$?: QRL<() => void>;
 	buttonLabel?: string;
 	showBooking?: boolean;
 	duration?: string | number;

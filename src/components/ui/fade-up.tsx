@@ -1,10 +1,10 @@
 import {
 	component$,
-	type PropFunction,
+	type QRL,
 	Slot,
 	useSignal,
 	useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 interface SharedObserverEntry {
 	callbacks: WeakMap<Element, (entry: IntersectionObserverEntry) => void>;
@@ -47,7 +47,7 @@ export interface FadeUpProps {
 	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
 	class?: string;
-	onClick$?: PropFunction<() => void>;
+	onClick$?: QRL<() => void>;
 }
 
 export const FadeUp = component$(

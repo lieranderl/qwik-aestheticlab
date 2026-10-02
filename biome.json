@@ -11,6 +11,9 @@
 	},
 	"linter": {
 		"enabled": true,
+		"domains": {
+			"qwik": "recommended"
+		},
 		"rules": {
 			"preset": "recommended",
 			"complexity": {

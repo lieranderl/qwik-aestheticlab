@@ -1,4 +1,4 @@
-import { $, component$, useOnWindow, useSignal } from "@builder.io/qwik";
+import { $, component$, useOnWindow, useSignal } from "@qwik.dev/core";
 import { HiArrowUpOutline } from "@qwikest/icons/heroicons";
 import { _ } from "compiled-i18n";
 

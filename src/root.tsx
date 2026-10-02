@@ -1,10 +1,10 @@
-import { component$ } from "@builder.io/qwik";
-import { isDev } from "@builder.io/qwik/build";
+import { component$, useStyles$ } from "@qwik.dev/core";
+import { isDev } from "@qwik.dev/core/build";
 import {
-	QwikCityProvider,
+	QwikRouterProvider,
 	RouterOutlet,
 	ServiceWorkerRegister,
-} from "@builder.io/qwik-city";
+} from "@qwik.dev/router";
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
@@ -14,6 +14,7 @@ import { getGoogleAnalyticsBootstrapScript } from "./shared/cookie-consent";
 import { getCurrentLocale } from "./shared/i18n";
 
 export default component$(() => {
+	useStyles$(`:root{view-transition-name:none}`);
 	/**
 	 * The root of a QwikCity site always start with the <QwikCityProvider> component,
 	 * immediately followed by the document's <head> and <body>.
@@ -21,7 +22,7 @@ export default component$(() => {
 	 * Don't remove the `<head>` and `<body>` elements.
 	 */
 	return (
-		<QwikCityProvider>
+		<QwikRouterProvider viewTransition={true}>
 			<head>
 				<meta charset="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,6 +58,6 @@ export default component$(() => {
 				{!isDev && <GoogleAnalytics />}
 				<RouterOutlet />
 			</body>
-		</QwikCityProvider>
+		</QwikRouterProvider>
 	);
 });

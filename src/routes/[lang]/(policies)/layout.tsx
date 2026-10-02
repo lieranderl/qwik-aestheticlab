@@ -1,4 +1,4 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, Slot } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";

@@ -1,4 +1,4 @@
-import type { RequestEventAction } from "@builder.io/qwik-city";
+import type { RequestEventAction } from "@qwik.dev/router";
 import { type CookieMethodsServer, createServerClient } from "@supabase/ssr";
 import { isRuntimeConfigReady } from "./runtime-config";
 

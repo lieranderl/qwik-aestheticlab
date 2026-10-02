@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { StarRating } from "~/components/ui/star-rating";

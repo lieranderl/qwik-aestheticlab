@@ -5,16 +5,16 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { qwikVite } from "@builder.io/qwik/optimizer";
-import { qwikCity } from "@builder.io/qwik-city/vite";
+import { qwikVite } from "@qwik.dev/core/optimizer";
+import { qwikRouter } from "@qwik.dev/router/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { i18nPlugin } from "compiled-i18n/vite";
 import { defineConfig } from "vitest/config";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import pkg from "./package.json";
-import { config as i18nConfig, localeCodes } from "./src/i18n-config";
+import pkg from "./package.json" with { type: "json" };
+import { config as i18nConfig, localeCodes } from "./src/i18n-config.ts";
 
 type PkgDep = Record<string, string>;
 const { dependencies, devDependencies } = pkg;
@@ -77,6 +77,37 @@ function localImageCacheHeaders() {
 }
 
 /**
+ * compiled-i18n's post-processor JSON.parses the key of each `__$LOCALIZE$__(key, …)`
+ * marker, but Rolldown's minifier may print that key with backticks or single
+ * quotes. Normalize key literals to JSON strings before compiled-i18n's
+ * `generateBundle` (order: "post") inlines the translations.
+ */
+const LOCALIZE_KEY = /__\$LOCALIZE\$__\((`(?:[^`$\\]|\$(?!\{))*`|'[^'\\]*')/g;
+
+export function normalizeLocalizeKeys(code: string) {
+	return code.replace(
+		LOCALIZE_KEY,
+		(_match, literal: string) =>
+			`__$LOCALIZE$__(${JSON.stringify(literal.slice(1, -1))}`,
+	);
+}
+
+function compiledI18nKeyQuotes() {
+	return {
+		name: "compiled-i18n-key-quotes",
+		generateBundle(
+			_options: unknown,
+			bundle: Record<string, { type: string; code?: string }>,
+		) {
+			for (const chunk of Object.values(bundle)) {
+				if (chunk.type === "chunk" && chunk.code?.includes("__$LOCALIZE$__"))
+					chunk.code = normalizeLocalizeKeys(chunk.code);
+			}
+		},
+	};
+}
+
+/**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
 
@@ -88,6 +119,9 @@ export default defineConfig(({ mode }) => {
 			alias: {
 				"~": path.resolve(__dirname, "./src"),
 			},
+			// Qwik v1 libraries import "@builder.io/qwik", which only the bundler can
+			// alias to v2, and the runtime image ships production deps only.
+			noExternal: ["@qwikest/icons"],
 		},
 		test: {
 			globals: true,
@@ -110,9 +144,10 @@ export default defineConfig(({ mode }) => {
 		plugins: [
 			localImageCacheHeaders(),
 			tailwindcss(),
-			!isTest && qwikCity(),
+			!isTest && qwikRouter({ strictLoaders: false }),
 			qwikVite(),
 			// Inlines translations into per-locale client builds under build/<locale>/
+			compiledI18nKeyQuotes(),
 			i18nPlugin({
 				locales: localeCodes,
 				defaultLocale: i18nConfig.defaultLocale.lang,
@@ -130,8 +165,15 @@ export default defineConfig(({ mode }) => {
 			// For example ['better-sqlite3'] if you use that in server functions.
 			exclude: [],
 		},
-		define: {
-			"process.env": {}, // optional, for compatibility
+		environments: {
+			// Client-only: a global define would also rewrite the router's
+			// `process.env[key]` lookups in SSR dev (v2 bundles it there), hiding
+			// SUPABASE_* from `requestEv.env`.
+			client: {
+				define: {
+					"process.env": {}, // optional, for compatibility
+				},
+			},
 		},
 		build: {
 			minify: true,
@@ -194,7 +236,7 @@ function errorOnDuplicatesPkgDeps(
 	);
 
 	// any errors for missing "qwik-city-plan"
-	// [PLUGIN_ERROR]: Invalid module "@qwik-city-plan" is not a valid package
+	// [PLUGIN_ERROR]: Invalid module "@qwik-router-config" is not a valid package
 	msg = `Move qwik packages ${qwikPkg.join(", ")} to devDependencies`;
 
 	if (qwikPkg.length > 0) {

@@ -1,5 +1,5 @@
-import { component$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { _ } from "compiled-i18n";
 import BirdLogo from "~/media/Bird.svg?jsx";

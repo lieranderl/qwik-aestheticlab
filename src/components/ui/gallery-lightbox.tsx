@@ -1,4 +1,4 @@
-import { $, component$, type Signal } from "@builder.io/qwik";
+import { $, component$, type Signal } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import ImgChromeManicure from "~/media/gallery/atelier/chrome-manicure.jpg?jsx";
 import ImgCoralManicure from "~/media/gallery/atelier/coral-manicure.jpg?jsx";

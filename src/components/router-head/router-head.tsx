@@ -1,5 +1,5 @@
-import { component$ } from "@builder.io/qwik";
-import { useDocumentHead, useLocation } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import { useDocumentHead, useLocation } from "@qwik.dev/router";
 import { SITE_METADATA } from "~/constants/metadata";
 import { config } from "~/i18n-config";
 

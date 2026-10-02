@@ -4,8 +4,8 @@ import {
 	useOnWindow,
 	useSignal,
 	useVisibleTask$,
-} from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+} from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router";
 import { HiBars3Outline, HiXMarkOutline } from "@qwikest/icons/heroicons";
 import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
@@ -103,7 +103,9 @@ export const Navigation = component$(() => {
 		const hero = document.getElementById("hero");
 		if (hero) observer.observe(hero);
 
-		cleanup(() => observer.disconnect());
+		cleanup(() => {
+			void (() => observer.disconnect())();
+		});
 	});
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: Focus and scroll lock require browser DOM APIs.

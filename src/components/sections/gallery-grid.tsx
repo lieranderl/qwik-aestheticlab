@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { _ } from "compiled-i18n";
 import {

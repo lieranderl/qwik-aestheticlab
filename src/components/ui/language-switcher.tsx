@@ -1,11 +1,5 @@
-import {
-	$,
-	component$,
-	useId,
-	useOnDocument,
-	useSignal,
-} from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { $, component$, useId, useOnDocument, useSignal } from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router";
 import { _ } from "compiled-i18n";
 import { config } from "~/i18n-config";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";

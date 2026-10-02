@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { HiChevronDownOutline } from "@qwikest/icons/heroicons";
 import { _ } from "compiled-i18n";
 

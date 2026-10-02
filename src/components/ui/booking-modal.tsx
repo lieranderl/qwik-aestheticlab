@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { baseUrlBooking } from "~/consts";
 import { resolveBookingLocation } from "~/shared/booking";

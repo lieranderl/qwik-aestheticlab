@@ -6,7 +6,7 @@
 		"module": "ESNext",
 		"jsx": "react-jsx",
 		"moduleDetection": "force",
-		"jsxImportSource": "@builder.io/qwik",
+		"jsxImportSource": "@qwik.dev/core",
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,

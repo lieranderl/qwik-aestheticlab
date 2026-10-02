@@ -4,7 +4,7 @@ import {
 	useComputed$,
 	useOnWindow,
 	useSignal,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";

@@ -1,5 +1,5 @@
-import { component$ } from "@builder.io/qwik";
-import { type DocumentHead, useLocation } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import { type DocumentHead, useLocation } from "@qwik.dev/router";
 import { _ } from "compiled-i18n";
 import { BookingCtaSection } from "~/components/sections/booking-cta-section";
 import { ContactSection } from "~/components/sections/contact-section";
@@ -12,6 +12,7 @@ import { ReviewsSection } from "~/components/sections/reviews-section";
 import { ServiceGrid } from "~/components/sections/service-grid";
 import { TeamSection } from "~/components/sections/team-section";
 import { ScrollToTop } from "~/components/ui/scroll-to-top";
+import { localizeHead } from "~/shared/i18n";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -70,7 +71,7 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = () => {
+export const head: DocumentHead = localizeHead(() => {
 	return {
 		title: _`head.home.title`,
 		meta: [
@@ -80,4 +81,4 @@ export const head: DocumentHead = () => {
 			},
 		],
 	};
-};
+});

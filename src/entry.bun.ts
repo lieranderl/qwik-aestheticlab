@@ -1,16 +1,16 @@
-import { createQwikCity } from "@builder.io/qwik-city/middleware/bun";
-import qwikCityPlan from "@qwik-city-plan";
-import { manifest } from "@qwik-client-manifest";
+import { getClientManifest } from "@qwik.dev/core";
+import { createQwikRouter } from "@qwik.dev/router/middleware/bun";
 import { isRuntimeConfigReady } from "~/shared/runtime-config";
 import { applySecurityHeaders } from "~/shared/security-headers";
 import { logServerEvent } from "~/shared/server-logging";
 import { isSupabaseDependencyReady } from "~/shared/supabase-readiness";
 import render from "./entry.ssr";
 
+const manifest = getClientManifest();
+
 // Create the Qwik City Bun middleware
-const { router, notFound, staticFile } = createQwikCity({
+const { router, staticFile } = createQwikRouter({
 	render,
-	qwikCityPlan,
 	manifest,
 });
 
@@ -107,7 +107,10 @@ Bun.serve({
 		const response =
 			(await staticFile(adjustedRequest)) ??
 			(await router(adjustedRequest)) ??
-			(await notFound(adjustedRequest));
+			(await new Response("Not Found", {
+				status: 404,
+				headers: { "Content-Type": "text/html; charset=utf-8" },
+			}));
 
 		if (response) {
 			const url = new URL(adjustedRequest.url);
