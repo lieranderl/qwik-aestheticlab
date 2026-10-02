@@ -293,7 +293,7 @@ jobs:
     if: github.event_name == 'release'
     needs: production_prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     environment: production
     permissions:
       actions: read
@@ -328,6 +328,7 @@ jobs:
           PREVIOUS: ${{ needs.production_prepare.outputs.previous }}
           CANDIDATE_URL: ${{ needs.production_prepare.outputs.candidate_url }}
           URL: ${{ env.PROD_URL }}
+          CANARY_BAKE_SECONDS: "300"
         run: |
           promotion_complete=false
           require_watchdog() {
@@ -368,12 +369,29 @@ jobs:
           trap 'exit 130' INT TERM
 
           require_watchdog initial
+          canary_started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=10,$PREVIOUS=90" --quiet
           ./scripts/smoke-deployment.sh "$CANDIDATE_URL"
 
           CANARY_STATE=$(gcloud run services describe "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --format=json)
           test "$(jq --arg revision "$REVISION" '[.status.traffic[] | select(.revisionName == $revision and .percent == 10)] | length' <<<"$CANARY_STATE")" = "1"
           test "$(jq --arg revision "$PREVIOUS" '[.status.traffic[] | select(.revisionName == $revision and .percent == 90)] | length' <<<"$CANARY_STATE")" = "1"
+
+          # Bake: drive the public URL so roughly 10% of requests reach the candidate.
+          bake_deadline=$(( $(date +%s) + CANARY_BAKE_SECONDS ))
+          while (( $(date +%s) < bake_deadline )); do
+            ./scripts/smoke-deployment.sh "$URL"
+            sleep 30
+          done
+          sleep 30 # allow request logs to reach Cloud Logging
+
+          # Fail closed: an unreadable log query aborts and rolls back via the EXIT trap.
+          CANARY_ERRORS=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"$PROD_SERVICE\" AND resource.labels.revision_name=\"$REVISION\" AND httpRequest.status>=500 AND timestamp>=\"$canary_started_at\"" --project="$GCP_PROJECT" --limit=5 --format='value(timestamp,httpRequest.status,httpRequest.requestUrl)')
+          if [[ -n "$CANARY_ERRORS" ]]; then
+            echo "Canary revision $REVISION returned 5xx responses during the bake:" >&2
+            echo "$CANARY_ERRORS" >&2
+            exit 1
+          fi
           gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet
           ./scripts/smoke-deployment.sh "$URL"
 
@@ -403,7 +421,7 @@ jobs:
     if: github.event_name == 'release'
     needs: production_prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     environment: production
     permissions:
       actions: read
@@ -448,7 +466,7 @@ jobs:
           TAG: candidate-${{ github.run_id }}
         run: |
 
-          for _ in {1..35}; do
+          for _ in {1..50}; do
             JOB_STATE=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs" --jq '.jobs[] | select(.name == "production") | [.status, (.conclusion // "")] | @tsv')
             JOB_STATUS=$(cut -f1 <<<"$JOB_STATE")
             JOB_CONCLUSION=$(cut -f2 <<<"$JOB_STATE")

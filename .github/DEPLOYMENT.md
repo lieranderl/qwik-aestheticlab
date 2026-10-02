@@ -8,6 +8,7 @@ staging commit → verify → build/scan/attest once → Artifact Registry diges
 GitHub release → resolve the verified digest for the release commit
                → production approval + independent watchdog
                → no-traffic deploy → smoke test → 10% canary
+               → 5-minute bake + candidate 5xx log gate
                → canonical-domain check → 100% or automatic rollback
 ```
 
@@ -16,6 +17,7 @@ GitHub release → resolve the verified digest for the release commit
 - Container tags are lookup metadata. Scan success creates `verified-<full-commit-sha>`; Cloud Run deployments always use the immutable `sha256` digest.
 - Production promotion never rebuilds. A published release must reference the exact commit already verified and deployed to staging; a separate runner reconciles an abandoned 10/90 canary.
 - The protected `production` GitHub environment owns approval and environment-scoped configuration.
+- During the canary bake the workflow smoke-tests the public URL so about 10% of requests reach the candidate, then reads the candidate revision's request logs. Any 5xx, or a failed log query, rolls traffic back to the previous revision. The production deployer needs project `roles/logging.viewer` (declared in `infra/`); apply it through the `infrastructure` workflow before the first release that includes the gate.
 
 Repository/environment configuration:
 
