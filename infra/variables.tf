@@ -169,3 +169,43 @@ variable "container_concurrency" {
   type        = number
   default     = 40
 }
+
+variable "artifact_cleanup_dry_run" {
+  description = "Log Artifact Registry cleanup decisions without deleting images. Set false after reviewing the dry-run logs."
+  type        = bool
+  default     = true
+}
+
+variable "artifact_keep_recent_versions" {
+  description = "Newest image versions always kept, covering current and rollback revisions."
+  type        = number
+  default     = 50
+
+  validation {
+    condition     = var.artifact_keep_recent_versions >= 10
+    error_message = "artifact_keep_recent_versions must keep at least 10 images to protect rollbacks."
+  }
+}
+
+variable "artifact_delete_older_than_days" {
+  description = "Delete images older than this many days unless kept by the recent-versions policy."
+  type        = number
+  default     = 180
+
+  validation {
+    condition     = var.artifact_delete_older_than_days >= 30
+    error_message = "artifact_delete_older_than_days must be at least 30."
+  }
+}
+
+variable "server_error_alert_threshold" {
+  description = "Production 5xx responses tolerated within 5 minutes before alerting."
+  type        = number
+  default     = 5
+}
+
+variable "supabase_failure_alert_threshold" {
+  description = "Production Supabase loader failures tolerated within 5 minutes before alerting."
+  type        = number
+  default     = 10
+}

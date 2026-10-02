@@ -98,6 +98,27 @@ resource "google_artifact_registry_repository" "containers" {
   description   = "Aesthetic Lab deployable containers"
   format        = "DOCKER"
 
+  # Every staging push adds an image. Keep the newest images (current and rollback
+  # revisions) and delete only old images beyond that window.
+  cleanup_policy_dry_run = var.artifact_cleanup_dry_run
+
+  cleanup_policies {
+    id     = "keep-recent-images"
+    action = "KEEP"
+    most_recent_versions {
+      keep_count = var.artifact_keep_recent_versions
+    }
+  }
+
+  cleanup_policies {
+    id     = "delete-old-images"
+    action = "DELETE"
+    condition {
+      tag_state  = "ANY"
+      older_than = "${var.artifact_delete_older_than_days * 24 * 60 * 60}s"
+    }
+  }
+
   depends_on = [google_project_service.required]
 }
 
@@ -426,16 +447,16 @@ resource "google_monitoring_alert_policy" "server_errors" {
   notification_channels = var.notification_channel_ids
 
   conditions {
-    display_name = "5xx response rate is non-zero"
+    display_name = "5xx responses exceed threshold in 5 minutes"
     condition_threshold {
       filter          = "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"${var.production_service_name}\" AND metric.type = \"run.googleapis.com/request_count\" AND metric.labels.response_code_class = \"5xx\""
       comparison      = "COMPARISON_GT"
-      threshold_value = 0
-      duration        = "60s"
+      threshold_value = var.server_error_alert_threshold
+      duration        = "0s"
 
       aggregations {
-        alignment_period     = "60s"
-        per_series_aligner   = "ALIGN_RATE"
+        alignment_period     = "300s"
+        per_series_aligner   = "ALIGN_SUM"
         cross_series_reducer = "REDUCE_SUM"
         group_by_fields      = ["resource.labels.service_name"]
       }
@@ -581,22 +602,48 @@ resource "google_monitoring_alert_policy" "runtime_failure" {
   }
 }
 
+resource "google_logging_metric" "supabase_failures" {
+  name        = "aestheticlab_production_supabase_failures"
+  description = "Supabase loader fetch or configuration failures logged by production."
+  filter      = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND (jsonPayload.message=\"supabase_fetch_failed\" OR jsonPayload.message=\"supabase_configuration_rejected\")"
+
+  metric_descriptor {
+    metric_kind = "DELTA"
+    value_type  = "INT64"
+    unit        = "1"
+  }
+
+  depends_on = [google_project_service.required]
+}
+
 resource "google_monitoring_alert_policy" "supabase_failure" {
   display_name          = "Aesthetic Lab production Supabase loader failure"
   combiner              = "OR"
   notification_channels = var.notification_channel_ids
 
   conditions {
-    display_name = "Application reports Supabase fetch or configuration failure"
-    condition_matched_log {
-      filter = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND (jsonPayload.message=\"supabase_fetch_failed\" OR jsonPayload.message=\"supabase_configuration_rejected\")"
+    # One failed page render logs up to four loader failures, so alert on a
+    # sustained count; a full outage is also covered by the /dependencyz uptime check.
+    display_name = "Supabase loader failures exceed threshold in 5 minutes"
+    condition_threshold {
+      filter          = "resource.type = \"cloud_run_revision\" AND metric.type = \"logging.googleapis.com/user/${google_logging_metric.supabase_failures.name}\""
+      comparison      = "COMPARISON_GT"
+      threshold_value = var.supabase_failure_alert_threshold
+      duration        = "0s"
+
+      aggregations {
+        alignment_period     = "300s"
+        per_series_aligner   = "ALIGN_SUM"
+        cross_series_reducer = "REDUCE_SUM"
+      }
+
+      trigger {
+        count = 1
+      }
     }
   }
 
   alert_strategy {
-    notification_rate_limit {
-      period = "300s"
-    }
     auto_close = "604800s"
   }
 }
@@ -609,7 +656,9 @@ resource "google_monitoring_alert_policy" "unexpected_production_mutation" {
   conditions {
     display_name = "Production changed outside delivery or protected IaC identities"
     condition_matched_log {
-      filter = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.production_service_name}\" AND (protoPayload.methodName:\"Services.UpdateService\" OR protoPayload.methodName:\"SetIamPolicy\") AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.deployer["production"].email}\" AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.iac.email}\""
+      # v1 (gcloud) logs ReplaceService, v2 logs UpdateService; resourceName covers both
+      # "namespaces/<project>/services/<name>" and "projects/.../services/<name>".
+      filter = "logName=\"projects/${var.project_id}/logs/cloudaudit.googleapis.com%2Factivity\" AND protoPayload.serviceName=\"run.googleapis.com\" AND protoPayload.resourceName:\"services/${var.production_service_name}\" AND (protoPayload.methodName:\"Services.CreateService\" OR protoPayload.methodName:\"Services.ReplaceService\" OR protoPayload.methodName:\"Services.UpdateService\" OR protoPayload.methodName:\"Services.DeleteService\" OR protoPayload.methodName:\"Services.SetIamPolicy\") AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.deployer["production"].email}\" AND NOT protoPayload.authenticationInfo.principalEmail=\"${google_service_account.iac.email}\""
     }
   }
 
