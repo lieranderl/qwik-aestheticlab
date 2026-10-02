@@ -101,7 +101,7 @@ cacheControl({
 
 - Dynamic HTML is fresh for 60 seconds, then eligible for stale-while-revalidate for 10 minutes. The window stays short because a new revision does not serve the previous revision's hashed chunks.
 - Hashed Vite assets use long-lived immutable caching.
-- Translation changes require a rebuild because Qwik Speak inlines translations.
+- Translation changes require a rebuild because compiled-i18n inlines translations into per-locale client bundles.
 
 ## Release
 

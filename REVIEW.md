@@ -4,7 +4,7 @@
 - Prioritize correctness, security, regressions, missing tests, and deployment safety over style.
 - Start with findings ordered by severity; cite file and tight line range for each finding.
 - State “No findings” when appropriate, then list residual test gaps or risks.
-- Verify new visible strings use `inlineTranslate()` with `@@` and all locales remain synchronized.
+- Verify new visible strings use `` _`section.key` `` from `compiled-i18n` and all five locales remain synchronized (`bun run i18n.check`).
 - Verify loaders stay in route files, preserve locale/cache behavior, use the per-request client, and fail soft.
 - Verify UI follows Qwik and existing DaisyUI primitives, remains keyboard-accessible, and uses semantic tokens.
 - Verify dependency changes are necessary, reflected in `bun.lock`, and free of avoidable high/critical advisories.

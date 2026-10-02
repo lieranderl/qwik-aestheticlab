@@ -1,261 +1,138 @@
-# i18n Guide — Qwik Speak Patterns
+# i18n Guide — compiled-i18n Patterns
 
-This project uses [qwik-speak](https://github.com/nicolo-ribaudo/qwik-speak) for internationalization. This guide documents the exact patterns, workflows, and rules for working with translations.
+This project uses [compiled-i18n](https://github.com/wmertens/compiled-i18n) for UI strings. At build time, translations are inlined into a separate client build for each locale. On the server, they are resolved per request from in-memory catalogs. No translation runtime or catalog is shipped to the browser.
 
 ## Supported Locales
 
 | Locale | Language | Region |
-|--------|----------|--------|
+| --- | --- | --- |
 | `en-BE` | English | Belgium (default) |
 | `ru-BE` | Russian | Belgium |
 | `nl-BE` | Dutch | Belgium |
 | `fr-BE` | French | Belgium |
 | `uk-BE` | Ukrainian | Belgium |
 
-Default locale: `en-BE`
-Currency: `EUR`
-Timezone: `Europe/Brussels`
+Default locale: `en-BE` · Currency: `EUR` · Timezone: `Europe/Brussels`.
 
-Configuration lives in `src/speak-config.ts`.
+Configuration lives in `src/i18n-config.ts`. Keep it framework-free, because `vite.config.ts` imports it.
 
 ## Translation Files
 
-```
+```text
 i18n/
-├── en-BE/app.json
-├── ru-BE/app.json
-├── nl-BE/app.json
-├── fr-BE/app.json
-└── uk-BE/app.json
+├── en-BE.json   # source of English text
+├── nl-BE.json
+├── fr-BE.json
+├── ru-BE.json
+└── uk-BE.json
 ```
 
-Each file is a flat JSON object with dot-separated keys:
+Each file uses the compiled-i18n format, with flat keys sorted by the plugin:
 
 ```json
 {
-  "app.nav.home": "Home",
-  "app.nav.services": "Services",
-  "app.hero.slogan": "The Art of Natural Beauty"
+  "locale": "nl-BE",
+  "fallback": "en-BE",
+  "name": "Nederlands",
+  "translations": {
+    "nav.home": "Home",
+    "reviews.rating_label $1 $2": "$1 van $2 sterren"
+  }
 }
 ```
 
-## Using Translations in Components
+- Non-default locales set `fallback: "en-BE"` as a runtime safety net. The catalog test still requires every key in every locale.
+- Values may contain HTML only where the call site renders it via `dangerouslySetInnerHTML` (the FAQ answers).
+- Values must not contain a backtick or `${`, because they are inlined into template literals. Write a literal `$` as `$$`.
 
-### Step 1: Import and Initialize
+## Using Translations
 
 ```tsx
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 
-export const MyComponent = component$(() => {
-  const t = inlineTranslate();
-
-  return <h1>{t("app.section.title@@Default English Text")}</h1>;
-});
+export const MyComponent = component$(() => (
+  <h1>{_`section.title`}</h1>
+));
 ```
 
-### The `@@` Pattern
+- Always use the **tagged template** form `` _`key` ``, with `_` imported directly from `compiled-i18n`. Only tagged templates are inlined; calling `_("key")` or re-exporting `_` from a helper is not.
+- Keys must be static. For data-driven lists (e.g. `src/shared/nav-links.ts`), map each key to a literal `` _`key` `` at the call site.
+- `_` works anywhere: components, route `head` exports, and plain functions called during render.
+- There is no inline default anymore. English text lives in `i18n/en-BE.json`, and a missing key renders the key itself.
 
-Every translation call **must** include the `@@` separator with a default English fallback:
+### Parameters
+
+Interpolations become positional placeholders `$1`, `$2`, … in key order:
 
 ```tsx
-t("app.key@@Default Text")
+_`reviews.rating_label ${rating} ${max}`
+// key:   "reviews.rating_label $1 $2"
+// value: "$1 out of $2 stars"
 ```
 
-- The part before `@@` is the translation key (looked up in `app.json` files).
-- The part after `@@` is the fallback displayed if the key is missing.
-- **Never omit the `@@` fallback** — it serves as both documentation and a safety net.
+Translators may reorder placeholders, but each locale must use the same placeholder set as `en-BE`.
 
-### Key Naming Convention
+### Current Locale
 
-Keys follow a hierarchical dot notation:
+Use `getCurrentLocale()` from `~/shared/i18n` (e.g. for `Intl.NumberFormat`). It returns the request locale during SSR and the container's `q:locale` in the browser. Do not read `currentLocale` from compiled-i18n on the server, because it is shared across concurrent requests.
 
-```
-app.<section>.<element>
-```
+## Key Naming
 
-Examples:
+`<section>.<element>` in `snake_case`, e.g. `nav.home`, `services.view_full`, `faq.booking.question`, `head.home.title`.
 
-| Key | Usage |
-|-----|-------|
-| `app.nav.home` | Navigation link label |
-| `app.hero.slogan` | Hero section tagline |
-| `app.services.title` | Services section heading |
-| `app.services.subtitle` | Services section subheading |
-| `app.book.book_now` | Booking button text |
-| `app.contact.location` | Contact section label |
-| `app.cookies.title` | Cookie banner heading |
-| `app.footer.copyright` | Footer copyright text |
-| `app.reviews.title` | Reviews section heading |
-| `app.team.title` | Team section heading |
-| `app.common.read_more` | Shared UI string |
+1. Use the section or domain as the first segment (`nav`, `hero`, `services`, `book`, `contact`, `team`, `footer`, `cookies`, `common`, `privacy`, `notice`, `head`, …).
+2. Reuse `common.*` keys for strings shared across sections (e.g. `common.close`).
+3. Keep keys descriptive. To change English copy, edit the value in `en-BE.json` and keep the key.
 
-### Rules for New Keys
+## Workflow
 
-1. Always prefix with `app.`.
-2. Use the section/domain as the second segment (`nav`, `hero`, `services`, `book`, `contact`, `team`, `about`, `footer`, `cookies`, `common`, `privacy`, `instagram`).
-3. Use `snake_case` for the final segment.
-4. Keep keys descriptive but concise.
-5. Reuse `app.common.*` keys for strings shared across multiple sections (e.g., "Read More", "Close").
+| Task | Command |
+| --- | --- |
+| Add missing / prune unused keys in all five catalogs | `bun run i18n.extract` |
+| Check catalogs (also part of `bun run test`) | `bun run i18n.check` |
+
+1. Add `` _`section.new_key` `` in code.
+2. Run `bun run i18n.extract`. A production client build appends `"section.new_key": ""` to every `i18n/<locale>.json` and removes keys no longer used in `src/`.
+3. Fill in the value in **all five** files (English in `en-BE.json`).
+4. Run `bun run i18n.check`. `src/shared/i18n-catalog.spec.ts` fails if any locale has missing, extra, or empty keys, or placeholders that differ from `en-BE`.
+
+In CI (`CI` set), builds never write to `i18n/`. Missing keys are only logged, and the catalog test fails.
+
+## Locale Routing
+
+| File | Responsibility |
+| --- | --- |
+| `src/routes/index.tsx` | `302` from `/` to `/en-BE/` |
+| `src/routes/plugin.ts` | Sets Qwik's request locale from `params.lang` (default when unsupported) |
+| `src/routes/[...lang]/layout.tsx` | `404` for unsupported locale prefixes; locale-aware `routeLoader$`s |
+| `src/entry.ssr.tsx` | `setLocaleGetter(() => getLocale(...))`, `<html lang>`, and the per-locale asset base `/build/<locale>/` |
+| `src/components/ui/language-switcher.tsx` | Full-page `<a>` navigation between locale prefixes (each locale has its own client bundle) |
 
 ## Locale-Specific Database Fields
 
-Supabase tables store content in multiple languages using suffixed columns:
-
-```
-name, name_ru, name_nl, name_fr, name_uk
-description, description_ru, description_nl, description_fr, description_uk
-about, about_ru, about_nl, about_fr, about_uk
-```
-
-The **unsuffixed** column is always English.
-
-### Where Locale Mapping Happens
-
-Locale-specific field selection happens **exclusively** in `routeLoader$` functions inside `src/routes/[...lang]/layout.tsx`:
-
-```tsx
-const shortlocal = requestEv.locale().split("-")[0];
-
-const localizedName =
-  shortlocal === "ru" ? service.name_ru
-  : shortlocal === "nl" ? service.name_nl
-  : shortlocal === "fr" ? service.name_fr
-  : shortlocal === "uk" ? service.name_uk
-  : service.name;
-```
-
-**Never** perform locale-based field selection inside UI components. Components receive already-localized data via props.
-
-### Adding a New Locale to Database Fields
-
-If a new language needs Supabase support:
-
-1. Add the new column to the Supabase table (e.g., `name_de` for German).
-2. Add the mapping branch in the relevant `routeLoader$` in `layout.tsx`.
-3. Update `src/types.ts` to include the new field in the interface.
+Supabase stores content in suffixed columns (`name`, `name_ru`, `name_nl`, `name_fr`, `name_uk`; the unsuffixed column is English). Loaders in `src/routes/[...lang]/layout.tsx` pass `requestEv.locale()` to `src/shared/supabase-data.ts`, which selects only that locale's columns (`serviceColumns`, `staffColumns`, …) and projects them via `src/shared/locale-content.ts`. Never select or map locale columns in UI components.
 
 ## Adding a New Supported Locale
 
-To add an entirely new locale (e.g., `de-BE`):
+1. Add it to `supportedLocales` in `src/i18n-config.ts`. Vite, routing, the language switcher, hreflang, and the catalog test all derive from this list.
+2. Create `i18n/<locale>.json` with `locale`, `fallback: "en-BE"`, `name`, and all keys translated.
+3. If Supabase content is localized: add the columns, then extend `src/shared/locale-content.ts` / `supabase-data.ts` and `src/types.ts`.
+4. Add the locale to the localized-copy assertions in `e2e/home.spec.ts`.
 
-### 1. Update Speak Config
+## Dev vs Production
 
-`src/speak-config.ts`:
-
-```tsx
-supportedLocales: [
-  { lang: "en-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-  { lang: "ru-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-  { lang: "nl-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-  { lang: "fr-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-  { lang: "uk-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-  { lang: "de-BE", currency: "EUR", timeZone: "Europe/Brussels" }, // new
-],
-```
-
-### 2. Update Vite Config
-
-`vite.config.ts` — add to the `qwikSpeakInline` plugin:
-
-```tsx
-qwikSpeakInline({
-  supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE", "de-BE"],
-  defaultLang: "en-BE",
-  assetsPath: "i18n",
-}),
-```
-
-### 3. Create Translation File
-
-Create `i18n/de-BE/app.json` — copy from `en-BE/app.json` and translate all values.
-
-### 4. Update Extract Script
-
-`package.json`:
-
-```json
-"qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-BE,nl-BE,fr-BE,ru-BE,uk-BE,de-BE --assetsPath=i18n"
-```
-
-### 5. Update Data Loaders
-
-Add locale mapping branches in `src/routes/[...lang]/layout.tsx` for the new short code.
-
-### 6. Update Types
-
-Add new locale-specific fields to `src/types.ts` interfaces if DB columns are added.
-
-## Translation Extraction Workflow
-
-After adding new `t("app.key@@Default")` calls in code:
-
-```bash
-bun run qwik-speak-extract
-```
-
-This scans the codebase, finds all `@@` keys, and:
-
-- Adds missing keys to all `i18n/<locale>/app.json` files.
-- Uses the `@@Default Text` as the value for new keys in `en-BE`.
-- Leaves other locales with the English default (must be manually translated).
-
-**Always run extraction before committing** if new translation keys were added.
-
-## Translation in Route Files vs Components
-
-| Location | Method |
-|----------|--------|
-| Components (`components/sections/*`, `components/ui/*`) | `const t = inlineTranslate();` then `t("key@@Default")` |
-| Route page files (`routes/[...lang]/index.tsx`, etc.) | Same — `inlineTranslate()` works everywhere inside `component$` |
-| Route loaders (`routeLoader$`) | No translations — loaders deal with raw data. Locale field mapping only. |
-| Non-component code (utilities, constants) | Do not use `t()` — pass translated strings from components instead. |
-
-## Build-Time Inlining
-
-The `qwikSpeakInline` Vite plugin inlines translations at build time for each supported locale. This means:
-
-- Translation lookups have zero runtime cost in production.
-- All locale JSON files are consumed at build time, not shipped to the client.
-- If a translation key is missing from a locale file, the `@@Default` fallback is used.
+- **Dev** (`bun run dev`): translations are looked up at runtime on both server and client. The client reads the locale from `<html lang>`.
+- **Production** (`bun run build`): the client is built once, then copied into `dist/build/<locale>/` with every `` _`…` `` replaced by its string. The server bundles all catalogs. Playwright runs against dev, so check inlining-sensitive changes with a production build (`bun run build && bun run serve`).
 
 ## Common Mistakes
 
-| Mistake | Correct Approach |
-|---------|-----------------|
-| `t("app.key")` without `@@` fallback | `t("app.key@@Default Text")` |
-| Using `t()` outside `component$` | Pass translated strings as props from a component |
-| Mapping `name_ru` / `name_nl` in UI components | Map in `routeLoader$` in `layout.tsx` |
-| Forgetting to run extract after adding keys | Run `bun run qwik-speak-extract` |
-| Hardcoding English strings in JSX | Wrap with `t("app.section.key@@English Text")` |
-| Using backtick template literals inside `t()` | Use params: `t("app.key@@Hello {{name}}", { name: value })` |
-
-## Parameter Interpolation
-
-Qwik Speak supports parameters in translations:
-
-```tsx
-t("app.greeting@@Hello {{name}}", { name: userName })
-```
-
-In `app.json`:
-
-```json
-{
-  "app.greeting": "Hello {{name}}"
-}
-```
-
-Use double curly braces `{{param}}` for interpolation. Keep parameter names descriptive and consistent across locale files.
-
-## Plural Forms
-
-Qwik Speak supports basic plural handling. Prefer keeping plural logic simple:
-
-```tsx
-const label = count === 1
-  ? t("app.item.singular@@1 item")
-  : t("app.item.plural@@{{count}} items", { count });
-```
-
-For complex plural rules (Russian, Ukrainian have multiple plural forms), handle branching in the component and use separate keys for each form.
+| Mistake | Correct approach |
+| --- | --- |
+| `` _(`key`) `` or `_("key")` | `` _`key` `` |
+| Dynamic key `` _`${prefix}.title` `` | One literal key per string |
+| Re-exporting `_` from a helper module | Import `_` from `compiled-i18n` in each file |
+| Mapping `name_ru` / `name_nl` in UI components | Use the locale-scoped loaders in `layout.tsx` |
+| Leaving `""` values after `i18n.extract` | Translate all five locales; `i18n.check` enforces it |
+| Hardcoding English strings in JSX | Add a key and use `` _`section.key` `` |
+| `<Link>` between locales | Plain `<a href>`: each locale has its own client bundle |

@@ -29,7 +29,7 @@ Aesthetic Lab is a multilingual marketing and booking site for a beauty studio i
 | Language | TypeScript `7` |
 | Styling | Tailwind CSS `4`, DaisyUI `5` |
 | Data | Supabase SSR `0.12` |
-| i18n | Qwik Speak |
+| i18n | compiled-i18n |
 | Tests | Vitest with V8 coverage, Playwright |
 | Quality | Biome |
 | Hosting | Google Cloud Run |
@@ -80,7 +80,8 @@ Open [http://localhost:5173](http://localhost:5173).
 | `bun run verify` | Run Biome, type checks, unit coverage, and production build. |
 | `bun run biome` | Run Biome with fixes. |
 | `bunx --bun biome ci .` | Check formatting and lint without modifying files. |
-| `bun run qwik-speak-extract` | Extract translation keys into locale files. |
+| `bun run i18n.extract` | Add missing / prune unused translation keys in all locale files. |
+| `bun run i18n.check` | Verify all five locale catalogs match the keys used in `src/`. |
 | `bun run docker.build` | Build local Docker image `aestheticlab:local`. |
 | `make help` | Show Makefile targets. |
 
@@ -94,9 +95,9 @@ src/
 |-- routes/          # Qwik City routes and loaders
 |-- shared/          # Supabase, runtime config, security, locale helpers
 |-- entry.bun.ts     # Bun production server
-`-- speak-config.ts  # Locale configuration
+`-- i18n-config.ts   # Locale configuration
 
-i18n/                # Qwik Speak locale files
+i18n/                # compiled-i18n locale catalogs (<locale>.json)
 e2e/                 # Playwright specs
 infra/               # OpenTofu infrastructure
 scripts/             # Smoke/deployment helper scripts
@@ -109,8 +110,8 @@ scripts/             # Smoke/deployment helper scripts
 - Use Qwik APIs only: `component$`, `routeLoader$`, signals/stores, and `$()` handlers.
 - Keep Supabase reads server-side in route loaders.
 - Select explicit Supabase columns and validate/project raw rows before returning loader data.
-- Use `inlineTranslate()` with `key@@Default English Text` for user-facing strings.
-- Run `bun run qwik-speak-extract` after adding translation keys.
+- Use `` _`section.key` `` from `compiled-i18n` for user-facing strings.
+- Run `bun run i18n.extract` after adding translation keys, then translate all five locales.
 - Use existing DaisyUI/Tailwind patterns and `src/components/ui/*` primitives.
 
 More detailed guides:

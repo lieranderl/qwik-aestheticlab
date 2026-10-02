@@ -30,7 +30,7 @@ Choose **UI** when:
 
 | Component | File | Anchor `id` | Data Source |
 | ----------- | ------ | ------------- | ------------- |
-| `Navigation` | `navigation.tsx` | — (fixed header) | `inlineTranslate`, `useLocation` |
+| `Navigation` | `navigation.tsx` | — (fixed header) | `_` (compiled-i18n), `useLocation` |
 | `HeroSection` | `hero-section.tsx` | — (top of page) | Translations only |
 | `ServiceGrid` | `service-grid.tsx` | `#services` | `services`, `serviceCategories`, `location` props |
 | `TeamSection` | `team-section.tsx` | `#team` | `technicians` prop |
@@ -67,7 +67,7 @@ File naming: `kebab-case.tsx`.
 
 ```tsx
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { FadeUp } from "~/components/ui/fade-up";
 
 interface MySectionProps {
@@ -76,8 +76,6 @@ interface MySectionProps {
 }
 
 export const MySection = component$<MySectionProps>(({ items }) => {
-  const t = inlineTranslate();
-
   return (
     <section id="my-section" class="section-shell bg-base-200">
       <div class="custom-container">
@@ -85,11 +83,11 @@ export const MySection = component$<MySectionProps>(({ items }) => {
         <div class="mb-16 text-center">
           <FadeUp>
             <h2 class="section-heading mb-4">
-              {t("app.my_section.title@@Section Title")}
+              {_`my_section.title`}
             </h2>
             <div class="h-px w-20 bg-primary mx-auto" />
             <p class="section-lead mt-6 max-w-lg mx-auto">
-              {t("app.my_section.subtitle@@Section subtitle text.")}
+              {_`my_section.subtitle`}
             </p>
           </FadeUp>
         </div>
@@ -115,7 +113,7 @@ export const MySection = component$<MySectionProps>(({ items }) => {
 - **Container** — `<div class="custom-container">` for consistent max-width and padding.
 - **Section header** — `font-qestero` heading + `h-px w-20 bg-primary mx-auto` divider line + `font-main` subtitle.
 - **Staggered animation** — `FadeUp` with incremental `delay={index * 60}` and cap long lists so content is not delayed excessively.
-- **Translations** — All user-facing strings wrapped with `t("app.section.key@@Default")`.
+- **Translations** — All user-facing strings use `` _`section.key` `` from `compiled-i18n`.
 - **Background alternation** — Sections alternate between `bg-base-200` (muted) and no background class (inherits page bg). Check adjacent sections in `index.tsx` to pick the right one.
 
 ### 4. Compose in the Route Page
@@ -249,7 +247,7 @@ Entrance motion combines opacity, blur, and slight directional translation. Avoi
 ```tsx
 <Booking
   id="hero-book-btn"
-  text={t("app.book.book_app@@Book Appointment")}
+  text={_`book.book_app`}
   location="372146"
   classes="btn btn-primary btn-lg"
 />
@@ -257,7 +255,7 @@ Entrance motion combines opacity, blur, and slight directional translation. Avoi
 // Book with a specific staff member
 <Booking
   id={`modal_tech_${tech.id}`}
-  text={t("app.book.book_now@@Book Now")}
+  text={_`book.book_now`}
   location="372146"
   staff={String(tech.id)}
   classes="btn btn-outline btn-neutral rounded-full"
@@ -380,7 +378,7 @@ Before submitting a new component, verify:
 
 - [ ] Uses `component$` (not a plain function or React component).
 - [ ] Props are typed with an interface.
-- [ ] All user-facing strings use `t("app.section.key@@Default")`.
+- [ ] All user-facing strings use `` _`section.key` `` with values in all five `i18n/<locale>.json` files.
 - [ ] Uses DaisyUI component classes where applicable.
 - [ ] Uses theme color tokens — no hardcoded hex values.
 - [ ] Uses `font-qestero` for display text, `font-main` for body text.
@@ -392,4 +390,4 @@ Before submitting a new component, verify:
 - [ ] Event handlers use `$()` wrapper or `onClick$={$(() => ...)}` syntax.
 - [ ] No `useEffect`, `useState`, `useRef`, or other React patterns.
 - [ ] Biome passes: `bun run biome`.
-- [ ] If new translation keys were added: `bun run qwik-speak-extract` was run.
+- [ ] If translation keys changed: `bun run i18n.extract` was run and `bun run i18n.check` passes.

@@ -11,6 +11,6 @@ Use this skill for application-code work that needs a fast reminder of the repoâ
 
 - Qwik, not React
 - DaisyUI first
-- `inlineTranslate()` with `@@`
+- `` _`section.key` `` from `compiled-i18n`, all five locales in sync
 - loaders in route files
 - exact commands and verification rules from `AGENTS.md`

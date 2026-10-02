@@ -61,7 +61,7 @@ Qwik auto-splits at `$` boundaries. Do not:
 | Utilities/shared | `kebab-case.ts` | `locale-navigation.ts` |
 | Types | `kebab-case.ts` or single `types.ts` | `types.ts` |
 | Routes | Directory-based (Qwik City) | `routes/[...lang]/pricelist/index.tsx` |
-| Translation assets | `<locale>/app.json` | `i18n/en-BE/app.json` |
+| Translation catalogs | `<locale>.json` | `i18n/en-BE.json` |
 
 ## Formatting (Biome)
 
@@ -82,7 +82,7 @@ Run `bun run biome` to auto-fix. Husky + lint-staged runs this on commit.
 Group imports in this order with a blank line between groups:
 
 1. Qwik framework (`@builder.io/qwik`, `@builder.io/qwik-city`)
-2. Third-party libraries (`qwik-speak`, `luxon`, etc.)
+2. Third-party libraries (`compiled-i18n`, `luxon`, etc.)
 3. Project aliases (`~/components/...`, `~/shared/...`, `~/types`)
 4. Relative imports (`./`, `../`)
 5. Asset imports (`~/media/...?jsx`)

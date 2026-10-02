@@ -3,7 +3,7 @@
 ## Scope
 
 - Canonical policy; nested `AGENTS.md` files override it for their subtree. Preserve user changes and requested scope.
-- Aesthetic Lab is a Qwik City/Qwik Speak site with Supabase SSR data, DaisyUI 5, Tailwind CSS 4, Bun, OpenTofu, and Cloud Run.
+- Aesthetic Lab is a Qwik City site with compiled-i18n with Supabase SSR data, DaisyUI 5, Tailwind CSS 4, Bun, OpenTofu, and Cloud Run.
 - Follow `plans/README.md` for multi-step work. Review-only tasks use `REVIEW.md`; `code_review.md` is a compatibility pointer.
 
 ## Commands
@@ -21,7 +21,8 @@
 | E2E tests | `bun run test.e2e` |
 | Production build | `bun run build` |
 | Main local verification | `bun run verify` |
-| Translation extraction | `bun run qwik-speak-extract` |
+| Translation extraction (add missing/prune unused keys) | `bun run i18n.extract` |
+| Translation catalog check | `bun run i18n.check` |
 
 ## File-Scoped Commands
 
@@ -48,7 +49,7 @@
 - `src/routes/` owns Qwik City routes, `routeLoader$`, and `DocumentHead`.
 - `src/components/sections/` owns page sections; `src/components/ui/` owns reusable UI primitives with no data fetching.
 - `src/shared/` owns Supabase, runtime config, security headers, logging, locale, and service helpers.
-- `i18n/` contains Qwik Speak locale assets; update all five locales through extraction when keys change.
+- `i18n/<locale>.json` contains compiled-i18n catalogs; update all five locales through extraction when keys change.
 - `infra/` owns OpenTofu-managed GCP resources; `.github/workflows/` owns delivery automation.
 - `plans/` holds durable execution plans; `docs/prompt-pack.md` holds reusable prompts, not policy.
 
@@ -57,7 +58,7 @@
 - Use Qwik APIs only: `component$`, signals/stores, `$()` handlers; no React APIs.
 - Keep `routeLoader$` in route files. Shared data and locale mapping belong in `src/routes/[...lang]/layout.tsx`; use the per-request Supabase client and fail soft.
 - Use `~/*` imports, typed props, existing `src/components/ui/*` primitives, DaisyUI semantic tokens, and `custom-container`; do not add `tailwind.config.js`.
-- Use `inlineTranslate()` and `key@@Default English Text`; synchronize all five locales with `bun run qwik-speak-extract`.
+- Use `` _`section.key` `` tagged templates imported from `compiled-i18n` (static keys only; English text lives in `i18n/en-BE.json`); synchronize all five locales with `bun run i18n.extract` and `bun run i18n.check`. Use `getCurrentLocale()` from `~/shared/i18n` for the active locale.
 - Route files own `DocumentHead`; preserve Consent Mode v2, accessibility, meaningful image `alt`, and stable image sizing.
 - Biome owns formatting. Do not add ESLint or Prettier.
 
