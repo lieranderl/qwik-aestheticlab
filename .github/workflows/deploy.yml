@@ -394,15 +394,40 @@ jobs:
             exit 1
           fi
 
-          # Version skew: a page from one revision requesting hashed assets from the other
-          # returns 404, which the 5xx gate cannot see. Session affinity should keep this
-          # near zero; a small allowance absorbs best-effort affinity breaks and stale caches.
-          ASSET_404S=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"$PROD_SERVICE\" AND resource.labels.revision_name=(\"$REVISION\" OR \"$PREVIOUS\") AND httpRequest.status=404 AND (httpRequest.requestUrl:\"/build/\" OR httpRequest.requestUrl:\"/assets/\") AND timestamp>=\"$canary_started_at\"" --project="$GCP_PROJECT" --limit=100 --format='value(timestamp,resource.labels.revision_name,httpRequest.requestUrl)')
-          asset_404_count=$(grep -c . <<<"$ASSET_404S" || true)
-          echo "Hashed asset 404s during canary: $asset_404_count (allowed: $CANARY_MAX_ASSET_404)"
-          if (( asset_404_count > CANARY_MAX_ASSET_404 )); then
-            echo "Canary exceeded the hashed-asset 404 allowance (version skew between revisions):" >&2
-            head -20 <<<"$ASSET_404S" >&2
+          # Version skew: a candidate page requesting its hashed assets from the previous
+          # revision gets 404s the 5xx gate cannot see. Count only previous-revision 404s
+          # for paths the candidate really serves, so arbitrary /build/ or /assets/ probes
+          # cannot force a rollback. Session affinity should keep this near zero; the
+          # allowance absorbs best-effort affinity breaks.
+          PREVIOUS_ASSET_404S=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"$PROD_SERVICE\" AND resource.labels.revision_name=\"$PREVIOUS\" AND httpRequest.status=404 AND (httpRequest.requestUrl:\"/build/\" OR httpRequest.requestUrl:\"/assets/\") AND timestamp>=\"$canary_started_at\"" --project="$GCP_PROJECT" --limit=200 --format='value(httpRequest.requestUrl)')
+          declare -A candidate_status=()
+          checked_paths=0
+          skew_count=0
+          skew_examples=""
+          while IFS= read -r request_url; do
+            [[ -n "$request_url" ]] || continue
+            path="/${request_url#*://*/}"
+            path="${path%%\?*}"
+            if [[ ! "$path" =~ ^/(build|assets)/[A-Za-z0-9._/-]+$ ]]; then
+              continue
+            fi
+            if [[ -z "${candidate_status[$path]:-}" ]]; then
+              # Bound probe cost if many distinct junk paths were requested.
+              if (( checked_paths >= 50 )); then
+                continue
+              fi
+              checked_paths=$((checked_paths + 1))
+              candidate_status[$path]=$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 5 "$CANDIDATE_URL$path" || true)
+            fi
+            if [[ "${candidate_status[$path]}" == "200" ]]; then
+              skew_count=$((skew_count + 1))
+              skew_examples+="$path"$'\n'
+            fi
+          done <<<"$PREVIOUS_ASSET_404S"
+          echo "Cross-revision asset 404s during canary: $skew_count (allowed: $CANARY_MAX_ASSET_404)"
+          if (( skew_count > CANARY_MAX_ASSET_404 )); then
+            echo "Canary exceeded the cross-revision asset 404 allowance (version skew):" >&2
+            sort <<<"$skew_examples" | uniq -c | sort -rn | head -20 >&2
             exit 1
           fi
           gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet

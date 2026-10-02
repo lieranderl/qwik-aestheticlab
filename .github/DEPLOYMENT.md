@@ -8,7 +8,7 @@ staging commit → verify → build/scan/attest once → Artifact Registry diges
 GitHub release → resolve the verified digest for the release commit
                → production approval + independent watchdog
                → no-traffic deploy → smoke test → 10% canary
-               → 5-minute bake + candidate 5xx and hashed-asset 404 log gates
+               → 5-minute bake + candidate 5xx and cross-revision asset 404 gates
                → canonical-domain check → 100% or automatic rollback
 ```
 
@@ -17,7 +17,7 @@ GitHub release → resolve the verified digest for the release commit
 - Container tags are lookup metadata. Scan success creates `verified-<full-commit-sha>`; Cloud Run deployments always use the immutable `sha256` digest.
 - Production promotion never rebuilds. A published release must reference the exact commit already verified and deployed to staging; a separate runner reconciles an abandoned 10/90 canary.
 - The protected `production` GitHub environment owns approval and environment-scoped configuration.
-- During the canary bake the workflow smoke-tests the public URL so about 10% of requests reach the candidate, then reads the candidate revision's request logs. Any 5xx, or a failed log query, rolls traffic back to the previous revision. The gate also counts 404s for `/build/` and `/assets/` on both revisions and rolls back above `CANARY_MAX_ASSET_404` (5): hashed files exist only in the revision that rendered the page, so cross-revision requests indicate version skew. Cloud Run session affinity (`session_affinity = true` in `infra/`) keeps each browser on one revision during the split; it is best effort, which is why the gate allows a few misses. The production deployer needs project `roles/logging.viewer` (declared in `infra/`); apply it through the `infrastructure` workflow before the first release that includes the gate.
+- During the canary bake the workflow smoke-tests the public URL so about 10% of requests reach the candidate, then reads the candidate revision's request logs. Any 5xx, or a failed log query, rolls traffic back to the previous revision. The gate also detects version skew: it counts previous-revision 404s for `/build/` and `/assets/` paths that the candidate serves with 200 (checked through the candidate tag URL, at most 50 distinct paths), and rolls back above `CANARY_MAX_ASSET_404` (5). Arbitrary or probing asset URLs do not exist on the candidate and are not counted. Cloud Run session affinity (`session_affinity = true` in `infra/`) keeps each browser on one revision during the split; it is best effort, which is why the gate allows a few misses. The production deployer needs project `roles/logging.viewer` (declared in `infra/`); apply it through the `infrastructure` workflow before the first release that includes the gate.
 
 Repository/environment configuration:
 
