@@ -10,6 +10,7 @@
 - Secret-level publishable/anon Supabase access; service-role keys are rejected by runtime readiness
 - Cloud Run v2 services, probes, scaling, and public invocation
 - Production health-endpoint and Supabase-dependency uptime plus 5xx, p95 latency, instance saturation, runtime-failure, loader, and unexpected-mutation alerts
+- Artifact Registry cleanup policy (dry-run by default) keeping recent rollback images
 
 ## Bootstrap
 
