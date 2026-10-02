@@ -131,6 +131,8 @@ gcloud run services update-traffic SERVICE \
 ## Operational Checks
 
 - OpenTofu manages health/dependency uptime checks plus availability, 5xx, p95 latency, instance-saturation, memory-limit, structured Supabase-failure, and unexpected-production-mutation alerts. Keep high-frequency uptime checks on lightweight endpoints; localized page checks belong in deployment smoke tests.
+- The 5xx and Supabase-failure alerts fire on counts within 5 minutes (`server_error_alert_threshold`, `supabase_failure_alert_threshold`), not on single events. The mutation alert reads Admin Activity audit logs for v1 (`ReplaceService`) and v2 (`UpdateService`) service changes, creates, deletes, and IAM changes by anyone other than the production deployer or IaC identity.
+- Artifact Registry keeps the newest `artifact_keep_recent_versions` images and deletes images older than `artifact_delete_older_than_days`. Cleanup starts in dry-run (`artifact_cleanup_dry_run = true`); review the cleanup logs, then set it to `false` to enforce.
 - Candidate deployment smoke tests require readiness, localized content, and security headers on `/en-BE/` and `/fr-BE/pricelist/` before traffic migration.
 - Inspect Cloud Run revision logs and monitoring before shifting traffic.
 - Treat a passing `/healthz` as process health only; localized smoke tests validate the dependency path.
