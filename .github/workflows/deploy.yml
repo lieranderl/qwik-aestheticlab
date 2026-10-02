@@ -32,7 +32,7 @@ jobs:
   build:
     if: github.event_name == 'push'
     needs: quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     environment: staging
     permissions:
@@ -110,7 +110,7 @@ jobs:
   staging:
     if: github.event_name == 'push'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: staging
     permissions:
@@ -168,7 +168,7 @@ jobs:
 
   production_prepare:
     if: github.event_name == 'release'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     environment: production
     permissions:
@@ -292,7 +292,7 @@ jobs:
   production:
     if: github.event_name == 'release'
     needs: production_prepare
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     environment: production
     permissions:
@@ -420,7 +420,7 @@ jobs:
   production-watchdog:
     if: github.event_name == 'release'
     needs: production_prepare
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 55
     environment: production
     permissions:
