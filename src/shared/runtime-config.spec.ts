@@ -51,11 +51,21 @@ describe("isRuntimeConfigReady", () => {
 	});
 
 	it("permits HTTP only for local Supabase development", () => {
+		for (const url of [
+			"http://127.0.0.1:54321",
+			"http://localhost:54321",
+			"http://[::1]:54321",
+		]) {
+			expect(
+				isRuntimeConfigReady({ SUPABASE_URL: url, SUPABASE_KEY: anonKey }),
+				url,
+			).toBe(true);
+		}
 		expect(
 			isRuntimeConfigReady({
-				SUPABASE_URL: "http://127.0.0.1:54321",
+				SUPABASE_URL: "http://192.168.1.10:54321",
 				SUPABASE_KEY: anonKey,
 			}),
-		).toBe(true);
+		).toBe(false);
 	});
 });

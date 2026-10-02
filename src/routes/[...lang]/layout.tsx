@@ -9,6 +9,9 @@ import {
 	projectServiceGroups,
 	projectServices,
 	projectStaff,
+	serviceColumns,
+	serviceGroupColumns,
+	staffColumns,
 } from "~/shared/supabase-data";
 import { config } from "~/speak-config";
 import type { Contact, Service, ServiceGroup, Staff } from "~/types";
@@ -70,7 +73,7 @@ export const useServiceGroupsLoader = routeLoader$<ServiceGroup[]>(
 		const { data, error } = await client
 			.schema("gettimely")
 			.from("service_groups")
-			.select("id,name,name_ru,name_nl,name_fr,name_uk,priority")
+			.select(serviceGroupColumns(requestEv.locale()))
 			.eq("active", true)
 			.order("priority", { ascending: true });
 
@@ -97,7 +100,7 @@ export const useTechniciansLoader = routeLoader$<Staff[]>(async (requestEv) => {
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("staff")
-		.select("id,name,photo_url,about,about_ru,about_nl,about_fr,about_uk,role")
+		.select(staffColumns(requestEv.locale()))
 		.eq("active", true)
 		.order("id", { ascending: true });
 
@@ -122,9 +125,7 @@ export const useServicesLoader = routeLoader$<Service[]>(async (requestEv) => {
 	const { data, error } = await client
 		.schema("gettimely")
 		.from("services")
-		.select(
-			"id,group_id,name,name_ru,name_nl,name_fr,name_uk,description,description_ru,description_nl,description_fr,description_uk,duration,price",
-		)
+		.select(serviceColumns(requestEv.locale()))
 		.eq("active", true)
 		.order("priority", { ascending: true });
 

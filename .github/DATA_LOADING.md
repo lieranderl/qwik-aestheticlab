@@ -39,6 +39,7 @@ export const supabase = (event: RequestEventAction) => {
 - Environment variables `SUPABASE_URL` and `SUPABASE_KEY` are required — accessed via `event.env.get()`, not `process.env`.
 - Cookie methods are no-ops because this project uses Supabase as a read-only data source (no auth sessions).
 - A new client is created per request — do not cache or share clients across requests.
+- Column lists come from `serviceColumns`, `serviceGroupColumns`, and `staffColumns` in `src/shared/supabase-data.ts`: base columns (the English fallback) plus only the request locale's `_<code>` columns. Fetching every translation sent all five languages per render (~114 KB for services) to show one.
 - Each query is bounded by `SUPABASE_REQUEST_TIMEOUT_MS` (3s) with PostgREST retries disabled; a timeout returns `{ error }`, so loaders fail soft instead of stalling SSR.
 
 ## routeLoader$ Pattern
@@ -51,11 +52,11 @@ export const useMyDataLoader = routeLoader$<ReturnType>(async (requestEv) => {
   const client = supabase(requestEv);
   if (!client) return [];
 
-  // 2. Query only the columns required for localization and rendering
+  // 2. Query only the base columns plus the request locale's translation
   const { data, error } = await client
     .schema("gettimely")
     .from("table_name")
-    .select("id,name,name_ru,name_nl,name_fr,name_uk,priority")
+    .select(serviceGroupColumns(requestEv.locale()))
     .eq("active", true)
     .order("priority", { ascending: true });
 
