@@ -3,7 +3,8 @@ type RuntimeEnvironment = Record<string, string | undefined>;
 function isLocalHttpUrl(url: URL) {
 	return (
 		url.protocol === "http:" &&
-		["localhost", "127.0.0.1", "::1"].includes(url.hostname)
+		// URL.hostname keeps IPv6 brackets: new URL("http://[::1]:54321").hostname === "[::1]".
+		["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)
 	);
 }
 

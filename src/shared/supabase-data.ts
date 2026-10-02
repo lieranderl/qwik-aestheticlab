@@ -44,6 +44,17 @@ function readExternalUrl(record: UnknownRecord, key: string) {
 	}
 }
 
+// Staff photos are either a bundled image name (e.g. "julia", "julia.jpg") resolved
+// by the image resolver, or an absolute http(s) URL. Anything else is dropped.
+const BUNDLED_PHOTO_NAME = /^[a-z0-9_-]+(\.(jpe?g|png|webp|avif))?$/i;
+
+function readPhotoReference(record: UnknownRecord, key: string) {
+	const value = readString(record, key);
+	if (!value) return "";
+	if (BUNDLED_PHOTO_NAME.test(value)) return value;
+	return readExternalUrl(record, key);
+}
+
 function parseServiceGroup(value: unknown): LocalizableServiceGroup | null {
 	const row = asRecord(value);
 	if (!row) return null;
@@ -140,7 +151,7 @@ export function projectStaff(value: unknown, locale: string): Staff[] {
 			{
 				id,
 				name,
-				photo_url: readString(row, "photo_url"),
+				photo_url: readPhotoReference(row, "photo_url"),
 				about: localizedAbout,
 				role: readString(row, "role"),
 			},
@@ -189,4 +200,39 @@ export function projectContact(value: unknown): Contact | null {
 		},
 		parking,
 	};
+}
+
+function localizedColumns(locale: string, ...fields: string[]) {
+	const localeCode = getLocaleCode(locale);
+	return fields.flatMap((field) =>
+		localeCode === "en" ? [field] : [field, `${field}_${localeCode}`],
+	);
+}
+
+/**
+ * Supabase column lists for one locale. Fetching every translation made each
+ * render transfer all five languages (~114 KB for services) to show one.
+ */
+export function serviceGroupColumns(locale: string) {
+	return ["id", ...localizedColumns(locale, "name"), "priority"].join(",");
+}
+
+export function serviceColumns(locale: string) {
+	return [
+		"id",
+		"group_id",
+		...localizedColumns(locale, "name", "description"),
+		"duration",
+		"price",
+	].join(",");
+}
+
+export function staffColumns(locale: string) {
+	return [
+		"id",
+		"name",
+		"photo_url",
+		...localizedColumns(locale, "about"),
+		"role",
+	].join(",");
 }
