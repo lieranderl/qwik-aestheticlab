@@ -350,11 +350,15 @@ resource "google_cloud_run_v2_service" "web" {
     }
   }
 
+  # template.revision is deliberately not ignored. CI names every revision
+  # (--revision-suffix); ignoring it made OpenTofu re-send that existing name with
+  # a changed template, which Cloud Run rejects with HTTP 409. Leaving it unset lets
+  # Cloud Run name IaC revisions. Image and traffic stay CI-owned, so an IaC revision
+  # reuses the live digest and receives no traffic until the next promotion.
   lifecycle {
     ignore_changes = [
       client,
       client_version,
-      template[0].revision,
       template[0].containers[0].image,
       traffic,
     ]
