@@ -232,6 +232,14 @@ resource "google_artifact_registry_repository_iam_member" "production_deployer_r
   member     = "serviceAccount:${google_service_account.deployer["production"].email}"
 }
 
+# The production canary gate reads the candidate revision's request logs for 5xx
+# responses before promotion; logs are read-only and data-access logs are excluded.
+resource "google_project_iam_member" "production_deployer_log_viewer" {
+  project = var.project_id
+  role    = "roles/logging.viewer"
+  member  = "serviceAccount:${google_service_account.deployer["production"].email}"
+}
+
 resource "google_service_account_iam_member" "deployer_act_as" {
   for_each = local.services
 
