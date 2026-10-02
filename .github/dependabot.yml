@@ -9,13 +9,20 @@ updates:
       timezone: "Europe/Brussels"
     open-pull-requests-limit: 5
     ignore:
-      # @builder.io/qwik-city 1.20.x requires vite ">=5 <8"; revisit when Qwik supports Vite 8.
+      # @qwik.dev/core 2.x requires vite ">=8 <9".
       - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      # @qwik.dev/core 2.0.0-rc.0 requires vitest ">=2 <5"; revisit when the range widens.
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/*"
         update-types: ["version-update:semver-major"]
     groups:
       qwik:
         patterns:
-          - "@builder.io/qwik*"
+          - "@qwik.dev/*"
+          - "@qwikest/*"
+          - "compiled-i18n"
           - "qwik-*"
       styling:
         patterns:

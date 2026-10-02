@@ -6,7 +6,7 @@ This project loads all server-side data from Supabase via `routeLoader$` functio
 
 ```text
 Browser Request
-  → Qwik City Route
+  → Qwik Router Route
     → layout.tsx (routeLoader$ functions)
       → supabase(event) creates per-request client
         → Queries gettimely schema
@@ -14,14 +14,14 @@ Browser Request
             → Components receive data via props
 ```
 
-**Single source of truth:** All Supabase queries live in `src/routes/[...lang]/layout.tsx`. Components never query Supabase directly.
+**Single source of truth:** All Supabase queries live in `src/routes/[lang]/layout.tsx`. Components never query Supabase directly.
 
 ## Supabase Client
 
 Defined in `src/shared/supabase-client.ts`:
 
 ```tsx
-import type { RequestEventAction } from "@builder.io/qwik-city";
+import type { RequestEventAction } from "@qwik.dev/router";
 import { type CookieMethodsServer, createServerClient } from "@supabase/ssr";
 
 export const supabase = (event: RequestEventAction) => {
@@ -35,7 +35,7 @@ export const supabase = (event: RequestEventAction) => {
 
 ### Key Points
 
-- Uses `@supabase/ssr` for server-side usage within Qwik City.
+- Uses `@supabase/ssr` for server-side usage within Qwik Router.
 - Environment variables `SUPABASE_URL` and `SUPABASE_KEY` are required — accessed via `event.env.get()`, not `process.env`.
 - Cookie methods are no-ops because this project uses Supabase as a read-only data source (no auth sessions).
 - A new client is created per request — do not cache or share clients across requests.
@@ -170,7 +170,7 @@ Do not add per-loader caching. The HTTP cache layer handles it globally.
 Loaders are consumed in route page files, then passed as props to section components:
 
 ```tsx
-// routes/[...lang]/index.tsx
+// routes/[lang]/index.tsx
 export default component$(() => {
   const services = useServicesLoader();
   const categories = useServiceGroupsLoader();
@@ -240,7 +240,7 @@ export interface Service {
 ## Adding a New Loader
 
 1. Define or update the compact interface in `src/types.ts`.
-2. Add the `routeLoader$` in `src/routes/[...lang]/layout.tsx`.
+2. Add the `routeLoader$` in `src/routes/[lang]/layout.tsx`.
 3. Export the loader so child routes can import it.
 4. Follow the established pattern: create validated client → query explicit columns → handle/log error → runtime-validate → localize/project → return compact data.
 5. Consume it in the route page file and pass data to components via props.

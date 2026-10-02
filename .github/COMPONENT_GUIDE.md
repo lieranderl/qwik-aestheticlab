@@ -66,7 +66,7 @@ File naming: `kebab-case.tsx`.
 ### 2. Follow the Standard Structure
 
 ```tsx
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 import { FadeUp } from "~/components/ui/fade-up";
 
@@ -119,7 +119,7 @@ export const MySection = component$<MySectionProps>(({ items }) => {
 ### 4. Compose in the Route Page
 
 ```tsx
-// src/routes/[...lang]/index.tsx
+// src/routes/[lang]/index.tsx
 import { MySection } from "~/components/sections/my-section";
 
 export default component$(() => {
@@ -154,7 +154,7 @@ src/components/ui/my-widget.tsx
 ### 2. Follow the UI Component Structure
 
 ```tsx
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 
 interface MyWidgetProps {
   label: string;
@@ -312,7 +312,7 @@ Service image resolution logic lives in `src/shared/service-utils.ts` — it map
 
 ## Component Composition in Pages
 
-The route page (`routes/[...lang]/index.tsx`) is the single place where sections are composed. The established order:
+The route page (`routes/[lang]/index.tsx`) is the single place where sections are composed. The established order:
 
 ```tsx
 <Navigation />
@@ -340,7 +340,7 @@ The route page (`routes/[...lang]/index.tsx`) is the single place where sections
 For local component state, use Qwik signals:
 
 ```tsx
-import { component$, useSignal, $ } from "@builder.io/qwik";
+import { component$, useSignal, $ } from "@qwik.dev/core";
 
 export const Expandable = component$(() => {
   const isExpanded = useSignal(false);

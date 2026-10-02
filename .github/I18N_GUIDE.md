@@ -48,7 +48,7 @@ Each file uses the compiled-i18n format, with flat keys sorted by the plugin:
 ## Using Translations
 
 ```tsx
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { _ } from "compiled-i18n";
 
 export const MyComponent = component$(() => (
@@ -59,6 +59,7 @@ export const MyComponent = component$(() => (
 - Always use the **tagged template** form `` _`key` ``, with `_` imported directly from `compiled-i18n`. Only tagged templates are inlined; calling `_("key")` or re-exporting `_` from a helper is not.
 - Keys must be static. For data-driven lists (e.g. `src/shared/nav-links.ts`), map each key to a literal `` _`key` `` at the call site.
 - `_` works anywhere: components, route `head` exports, and plain functions called during render.
+- Wrap route `head` functions in `localizeHead()` from `~/shared/i18n`: `` export const head: DocumentHead = localizeHead(() => ({ title: _`head.home.title` })); ``. Qwik Router 2.0.0-rc.0 resolves `head` without the request locale, so an unwrapped `head` renders default-locale (English) titles and descriptions.
 - There is no inline default anymore. English text lives in `i18n/en-BE.json`, and a missing key renders the key itself.
 
 ### Parameters
@@ -105,13 +106,13 @@ In CI (`CI` set), builds never write to `i18n/`. Missing keys are only logged, a
 | --- | --- |
 | `src/routes/index.tsx` | `302` from `/` to `/en-BE/` |
 | `src/routes/plugin.ts` | Sets Qwik's request locale from `params.lang` (default when unsupported) |
-| `src/routes/[...lang]/layout.tsx` | `404` for unsupported locale prefixes; locale-aware `routeLoader$`s |
+| `src/routes/[lang]/layout.tsx` | `404` for unsupported locale prefixes; locale-aware `routeLoader$`s |
 | `src/entry.ssr.tsx` | `setLocaleGetter(() => getLocale(...))`, `<html lang>`, and the per-locale asset base `/build/<locale>/` |
 | `src/components/ui/language-switcher.tsx` | Full-page `<a>` navigation between locale prefixes (each locale has its own client bundle) |
 
 ## Locale-Specific Database Fields
 
-Supabase stores content in suffixed columns (`name`, `name_ru`, `name_nl`, `name_fr`, `name_uk`; the unsuffixed column is English). Loaders in `src/routes/[...lang]/layout.tsx` pass `requestEv.locale()` to `src/shared/supabase-data.ts`, which selects only that locale's columns (`serviceColumns`, `staffColumns`, …) and projects them via `src/shared/locale-content.ts`. Never select or map locale columns in UI components.
+Supabase stores content in suffixed columns (`name`, `name_ru`, `name_nl`, `name_fr`, `name_uk`; the unsuffixed column is English). Loaders in `src/routes/[lang]/layout.tsx` pass `requestEv.locale()` to `src/shared/supabase-data.ts`, which selects only that locale's columns (`serviceColumns`, `staffColumns`, …) and projects them via `src/shared/locale-content.ts`. Never select or map locale columns in UI components.
 
 ## Adding a New Supported Locale
 

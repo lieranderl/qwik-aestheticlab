@@ -7,7 +7,7 @@
 Every component uses `component$` — no exceptions.
 
 ```tsx
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 
 export const MyComponent = component$<MyComponentProps>((props) => {
   // ...
@@ -60,7 +60,7 @@ Qwik auto-splits at `$` boundaries. Do not:
 | Components | `kebab-case.tsx` | `service-card.tsx` |
 | Utilities/shared | `kebab-case.ts` | `locale-navigation.ts` |
 | Types | `kebab-case.ts` or single `types.ts` | `types.ts` |
-| Routes | Directory-based (Qwik City) | `routes/[...lang]/pricelist/index.tsx` |
+| Routes | Directory-based (Qwik Router) | `routes/[lang]/pricelist/index.tsx` |
 | Translation catalogs | `<locale>.json` | `i18n/en-BE.json` |
 
 ## Formatting (Biome)
@@ -81,7 +81,7 @@ Run `bun run biome` to auto-fix. Husky + lint-staged runs this on commit.
 
 Group imports in this order with a blank line between groups:
 
-1. Qwik framework (`@builder.io/qwik`, `@builder.io/qwik-city`)
+1. Qwik framework (`@qwik.dev/core`, `@qwik.dev/router`)
 2. Third-party libraries (`compiled-i18n`, `luxon`, etc.)
 3. Project aliases (`~/components/...`, `~/shared/...`, `~/types`)
 4. Relative imports (`./`, `../`)

@@ -10,7 +10,7 @@
 ![Biome](https://img.shields.io/badge/Biome-%23F9A42F.svg?style=flat&logo=biome&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Aesthetic Lab is a multilingual marketing and booking site for a beauty studio in Belgium. It uses Qwik City, Supabase-backed content, DaisyUI/Tailwind styling, and a GitHub Actions delivery pipeline to Google Cloud Run.
+Aesthetic Lab is a multilingual marketing and booking site for a beauty studio in Belgium. It uses Qwik 2 with Qwik Router, Supabase-backed content, DaisyUI/Tailwind styling, and a GitHub Actions delivery pipeline to Google Cloud Run.
 
 ## Features
 
@@ -25,7 +25,7 @@ Aesthetic Lab is a multilingual marketing and booking site for a beauty studio i
 | Area | Technology |
 | --- | --- |
 | Runtime | Bun `1.4.2` |
-| Framework | Qwik `1.20`, Qwik City |
+| Framework | Qwik `2.0.0-rc.0` (`@qwik.dev/core`, `@qwik.dev/router`), Vite 8 |
 | Language | TypeScript `7` |
 | Styling | Tailwind CSS `4`, DaisyUI `5` |
 | Data | Supabase SSR `0.12` |
@@ -71,7 +71,7 @@ Open [http://localhost:5173](http://localhost:5173).
 | Command | Description |
 | --- | --- |
 | `bun ci` | Install dependencies exactly as CI does. |
-| `bun run dev` | Start the Qwik City dev server. |
+| `bun run dev` | Start the Qwik dev server. |
 | `bun run build` | Build the production app. |
 | `bun run build.types` | Run TypeScript checks. |
 | `bun run test` | Run Vitest tests. |
@@ -92,7 +92,7 @@ src/
 |-- components/      # Sections and reusable UI
 |-- constants/       # Navigation and metadata
 |-- media/           # Source images and SVGs
-|-- routes/          # Qwik City routes and loaders
+|-- routes/          # Qwik Router routes and loaders
 |-- shared/          # Supabase, runtime config, security, locale helpers
 |-- entry.bun.ts     # Bun production server
 `-- i18n-config.ts   # Locale configuration

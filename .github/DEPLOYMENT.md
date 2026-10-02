@@ -90,7 +90,7 @@ tofu -chdir=infra validate
 
 ## Caching
 
-The localized route shell is configured in `src/routes/[...lang]/layout.tsx`:
+The localized route shell is configured in `src/routes/[lang]/layout.tsx`:
 
 ```tsx
 cacheControl({

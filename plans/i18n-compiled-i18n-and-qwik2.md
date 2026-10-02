@@ -106,18 +106,44 @@ Results (2026-10-02):
 - `/` → `302 /en-BE/`; `/de-DE/` → `404`; `<html lang>`, `q:locale`, and `q:base=/build/<locale>/` are correct per locale. A client re-render on `/uk-BE/` shows Ukrainian strings and loads only `/build/uk-BE/` chunks.
 - `i18n.extract` workflow verified: a temporary key was added as `""` in all five catalogs, the unused key was pruned, and `i18n.check` failed until the catalogs were restored.
 
-### Phase C — Qwik 2 (separate branch, only after B is merged and the user approves)
+### Phase C — Qwik 2 PoC (`feat/qwik2-poc`, approved 2026-10-02: use the latest pre-release)
 
-Facts as of 2026-10-02 (npm):
+Versions: `@qwik.dev/core` / `@qwik.dev/router` `2.0.0-rc.0` (npm `latest`), Vite 8.3.2 (Rolldown), Vitest 4.1.11 + `@vitest/coverage-v8` 4.1.11 (core peer `vitest >=2 <5`).
 
-- `@qwik.dev/core` / `@qwik.dev/router` `latest` = `2.0.0-rc.0` — **not final**. Decide whether to ship on an RC or prepare the branch and wait.
-- `@qwik.dev/core` peers: `vite >=8 <9`, **`vitest >=2 <5`**. This conflicts with the pinned Vitest 5.0.3. Options: (a) downgrade to Vitest 4.x and `@vitest/coverage-v8` 4.x; (b) keep Vitest 5 and override the peer warning (unit tests only touch `src/shared`, which does not import Qwik), with risk; (c) wait for a core release that widens the range. Recommend (a) unless the next RC widens it.
-- Vite `latest` = 8.3.2; Vitest 5 supports Vite 8.
-- compiled-i18n: Qwik glue is ours (`entry.ssr.tsx`, `src/shared/i18n.ts`), so the switch is an import path change.
+What was done:
 
-Steps: follow <https://qwik.dev/docs/upgrade/> (`npx @qwik.dev/cli migrate-v2`, which renames `@builder.io/qwik*` → `@qwik.dev/*`, `qwik-city` → `router`, `QwikCityProvider` → `QwikRouterProvider`, and similar). Remove the `@builder.io/qwik` override, check `@qwikest/icons` Qwik 2 compatibility, check `useVisibleTask$`/`useTask$` semantics, and check the `server$` and `routeLoader$` serialization changes.
+1. Ran the official `qwik migrate-v2` (Qwik 1.20.1 CLI; the guide comes from `QwikDev/qwik` `packages/docs/src/routes/docs/upgrade/index.mdx`, because `qwik.dev` is blocked in the agent sandbox). Package and identifier renames, `jsxImportSource`, `@qwik-router-config`, `getClientManifest()`, and `PropFunction` → `QRL`.
+2. Fixed the CLI's dependency step, which failed: it renamed the `@builder.io/qwik` override to `"@qwik.dev/core": "1.20.1"`, kept `vite: 7.3.6`, and text-replaced names inside `bun.lock`. Restored the lockfile, then set overrides `@builder.io/qwik` → `npm:@qwik.dev/core@2.0.0-rc.0` and `@builder.io/qwik-city` → `npm:@qwik.dev/router@2.0.0-rc.0` (needed by `@qwikest/icons`), `vite` 8.3.2, and `postcss` 8.5.28 / `picomatch` 4.0.7 to satisfy Vite 8's minimums.
+3. Kept the v1-parity shims the CLI added: `qwikRouter({ strictLoaders: false })`, `<QwikRouterProvider viewTransition>` with `view-transition-name:none`, in-order streaming chunk sizes, `useV1NavigationProbe`, `requestBodyLimit`, the `internalRequest !== 'loader'` cache guard, and `plugin@000-v1-errors.ts`. Each one is a follow-up to remove once v2 defaults are adopted.
 
-Gate: the same as Phase B, plus a manual browser check of interactive islands (booking modal, gallery lightbox, language switcher, mobile nav).
+Regressions found and fixed:
+
+| Issue | Root cause | Fix |
+| --- | --- | --- |
+| Client build failed: `` "`team.section_title`" is not valid JSON `` | Rolldown's minifier prints compiled-i18n's `__$LOCALIZE$__` key as a template literal; compiled-i18n `JSON.parse`s it | `compiledI18nKeyQuotes()` Vite plugin normalizes key literals before compiled-i18n's `generateBundle` (post) |
+| `/uk-BE/pricelist/`, `/fr-BE/privacy-policy/` → 404 | v2 rest params are greedy: `[...lang]` captured `uk-BE/pricelist`, failing the supported-locale check | Renamed `src/routes/[...lang]` → `src/routes/[lang]` (URLs only ever have one locale segment) |
+| Non-English `<title>`/description rendered in English | Router resolves `head` inside `track(() => resolveHead(…, getLocale("")))`; the tracking invoke context has no locale (likely an RC bug, `@qwik.dev/router/lib/index.qwik.mjs`) | `localizeHead()` in `src/shared/i18n.ts` wraps each route `head` in `withLocale(params.lang)` (AsyncLocalStorage-scoped) |
+| Dev server: loaders got no `SUPABASE_*` (`supabase_configuration_rejected`) | v2 bundles the router into SSR dev; the global `define: { "process.env": {} }` rewrote its `process.env[key]` lookups | Moved the define to `environments.client.define` |
+| Runtime image (prod deps only) → 500 `Cannot find module '@qwikest/icons/heroicons'` | v2 no longer forces Qwik libraries into the server bundle | `resolve.noExternal: ["@qwikest/icons"]` (v1 library; must stay bundled) |
+| Biome Qwik rules silently off (unused-suppression warnings) | Biome's `qwik` domain auto-detects `@builder.io/qwik` in `package.json` | `linter.domains.qwik: "recommended"` in `biome.json` |
+| Vite 8 native config-loader warnings | Extensionless TS import and JSON import without attributes | `./src/i18n-config.ts`, `with { type: "json" }`, `../../vite.config.ts` |
+
+Results (Chromium only; Firefox/WebKit are not available in the sandbox):
+
+- `bun run verify` green (110 unit tests); `bunx --bun biome ci .` clean; `bun install --frozen-lockfile` clean; `bun audit --audit-level=high` clean (1 moderate: `uuid` via `@qwik.dev/router` → `@azure/functions`, build-time only).
+- E2E 23/23 against the dev server and 23/23 against the production server.
+- Rendered SSR text and translatable attributes on 16 page/locale combinations are identical to the Phase B (Qwik 1.20) build. Headers, CSP, and HTML/asset `Cache-Control` are identical.
+- Docker-equivalent runtime (`bun install --production` + `dist/ server/ public/`): `/` 302, the locale pages 200, `/de-DE/` 404, and `scripts/smoke-deployment.sh` passes with `SMOKE_SKIP_DEPENDENCY=true`. The local mock has no readiness endpoint, so `/dependencyz` is 503 on v1 too.
+- Client checks: a uk-BE treatment detail re-render shows Ukrainian strings and loads only `/build/uk-BE/`; the language switcher navigates to `/nl-BE/pricelist/` with a Dutch title; no console errors.
+- Size (en-BE): HTML 128.5 KB → 138.1 KB (+7.5%); per-locale client JS 80 KB → 104 KB gzip (+30%). Initial-load page JS requests are not comparable, because v1 prefetches through a service worker and v2 through the modulepreload-based preloader.
+
+Open follow-ups:
+
+- v2 logs every thrown redirect/404 (`RedirectMessage`, `error: Not Found`) to stderr: Cloud Logging noise.
+- Report the `head` locale bug and the compiled-i18n quote handling upstream; drop `localizeHead()` and `compiledI18nKeyQuotes()` once fixed.
+- Remove the v1-parity shims one by one (see item 3) and re-measure HTML/JS size.
+- CDN/cache rules: route data now comes from `q-loader-*.json` (was `q-data.json`); actions POST to `?qaction=`.
+- Run Firefox/WebKit e2e in CI before any merge; do not promote an RC to production.
 
 ## Commit Strategy
 
