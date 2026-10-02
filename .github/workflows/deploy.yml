@@ -329,6 +329,7 @@ jobs:
           CANDIDATE_URL: ${{ needs.production_prepare.outputs.candidate_url }}
           URL: ${{ env.PROD_URL }}
           CANARY_BAKE_SECONDS: "300"
+          CANARY_MAX_ASSET_404: "5"
         run: |
           promotion_complete=false
           require_watchdog() {
@@ -390,6 +391,18 @@ jobs:
           if [[ -n "$CANARY_ERRORS" ]]; then
             echo "Canary revision $REVISION returned 5xx responses during the bake:" >&2
             echo "$CANARY_ERRORS" >&2
+            exit 1
+          fi
+
+          # Version skew: a page from one revision requesting hashed assets from the other
+          # returns 404, which the 5xx gate cannot see. Session affinity should keep this
+          # near zero; a small allowance absorbs best-effort affinity breaks and stale caches.
+          ASSET_404S=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"$PROD_SERVICE\" AND resource.labels.revision_name=(\"$REVISION\" OR \"$PREVIOUS\") AND httpRequest.status=404 AND (httpRequest.requestUrl:\"/build/\" OR httpRequest.requestUrl:\"/assets/\") AND timestamp>=\"$canary_started_at\"" --project="$GCP_PROJECT" --limit=100 --format='value(timestamp,resource.labels.revision_name,httpRequest.requestUrl)')
+          asset_404_count=$(grep -c . <<<"$ASSET_404S" || true)
+          echo "Hashed asset 404s during canary: $asset_404_count (allowed: $CANARY_MAX_ASSET_404)"
+          if (( asset_404_count > CANARY_MAX_ASSET_404 )); then
+            echo "Canary exceeded the hashed-asset 404 allowance (version skew between revisions):" >&2
+            head -20 <<<"$ASSET_404S" >&2
             exit 1
           fi
           gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=100" --quiet
