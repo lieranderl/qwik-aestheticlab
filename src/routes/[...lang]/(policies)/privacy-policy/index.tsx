@@ -1,76 +1,49 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 
 export default component$(() => {
-	const t = inlineTranslate();
 	const sections = [
 		{
-			title: t("app.privacy.info@@1. Information We Collect"),
-			text: t(
-				"app.privacy.info_text@@We collect the following personal information when you book an appointment or contact us:",
-			),
+			title: _`privacy.info`,
+			text: _`privacy.info_text`,
+			list: [_`privacy.name`, _`privacy.email`, _`privacy.phone`],
+		},
+		{
+			title: _`privacy.use`,
+			text: _`privacy.use_text`,
 			list: [
-				t("app.privacy.name@@Name"),
-				t("app.privacy.email@@Email address"),
-				t("app.privacy.phone@@Phone number"),
+				_`privacy.schedule`,
+				_`privacy.send`,
+				_`privacy.respond`,
+				_`privacy.improve`,
 			],
 		},
 		{
-			title: t("app.privacy.use@@2. How We Use Your Information"),
-			text: t("app.privacy.use_text@@We use your information to:"),
-			list: [
-				t("app.privacy.schedule@@Schedule and confirm appointments"),
-				t("app.privacy.send@@Send appointment reminders and updates"),
-				t("app.privacy.respond@@Respond to your inquiries"),
-				t("app.privacy.improve@@Improve our services"),
-			],
+			title: _`privacy.security`,
+			text: _`privacy.security_text`,
 		},
 		{
-			title: t("app.privacy.security@@3. Data Protection & Security"),
-			text: t(
-				"app.privacy.security_text@@We take reasonable measures to protect your personal data from unauthorized access, loss, or misuse.",
-			),
+			title: _`privacy.sharing`,
+			text: _`privacy.sharing_text`,
+			list: [_`privacy.service`, _`privacy.legal`],
 		},
 		{
-			title: t("app.privacy.sharing@@4. Sharing Your Information"),
-			text: t(
-				"app.privacy.sharing_text@@We do not sell or rent your personal information. We may share it with:",
-			),
-			list: [
-				t("app.privacy.service@@Service providers (e.g., booking platforms)"),
-				t("app.privacy.legal@@Legal authorities if required by law"),
-			],
-		},
-		{
-			title: t("app.privacy.rights@@5. Your Rights"),
-			text: t(
-				"app.privacy.rights_text@@You can request to access, update, or delete your personal data. To make a request, contact us at:",
-			),
+			title: _`privacy.rights`,
+			text: _`privacy.rights_text`,
 			link: {
 				url: "mailto:aestheticlabbe@gmail.com",
 				label: "📧 aestheticlabbe@gmail.com",
 			},
 		},
 		{
-			title: t("app.privacy.cookies@@6. Cookies & Tracking Technologies"),
-			text: t(
-				"app.privacy.cookies_text@@We use strictly necessary cookies to operate the website. Google Analytics runs in Consent Mode v2. Before consent or if you reject analytics, analytics storage and advertising-related consent stay denied; Google may receive cookieless consent and measurement pings, and analytics cookies are not set. If you accept analytics, Google Analytics may use analytics cookies to understand website usage and improve our services. You can change your choice at any time via Cookie settings.",
-			),
-			list: [
-				t(
-					"app.privacy.cookies_necessary@@Strictly necessary cookies: always active for basic website functionality.",
-				),
-				t(
-					"app.privacy.cookies_analytics@@Analytics cookies: optional; analytics storage is granted only after your consent.",
-				),
-			],
+			title: _`privacy.cookies`,
+			text: _`privacy.cookies_text`,
+			list: [_`privacy.cookies_necessary`, _`privacy.cookies_analytics`],
 		},
 		{
-			title: t("app.privacy.changes@@7. Changes to This Policy"),
-			text: t(
-				"app.privacy.changes_text@@We may update this Privacy Policy from time to time. The latest version will always be available on our website.",
-			),
+			title: _`privacy.changes`,
+			text: _`privacy.changes_text`,
 		},
 	];
 
@@ -81,16 +54,14 @@ export default component$(() => {
 					Aesthetic Lab Leuven
 				</p>
 				<h1 class="mt-4 text-balance font-cormorant text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
-					{t("app.privacy.privacy_title@@Privacy Policy")}
+					{_`privacy.privacy_title`}
 				</h1>
 				<div class="my-6 h-px w-20 bg-primary" />
 				<p class="max-w-sm font-main text-sm leading-7 text-base-content">
-					{t(
-						"app.head.privacy.description@@How Aesthetic Lab collects, uses, and protects your personal information.",
-					)}
+					{_`head.privacy.description`}
 				</p>
 				<p class="badge badge-outline mt-6 min-h-7 border-base-300 px-3 font-main text-xs font-medium uppercase tracking-wider text-base-content">
-					{t("app.privacy.last_update_date@@Last updated: 19.02.2026")}
+					{_`privacy.last_update_date`}
 				</p>
 			</header>
 
@@ -142,15 +113,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = () => {
-	const t = inlineTranslate();
 	return {
-		title: t("app.head.privacy.title@@Privacy Policy | Aesthetic Lab"),
+		title: _`head.privacy.title`,
 		meta: [
 			{
 				name: "description",
-				content: t(
-					"app.head.privacy.description@@How Aesthetic Lab collects, uses, and protects your personal information.",
-				),
+				content: _`head.privacy.description`,
 			},
 		],
 	};

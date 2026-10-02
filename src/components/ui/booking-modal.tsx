@@ -1,5 +1,5 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { baseUrlBooking } from "~/consts";
 import { resolveBookingLocation } from "~/shared/booking";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -32,7 +32,6 @@ export const Booking = component$<BookingProps>(
 		analyticsServiceName,
 		analyticsServiceCategory,
 	}) => {
-		const t = inlineTranslate();
 		const resolvedLocation = resolveBookingLocation(location);
 		const isOpen = useSignal(false);
 		const isLoaded = useSignal(false);
@@ -100,7 +99,7 @@ export const Booking = component$<BookingProps>(
 							<button
 								type="submit"
 								class="btn btn-ghost btn-square absolute right-1 top-1 min-h-11 min-w-11"
-								aria-label={t("app.common.close@@Close")}
+								aria-label={_`common.close`}
 							>
 								<span aria-hidden="true">✕</span>
 							</button>
@@ -116,13 +115,11 @@ export const Booking = component$<BookingProps>(
 										role="status"
 									>
 										<span class="loading loading-spinner loading-lg text-secondary" />
-										<span class="sr-only">
-											{t("app.booking.loading@@Loading booking options")}
-										</span>
+										<span class="sr-only">{_`booking.loading`}</span>
 									</div>
 								) : null}
 								<iframe
-									title={t("app.booking.widget_title@@Booking Widget")}
+									title={_`booking.widget_title`}
 									src={iframeUrl}
 									class={
 										isLoaded.value
@@ -141,7 +138,7 @@ export const Booking = component$<BookingProps>(
 						)}
 					</div>
 					<form method="dialog" class="modal-backdrop">
-						<button type="submit">{t("app.common.close@@Close")}</button>
+						<button type="submit">{_`common.close`}</button>
 					</form>
 				</dialog>
 			</>

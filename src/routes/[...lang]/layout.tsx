@@ -2,6 +2,7 @@ import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { CookieBanner } from "~/components/ui/cookie-banner";
+import { config } from "~/i18n-config";
 import { logServerEvent } from "~/shared/server-logging";
 import { supabase } from "~/shared/supabase-client";
 import {
@@ -13,7 +14,6 @@ import {
 	serviceGroupColumns,
 	staffColumns,
 } from "~/shared/supabase-data";
-import { config } from "~/speak-config";
 import type { Contact, Service, ServiceGroup, Staff } from "~/types";
 
 export const onRequest: RequestHandler = ({ params, error }) => {

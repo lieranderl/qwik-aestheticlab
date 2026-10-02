@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { useDocumentHead, useLocation } from "@builder.io/qwik-city";
 import { SITE_METADATA } from "~/constants/metadata";
-import { config } from "~/speak-config";
+import { config } from "~/i18n-config";
 
 function getLocalizedUrl(locale: string, routeSegments: string[]) {
 	return `${SITE_METADATA.url}/${[locale, ...routeSegments].join("/")}/`;

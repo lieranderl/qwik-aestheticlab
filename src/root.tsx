@@ -8,12 +8,10 @@ import {
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
-import { useQwikSpeak, useSpeakLocale } from "qwik-speak";
 import { GoogleAnalytics } from "./components/ui/google-analytics";
 import { JSON_LD } from "./constants/metadata";
 import { getGoogleAnalyticsBootstrapScript } from "./shared/cookie-consent";
-import { config } from "./speak-config";
-import { translationFn } from "./speak-functions";
+import { getCurrentLocale } from "./shared/i18n";
 
 export default component$(() => {
 	/**
@@ -22,8 +20,6 @@ export default component$(() => {
 	 *
 	 * Don't remove the `<head>` and `<body>` elements.
 	 */
-	useQwikSpeak({ config, translationFn });
-	const locale = useSpeakLocale();
 	return (
 		<QwikCityProvider>
 			<head>
@@ -54,7 +50,7 @@ export default component$(() => {
 				{!isDev && <ServiceWorkerRegister />}
 			</head>
 			<body
-				lang={locale.lang}
+				lang={getCurrentLocale()}
 				data-theme="Aesthetic"
 				class="relative min-w-80 scroll-smooth bg-base-200 font-main text-base-content antialiased scrollbar-thin [scrollbar-color:var(--color-base-300)_transparent]"
 			>

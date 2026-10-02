@@ -1,5 +1,5 @@
 import { $, component$, type Signal } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import ImgChromeManicure from "~/media/gallery/atelier/chrome-manicure.jpg?jsx";
 import ImgCoralManicure from "~/media/gallery/atelier/coral-manicure.jpg?jsx";
 import ImgLashes from "~/media/gallery/atelier/lashes.jpg?jsx";
@@ -20,43 +20,38 @@ interface GalleryLightboxProps {
 
 export const GalleryLightbox = component$<GalleryLightboxProps>(
 	({ activeIndex, openerId }) => {
-		const t = inlineTranslate();
 		const items = [
 			{
 				Image: ImgCoralManicure,
-				alt: t(
-					"app.work.alt.coral_manicure@@Bright coral-red manicure on both hands",
-				),
+				alt: _`work.alt.coral_manicure`,
 			},
 			{
 				Image: ImgPedicure4,
-				alt: t("app.work.alt.p2@@Refined toenail polish finish"),
+				alt: _`work.alt.p2`,
 			},
 			{
 				Image: ImgNudeManicure,
-				alt: t(
-					"app.work.alt.nude_manicure@@Soft nude manicure with a clean glossy finish",
-				),
+				alt: _`work.alt.nude_manicure`,
 			},
 			{
 				Image: ImgPearlManicure,
-				alt: t("app.work.alt.pearl_manicure@@Pearlescent pink manicure detail"),
+				alt: _`work.alt.pearl_manicure`,
 			},
 			{
 				Image: ImgChromeManicure,
-				alt: t("app.work.alt.chrome_manicure@@Pink chrome manicure detail"),
+				alt: _`work.alt.chrome_manicure`,
 			},
 			{
 				Image: ImgPedicure5,
-				alt: t("app.work.alt.p5@@Aesthetic pedicure detailing"),
+				alt: _`work.alt.p5`,
 			},
 			{
 				Image: ImgLashes,
-				alt: t("app.work.alt.lashes@@Lash extensions result"),
+				alt: _`work.alt.lashes`,
 			},
 			{
 				Image: ImgLashlift,
-				alt: t("app.work.alt.lashlift@@Lash lift result"),
+				alt: _`work.alt.lashlift`,
 			},
 		];
 		const item = items[activeIndex.value] ?? items[0];
@@ -83,7 +78,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 			<dialog
 				id={galleryLightboxId}
 				class="modal bg-black/90 p-0 backdrop:bg-black/90"
-				aria-label={t("app.work.lightbox_label@@Gallery image viewer")}
+				aria-label={_`work.lightbox_label`}
 				onClick$={$((event: MouseEvent, element: HTMLDialogElement) => {
 					if (event.target === element) element.close();
 				})}
@@ -112,7 +107,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 						type="button"
 						class="btn btn-ghost btn-square absolute top-4 right-4 z-10 min-h-11 min-w-11 text-white hover:bg-white/10"
 						onClick$={close}
-						aria-label={t("app.common.close@@Close")}
+						aria-label={_`common.close`}
 					>
 						<span aria-hidden="true" class="text-2xl">
 							×
@@ -127,7 +122,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 						type="button"
 						class="btn btn-ghost btn-square absolute left-2 z-20 min-h-12 min-w-12 touch-manipulation text-white hover:bg-white/10 md:left-4"
 						onClick$={previous}
-						aria-label={t("app.common.previous@@Previous")}
+						aria-label={_`common.previous`}
 					>
 						<span aria-hidden="true" class="text-3xl">
 							‹
@@ -144,7 +139,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 						type="button"
 						class="btn btn-ghost btn-square absolute right-2 z-20 min-h-12 min-w-12 touch-manipulation text-white hover:bg-white/10 md:right-4"
 						onClick$={next}
-						aria-label={t("app.common.next@@Next")}
+						aria-label={_`common.next`}
 					>
 						<span aria-hidden="true" class="text-3xl">
 							›

@@ -1,7 +1,6 @@
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { setSpeakContext, validateLocale } from "qwik-speak";
 
-import { config } from "../speak-config";
+import { config, isSupportedLocale } from "~/i18n-config";
 
 /**
  * This middleware function must only contain the logic to set the locale,
@@ -10,16 +9,10 @@ import { config } from "../speak-config";
  */
 export const onRequest: RequestHandler = ({ params, locale }) => {
 	const requestedLocale = params.lang;
-	const lang =
-		requestedLocale &&
-		validateLocale(requestedLocale) &&
-		config.supportedLocales.some((locale) => locale.lang === requestedLocale)
-			? requestedLocale
-			: config.defaultLocale.lang;
+	const lang = isSupportedLocale(requestedLocale)
+		? requestedLocale
+		: config.defaultLocale.lang;
 
-	// Set Speak context (optional: set the configuration on the server)
-	setSpeakContext(config);
-
-	// Set Qwik locale
+	// Set Qwik locale; compiled-i18n reads it via the getter in entry.ssr.tsx
 	locale(lang);
 };

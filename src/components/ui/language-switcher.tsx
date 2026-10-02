@@ -6,9 +6,9 @@ import {
 	useSignal,
 } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
+import { config } from "~/i18n-config";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
-import { config } from "~/speak-config";
 
 export interface LanguageSwitcherProps {
 	buttonClass?: string;
@@ -17,7 +17,6 @@ export interface LanguageSwitcherProps {
 export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 	({ buttonClass }) => {
 		const loc = useLocation();
-		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
 		const triggerRef = useSignal<HTMLButtonElement>();
 		const menuId = useId();
@@ -66,7 +65,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 					popovertarget={menuId}
 					style={`anchor-name: ${anchorName}`}
 					class={`btn btn-ghost min-h-11 min-w-11 gap-1 px-2 text-sm font-medium tracking-wide uppercase text-primary-content transition-colors duration-150 hover:text-primary-content ${buttonClass || ""}`}
-					aria-label={t("app.language.select@@Select language")}
+					aria-label={_`language.select`}
 					aria-haspopup="menu"
 					aria-expanded={isExpanded.value}
 				>
@@ -93,7 +92,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 					popover="auto"
 					class="dropdown menu menu-sm z-10 mt-1 w-32 rounded-2xl border border-base-content/20 bg-base-100 p-2 shadow-lg"
 					style={`position-anchor: ${anchorName}; inset: auto; top: anchor(bottom)`}
-					aria-label={t("app.language.options@@Language options")}
+					aria-label={_`language.options`}
 					onClick$={trackLanguageChange}
 				>
 					{config.supportedLocales.map((locale) => {

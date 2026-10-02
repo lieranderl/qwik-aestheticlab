@@ -5,7 +5,7 @@ describe("getNavLinkKeys", () => {
 	it("returns all links including home by default", () => {
 		const links = getNavLinkKeys();
 		expect(links).toHaveLength(7); // home + 6 sections
-		expect(links[0]).toEqual({ href: "#", key: "app.nav.home@@Home" });
+		expect(links[0]).toEqual({ href: "#", key: "nav.home" });
 	});
 
 	it("excludes home when includeHome is false", () => {
@@ -13,7 +13,7 @@ describe("getNavLinkKeys", () => {
 		expect(links).toHaveLength(6);
 		expect(links[0]).toEqual({
 			href: "#services",
-			key: "app.nav.services@@Services",
+			key: "nav.services",
 		});
 	});
 
@@ -24,7 +24,7 @@ describe("getNavLinkKeys", () => {
 			expect(link).toHaveProperty("key");
 			expect(typeof link.href).toBe("string");
 			expect(typeof link.key).toBe("string");
-			expect(link.key).toContain("@@");
+			expect(link.key).toMatch(/^[a-z_]+(\.[a-z_]+)+$/);
 		}
 	});
 });

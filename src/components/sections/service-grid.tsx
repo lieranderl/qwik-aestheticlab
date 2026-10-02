@@ -5,12 +5,13 @@ import {
 	useOnWindow,
 	useSignal,
 } from "@builder.io/qwik";
-import { inlineTranslate, useSpeakLocale } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";
 import { ServiceCard } from "~/components/ui/service-card";
 import { formatPrice } from "~/consts";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
+import { getCurrentLocale } from "~/shared/i18n";
 import {
 	buildDisplayGroups,
 	buildLaserSubgroups,
@@ -109,7 +110,7 @@ const OverviewGrid = component$<OverviewGridProps>(
 		categoryDescriptionLabels,
 		onCategoryOpen,
 	}) => {
-		const priceLocale = useSpeakLocale().lang;
+		const priceLocale = getCurrentLocale();
 		return (
 			<div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:gap-6">
 				{displayGroups.map((group, index) => {
@@ -219,7 +220,7 @@ const DetailView = component$<DetailViewProps>(
 		categoryById,
 		location,
 	}) => {
-		const priceLocale = useSpeakLocale().lang;
+		const priceLocale = getCurrentLocale();
 		const selectedGroup = displayGroups.find(
 			(g) => g.groupId === selectedCategoryId,
 		);
@@ -438,7 +439,6 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		initialCategoryId,
 		initialSubgroupId,
 	}) => {
-		const t = inlineTranslate();
 		const categoryById = createCategoryIndex(serviceCategories);
 		const hasInitialCategory = initialCategoryId
 			? initialCategoryId === "laser"
@@ -467,39 +467,23 @@ export const ServiceGrid = component$<ServiceGridProps>(
 		);
 
 		// ── Labels ──
-		const defaultCategoryLabel = t("app.services.default_category@@Services");
-		const treatmentsLabel = t("app.services.treatments@@Treatments");
-		const servicesAriaLabel = t("app.nav.services@@Services");
-		const viewFullLabel = t("app.services.view_full@@View full price list");
-		const backLabel = t("app.services.back@@Back to Overview");
-		const backToLaserLabel = t("app.services.back_laser@@Back to Laser");
-		const titleLabel = t(
-			"app.services.editorial_title@@Expert care, natural results",
-		);
-		const subtitleLabel = t(
-			"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
-		);
-		const viewTreatmentsLabel = t(
-			"app.services.view_treatments@@View Treatments",
-		);
-		const fromPriceLabel = t("app.services.from_price@@From");
-		const laserCategoryLabel = t("app.services.laser_category@@Laser");
+		const defaultCategoryLabel = _`services.default_category`;
+		const treatmentsLabel = _`services.treatments`;
+		const servicesAriaLabel = _`nav.services`;
+		const viewFullLabel = _`services.view_full`;
+		const backLabel = _`services.back`;
+		const backToLaserLabel = _`services.back_laser`;
+		const titleLabel = _`services.editorial_title`;
+		const subtitleLabel = _`services.subtitle`;
+		const viewTreatmentsLabel = _`services.view_treatments`;
+		const fromPriceLabel = _`services.from_price`;
+		const laserCategoryLabel = _`services.laser_category`;
 		const categoryDescriptionLabels = {
-			manicure: t(
-				"app.services.manicure_desc@@Expert gel artistry and precision Russian techniques for naturally flawless nails.",
-			),
-			pedicure: t(
-				"app.services.pedicure_desc@@Professional therapeutic care and aesthetic refinement for healthy, radiant feet.",
-			),
-			brows: t(
-				"app.services.brows_desc@@Shaping, tinting, and lamination for the perfect arch.",
-			),
-			laser: t(
-				"app.services.laser_desc@@Safe, effective, and painless technology for smooth skin.",
-			),
-			general: t(
-				"app.services.general_desc@@Professional beauty treatments for your refined look.",
-			),
+			manicure: _`services.manicure_desc`,
+			pedicure: _`services.pedicure_desc`,
+			brows: _`services.brows_desc`,
+			laser: _`services.laser_desc`,
+			general: _`services.general_desc`,
 		};
 
 		// ── Computed data ──
@@ -590,9 +574,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 			<SectionWrapper id="services">
 				<div class="mb-9 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
 					<div>
-						<KickerLabel>
-							{t("app.services.catalogue@@Our treatments")}
-						</KickerLabel>
+						<KickerLabel>{_`services.catalogue`}</KickerLabel>
 						<h2 class="max-w-2xl text-balance font-cormorant text-4xl leading-[0.9] text-base-content sm:text-5xl md:text-7xl">
 							{titleLabel}
 						</h2>
@@ -642,11 +624,7 @@ export const ServiceGrid = component$<ServiceGridProps>(
 					/>
 				) : displayGroups.value.length === 0 ? (
 					<div class="alert border border-base-300 bg-base-100" role="status">
-						<span>
-							{t(
-								"app.services.empty@@Treatments are temporarily unavailable. Please contact us for current options.",
-							)}
-						</span>
+						<span>{_`services.empty`}</span>
 					</div>
 				) : (
 					<OverviewGrid

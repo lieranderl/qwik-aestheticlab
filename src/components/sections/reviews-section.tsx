@@ -1,5 +1,5 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { StarRating } from "~/components/ui/star-rating";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
@@ -88,7 +88,6 @@ function shuffle<T>(arr: readonly T[]): T[] {
 }
 
 export const ReviewsSection = component$(() => {
-	const t = inlineTranslate();
 	const reviews = useSignal<Review[]>(shuffle([...ALL_REVIEWS]));
 
 	return (
@@ -98,9 +97,9 @@ export const ReviewsSection = component$(() => {
 		>
 			<div class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 md:gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16 lg:px-8">
 				<header>
-					<KickerLabel>{t("app.reviews.kicker@@Loved in Leuven")}</KickerLabel>
+					<KickerLabel>{_`reviews.kicker`}</KickerLabel>
 					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-6xl lg:text-7xl">
-						{t("app.reviews.section_title@@Kind words")}
+						{_`reviews.section_title`}
 					</h2>
 					<div class="stats mt-8 w-full rounded-none border-t border-base-300 bg-transparent shadow-none">
 						<div class="stat px-0 pt-5 pb-0">
@@ -124,13 +123,13 @@ export const ReviewsSection = component$(() => {
 						})}
 						class="link link-hover mt-5 inline-flex min-h-11 items-center font-main text-sm font-medium text-secondary"
 					>
-						{t("app.reviews.google_link@@Read all reviews on Google")}
+						{_`reviews.google_link`}
 					</a>
 				</header>
 
 				<section
 					class="carousel -mx-4 w-[calc(100%+2rem)] max-w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:max-w-[calc(100%+3rem)] sm:gap-5 sm:px-6 lg:mx-0 lg:w-full lg:max-w-full lg:overflow-x-auto lg:gap-5 lg:px-0"
-					aria-label={t("app.reviews.section_title@@Kind words")}
+					aria-label={_`reviews.section_title`}
 				>
 					{reviews.value.map((review, index) => (
 						<article
@@ -161,9 +160,7 @@ export const ReviewsSection = component$(() => {
 										<p class="wrap-break-word font-main text-sm font-semibold text-base-content">
 											{review.author}
 										</p>
-										<p class="text-xs text-base-content">
-											{t("app.reviews.source@@Google Review")}
-										</p>
+										<p class="text-xs text-base-content">{_`reviews.source`}</p>
 									</div>
 								</div>
 							</div>

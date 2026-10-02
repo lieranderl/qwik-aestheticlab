@@ -1,18 +1,16 @@
 import { component$, Slot } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 
 export default component$(() => {
-	const t = inlineTranslate();
-
 	return (
 		<div class="min-h-screen bg-base-200 text-base-content">
 			<a
 				href="#main-content"
 				class="btn btn-neutral btn-sm fixed top-3 left-4 z-50 -translate-y-24 opacity-0 transition-[opacity,transform] duration-150 focus-visible:translate-y-0 focus-visible:opacity-100 motion-reduce:transition-none"
 			>
-				{t("app.nav.skip_to_content@@Skip to content")}
+				{_`nav.skip_to_content`}
 			</a>
 			<Navigation />
 			<main

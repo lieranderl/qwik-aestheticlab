@@ -1,55 +1,33 @@
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
 import { KickerLabel } from "~/components/ui/kicker-label";
 
 export const FaqSection = component$(() => {
-	const t = inlineTranslate();
-
-	const bookingQuestion = t(
-		"app.faq.booking.question@@How do I book an appointment?",
-	);
-	const bookingAnswerBefore = t("app.faq.booking.answer_before@@Use any");
-	const bookingAnswerAfter = t(
-		"app.faq.booking.answer_after@@button to open live availability, then choose your treatment and preferred artist.",
-	);
+	const bookingQuestion = _`faq.booking.question`;
+	const bookingAnswerBefore = _`faq.booking.answer_before`;
+	const bookingAnswerAfter = _`faq.booking.answer_after`;
 
 	const otherQuestions = [
 		{
-			question: t("app.faq.duration.question@@How long do treatments take?"),
-			answerHtml: t(
-				"app.faq.duration.answer@@Open a <a href='./pricelist' class='link link-secondary'>treatment category</a> to compare the current duration and price of every available service before booking.",
-			),
+			question: _`faq.duration.question`,
+			answerHtml: _`faq.duration.answer`,
 		},
 		{
-			question: t("app.faq.location.question@@Where is the studio in Leuven?"),
-			answerHtml: t(
-				"app.faq.location.answer@@Our address, opening hours, map, and nearby parking links are available in the <a href='#contact' class='link link-secondary'>Visit us</a> section below.",
-			),
+			question: _`faq.location.question`,
+			answerHtml: _`faq.location.answer`,
 		},
 		{
-			question: t(
-				"app.faq.laser_prep.question@@How should I prepare for a laser treatment?",
-			),
-			answerHtml: t(
-				"app.faq.laser_prep.answer@@Shave the area 24 hours before your session and avoid sun exposure, tanning, and self-tanner for at least 2 weeks. Please read our full <a href='./notice' class='link link-secondary'>pre- and post-care policy</a> before your appointment.",
-			),
+			question: _`faq.laser_prep.question`,
+			answerHtml: _`faq.laser_prep.answer`,
 		},
 		{
-			question: t(
-				"app.faq.cancellation.question@@Can I cancel or reschedule an appointment?",
-			),
-			answerHtml: t(
-				"app.faq.cancellation.answer@@Yes — please cancel or reschedule at least 24 hours in advance using the booking system. You can also contact us directly via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> or by <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>email</a>. Late cancellations may be subject to a fee.",
-			),
+			question: _`faq.cancellation.question`,
+			answerHtml: _`faq.cancellation.answer`,
 		},
 		{
-			question: t(
-				"app.faq.consultation.question@@Do you offer consultations before booking?",
-			),
-			answerHtml: t(
-				"app.faq.consultation.answer@@Absolutely. If you are unsure which treatment suits you best, <a href='#contact' class='link link-secondary'>reach out</a> and we will help you choose the right option during a short complimentary consultation.",
-			),
+			question: _`faq.consultation.question`,
+			answerHtml: _`faq.consultation.answer`,
 		},
 	];
 
@@ -57,14 +35,12 @@ export const FaqSection = component$(() => {
 		<section id="faq" class="scroll-mt-24 bg-base-200 py-16 md:py-24 lg:py-28">
 			<div class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16 lg:px-8">
 				<div>
-					<KickerLabel>{t("app.faq.kicker@@Before your visit")}</KickerLabel>
+					<KickerLabel>{_`faq.kicker`}</KickerLabel>
 					<h2 class="text-balance font-cormorant text-5xl leading-[0.9] font-light tracking-tight text-base-content md:text-7xl">
-						{t("app.faq.title@@FAQ")}
+						{_`faq.title`}
 					</h2>
 					<p class="mt-5 max-w-sm text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
-						{t(
-							"app.faq.description@@A few useful details to make planning your appointment simple.",
-						)}
+						{_`faq.description`}
 					</p>
 				</div>
 
@@ -87,7 +63,7 @@ export const FaqSection = component$(() => {
 								{bookingAnswerBefore}{" "}
 								<Booking
 									id="faq-book-btn"
-									text={t("app.book.book_app@@Book Appointment")}
+									text={_`book.book_app`}
 									classes="btn btn-primary btn-xs min-h-8 align-baseline font-main text-xs font-semibold uppercase tracking-wider"
 									analyticsPlacement="faq_booking"
 								/>{" "}

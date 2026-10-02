@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { HiBars3Outline, HiXMarkOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
 import { LanguageSwitcher } from "~/components/ui/language-switcher";
 
@@ -16,7 +16,6 @@ import { getLocaleNavLink } from "~/shared/locale-navigation";
 import { getNavLinkKeys } from "~/shared/nav-links";
 
 export const Navigation = component$(() => {
-	const t = inlineTranslate();
 	const location = useLocation();
 	const isScrolled = useSignal(false);
 	const isMobileMenuOpen = useSignal(false);
@@ -27,13 +26,13 @@ export const Navigation = component$(() => {
 	const mobileMenuTitleId = `${mobileMenuId}-title`;
 
 	const navLabels: Record<string, string> = {
-		"app.nav.home@@Home": t("app.nav.home@@Home"),
-		"app.nav.services@@Services": t("app.nav.services@@Services"),
-		"app.nav.reviews@@Reviews": t("app.nav.reviews@@Reviews"),
-		"app.nav.work@@Our Work": t("app.nav.work@@Our Work"),
-		"app.nav.team@@Team": t("app.nav.team@@Team"),
-		"app.faq.title@@FAQ": t("app.faq.title@@FAQ"),
-		"app.nav.contact@@Contact": t("app.nav.contact@@Contact"),
+		"nav.home": _`nav.home`,
+		"nav.services": _`nav.services`,
+		"nav.reviews": _`nav.reviews`,
+		"nav.work": _`nav.work`,
+		"nav.team": _`nav.team`,
+		"faq.title": _`faq.title`,
+		"nav.contact": _`nav.contact`,
 	};
 	const navLinks = getNavLinkKeys().map(({ href, key }) => ({
 		label: navLabels[key],
@@ -143,7 +142,7 @@ export const Navigation = component$(() => {
 							<a
 								href={getLocaleNavLink(location.url.pathname, "#")}
 								class="inline-flex min-h-11 items-center gap-2"
-								aria-label={`${t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")} — ${t("app.nav.home@@Home")}`}
+								aria-label={`${_`nav.logo_bird`} — ${_`nav.home`}`}
 							>
 								<BirdLogo
 									class="h-8 w-auto text-primary-content md:h-10 [&_path]:fill-current"
@@ -156,10 +155,7 @@ export const Navigation = component$(() => {
 						</div>
 
 						<div class="navbar-center">
-							<nav
-								aria-label={t("app.nav.primary@@Primary navigation")}
-								class="hidden lg:block"
-							>
+							<nav aria-label={_`nav.primary`} class="hidden lg:block">
 								<ul class="menu menu-horizontal flex-nowrap items-center gap-0.5 p-0 [&_a:hover]:bg-transparent [&_a:focus]:bg-transparent">
 									{navLinks.map((item) => (
 										<li key={item.label}>
@@ -180,7 +176,7 @@ export const Navigation = component$(() => {
 								{showMobileBookNow.value && (
 									<Booking
 										id="nav-book-btn-mobile"
-										text={t("app.book.book_now@@Book Now")}
+										text={_`book.book_now`}
 										analyticsPlacement="mobile_nav_center"
 										classes="btn btn-outline btn-sm min-h-8 border-primary-content/30 px-4 font-main text-xs font-semibold uppercase tracking-[0.08em] text-primary-content"
 									/>
@@ -193,7 +189,7 @@ export const Navigation = component$(() => {
 								<LanguageSwitcher />
 								<Booking
 									id="nav-book-btn"
-									text={t("app.book.book_now@@Book Now")}
+									text={_`book.book_now`}
 									analyticsPlacement="desktop_nav"
 									classes="btn btn-neutral btn-sm min-h-11 px-5 font-main text-xs font-semibold uppercase tracking-[0.08em] transition-shadow duration-300 ease-out motion-safe:hover:shadow-md"
 								/>
@@ -205,7 +201,7 @@ export const Navigation = component$(() => {
 									type="button"
 									ref={mobileMenuToggleRef}
 									class="btn btn-ghost btn-square drawer-button min-h-11 min-w-11 text-primary-content"
-									aria-label={t("app.nav.open_menu@@Open menu")}
+									aria-label={_`nav.open_menu`}
 									aria-controls={mobileMenuId}
 									aria-expanded={isMobileMenuOpen.value}
 									onClick$={openMobileMenu}
@@ -221,7 +217,7 @@ export const Navigation = component$(() => {
 			<div id={mobileMenuId} class="drawer-side z-120 lg:hidden">
 				<button
 					type="button"
-					aria-label={t("app.nav.close_menu@@Close menu")}
+					aria-label={_`nav.close_menu`}
 					class="drawer-overlay"
 					onClick$={closeMobileMenu}
 				/>
@@ -249,17 +245,14 @@ export const Navigation = component$(() => {
 							ref={mobileMenuCloseRef}
 							class="btn btn-ghost btn-square min-h-11 min-w-11 border border-primary-content/20 bg-primary-content/5 text-primary-content shadow-sm"
 							onClick$={closeMobileMenu}
-							aria-label={t("app.nav.close_menu@@Close menu")}
+							aria-label={_`nav.close_menu`}
 							aria-controls={mobileMenuId}
 						>
 							<HiXMarkOutline class="size-7" aria-hidden="true" />
 						</button>
 					</div>
 
-					<nav
-						class="flex items-start py-8"
-						aria-label={t("app.nav.mobile_menu@@Mobile navigation")}
-					>
+					<nav class="flex items-start py-8" aria-label={_`nav.mobile_menu`}>
 						<ul class="menu w-full gap-1 p-0">
 							{navLinks.map((item, index) => (
 								<li key={item.label}>
@@ -280,7 +273,7 @@ export const Navigation = component$(() => {
 
 					<Booking
 						id="mobile-menu-book-btn"
-						text={t("app.book.book_app@@Book Appointment")}
+						text={_`book.book_app`}
 						analyticsPlacement="mobile_menu"
 						classes="btn btn-neutral btn-lg min-h-12 w-full font-main text-xs font-semibold uppercase tracking-[0.1em]"
 					/>

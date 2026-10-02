@@ -1,20 +1,28 @@
-import type { SpeakConfig } from "qwik-speak";
+/**
+ * Locale configuration shared by the app, routing, and `vite.config.ts`.
+ * Keep this file framework-free: the Vite config imports it at build time.
+ */
+export interface LocaleConfig {
+	lang: string;
+	currency: string;
+	timeZone: string;
+}
 
-export const config: SpeakConfig = {
-	defaultLocale: {
-		lang: "en-BE",
-		currency: "EUR",
-		timeZone: "Europe/Brussels",
-	},
+const brussels = { currency: "EUR", timeZone: "Europe/Brussels" } as const;
+
+export const config = {
+	defaultLocale: { lang: "en-BE", ...brussels } as LocaleConfig,
 	supportedLocales: [
-		{ lang: "en-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-		{ lang: "ru-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-		{ lang: "nl-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-		{ lang: "fr-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-		{ lang: "uk-BE", currency: "EUR", timeZone: "Europe/Brussels" },
-	],
-	// Translations available in the whole app
-	assets: ["app"],
-	// Translations with dynamic keys available in the whole app
-	runtimeAssets: ["runtime"],
+		{ lang: "en-BE", ...brussels },
+		{ lang: "ru-BE", ...brussels },
+		{ lang: "nl-BE", ...brussels },
+		{ lang: "fr-BE", ...brussels },
+		{ lang: "uk-BE", ...brussels },
+	] as LocaleConfig[],
 };
+
+/** Locale codes in configuration order; also the per-locale client build folders. */
+export const localeCodes = config.supportedLocales.map((locale) => locale.lang);
+
+export const isSupportedLocale = (lang: string | undefined): lang is string =>
+	!!lang && localeCodes.includes(lang);

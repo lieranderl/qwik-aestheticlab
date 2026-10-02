@@ -1,5 +1,5 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 
 interface ExpandableTextProps {
 	text: string;
@@ -9,7 +9,6 @@ interface ExpandableTextProps {
 
 export const ExpandableText = component$<ExpandableTextProps>(
 	({ text, maxLength = 140, class: className }) => {
-		const t = inlineTranslate();
 		const isExpanded = useSignal(false);
 		const hasLongText = text.length > maxLength;
 
@@ -33,9 +32,7 @@ export const ExpandableText = component$<ExpandableTextProps>(
 						class="btn btn-ghost btn-sm min-h-11 w-fit rounded-full px-0 font-main uppercase tracking-wider text-secondary"
 						aria-expanded={isExpanded.value}
 					>
-						{isExpanded.value
-							? t("app.common.read_less@@Read Less")
-							: t("app.common.read_more@@Read More")}
+						{isExpanded.value ? _`common.read_less` : _`common.read_more`}
 					</button>
 				) : null}
 			</div>

@@ -8,12 +8,13 @@ import { fileURLToPath } from "node:url";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { qwikSpeakInline } from "qwik-speak/inline";
+import { i18nPlugin } from "compiled-i18n/vite";
 import { defineConfig } from "vitest/config";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import pkg from "./package.json";
+import { config as i18nConfig, localeCodes } from "./src/i18n-config";
 
 type PkgDep = Record<string, string>;
 const { dependencies, devDependencies } = pkg;
@@ -111,12 +112,17 @@ export default defineConfig(({ mode }) => {
 			tailwindcss(),
 			!isTest && qwikCity(),
 			qwikVite(),
-			!isTest &&
-				qwikSpeakInline({
-					supportedLangs: ["en-BE", "ru-BE", "nl-BE", "fr-BE", "uk-BE"],
-					defaultLang: "en-BE",
-					assetsPath: "i18n",
-				}),
+			// Inlines translations into per-locale client builds under build/<locale>/
+			i18nPlugin({
+				locales: localeCodes,
+				defaultLocale: i18nConfig.defaultLocale.lang,
+				assetsDir: "build/",
+				// Locally, production client builds append missing keys as "" to every
+				// i18n/<locale>.json; CI only reports them (the catalog test fails).
+				addMissing: !process.env.CI,
+				// `bun run i18n.extract` also drops keys no longer used in src/
+				removeUnusedKeys: process.env.I18N_PRUNE === "1",
+			}),
 		].filter(Boolean),
 		// This tells Vite which dependencies to pre-build in dev mode.
 		optimizeDeps: {

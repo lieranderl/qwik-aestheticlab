@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { type DocumentHead, useLocation } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { BookingCtaSection } from "~/components/sections/booking-cta-section";
 import { ContactSection } from "~/components/sections/contact-section";
 import { FaqSection } from "~/components/sections/faq-section";
@@ -20,7 +20,6 @@ import {
 } from "./layout";
 
 export default component$(() => {
-	const t = inlineTranslate();
 	const servicesSignal = useServicesLoader();
 	const serviceCategoriesSig = useServiceGroupsLoader();
 	const techniciansSignal = useTechniciansLoader();
@@ -33,7 +32,7 @@ export default component$(() => {
 				href="#main-content"
 				class="btn btn-neutral btn-sm fixed top-3 left-4 z-50 -translate-y-24 opacity-0 transition-[opacity,transform] duration-150 focus-visible:translate-y-0 focus-visible:opacity-100 motion-reduce:transition-none"
 			>
-				{t("app.nav.skip_to_content@@Skip to content")}
+				{_`nav.skip_to_content`}
 			</a>
 			<Navigation />
 
@@ -72,15 +71,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = () => {
-	const t = inlineTranslate();
 	return {
-		title: t("app.head.home.title@@Aesthetic Lab | Nail Design, Brows & Laser"),
+		title: _`head.home.title`,
 		meta: [
 			{
 				name: "description",
-				content: t(
-					"app.head.home.description@@Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
-				),
+				content: _`head.home.description`,
 			},
 		],
 	};

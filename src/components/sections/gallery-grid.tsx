@@ -1,6 +1,6 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import {
 	GalleryLightbox,
 	galleryLightboxCloseId,
@@ -29,66 +29,61 @@ const SIZES =
 	"(min-width: 1280px) 38rem, (min-width: 1024px) calc(33vw - 1rem), 78vw";
 
 export const GalleryGrid = component$(() => {
-	const t = inlineTranslate();
 	const activeIndex = useSignal(-1);
 	const openerId = useSignal("");
 	const items = [
 		{
 			Image: ImgCoralManicure,
-			alt: t(
-				"app.work.alt.coral_manicure@@Bright coral-red manicure on both hands",
-			),
+			alt: _`work.alt.coral_manicure`,
 			class:
 				"aspect-4/5 lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:row-span-8",
 			imageClass: "object-[center_34%]",
 		},
 		{
 			Image: ImgPedicure4,
-			alt: t("app.work.alt.p2@@Refined toenail polish finish"),
+			alt: _`work.alt.p2`,
 			class:
 				"aspect-square lg:col-start-6 lg:col-span-3 lg:row-start-2 lg:row-span-5",
 			imageClass: "object-[center_58%]",
 		},
 		{
 			Image: ImgNudeManicure,
-			alt: t(
-				"app.work.alt.nude_manicure@@Soft nude manicure with a clean glossy finish",
-			),
+			alt: _`work.alt.nude_manicure`,
 			class:
 				"aspect-square lg:col-start-9 lg:col-span-4 lg:row-start-1 lg:row-span-6",
 			imageClass: "object-[center_48%]",
 		},
 		{
 			Image: ImgPearlManicure,
-			alt: t("app.work.alt.pearl_manicure@@Pearlescent pink manicure detail"),
+			alt: _`work.alt.pearl_manicure`,
 			class:
 				"aspect-square lg:col-start-6 lg:col-span-4 lg:row-start-8 lg:row-span-6",
 			imageClass: "object-[center_52%]",
 		},
 		{
 			Image: ImgChromeManicure,
-			alt: t("app.work.alt.chrome_manicure@@Pink chrome manicure detail"),
+			alt: _`work.alt.chrome_manicure`,
 			class:
 				"aspect-square lg:col-start-10 lg:col-span-3 lg:row-start-8 lg:row-span-5",
 			imageClass: "object-[center_47%]",
 		},
 		{
 			Image: ImgPedicure5,
-			alt: t("app.work.alt.p5@@Aesthetic pedicure detailing"),
+			alt: _`work.alt.p5`,
 			class:
 				"aspect-square lg:col-start-1 lg:col-span-4 lg:row-start-10 lg:row-span-5",
 			imageClass: "object-[center_40%]",
 		},
 		{
 			Image: ImgLashes,
-			alt: t("app.work.alt.lashes@@Lash extensions result"),
+			alt: _`work.alt.lashes`,
 			class:
 				"aspect-square lg:col-start-5 lg:col-span-4 lg:row-start-14 lg:row-span-4",
 			imageClass: "object-[center_40%]",
 		},
 		{
 			Image: ImgLashlift,
-			alt: t("app.work.alt.lashlift@@Lash lift result"),
+			alt: _`work.alt.lashlift`,
 			class:
 				"aspect-square lg:col-start-1 lg:col-span-4 lg:row-start-15 lg:row-span-4",
 			imageClass: "object-[center_50%]",
@@ -116,21 +111,19 @@ export const GalleryGrid = component$(() => {
 		<SectionWrapper id="gallery">
 			<div class="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-end">
 				<div>
-					<KickerLabel>{t("app.work.kicker@@From our atelier")}</KickerLabel>
+					<KickerLabel>{_`work.kicker`}</KickerLabel>
 					<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl lg:text-8xl">
-						{t("app.work.title@@Our Work")}
+						{_`work.title`}
 					</h2>
 				</div>
 				<p class="max-w-md border-l border-base-300 pl-5 text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
-					{t(
-						"app.work.description@@Thoughtful details, clean finishes, and results that still feel like you.",
-					)}
+					{_`work.description`}
 				</p>
 			</div>
 
 			<section
 				class="carousel carousel-start -mx-4 mt-8 w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:mt-10 sm:w-[calc(100%+3rem)] sm:px-6 lg:mx-0 lg:grid lg:h-240 lg:w-full lg:grid-cols-12 lg:grid-rows-18 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
-				aria-label={t("app.work.gallery_label@@Treatment result gallery")}
+				aria-label={_`work.gallery_label`}
 			>
 				{items.map((item, index) => {
 					const triggerId = `gallery-lightbox-trigger-${index}`;
@@ -143,7 +136,7 @@ export const GalleryGrid = component$(() => {
 								type="button"
 								class="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-base-content"
 								onClick$={open}
-								aria-label={t("app.work.enlarge@@Enlarge image")}
+								aria-label={_`work.enlarge`}
 							>
 								<Image
 									alt={item.alt}
@@ -178,9 +171,7 @@ export const GalleryGrid = component$(() => {
 			>
 				<figure class="h-44 bg-base-300 sm:h-full sm:w-2/5">
 					<ImgPolishApplication
-						alt={t(
-							"app.work.alt.manicure_process@@Manicure polish application in the Aesthetic Lab studio",
-						)}
+						alt={_`work.alt.manicure_process`}
 						class="h-full w-full object-cover object-[center_63%] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
 						loading="lazy"
 						sizes="(min-width: 1024px) 24rem, (min-width: 640px) 40vw, 100vw"
@@ -194,12 +185,10 @@ export const GalleryGrid = component$(() => {
 						</span>
 					</div>
 					<h3 class="card-title text-3xl leading-none font-normal md:text-4xl">
-						{t("app.instagram.title@@Follow the studio beyond the appointment")}
+						{_`instagram.title`}
 					</h3>
 					<p class="font-main text-sm leading-relaxed text-base-content">
-						{t(
-							"app.instagram.description@@Fresh sets, studio moments, and new work from our team.",
-						)}
+						{_`instagram.description`}
 					</p>
 					<div class="card-actions mt-1">
 						<span class="btn btn-sm min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-widest">

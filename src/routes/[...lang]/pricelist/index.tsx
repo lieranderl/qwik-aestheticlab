@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate, useSpeakLocale } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Footer } from "~/components/sections/footer";
 import { Navigation } from "~/components/sections/navigation";
 import { Booking } from "~/components/ui/booking-modal";
@@ -15,6 +15,7 @@ import { FadeUp } from "~/components/ui/fade-up";
 import { formatPremiumPrice } from "~/consts";
 import ImgPricelistHero from "~/media/pricelist-hero.png?jsx";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
+import { getCurrentLocale } from "~/shared/i18n";
 import {
 	getCategoryStartingPrice,
 	getDisplayCategoryName,
@@ -55,12 +56,11 @@ function getCategoryNumber(index: number) {
 
 const PricelistServiceItem = component$(
 	({ service, location, categoryName }: PricelistServiceItemProps) => {
-		const t = inlineTranslate();
-		const priceLocale = useSpeakLocale().lang;
+		const priceLocale = getCurrentLocale();
 		const isExpanded = useSignal(false);
 		const descriptionId = useId();
-		const readLessLabel = t("app.common.read_less@@Read Less");
-		const readMoreLabel = t("app.common.read_more@@Read More");
+		const readLessLabel = _`common.read_less`;
+		const readMoreLabel = _`common.read_more`;
 
 		return (
 			<article class="border-t border-base-300 py-5 first:border-t-0 first:pt-0 last:pb-0 md:py-6">
@@ -106,7 +106,7 @@ const PricelistServiceItem = component$(
 							<div class="mt-3 flex items-center gap-2 font-main text-xs font-medium uppercase tracking-wider text-base-content">
 								<HiClockOutline class="size-4" aria-hidden="true" />
 								<span>
-									{service.duration}&nbsp;{t("app.services.minutes@@min")}
+									{service.duration}&nbsp;{_`services.minutes`}
 								</span>
 							</div>
 						) : null}
@@ -118,7 +118,7 @@ const PricelistServiceItem = component$(
 						</span>
 						<Booking
 							id={`pricelist_service_${service.id}`}
-							text={t("app.book.book_now@@Book Now")}
+							text={_`book.book_now`}
 							location={location}
 							classes="btn btn-outline btn-sm min-h-11 w-full rounded-full px-6 font-main text-xs font-semibold uppercase tracking-[0.1em] md:w-auto"
 							analyticsPlacement="pricelist_service"
@@ -134,18 +134,15 @@ const PricelistServiceItem = component$(
 );
 
 export default component$(() => {
-	const t = inlineTranslate();
-	const priceLocale = useSpeakLocale().lang;
+	const priceLocale = getCurrentLocale();
 	const services = useServicesLoader().value;
 	const categories = useServiceGroupsLoader().value;
 	const contact = useContactLoader().value;
-	const defaultCategoryLabel = t("app.services.default_category@@Services");
-	const categoryLabel = t("app.pricelist.category_label@@Category");
-	const categoryNavLabel = t("app.pricelist.category_nav@@Service categories");
-	const fromPriceLabel = t("app.services.from_price@@From");
-	const browsAndLashesLabel = t(
-		"app.services.brows_lashes_title@@Brows & Lashes",
-	);
+	const defaultCategoryLabel = _`services.default_category`;
+	const categoryLabel = _`pricelist.category_label`;
+	const categoryNavLabel = _`pricelist.category_nav`;
+	const fromPriceLabel = _`services.from_price`;
+	const browsAndLashesLabel = _`services.brows_lashes_title`;
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: GA events require browser-only gtag state.
 	useVisibleTask$(() => {
@@ -202,9 +199,7 @@ export default component$(() => {
 				<section class="hero relative min-h-96 overflow-hidden bg-primary pt-16 md:min-h-128 md:pt-20">
 					<div class="absolute inset-0">
 						<ImgPricelistHero
-							alt={t(
-								"app.pricelist.hero_alt@@Aesthetic Lab treatment catalog background",
-							)}
+							alt={_`pricelist.hero_alt`}
 							class="h-full w-full object-cover opacity-85"
 							loading="eager"
 							fetchPriority="high"
@@ -214,18 +209,16 @@ export default component$(() => {
 					<div class="hero-content relative z-10 w-full max-w-7xl justify-center px-4 py-12 md:px-8 md:py-16 opacity-95">
 						<div class="card card-border mx-auto w-full max-w-xl bg-base-100/90 p-6 text-center text-base-content shadow-sm md:p-9">
 							<h1 class="font-cormorant text-4xl leading-tight md:text-5xl">
-								{t("app.services.pricing_title@@Services & Pricing")}
+								{_`services.pricing_title`}
 							</h1>
 							<div class="mx-auto my-4 h-px w-16 bg-secondary/40 md:my-5" />
 							<p class="mx-auto max-w-lg font-main text-sm leading-6 text-base-content/85 md:text-base md:leading-7">
-								{t(
-									"app.services.subtitle@@Comprehensive beauty treatments delivered with precision and care.",
-								)}
+								{_`services.subtitle`}
 							</p>
 							<div class="mt-6 flex justify-center">
 								<Booking
 									id="hero_pricelist_book"
-									text={t("app.hero.book_appointment@@Book Appointment")}
+									text={_`hero.book_appointment`}
 									location={contact?.location.name || ""}
 									classes="btn btn-outline btn-md min-h-12 rounded-full px-8 font-main text-xs font-semibold uppercase tracking-[0.12em]"
 									analyticsPlacement="pricelist_hero"
@@ -267,11 +260,7 @@ export default component$(() => {
 								class="alert border border-base-300 bg-base-100"
 								role="status"
 							>
-								<span>
-									{t(
-										"app.pricelist.empty@@Pricing is temporarily unavailable. Please contact us for current treatment information.",
-									)}
-								</span>
+								<span>{_`pricelist.empty`}</span>
 							</div>
 						) : null}
 
@@ -341,14 +330,14 @@ export default component$(() => {
 					<FadeUp class="card card-border mx-auto max-w-3xl bg-base-200/35 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg">
 						<div class="card-body items-center px-5 py-10 md:p-14">
 							<p class="mb-4 font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary md:tracking-[0.24em]">
-								{t("app.pricelist.ready@@Ready when you are")}
+								{_`pricelist.ready`}
 							</p>
 							<h2 class="mb-6 text-balance font-cormorant text-4xl leading-none text-base-content md:text-5xl">
-								{t("app.hero.book_visit@@Book Your Visit")}
+								{_`hero.book_visit`}
 							</h2>
 							<Booking
 								id="bottom_pricelist_book"
-								text={t("app.hero.book_appointment@@Book Appointment")}
+								text={_`hero.book_appointment`}
 								location={contact?.location.name || ""}
 								classes="btn btn-outline btn-md h-12 min-h-12 rounded-full px-8 font-main uppercase tracking-[0.12em]"
 								analyticsPlacement="pricelist_bottom"
@@ -364,15 +353,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = () => {
-	const t = inlineTranslate();
 	return {
-		title: t("app.head.pricelist.title@@Services & Pricing | Aesthetic Lab"),
+		title: _`head.pricelist.title`,
 		meta: [
 			{
 				name: "description",
-				content: t(
-					"app.head.pricelist.description@@Full price list for manicures, pedicures, brows, and laser treatments.",
-				),
+				content: _`head.pricelist.description`,
 			},
 		],
 	};

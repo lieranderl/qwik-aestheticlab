@@ -1,4 +1,4 @@
-import { config } from "~/speak-config";
+import { config } from "~/i18n-config";
 
 /**
  * Generates a navigation link that preserves the current locale.

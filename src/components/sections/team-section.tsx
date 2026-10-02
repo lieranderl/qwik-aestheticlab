@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
 import { ExpandableText } from "~/components/ui/expandable-text";
 import { KickerLabel } from "~/components/ui/kicker-label";
@@ -13,7 +13,6 @@ interface TeamSectionProps {
 }
 
 export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
-	const t = inlineTranslate();
 	const sorted = [...technicians].sort((a, b) => a.id - b.id);
 
 	return (
@@ -21,18 +20,14 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 			{/* Section Header */}
 			<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
 				<div>
-					<KickerLabel>
-						{t("app.team.kicker@@The people behind your care")}
-					</KickerLabel>
+					<KickerLabel>{_`team.kicker`}</KickerLabel>
 					<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
-						{t("app.team.section_title@@Meet your beauty team")}
+						{_`team.section_title`}
 					</h2>
 				</div>
 				<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
 					<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
-						{t(
-							"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
-						)}
+						{_`story_text`}
 					</p>
 					{/* Team stat */}
 					<div class="mt-4">
@@ -40,10 +35,8 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 							{sorted.length}
 						</span>
 						<span class="ml-2 font-main text-sm text-base-content/80">
-							{sorted.length === 1
-								? t("app.team.artist@@artist")
-								: t("app.team.artists@@artists")}{" "}
-							&mdash; {t("app.team.leuven@@Leuven")}
+							{sorted.length === 1 ? _`team.artist` : _`team.artists`} &mdash;{" "}
+							{_`team.leuven`}
 						</span>
 					</div>
 				</div>
@@ -52,7 +45,7 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 			{/* Team Cards — carousel on mobile, grid on desktop */}
 			<section
 				class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
-				aria-label={t("app.team.section_title@@Meet your beauty team")}
+				aria-label={_`team.section_title`}
 			>
 				{sorted.map((tech, index) => (
 					<TeamMemberCard key={tech.id} tech={tech} index={index} />
@@ -69,7 +62,6 @@ interface TeamMemberCardProps {
 
 export const TeamMemberCard = component$<TeamMemberCardProps>(
 	({ tech, index }) => {
-		const t = inlineTranslate();
 		const ImageComp = resolveTeamImage(tech.photo_url);
 
 		return (
@@ -112,7 +104,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					<div>
 						<div class="mb-1.5">
 							<span class="badge badge-secondary badge-soft badge-sm font-main">
-								{tech.role || t("app.team.role.technician@@Technician")}
+								{tech.role || _`team.role.technician`}
 							</span>
 						</div>
 						<h3 class="font-cormorant text-2xl leading-none text-base-content">
@@ -127,7 +119,7 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 					<div class="card-actions mt-auto border-t border-base-300 pt-3.5">
 						<Booking
 							id={`modal_tech_${tech.id}`}
-							text={t("app.book.book_now@@Book Now")}
+							text={_`book.book_now`}
 							staff={String(tech.id)}
 							classes="btn btn-sm min-h-11 w-full font-main text-xs font-semibold uppercase tracking-wider"
 							analyticsPlacement="team"

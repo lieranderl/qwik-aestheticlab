@@ -1,3 +1,4 @@
+import { getLocale } from "@builder.io/qwik";
 import { isDev } from "@builder.io/qwik/build";
 import {
 	type RenderOptions,
@@ -5,8 +6,12 @@ import {
 	renderToStream,
 } from "@builder.io/qwik/server";
 import { manifest } from "@qwik-client-manifest";
+import { setLocaleGetter } from "compiled-i18n";
+import { config } from "./i18n-config";
 import Root from "./root";
-import { config } from "./speak-config";
+
+// compiled-i18n resolves the locale per translation from Qwik's request context.
+setLocaleGetter(() => getLocale(config.defaultLocale.lang));
 
 function extractBase({ serverData }: RenderOptions): string {
 	return !isDev && serverData?.locale

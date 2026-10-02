@@ -1,6 +1,6 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import {
 	disableAnalytics,
 	enableAnalytics,
@@ -11,7 +11,6 @@ import {
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 
 export const CookieBanner = component$(() => {
-	const t = inlineTranslate();
 	const location = useLocation();
 	const titleId = "cookie-settings-title";
 	const descriptionId = "cookie-settings-description";
@@ -72,22 +71,18 @@ export const CookieBanner = component$(() => {
 									id={titleId}
 									class="font-main text-sm font-semibold uppercase tracking-wider text-base-content"
 								>
-									{t("app.cookies.title@@Cookie settings")}
+									{_`cookies.title`}
 								</p>
 								<p id={descriptionId} class="text-sm text-base-content/80">
-									{t(
-										"app.cookies.description@@We use strictly necessary cookies to run this site. Google Analytics runs in Consent Mode: analytics storage is denied unless you accept, and Google may receive cookieless consent and measurement pings before your choice.",
-									)}
+									{_`cookies.description`}
 								</p>
 								<div class="text-xs text-base-content">
-									{t(
-										"app.cookies.necessary@@Strictly necessary cookies are always active.",
-									)}{" "}
+									{_`cookies.necessary`}{" "}
 									<a
 										class="link inline-flex min-h-11 items-center"
 										href={privacyHref}
 									>
-										{t("app.cookies.privacy_link@@Read our Privacy Policy")}
+										{_`cookies.privacy_link`}
 									</a>
 								</div>
 							</div>
@@ -98,14 +93,14 @@ export const CookieBanner = component$(() => {
 									class="btn btn-outline btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={rejectOptional}
 								>
-									{t("app.cookies.reject@@Reject analytics")}
+									{_`cookies.reject`}
 								</button>
 								<button
 									type="button"
 									class="btn btn-primary btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
 									onClick$={acceptAll}
 								>
-									{t("app.cookies.accept@@Accept analytics")}
+									{_`cookies.accept`}
 								</button>
 							</div>
 						</div>
@@ -119,7 +114,7 @@ export const CookieBanner = component$(() => {
 						type="button"
 						class="btn btn-square btn-sm rounded-full border border-base-content/20 bg-base-100/95 text-xs opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100 md:w-auto md:px-4 md:opacity-90"
 						onClick$={openSettings}
-						aria-label={t("app.cookies.settings@@Cookie settings")}
+						aria-label={_`cookies.settings`}
 					>
 						<svg
 							viewBox="0 0 24 24"
@@ -135,9 +130,7 @@ export const CookieBanner = component$(() => {
 								d="M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4"
 							/>
 						</svg>
-						<span class="hidden md:inline">
-							{t("app.cookies.settings@@Cookie settings")}
-						</span>
+						<span class="hidden md:inline">{_`cookies.settings`}</span>
 					</button>
 				</div>
 			)}

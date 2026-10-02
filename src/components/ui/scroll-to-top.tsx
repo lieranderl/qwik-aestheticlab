@@ -1,9 +1,8 @@
 import { $, component$, useOnWindow, useSignal } from "@builder.io/qwik";
 import { HiArrowUpOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 
 export const ScrollToTop = component$(() => {
-	const t = inlineTranslate();
 	const isVisible = useSignal(false);
 
 	useOnWindow(
@@ -31,7 +30,7 @@ export const ScrollToTop = component$(() => {
 					? "translate-y-0 opacity-100"
 					: "translate-y-4 opacity-0 pointer-events-none",
 			]}
-			aria-label={t("app.common.scroll_to_top@@Scroll to top")}
+			aria-label={_`common.scroll_to_top`}
 		>
 			<HiArrowUpOutline class="size-5" aria-hidden="true" />
 		</button>

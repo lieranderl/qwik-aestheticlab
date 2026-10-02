@@ -1,23 +1,20 @@
 /**
  * Returns navigation link definitions with raw i18n keys.
- * Callers must apply their own translate function to produce labels.
- *
- * This avoids the qwik-speak inline plugin removing the `inlineTranslate()`
- * declaration when `t` is only passed as a reference (not called directly
- * in the same file).
+ * Callers map each key to a literal compiled-i18n tagged template so the
+ * translation is inlined at build time (dynamic keys are not inlined).
  */
 export function getNavLinkKeys(includeHome = true) {
 	const links: { href: string; key: string }[] = [
-		{ href: "#services", key: "app.nav.services@@Services" },
-		{ href: "#reviews", key: "app.nav.reviews@@Reviews" },
-		{ href: "#gallery", key: "app.nav.work@@Our Work" },
-		{ href: "#team", key: "app.nav.team@@Team" },
-		{ href: "#faq", key: "app.faq.title@@FAQ" },
-		{ href: "#contact", key: "app.nav.contact@@Contact" },
+		{ href: "#services", key: "nav.services" },
+		{ href: "#reviews", key: "nav.reviews" },
+		{ href: "#gallery", key: "nav.work" },
+		{ href: "#team", key: "nav.team" },
+		{ href: "#faq", key: "faq.title" },
+		{ href: "#contact", key: "nav.contact" },
 	];
 
 	if (includeHome) {
-		links.unshift({ href: "#", key: "app.nav.home@@Home" });
+		links.unshift({ href: "#", key: "nav.home" });
 	}
 
 	return links;

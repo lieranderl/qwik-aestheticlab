@@ -1,17 +1,13 @@
 import { component$ } from "@builder.io/qwik";
 import { HiChevronDownOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 
 export const RotatingText = component$(() => {
-	const t = inlineTranslate();
-
 	return (
 		<div class="mx-auto w-full max-w-5xl text-center">
 			<span class="sr-only">
-				{t("app.hero.the_best@@The best")} {t("app.hero.manicure@@manicure")},{" "}
-				{t("app.hero.pedicure@@pedicure")}, {t("app.hero.brows@@brows")},{" "}
-				{t("app.hero.lashes@@lashes")}, {t("app.hero.laser@@laser")}{" "}
-				{t("app.hero.in_leuven@@in Leuven")}
+				{_`hero.the_best`} {_`hero.manicure`}, {_`hero.pedicure`},{" "}
+				{_`hero.brows`}, {_`hero.lashes`}, {_`hero.laser`} {_`hero.in_leuven`}
 			</span>
 
 			<div
@@ -20,7 +16,7 @@ export const RotatingText = component$(() => {
 				aria-hidden="true"
 			>
 				<span class="font-main text-xl leading-tight font-light md:text-2xl">
-					{t("app.hero.the_best@@The best")}
+					{_`hero.the_best`}
 				</span>
 
 				<span
@@ -28,18 +24,16 @@ export const RotatingText = component$(() => {
 					class="text-rotate w-36 max-w-full font-main text-2xl leading-normal font-semibold text-primary-content duration-10000 md:w-44 md:text-3xl"
 				>
 					<span class="justify-items-center">
-						<span>{t("app.hero.manicure@@manicure")}</span>
-						<span class="text-secondary">
-							{t("app.hero.pedicure@@pedicure")}
-						</span>
-						<span class="text-accent">{t("app.hero.brows@@brows")}</span>
-						<span class="text-info">{t("app.hero.lashes@@lashes")}</span>
-						<span class="text-error">{t("app.hero.laser@@laser")}</span>
+						<span>{_`hero.manicure`}</span>
+						<span class="text-secondary">{_`hero.pedicure`}</span>
+						<span class="text-accent">{_`hero.brows`}</span>
+						<span class="text-info">{_`hero.lashes`}</span>
+						<span class="text-error">{_`hero.laser`}</span>
 					</span>
 				</span>
 
 				<span class="font-main text-xl leading-tight font-light md:text-2xl">
-					{t("app.hero.in_leuven@@in Leuven")}
+					{_`hero.in_leuven`}
 				</span>
 			</div>
 
@@ -47,23 +41,21 @@ export const RotatingText = component$(() => {
 				data-testid="hero-service-footnote"
 				class="mt-2 text-center font-main text-xs leading-relaxed text-primary-content"
 			>
-				{t("app.hero.according@@*according to our clients")}
+				{_`hero.according`}
 			</p>
 		</div>
 	);
 });
 
 export const ScrollDownHint = component$(() => {
-	const t = inlineTranslate();
-
 	return (
 		<a
 			href="#services"
 			class="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-8 lg:bottom-10"
-			aria-label={t("app.hero.scroll_down@@Scroll down to see our services")}
+			aria-label={_`hero.scroll_down`}
 		>
 			<span class="font-main text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-primary-content">
-				{t("app.hero.scroll@@Scroll")}
+				{_`hero.scroll`}
 			</span>
 			<HiChevronDownOutline
 				class="size-5 text-primary-content motion-safe:animate-bounce"

@@ -1,7 +1,7 @@
 import type { PropFunction } from "@builder.io/qwik";
 import { component$, useId } from "@builder.io/qwik";
 import { HiClockOutline } from "@qwikest/icons/heroicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { bookingLocationId } from "~/consts";
 import { resolveImageComponent } from "~/shared/image-resolver";
 import { Booking } from "./booking-modal";
@@ -45,7 +45,6 @@ export const ServiceCard = component$<ServiceCardProps>(
 		eager = false,
 		emphasis = "standard",
 	}) => {
-		const t = inlineTranslate();
 		const descriptionId = useId();
 		const ImageComp = resolveImageComponent(image);
 		const imageSizes =
@@ -146,7 +145,7 @@ export const ServiceCard = component$<ServiceCardProps>(
 								<div class="mb-4 flex items-center gap-2 font-main text-xs font-medium uppercase tracking-wider text-base-content">
 									<HiClockOutline class="size-4" aria-hidden="true" />
 									<span>
-										{duration}&nbsp;{t("app.services.minutes@@min")}
+										{duration}&nbsp;{_`services.minutes`}
 									</span>
 								</div>
 							) : null}
@@ -164,12 +163,12 @@ export const ServiceCard = component$<ServiceCardProps>(
 										onClick$={customAction$}
 										class="btn btn-sm btn-outline h-11 min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
 									>
-										{buttonLabel || t("app.generic.view@@View")}
+										{buttonLabel || _`generic.view`}
 									</button>
 								) : showBooking ? (
 									<Booking
 										id={`modal_service_${serviceId}`}
-										text={t("app.book.book_now@@Book Now")}
+										text={_`book.book_now`}
 										location={location}
 										classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
 										analyticsPlacement={analyticsPlacement || "service_card"}
@@ -188,12 +187,12 @@ export const ServiceCard = component$<ServiceCardProps>(
 									onClick$={customAction$}
 									class="btn btn-sm h-11 min-h-11 w-full max-w-full whitespace-nowrap px-4 font-main text-xs font-semibold uppercase tracking-[0.08em]"
 								>
-									{buttonLabel || t("app.generic.view@@View")}
+									{buttonLabel || _`generic.view`}
 								</button>
 							) : showBooking ? (
 								<Booking
 									id={`modal_service_${serviceId}`}
-									text={t("app.book.book_now@@Book Now")}
+									text={_`book.book_now`}
 									location={location}
 									classes="btn btn-sm btn-outline min-h-11 font-main uppercase tracking-wider"
 									analyticsPlacement={analyticsPlacement || "service_card"}

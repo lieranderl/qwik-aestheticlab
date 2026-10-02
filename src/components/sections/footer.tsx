@@ -1,21 +1,20 @@
 import { component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import BirdLogo from "~/media/Bird.svg?jsx";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 import { getNavLinkKeys } from "~/shared/nav-links";
 
 export const Footer = component$(() => {
-	const t = inlineTranslate();
 	const location = useLocation();
 	const navLabels: Record<string, string> = {
-		"app.nav.services@@Services": t("app.nav.services@@Services"),
-		"app.nav.reviews@@Reviews": t("app.nav.reviews@@Reviews"),
-		"app.nav.work@@Our Work": t("app.nav.work@@Our Work"),
-		"app.nav.team@@Team": t("app.nav.team@@Team"),
-		"app.faq.title@@FAQ": t("app.faq.title@@FAQ"),
-		"app.nav.contact@@Contact": t("app.nav.contact@@Contact"),
+		"nav.services": _`nav.services`,
+		"nav.reviews": _`nav.reviews`,
+		"nav.work": _`nav.work`,
+		"nav.team": _`nav.team`,
+		"faq.title": _`faq.title`,
+		"nav.contact": _`nav.contact`,
 	};
 	const links = getNavLinkKeys(false).map(({ href, key }) => ({
 		label: navLabels[key],
@@ -31,7 +30,7 @@ export const Footer = component$(() => {
 						<BirdLogo
 							class="h-10 w-auto text-base-content [&_path]:fill-current"
 							role="img"
-							aria-label={t("app.nav.logo_bird@@Aesthetic Lab Bird Logo")}
+							aria-label={_`nav.logo_bird`}
 						/>
 						<div>
 							<p class="font-qestero text-2xl leading-none">Aesthetic Lab</p>
@@ -41,16 +40,14 @@ export const Footer = component$(() => {
 						</div>
 					</div>
 					<p class="mt-4 font-main text-xs leading-relaxed text-base-content">
-						{t(
-							"app.footer.tagline@@Nails, brows, lashes and laser treatments shaped around you",
-						)}
+						{_`footer.tagline`}
 					</p>
 				</aside>
 
 				{/* Navigation */}
-				<nav aria-label={t("app.footer.navigation@@Footer navigation")}>
+				<nav aria-label={_`footer.navigation`}>
 					<h2 class="mb-3 font-main text-xs font-semibold uppercase tracking-wider text-base-content">
-						{t("app.footer.explore@@Explore")}
+						{_`footer.explore`}
 					</h2>
 					<div class="grid grid-cols-2 gap-x-7 gap-y-2.5 font-main text-sm sm:grid-cols-3">
 						{links.map((item) => (
@@ -81,20 +78,20 @@ export const Footer = component$(() => {
 					&copy; {new Date().getFullYear()} Aesthetic Lab Leuven
 				</p>
 				<nav
-					aria-label={t("app.footer.legal@@Legal")}
+					aria-label={_`footer.legal`}
 					class="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-main text-xs sm:mt-0 sm:shrink-0"
 				>
 					<a
 						class="link link-hover min-h-11 content-center text-base-content"
 						href={getLocaleNavLink(location.url.pathname, "privacy-policy")}
 					>
-						{t("app.privacy.privacy_title@@Privacy Policy")}
+						{_`privacy.privacy_title`}
 					</a>
 					<a
 						class="link link-hover min-h-11 content-center text-base-content"
 						href={getLocaleNavLink(location.url.pathname, "notice")}
 					>
-						{t("app.privacy.important_info@@Important Information")}
+						{_`privacy.important_info`}
 					</a>
 				</nav>
 			</div>

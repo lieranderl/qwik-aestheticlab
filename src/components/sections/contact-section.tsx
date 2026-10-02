@@ -1,5 +1,5 @@
 import { $, component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { MapEmbed } from "~/components/ui/google-map";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SITE_METADATA } from "~/constants/metadata";
@@ -11,8 +11,6 @@ interface ContactSectionProps {
 }
 
 export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
-	const t = inlineTranslate();
-
 	return (
 		<section
 			id="contact"
@@ -21,17 +19,13 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 			<div class="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div class="space-y-5 md:space-y-6 mb-8 md:mb-10">
 					<div>
-						<KickerLabel>
-							{t("app.contact.kicker@@Your Leuven studio")}
-						</KickerLabel>
+						<KickerLabel>{_`contact.kicker`}</KickerLabel>
 						<h2 class="text-balance font-cormorant text-4xl leading-none text-base-content md:text-6xl">
-							{t("app.contact.visit_us@@Find Us")}
+							{_`contact.visit_us`}
 						</h2>
 					</div>
 					<p class="max-w-xl text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
-						{t(
-							"app.contact.description@@Plan your visit with the current address, hours, directions, and nearby parking.",
-						)}
+						{_`contact.description`}
 					</p>
 				</div>
 
@@ -62,7 +56,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 												})}
 												class="btn btn-sm min-h-11"
 											>
-												{t("app.contact.directions@@Get Directions")}
+												{_`contact.directions`}
 											</a>
 										</div>
 
@@ -70,7 +64,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 										{contact.parking && contact.parking.length > 0 && (
 											<div class="mt-5 flex flex-col gap-2 md:mt-6">
 												<span class="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
-													{t("app.contact.parking@@Parking")}
+													{_`contact.parking`}
 												</span>
 												<ul class="flex flex-wrap gap-x-4 gap-y-2">
 													{contact.parking.map((p) => (
@@ -108,7 +102,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 									{/* Hours */}
 									<div class="flex flex-col gap-1">
 										<span class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-secondary">
-											{t("app.contact.opening_hours@@Hours")}
+											{_`contact.opening_hours`}
 										</span>
 										<div class="flex items-baseline gap-4">
 											<span class="font-main text-xl text-base-content md:text-2xl">
@@ -116,15 +110,14 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 											</span>
 										</div>
 										<p class="font-main text-sm text-base-content mt-1">
-											{t("app.contact.monday@@Mon")} -{" "}
-											{t("app.contact.saturday@@Sat")}
+											{_`contact.monday`} - {_`contact.saturday`}
 										</p>
 
 										{/* Refined Appointment Badge */}
 										<div class="mt-3 flex items-center gap-2 text-base-content md:mt-4">
 											<span class="status status-sm" aria-hidden="true" />
 											<span class="font-main text-xs font-semibold uppercase tracking-wide">
-												{t("app.contact.appointment_only@@By appointment only")}
+												{_`contact.appointment_only`}
 											</span>
 										</div>
 									</div>
@@ -134,7 +127,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 									{/* Contact */}
 									<div class="flex flex-col gap-1">
 										<span class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-secondary">
-											{t("app.contact.contact@@Contact")}
+											{_`contact.contact`}
 										</span>
 										<a
 											href={`mailto:${contact.email}`}
@@ -156,7 +149,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 						{/* Right Map Panel */}
 						<figure
 							class="relative order-1 h-64 bg-base-200 md:h-80 lg:order-2 lg:h-auto lg:min-h-112.5 lg:w-7/12"
-							aria-label={t("app.contact.map_location@@Location map")}
+							aria-label={_`contact.map_location`}
 						>
 							<div class="absolute inset-0 h-full w-full">
 								<MapEmbed />
@@ -170,21 +163,17 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 					>
 						<div>
 							<h3 class="font-cormorant text-2xl text-base-content">
-								{t(
-									"app.contact.unavailable_title@@Contact details are temporarily unavailable",
-								)}
+								{_`contact.unavailable_title`}
 							</h3>
 							<p class="mt-1 max-w-2xl font-main text-sm leading-relaxed text-base-content/80">
-								{t(
-									"app.contact.unavailable_description@@You can still reach us by email while we restore the latest studio details.",
-								)}
+								{_`contact.unavailable_description`}
 							</p>
 						</div>
 						<a
 							href={`mailto:${SITE_METADATA.email}`}
 							class="btn btn-primary min-h-11 shrink-0"
 						>
-							{t("app.contact.email_us@@Email us")}
+							{_`contact.email_us`}
 						</a>
 					</div>
 				)}

@@ -1,10 +1,8 @@
 import { component$ } from "@builder.io/qwik";
-import { inlineTranslate } from "qwik-speak";
+import { _ } from "compiled-i18n";
 import { Booking } from "~/components/ui/booking-modal";
 
 export const BookingCtaSection = component$(() => {
-	const t = inlineTranslate();
-
 	return (
 		<section class="bg-base-100 px-4 py-8 sm:px-6 md:py-12 lg:px-8">
 			<div class="card card-border relative mx-auto max-w-7xl overflow-hidden bg-base-200 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg">
@@ -12,19 +10,19 @@ export const BookingCtaSection = component$(() => {
 					<div class="max-w-3xl">
 						<div class="mb-6 flex items-center gap-3 font-main text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-secondary">
 							<span class="status status-sm" aria-hidden="true" />
-							{t("app.contact.appointment_only@@By appointment only")}
+							{_`contact.appointment_only`}
 						</div>
 						<h2 class="text-balance font-cormorant text-4xl leading-[0.95] text-base-content sm:text-5xl lg:text-6xl">
-							{t("app.cta.title@@Ready to feel beautifully yourself?")}
+							{_`cta.title`}
 						</h2>
 						<p class="mt-4 max-w-xl font-main text-sm leading-7 text-base-content/80 md:text-base">
-							{t("app.cta.description@@Book your moment of considered care")}
+							{_`cta.description`}
 						</p>
 					</div>
 					<div class="card-actions w-full md:w-auto">
 						<Booking
 							id="final-book-btn"
-							text={t("app.book.book_app@@Book Appointment")}
+							text={_`book.book_app`}
 							analyticsPlacement="final_cta"
 							classes="btn btn-neutral btn-lg min-h-12 w-full px-7 font-main text-xs font-semibold uppercase tracking-[0.1em] transition-shadow duration-200 motion-safe:hover:shadow-md md:w-auto"
 						/>
