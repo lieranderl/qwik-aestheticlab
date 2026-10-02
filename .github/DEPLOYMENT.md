@@ -92,12 +92,12 @@ The localized route shell is configured in `src/routes/[...lang]/layout.tsx`:
 
 ```tsx
 cacheControl({
-  staleWhileRevalidate: 60 * 60 * 24 * 7,
-  maxAge: 60 * 5,
+  staleWhileRevalidate: 60 * 10,
+  maxAge: 60,
 });
 ```
 
-- Dynamic HTML is fresh for 300 seconds, then eligible for stale-while-revalidate for seven days.
+- Dynamic HTML is fresh for 60 seconds, then eligible for stale-while-revalidate for 10 minutes. The window stays short because a new revision does not serve the previous revision's hashed chunks.
 - Hashed Vite assets use long-lived immutable caching.
 - Translation changes require a rebuild because Qwik Speak inlines translations.
 

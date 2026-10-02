@@ -22,10 +22,12 @@ export const onRequest: RequestHandler = ({ params, error }) => {
 	}
 };
 
+// Keep the HTML window short: each Cloud Run revision only ships its own hashed
+// /build/ chunks, so long-lived stale HTML can reference chunks that no longer exist.
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({
-		staleWhileRevalidate: 60 * 60 * 24 * 7,
-		maxAge: 60 * 5,
+		staleWhileRevalidate: 60 * 10,
+		maxAge: 60,
 	});
 };
 
