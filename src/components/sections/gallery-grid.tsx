@@ -25,8 +25,9 @@ import chromeVideo from "~/media/video/chrome.mp4?url";
 import chromePoster from "~/media/video/chrome-poster.jpg?url";
 import nudeVideo from "~/media/video/nude.mp4?url";
 import nudePoster from "~/media/video/nude-poster.jpg?url";
-import resetVideo from "~/media/video/reset.mp4?url";
-import resetPoster from "~/media/video/reset-poster.jpg?url";
+import shimmerVideo from "~/media/video/shimmer.mp4?url";
+import shimmerPoster from "~/media/video/shimmer-poster.jpg?url";
+
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 const SMALL_SIZES = "(min-width: 1280px) 19rem, (min-width: 768px) 25vw, 50vw";
@@ -122,11 +123,11 @@ export const GalleryGrid = component$(() => {
 			),
 		},
 		{
-			src: resetVideo,
-			poster: resetPoster,
+			src: shimmerVideo,
+			poster: shimmerPoster,
 			tag: t("app.work.clip.foam@@Foam wash"),
 			label: t(
-				"app.work.clip.foam_label@@Pink gel manicure being washed with soft foam",
+				"app.work.clip.shimmer_label@@Pale pink shimmer manicure rinsed with soft foam",
 			),
 		},
 	];
