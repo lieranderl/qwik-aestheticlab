@@ -68,9 +68,16 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 						id="contact-title"
 						class="font-cormorant text-[2.5rem] leading-none md:text-6xl lg:text-[clamp(3.5rem,5.5vw,5rem)] lg:leading-[0.95]"
 					>
-						{street},
-						<br />
-						{city}
+						{city ? (
+							<>
+								{street},
+								<br />
+								{city}
+							</>
+						) : (
+							// Addresses without ", " are shown whole.
+							street
+						)}
 					</h2>
 				</FadeUp>
 

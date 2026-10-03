@@ -12,6 +12,7 @@ import { ServiceGrid } from "~/components/sections/service-grid";
 import { TeamSection } from "~/components/sections/team-section";
 import { ScrollToTop } from "~/components/ui/scroll-to-top";
 import { isSupportedLocaleParam } from "~/shared/locale-navigation";
+import { isAddOnService } from "~/shared/service-utils";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -26,7 +27,9 @@ export default component$(() => {
 	const techniciansSignal = useTechniciansLoader();
 	const contactSignal = useContactLoader();
 	const location = useLocation();
+	// Main treatments only: a 5-minute add-on is not a treatment length.
 	const durations = servicesSignal.value
+		.filter((service) => !isAddOnService(service))
 		.map((service) => service.duration)
 		.filter((duration) => duration > 0);
 	const durationRange =
