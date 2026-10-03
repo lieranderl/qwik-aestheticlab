@@ -25,6 +25,8 @@ import chromeVideo from "~/media/video/chrome.mp4?url";
 import chromePoster from "~/media/video/chrome-poster.jpg?url";
 import nudeVideo from "~/media/video/nude.mp4?url";
 import nudePoster from "~/media/video/nude-poster.jpg?url";
+import resetVideo from "~/media/video/reset.mp4?url";
+import resetPoster from "~/media/video/reset-poster.jpg?url";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
 const SMALL_SIZES = "(min-width: 1280px) 19rem, (min-width: 768px) 25vw, 50vw";
@@ -119,6 +121,14 @@ export const GalleryGrid = component$(() => {
 				"app.work.clip.soft_pink_label@@A finished soft pink gel manicure",
 			),
 		},
+		{
+			src: resetVideo,
+			poster: resetPoster,
+			tag: t("app.work.clip.foam@@Foam wash"),
+			label: t(
+				"app.work.clip.foam_label@@Pink gel manicure being washed with soft foam",
+			),
+		},
 	];
 
 	const open = $((_event: MouseEvent, element: HTMLButtonElement) => {
@@ -210,7 +220,7 @@ export const GalleryGrid = component$(() => {
 			</ul>
 
 			<ul
-				class="-mx-4 mt-2 flex snap-x snap-mandatory scroll-px-4 gap-2 overflow-x-auto overscroll-x-contain px-4 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:mt-4 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0"
+				class="-mx-4 mt-2 flex snap-x snap-mandatory scroll-px-4 gap-2 overflow-x-auto overscroll-x-contain px-4 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:mt-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4 md:overflow-visible md:px-0"
 				aria-label={t("app.work.clips_label@@Studio clips")}
 			>
 				{clips.map((clip, index) => (
@@ -225,7 +235,7 @@ export const GalleryGrid = component$(() => {
 							label={clip.label}
 							class="h-full w-full object-cover"
 						/>
-						<span class="absolute bottom-3.5 left-3.5 bg-linen/88 px-3 py-1.5 font-main text-xs font-semibold tracking-[0.1em] text-ink uppercase backdrop-blur-sm">
+						<span class="absolute bottom-3.5 left-3.5 bg-linen/92 px-3 py-1.5 font-main text-xs font-semibold tracking-[0.1em] text-ink uppercase">
 							{clip.tag}
 						</span>
 						<VideoControl

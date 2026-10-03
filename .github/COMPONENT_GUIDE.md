@@ -34,7 +34,6 @@ Choose **UI** when:
 | `HeroSection` | `hero-section.tsx` | — (top of page) | Translations only |
 | `ServiceGrid` | `service-grid.tsx` | `#services` | `services`, `serviceCategories`, `location` props |
 | `TeamSection` | `team-section.tsx` | `#team` | `technicians` prop |
-| `ReviewsSection` | `reviews-section.tsx` | — (no anchor) | Hardcoded review data |
 | `GalleryGrid` | `gallery-grid.tsx` | `#gallery` | Static image imports + hardcoded Instagram IDs |
 | `AboutSection` | `about-section.tsx` | `#about` | Translations only |
 | `ContactSection` | `contact-section.tsx` | `#contact` | `contact` prop |
@@ -322,7 +321,6 @@ The route page (`routes/[...lang]/index.tsx`) is the single place where sections
   <HeroSection />
   <ServiceGrid services={...} serviceCategories={...} location={...} />
   <TeamSection technicians={...} />
-  <ReviewsSection />
   <GalleryGrid />
   <AboutSection />
   <ContactSection contact={...} />

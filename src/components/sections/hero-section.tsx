@@ -6,8 +6,8 @@ import { InViewVideo, VideoControl } from "~/components/ui/in-view-video";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { Parallax } from "~/components/ui/parallax";
 import { googlePlaceUrl, googleRating, googleReviewCount } from "~/consts";
-import heroVideo from "~/media/video/reset.mp4?url";
-import heroPoster from "~/media/video/reset-poster.jpg?url";
+import heroVideo from "~/media/video/hero.mp4?url";
+import heroPoster from "~/media/video/hero-poster.jpg?url";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 
@@ -46,7 +46,7 @@ export const HeroSection = component$(() => {
 						poster={heroPoster}
 						preload="auto"
 						label={t(
-							"app.hero.video_label@@Pink gel manicure being washed with soft foam",
+							"app.hero.video_label_shimmer@@Pale pink shimmer manicure rinsed with soft foam",
 						)}
 						class="-ml-15 block h-full w-[calc(100%+3.75rem)] max-w-none object-cover motion-safe:animate-media-slide"
 					/>
@@ -73,13 +73,11 @@ export const HeroSection = component$(() => {
 					fadeOutOver={420}
 					class="flex flex-col gap-4.5 px-6 pt-28 pb-[calc(env(safe-area-inset-bottom)+2.5rem)] lg:gap-7 lg:px-0 lg:pt-0 lg:pb-3"
 				>
-					<div class="motion-safe:animate-fade-rise [animation-delay:80ms]">
-						<KickerLabel tone="sage" class="mb-0">
-							{t("app.hero.kicker@@Leuven · since 2024")}
-						</KickerLabel>
-					</div>
-
-					<h1 class="overflow-clip pb-[0.06em] font-cormorant text-[3.75rem] max-[360px]:text-5xl leading-[0.9] font-medium tracking-[-0.02em] text-balance sm:text-7xl lg:text-[clamp(4rem,5.6vw,6rem)]">
+					{/* Phones: one centered line, sized from the slogan length so every locale fits. */}
+					<h1
+						style={{ "--slogan-chars": slogan.length }}
+						class="overflow-clip pb-[0.06em] text-center font-cormorant text-[min(2.75rem,calc((100vw-3rem)/(var(--slogan-chars)*0.46)))] leading-[0.9] font-medium tracking-[-0.02em] whitespace-nowrap lg:text-left lg:text-[clamp(4rem,5.6vw,6rem)] lg:whitespace-normal lg:text-balance"
+					>
 						<span class="block motion-safe:animate-line-up [animation-delay:160ms]">
 							{slogan}
 						</span>
@@ -95,7 +93,7 @@ export const HeroSection = component$(() => {
 						<Booking
 							id="hero-book-btn"
 							text={t("app.book.book_app@@Book Appointment")}
-							classes="btn btn-neutral h-13.5 min-h-13.5 px-8 font-main text-[0.9375rem] font-semibold lg:h-14 lg:min-h-14"
+							classes="btn btn-accent h-13.5 min-h-13.5 px-8 font-main text-[0.9375rem] font-semibold lg:h-14 lg:min-h-14"
 							analyticsPlacement="hero"
 						/>
 						<a
@@ -126,6 +124,15 @@ export const HeroSection = component$(() => {
 					>
 						{ratingLabel}
 					</a>
+
+					<div class="motion-safe:animate-fade-rise [animation-delay:800ms]">
+						<KickerLabel
+							tone="sage"
+							class="mb-0 justify-center lg:justify-start"
+						>
+							{t("app.hero.kicker@@Leuven · since 2024")}
+						</KickerLabel>
+					</div>
 				</Parallax>
 			</div>
 		</section>

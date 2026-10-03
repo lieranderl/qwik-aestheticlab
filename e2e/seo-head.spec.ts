@@ -21,6 +21,25 @@ test("uses production canonical and localized alternate URLs", async ({
 	await expect(page.locator('link[rel="alternate"]')).toHaveCount(6);
 });
 
+test("names Leuven and the treatments in price-page titles", async ({
+	page,
+}) => {
+	const titles = {
+		"en-BE": /Prices in Leuven \| Aesthetic Lab$/,
+		"nl-BE": /in Leuven \| Aesthetic Lab$/,
+		"fr-BE": /à Louvain \| Aesthetic Lab$/,
+	};
+	for (const [locale, title] of Object.entries(titles)) {
+		await page.goto(`/${locale}/pricelist/`);
+		await expect(page).toHaveTitle(title);
+		await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+			"content",
+			/Leuven|Louvain/,
+		);
+	}
+	await expect(page).toHaveTitle(/manucure, pédicure, sourcils & laser/);
+});
+
 test("publishes link-preview tags with a share image per language", async ({
 	page,
 }) => {

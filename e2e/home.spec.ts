@@ -66,31 +66,26 @@ test("renders localized landing-page copy in every supported language", async ({
 		{
 			lang: "en-BE",
 			hero: "The art of natural beauty",
-			reviews: "What people say",
 			faq: "Good to know",
 		},
 		{
 			lang: "nl-BE",
 			hero: "De kunst van natuurlijke schoonheid",
-			reviews: "Mooie woorden",
 			faq: "Goed om te weten",
 		},
 		{
 			lang: "fr-BE",
 			hero: "L'art de la beauté naturelle",
-			reviews: "Mots doux",
 			faq: "Bon à savoir",
 		},
 		{
 			lang: "ru-BE",
 			hero: "Искусство естественной красоты",
-			reviews: "Тёплые слова",
 			faq: "Полезно знать",
 		},
 		{
 			lang: "uk-BE",
 			hero: "Мистецтво природної краси",
-			reviews: "Теплі слова",
 			faq: "Корисно знати",
 		},
 	];
@@ -100,7 +95,6 @@ test("renders localized landing-page copy in every supported language", async ({
 	for (const locale of locales) {
 		await page.goto(`/${locale.lang}/`);
 		await expect(page.locator("#hero h1")).toHaveText(locale.hero);
-		await expect(page.locator("#reviews h2")).toHaveText(locale.reviews);
 		await expect(
 			page.locator("#faq").getByRole("heading", {
 				name: locale.faq,
@@ -224,16 +218,7 @@ test("renders key sections on the landing page", async ({ page }) => {
 
 	await expect(page.locator("#hero")).toBeVisible();
 	await expect(page.locator("#services")).toBeVisible();
-	await expect(page.locator("#reviews")).toBeVisible();
-});
-
-test("renders the reviews section with heading and star ratings", async ({
-	page,
-}) => {
-	await page.goto("/en-BE/");
-
-	await expect(page.locator("#reviews h2")).toHaveText("What people say");
-	await expect(page.getByTestId("review-rating").first()).toBeVisible();
+	await expect(page.locator("#gallery")).toBeVisible();
 });
 
 test("renders the FAQ section with proper heading", async ({ page }) => {
@@ -439,13 +424,12 @@ test("operates the gallery lightbox with the keyboard and restores focus", async
 	await expect(firstImage).toBeFocused();
 });
 
-test("localizes gallery and rating accessibility labels", async ({ page }) => {
+test("localizes gallery accessibility labels", async ({ page }) => {
 	await page.goto("/fr-BE/");
 
 	await expect(
 		page.getByRole("button", { name: "Agrandir l’image" }).first(),
 	).toBeVisible();
-	await expect(page.getByLabel("5 étoiles sur 5").first()).toBeVisible();
 });
 
 test("videos have a pause, play and replay control", async ({ page }) => {
@@ -455,5 +439,5 @@ test("videos have a pause, play and replay control", async ({ page }) => {
 	await expect(heroControl).toHaveAttribute("aria-label", /\S/);
 	await expect(
 		page.locator('#gallery button[aria-controls^="work-clip-"]'),
-	).toHaveCount(3);
+	).toHaveCount(4);
 });

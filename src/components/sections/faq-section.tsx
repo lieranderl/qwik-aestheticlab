@@ -105,7 +105,7 @@ export const FaqSection = component$<FaqSectionProps>(({ durationRange }) => {
 								<Booking
 									id="faq-book-btn"
 									text={t("app.book.book_app@@Book Appointment")}
-									classes="btn btn-neutral btn-sm mt-3 h-11 min-h-11 px-5 font-main text-xs font-semibold tracking-[0.16em] uppercase"
+									classes="btn btn-accent btn-sm mt-3 h-11 min-h-11 px-5 font-main text-xs font-semibold tracking-[0.16em] uppercase"
 									analyticsPlacement="faq_booking"
 								/>
 							</div>

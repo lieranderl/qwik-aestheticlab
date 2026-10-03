@@ -138,7 +138,7 @@ const PriceRow = component$<PriceRowProps>(
 						product={service.id}
 						text={t("app.pricelist.book_treatment@@Book this treatment")}
 						location={location}
-						classes="btn btn-outline btn-sm h-11 min-h-11 self-start border-neutral px-4.5 font-main text-sm font-semibold md:px-5"
+						classes="btn btn-outline btn-secondary btn-sm h-11 min-h-11 self-start px-4.5 font-main text-sm font-semibold md:px-5"
 						analyticsPlacement="pricelist_service"
 						analyticsServiceId={service.id}
 						analyticsServiceName={service.name}
@@ -428,7 +428,7 @@ export default component$(() => {
 												location={bookingLocation}
 												analyticsPlacement="pricelist_category"
 												analyticsServiceCategory={title}
-												classes="btn btn-neutral h-13 min-h-13 px-6.5 font-main text-sm font-semibold"
+												classes="btn btn-accent h-13 min-h-13 px-6.5 font-main text-sm font-semibold"
 											/>
 											{startingPrice ? (
 												<span class="font-main text-sm font-semibold text-base-content/80">
@@ -567,12 +567,14 @@ export default component$(() => {
 export const head: DocumentHead = () => {
 	const t = inlineTranslate();
 	return {
-		title: t("app.head.pricelist.title@@Services & Pricing | Aesthetic Lab"),
+		title: t(
+			"app.head.pricelist.title_leuven@@Manicure, Pedicure, Brows & Laser Prices in Leuven | Aesthetic Lab",
+		),
 		meta: [
 			{
 				name: "description",
 				content: t(
-					"app.head.pricelist.description@@Full price list for manicures, pedicures, brows, and laser treatments.",
+					"app.head.pricelist.description_leuven@@Prices and durations for manicure, pedicure, brows, lashes, waxing and laser hair removal at Aesthetic Lab in Leuven. Book online.",
 				),
 			},
 		],

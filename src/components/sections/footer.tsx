@@ -91,7 +91,7 @@ export const Footer = component$<FooterProps>(
 										id="footer-book-btn"
 										text={t("app.book.book_app@@Book Appointment")}
 										analyticsPlacement="footer"
-										classes="btn btn-neutral h-14 min-h-14 px-8 font-main text-[0.9375rem] font-semibold"
+										classes="btn btn-accent h-14 min-h-14 px-8 font-main text-[0.9375rem] font-semibold"
 									/>
 									<a
 										href={getLocaleNavLink(location.url.pathname, "pricelist")}

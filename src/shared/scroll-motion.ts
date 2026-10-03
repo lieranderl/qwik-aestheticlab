@@ -15,19 +15,35 @@ export function attachScrollMotion(
 	fadeOutOver: number,
 ) {
 	let ticking = false;
+	let lastTransform = "";
+	let lastOpacity = "";
+	// Only touch the DOM when a value changes, so idle frames cost nothing.
+	function apply(transform: string, opacity?: string) {
+		if (transform !== lastTransform) {
+			el.style.transform = transform;
+			lastTransform = transform;
+		}
+		if (opacity !== undefined && opacity !== lastOpacity) {
+			el.style.opacity = opacity;
+			lastOpacity = opacity;
+		}
+	}
 	function update() {
 		ticking = false;
 		const rect = frame.getBoundingClientRect();
 		const scrolledPast = Math.max(0, -rect.top);
 		if (mode === "fade") {
 			const progress = Math.min(1, scrolledPast / fadeOutOver);
-			el.style.opacity = String(1 - progress);
-			el.style.transform = `translate3d(0, ${(-scrolledPast * 0.15).toFixed(1)}px, 0)`;
+			apply(
+				`translate3d(0, ${(-Math.min(scrolledPast, fadeOutOver) * 0.15).toFixed(1)}px, 0)`,
+				String(Math.round((1 - progress) * 1000) / 1000),
+			);
 			return;
 		}
 		const offset =
 			mode === "top"
-				? scrolledPast * speed
+				? // Stops once the frame is off screen, so nothing moves out of sight.
+					Math.min(scrolledPast, rect.height) * speed
 				: Math.max(
 						-PAN_LIMIT,
 						Math.min(
@@ -35,7 +51,7 @@ export function attachScrollMotion(
 							-(rect.top + rect.height / 2 - window.innerHeight / 2) * speed,
 						),
 					);
-		el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+		apply(`translate3d(0, ${offset.toFixed(1)}px, 0)`);
 	}
 	function onScroll() {
 		if (ticking) return;
