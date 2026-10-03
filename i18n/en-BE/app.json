@@ -157,8 +157,8 @@
         "title": "Important Notice — Aesthetic Lab"
       },
       "pricelist": {
-        "description": "Up-to-date treatment duration and pricing for every service at Aesthetic Lab.",
-        "title": "Pricelist — Aesthetic Lab"
+        "description_leuven": "Prices and durations for manicure, pedicure, brows, lashes, waxing and laser hair removal at Aesthetic Lab in Leuven. Book online.",
+        "title_leuven": "Manicure, Pedicure, Brows & Laser Prices in Leuven | Aesthetic Lab"
       },
       "privacy": {
         "description": "How we collect, use, and protect your personal data at Aesthetic Lab.",
@@ -203,7 +203,7 @@
         "leuven": "Leuven-based",
         "results": "Visible, lasting results"
       },
-      "video_label": "Pink gel manicure being washed with soft foam",
+      "video_label_shimmer": "Pale pink shimmer manicure rinsed with soft foam",
       "view_services": "View services"
     },
     "instagram": {
@@ -343,20 +343,6 @@
       "who": "Who we are",
       "who_text": "Aesthetic Lab, {{address}}. For anything about your data, write to {{email}}."
     },
-    "reviews": {
-      "featured": "Featured review",
-      "google_link": "Read all reviews on Google",
-      "image_alt": "Soft nude manicure in warm light",
-      "kicker": "Kind words",
-      "next": "Next review",
-      "previous": "Previous review",
-      "rating_aria": "Rated 5 out of 5 stars",
-      "rating_label": "{{rating}} out of {{max}} stars",
-      "section_title": "What people say",
-      "source": "Google review",
-      "tagline": "Sterile tools · Lasting results · A calm, friendly studio",
-      "title": "Reviews"
-    },
     "services": {
       "add_on_note": "Prices are for the treatment itself. Repairs, nail art and removal are add-ons from {{price}}.",
       "all_prices": "All prices",
@@ -449,6 +435,8 @@
         "cat_eye_label": "Cat-eye gel polish shimmering under a magnet",
         "chrome": "Chrome",
         "chrome_label": "Chrome powder buffed onto a lavender gel nail",
+        "foam": "Foam wash",
+        "foam_label": "Pink gel manicure being washed with soft foam",
         "soft_pink": "Soft pink",
         "soft_pink_label": "A finished soft pink gel manicure"
       },

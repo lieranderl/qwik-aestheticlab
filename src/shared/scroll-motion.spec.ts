@@ -32,6 +32,14 @@ describe("attachScrollMotion", () => {
 		expect(el.style.transform).toBe("translate3d(0, 105.0px, 0)");
 	});
 
+	test("stops moving a top-anchored photo once its frame is off screen", () => {
+		const { el, frame, rect, listeners } = setup(0, 800);
+		attachScrollMotion(el, frame, "top", 0.35, 420);
+		rect.top = -3000;
+		listeners.get("scroll")?.();
+		expect(el.style.transform).toBe("translate3d(0, 280.0px, 0)");
+	});
+
 	test("fades and lifts hero text over the fade distance", () => {
 		const { el, frame, rect, listeners } = setup(0);
 		attachScrollMotion(el, frame, "fade", 0.35, 400);

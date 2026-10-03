@@ -7,7 +7,6 @@ import { Footer } from "~/components/sections/footer";
 import { GalleryGrid } from "~/components/sections/gallery-grid";
 import { HeroSection } from "~/components/sections/hero-section";
 import { Navigation } from "~/components/sections/navigation";
-import { ReviewsSection } from "~/components/sections/reviews-section";
 import { ServiceGrid } from "~/components/sections/service-grid";
 import { TeamSection } from "~/components/sections/team-section";
 import { ScrollToTop } from "~/components/ui/scroll-to-top";
@@ -61,8 +60,6 @@ export default component$(() => {
 						location.url.searchParams.get("treatmentArea") || undefined
 					}
 				/>
-
-				<ReviewsSection />
 
 				<GalleryGrid />
 

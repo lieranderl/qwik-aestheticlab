@@ -248,7 +248,7 @@ export const Navigation = component$<NavigationProps>(
 									id="nav-book-btn"
 									text={t("app.book.book_app@@Book Appointment")}
 									analyticsPlacement="desktop_nav"
-									classes="btn btn-neutral hidden h-12 min-h-12 px-6 font-main text-sm font-semibold lg:inline-flex"
+									classes="btn btn-accent hidden h-12 min-h-12 px-6 font-main text-sm font-semibold lg:inline-flex"
 								/>
 								<button
 									type="button"
@@ -356,7 +356,7 @@ export const Navigation = component$<NavigationProps>(
 								id="mobile-menu-book-btn"
 								text={t("app.book.book_app@@Book Appointment")}
 								analyticsPlacement="mobile_menu"
-								classes="btn btn-neutral h-13 min-h-13 w-full font-main text-[0.9375rem] font-semibold"
+								classes="btn btn-accent h-13 min-h-13 w-full font-main text-[0.9375rem] font-semibold"
 							/>
 							<nav
 								aria-label={t("app.language.options@@Language options")}
@@ -412,7 +412,7 @@ export const Navigation = component$<NavigationProps>(
 				{bookingBar ? (
 					<div
 						class={[
-							"fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-base-300 bg-base-100/97 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur-sm transition-transform duration-300 ease-(--ease-smooth) motion-reduce:transition-none lg:hidden",
+							"fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-base-300 bg-base-100 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] transition-transform duration-300 ease-(--ease-smooth) motion-reduce:transition-none lg:hidden",
 							showBookingBar.value
 								? "translate-y-0"
 								: "pointer-events-none translate-y-full",
@@ -424,7 +424,7 @@ export const Navigation = component$<NavigationProps>(
 							id="bottom-bar-book-btn"
 							text={t("app.book.book_app@@Book Appointment")}
 							analyticsPlacement="mobile_bottom_bar"
-							classes="btn btn-neutral h-13 min-h-13 flex-1 font-main text-[0.9375rem] font-semibold"
+							classes="btn btn-accent h-13 min-h-13 flex-1 font-main text-[0.9375rem] font-semibold"
 						/>
 						<a
 							href={googlePlaceUrl}

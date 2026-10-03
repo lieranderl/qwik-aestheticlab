@@ -140,7 +140,7 @@ export const ContactSection = component$<ContactSectionProps>(({ contact }) => {
 							id="contact-book-btn"
 							text={t("app.book.book_app@@Book Appointment")}
 							analyticsPlacement="contact_section"
-							classes="btn btn-neutral hidden h-14 min-h-14 px-6 font-main text-[0.9375rem] font-semibold lg:inline-flex"
+							classes="btn btn-accent hidden h-14 min-h-14 px-6 font-main text-[0.9375rem] font-semibold lg:inline-flex"
 						/>
 						<a
 							href={directionsUrl}

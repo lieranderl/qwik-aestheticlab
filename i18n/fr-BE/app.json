@@ -156,8 +156,8 @@
         "title": "Informations clientes | Aesthetic Lab"
       },
       "pricelist": {
-        "description": "Liste complète des tarifs pour les manucures, pédicures, sourcils et traitements laser.",
-        "title": "Tarifs & Prestations | Aesthetic Lab"
+        "description_leuven": "Tarifs et durées des manucures, pédicures, sourcils, cils, épilation à la cire et épilation laser chez Aesthetic Lab à Louvain. Réservez en ligne.",
+        "title_leuven": "Tarifs manucure, pédicure, sourcils & laser à Louvain | Aesthetic Lab"
       },
       "privacy": {
         "description": "Comment Aesthetic Lab collecte, utilise et protège vos données personnelles.",
@@ -202,7 +202,7 @@
         "leuven": "Au cœur de Louvain",
         "results": "Des résultats naturels et précis"
       },
-      "video_label": "Manucure gel rose lavée dans une mousse douce",
+      "video_label_shimmer": "Manucure rose pâle nacrée rincée dans une mousse douce",
       "view_services": "Voir les services"
     },
     "instagram": {
@@ -341,20 +341,6 @@
       "who": "Qui sommes-nous",
       "who_text": "Aesthetic Lab, {{address}}. Pour toute question sur vos données, écrivez à {{email}}."
     },
-    "reviews": {
-      "featured": "Avis sélectionné",
-      "google_link": "Lire tous les avis sur Google",
-      "image_alt": "Manucure nude douce dans une lumière chaude",
-      "kicker": "Notes clientes",
-      "next": "Avis suivant",
-      "previous": "Avis précédent",
-      "rating_aria": "5 étoiles sur 5",
-      "rating_label": "{{rating}} étoiles sur {{max}}",
-      "section_title": "Mots doux",
-      "source": "Avis Google",
-      "tagline": "Outils stériles · Résultats durables · Un studio calme et chaleureux",
-      "title": "Mots gentils"
-    },
     "services": {
       "add_on_note": "Les prix concernent le soin lui-même. Réparations, nail art et dépose sont en supplément, dès {{price}}.",
       "all_prices": "Tous les prix",
@@ -447,6 +433,8 @@
         "cat_eye_label": "Vernis gel cat eye qui scintille sous un aimant",
         "chrome": "Chrome",
         "chrome_label": "Poudre chromée appliquée sur un ongle en gel lavande",
+        "foam": "Mousse",
+        "foam_label": "Manucure gel rose lavée dans une mousse douce",
         "soft_pink": "Rose doux",
         "soft_pink_label": "Une manucure gel rose doux terminée"
       },

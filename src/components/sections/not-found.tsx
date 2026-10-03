@@ -80,7 +80,7 @@ export const NotFoundPage = component$(() => {
 								id="not-found-book-btn"
 								text={t("app.book.book_app@@Book Appointment")}
 								analyticsPlacement="not_found"
-								classes="btn btn-neutral h-13 min-h-13 px-8 font-main text-[0.9375rem] font-semibold sm:self-start"
+								classes="btn btn-accent h-13 min-h-13 px-8 font-main text-[0.9375rem] font-semibold sm:self-start"
 							/>
 						</FadeUp>
 					</div>

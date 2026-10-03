@@ -156,8 +156,8 @@
         "title": "Klantinformatie | Aesthetic Lab"
       },
       "pricelist": {
-        "description": "Volledige prijslijst voor manicures, pedicures, wenkbrauwen en laserbehandelingen.",
-        "title": "Diensten & Prijzen | Aesthetic Lab"
+        "description_leuven": "Prijzen en duur van manicure, pedicure, wenkbrauwen, wimpers, waxen en laserontharing bij Aesthetic Lab in Leuven. Boek online.",
+        "title_leuven": "Prijzen manicure, pedicure, wenkbrauwen & laser in Leuven | Aesthetic Lab"
       },
       "privacy": {
         "description": "Hoe Aesthetic Lab uw persoonsgegevens verzamelt, gebruikt en beschermt.",
@@ -202,7 +202,7 @@
         "leuven": "In het hart van Leuven",
         "results": "Natuurlijke, precieze resultaten"
       },
-      "video_label": "Roze gelmanicure die met zacht schuim wordt gewassen",
+      "video_label_shimmer": "Lichtroze glanzende manicure gespoeld met zacht schuim",
       "view_services": "Bekijk diensten"
     },
     "instagram": {
@@ -341,20 +341,6 @@
       "who": "Wie we zijn",
       "who_text": "Aesthetic Lab, {{address}}. Voor alles over je gegevens kun je mailen naar {{email}}."
     },
-    "reviews": {
-      "featured": "Uitgelichte review",
-      "google_link": "Lees alle beoordelingen op Google",
-      "image_alt": "Zachte nude manicure in warm licht",
-      "kicker": "Klantnotities",
-      "next": "Volgende review",
-      "previous": "Vorige review",
-      "rating_aria": "5 van 5 sterren",
-      "rating_label": "{{rating}} van {{max}} sterren",
-      "section_title": "Mooie woorden",
-      "source": "Google-review",
-      "tagline": "Steriel materiaal · Blijvend resultaat · Een rustige, vriendelijke studio",
-      "title": "Vriendelijke woorden"
-    },
     "services": {
       "add_on_note": "Prijzen gelden voor de behandeling zelf. Herstellingen, nail art en verwijderen zijn extra, vanaf {{price}}.",
       "all_prices": "Alle prijzen",
@@ -447,6 +433,8 @@
         "cat_eye_label": "Cat-eye gellak die glinstert onder een magneet",
         "chrome": "Chroom",
         "chrome_label": "Chroompoeder wordt op een lavendelkleurige gelnagel gewreven",
+        "foam": "Schuimwas",
+        "foam_label": "Roze gelmanicure die met zacht schuim wordt gewassen",
         "soft_pink": "Zacht roze",
         "soft_pink_label": "Een afgewerkte zachtroze gelmanicure"
       },

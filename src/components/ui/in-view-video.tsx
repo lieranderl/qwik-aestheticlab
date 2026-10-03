@@ -25,7 +25,7 @@ interface InViewVideoProps {
 
 /**
  * A short, silent clip that plays once when it scrolls into view and then
- * rests on its last frame. It never loops and never plays by itself with
+ * rests on its last frame. It pauses while scrolled out of view. It never loops and never plays by itself with
  * reduced motion. Clicking it pauses, resumes or replays it; the keyboard
  * path is its VideoControl.
  */
@@ -42,13 +42,22 @@ export const InViewVideo = component$<InViewVideoProps>(
 			) {
 				return;
 			}
+			let started = false;
+			let pausedOffscreen = false;
 			const observer = new IntersectionObserver(
 				(entries) => {
-					if (!entries[0]?.isIntersecting) return;
-					video.muted = true;
-					// Autoplay can be refused (e.g. low-power mode); the poster then stays.
-					video.play().catch(() => undefined);
-					observer.disconnect();
+					const visible = entries[0]?.isIntersecting;
+					if (visible && (!started || pausedOffscreen)) {
+						started = true;
+						pausedOffscreen = false;
+						video.muted = true;
+						// Autoplay can be refused (e.g. low-power mode); the poster then stays.
+						video.play().catch(() => undefined);
+					} else if (!visible && !video.paused) {
+						// Off screen: stop decoding so scrolling stays smooth; resume on return.
+						pausedOffscreen = true;
+						video.pause();
+					}
 				},
 				{ threshold: 0.4 },
 			);
@@ -128,8 +137,8 @@ export const VideoControl = component$<VideoControlProps>(
 					if (video instanceof HTMLVideoElement) toggleVideo(video);
 				}}
 				class={[
-					// Frosted like the back-to-top button, but lighter, so it stays out of the clip's way.
-					"flex size-11 cursor-pointer items-center justify-center border border-ink/15 bg-linen/30 text-ink/80 backdrop-blur-md transition-colors duration-300 ease-(--ease-smooth) hover:bg-linen/70 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none",
+					// Translucent, not frosted: a backdrop blur over a playing video re-renders every frame.
+					"flex size-11 cursor-pointer items-center justify-center border border-ink/15 bg-linen/60 text-ink/80 transition-colors duration-300 ease-(--ease-smooth) hover:bg-linen/70 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none",
 					className,
 				]}
 			>
