@@ -123,6 +123,9 @@ export default defineConfig(({ mode }) => {
 			// Put problematic deps that break bundling here, mostly those with binaries.
 			// For example ['better-sqlite3'] if you use that in server functions.
 			exclude: [],
+			// Lenis is imported dynamically, so Vite would only find it after the
+			// first page load and then reload the page mid-session (flaky e2e).
+			include: ["lenis"],
 		},
 		define: {
 			"process.env": {}, // optional, for compatibility
