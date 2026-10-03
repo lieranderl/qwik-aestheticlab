@@ -22,7 +22,7 @@ export const StarRating = component$<StarRatingProps>(
 				{Array.from({ length: max }, (_, i) => (
 					<div
 						key={i}
-						class="mask mask-star-2 size-4 bg-accent"
+						class="mask mask-star-2 size-4 bg-ink"
 						aria-hidden="true"
 						aria-current={i + 1 === rating ? "true" : undefined}
 					/>

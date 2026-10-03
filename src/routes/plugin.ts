@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { setSpeakContext, validateLocale } from "qwik-speak";
 
+import { resolveRequestLocale } from "~/shared/locale-navigation";
 import { config } from "../speak-config";
 
 /**
@@ -9,13 +10,11 @@ import { config } from "../speak-config";
  * Avoid redirecting or throwing errors here, and prefer layouts or pages
  */
 export const onRequest: RequestHandler = ({ params, locale }) => {
-	const requestedLocale = params.lang;
-	const lang =
-		requestedLocale &&
-		validateLocale(requestedLocale) &&
-		config.supportedLocales.some((locale) => locale.lang === requestedLocale)
-			? requestedLocale
-			: config.defaultLocale.lang;
+	// Unknown pages (/nl-BE/old-link/) keep the locale of their first segment.
+	const requestedLocale = resolveRequestLocale(params.lang);
+	const lang = validateLocale(requestedLocale)
+		? requestedLocale
+		: config.defaultLocale.lang;
 
 	// Set Speak context (optional: set the configuration on the server)
 	setSpeakContext(config);

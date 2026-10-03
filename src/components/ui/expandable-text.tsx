@@ -17,7 +17,7 @@ export const ExpandableText = component$<ExpandableTextProps>(
 			<div>
 				<p
 					class={[
-						"text-pretty font-main text-sm leading-relaxed text-base-content/75",
+						"text-pretty font-main text-sm leading-relaxed text-base-content/80",
 						isExpanded.value ? "" : "line-clamp-3",
 						className,
 					]}
@@ -30,7 +30,7 @@ export const ExpandableText = component$<ExpandableTextProps>(
 						onClick$={$(() => {
 							isExpanded.value = !isExpanded.value;
 						})}
-						class="btn btn-ghost btn-sm min-h-11 w-fit rounded-full px-0 font-main uppercase tracking-wider text-secondary"
+						class="link link-hover inline-flex min-h-11 w-fit items-center font-main text-[0.6875rem] font-semibold uppercase tracking-[0.16em] underline-offset-4"
 						aria-expanded={isExpanded.value}
 					>
 						{isExpanded.value

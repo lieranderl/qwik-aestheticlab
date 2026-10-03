@@ -1,97 +1,123 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { SiInstagram } from "@qwikest/icons/simpleicons";
 import { inlineTranslate } from "qwik-speak";
+import { FadeUp } from "~/components/ui/fade-up";
 import {
 	GalleryLightbox,
 	galleryLightboxCloseId,
 	galleryLightboxId,
 } from "~/components/ui/gallery-lightbox";
+import { InViewVideo, VideoControl } from "~/components/ui/in-view-video";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";
+import { SITE_METADATA } from "~/constants/metadata";
 import ImgChromeManicure from "~/media/gallery/atelier/chrome-manicure.jpg?jsx";
-import ImgCoralManicure from "~/media/gallery/atelier/coral-manicure.jpg?jsx";
-import ImgLashes from "~/media/gallery/atelier/lashes.jpg?jsx";
-import ImgLashlift from "~/media/gallery/atelier/lashlift.jpg?jsx";
-import ImgNudeManicure from "~/media/gallery/atelier/nude-manicure.jpg?jsx";
-import ImgPearlManicure from "~/media/gallery/atelier/pearl-manicure.jpg?jsx";
-import ImgPolishApplication from "~/media/gallery/atelier/polish-application.jpg?jsx";
-import ImgPedicure4 from "~/media/gallery/pedicure4.jpg?jsx";
+import ImgCherryGloss from "~/media/gallery/cherry-gloss.jpg?jsx";
+import ImgLashLiftProcess from "~/media/gallery/lash-lift-process.jpg?jsx";
+import ImgLashLiftResult from "~/media/gallery/lash-lift-result.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
+import ImgPinkShimmer from "~/media/gallery/pink-shimmer.jpg?jsx";
+import ImgTortoise from "~/media/gallery/tortoise.jpg?jsx";
+import ImgWhiteShimmer from "~/media/gallery/white-shimmer.jpg?jsx";
+import catEyeVideo from "~/media/video/cateye.mp4?url";
+import catEyePoster from "~/media/video/cateye-poster.jpg?url";
+import chromeVideo from "~/media/video/chrome.mp4?url";
+import chromePoster from "~/media/video/chrome-poster.jpg?url";
+import nudeVideo from "~/media/video/nude.mp4?url";
+import nudePoster from "~/media/video/nude-poster.jpg?url";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 
-const GRID_ITEM =
-	"group relative carousel-item shrink-0 snap-start overflow-hidden rounded-box bg-base-200 transition-shadow duration-200 motion-safe:hover:shadow-lg w-[78%] sm:w-[58%] lg:w-auto lg:aspect-auto";
-const GRID_IMG =
-	"h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none";
-const CAPTION =
-	"pointer-events-none absolute right-3 bottom-3 rounded-field bg-base-100/90 px-2 py-1 font-main text-[0.6rem] font-semibold tracking-[0.16em] text-base-content shadow-sm";
-const SIZES =
-	"(min-width: 1280px) 38rem, (min-width: 1024px) calc(33vw - 1rem), 78vw";
+const SMALL_SIZES = "(min-width: 1280px) 19rem, (min-width: 768px) 25vw, 50vw";
 
 export const GalleryGrid = component$(() => {
 	const t = inlineTranslate();
 	const activeIndex = useSignal(-1);
 	const openerId = useSignal("");
+	// Order matches the lightbox. Magazine grid: one large tile, one wide tile.
 	const items = [
 		{
-			Image: ImgCoralManicure,
+			Image: ImgPinkShimmer,
 			alt: t(
-				"app.work.alt.coral_manicure@@Bright coral-red manicure on both hands",
+				"app.work.alt.pink_shimmer@@Pink shimmer gel manicure resting on a mohair knit",
 			),
-			class:
-				"aspect-4/5 lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:row-span-8",
-			imageClass: "object-[center_34%]",
-		},
-		{
-			Image: ImgPedicure4,
-			alt: t("app.work.alt.p2@@Refined toenail polish finish"),
-			class:
-				"aspect-square lg:col-start-6 lg:col-span-3 lg:row-start-2 lg:row-span-5",
-			imageClass: "object-[center_58%]",
-		},
-		{
-			Image: ImgNudeManicure,
-			alt: t(
-				"app.work.alt.nude_manicure@@Soft nude manicure with a clean glossy finish",
-			),
-			class:
-				"aspect-square lg:col-start-9 lg:col-span-4 lg:row-start-1 lg:row-span-6",
-			imageClass: "object-[center_48%]",
-		},
-		{
-			Image: ImgPearlManicure,
-			alt: t("app.work.alt.pearl_manicure@@Pearlescent pink manicure detail"),
-			class:
-				"aspect-square lg:col-start-6 lg:col-span-4 lg:row-start-8 lg:row-span-6",
-			imageClass: "object-[center_52%]",
+			class: "col-span-2 h-60 sm:h-80 md:row-span-2",
+			imageClass: "object-[center_45%]",
+			sizes: "(min-width: 1280px) 38rem, (min-width: 768px) 50vw, 100vw",
 		},
 		{
 			Image: ImgChromeManicure,
 			alt: t("app.work.alt.chrome_manicure@@Pink chrome manicure detail"),
-			class:
-				"aspect-square lg:col-start-10 lg:col-span-3 lg:row-start-8 lg:row-span-5",
+			class: "h-35 sm:h-56",
 			imageClass: "object-[center_47%]",
+		},
+		{
+			Image: ImgCherryGloss,
+			alt: t("app.work.alt.cherry_gloss@@Glossy dark cherry manicure"),
+			class: "h-35 sm:h-56",
+			imageClass: "object-[center_50%]",
+		},
+		{
+			Image: ImgLashLiftResult,
+			alt: t(
+				"app.work.alt.lash_lift_result@@Lifted, curled lashes after a lash lift",
+			),
+			class: "h-35 sm:h-56",
+			imageClass: "object-[center_70%]",
+		},
+		{
+			Image: ImgTortoise,
+			alt: t("app.work.alt.tortoise@@Brown and tortoiseshell gel manicure"),
+			class: "h-35 sm:h-56",
+			imageClass: "object-[center_60%]",
+		},
+		{
+			Image: ImgWhiteShimmer,
+			alt: t("app.work.alt.white_shimmer@@White shimmer gel manicure"),
+			class: "h-35 sm:h-56",
+			imageClass: "object-[center_45%]",
+		},
+		{
+			Image: ImgLashLiftProcess,
+			alt: t(
+				"app.work.alt.lash_lift_process@@Lash lift in progress, lashes set on a silicone shield",
+			),
+			class: "h-35 sm:h-56",
+			imageClass: "object-[center_55%]",
 		},
 		{
 			Image: ImgPedicure5,
 			alt: t("app.work.alt.p5@@Aesthetic pedicure detailing"),
-			class:
-				"aspect-square lg:col-start-1 lg:col-span-4 lg:row-start-10 lg:row-span-5",
+			class: "col-span-2 h-35 sm:h-56",
 			imageClass: "object-[center_40%]",
+			sizes: "(min-width: 1280px) 38rem, (min-width: 768px) 50vw, 100vw",
+		},
+	];
+
+	// Short studio clips from Instagram; each plays once when it scrolls into view.
+	const clips = [
+		{
+			src: chromeVideo,
+			poster: chromePoster,
+			tag: t("app.work.clip.chrome@@Chrome"),
+			label: t(
+				"app.work.clip.chrome_label@@Chrome powder buffed onto a lavender gel nail",
+			),
 		},
 		{
-			Image: ImgLashes,
-			alt: t("app.work.alt.lashes@@Lash extensions result"),
-			class:
-				"aspect-square lg:col-start-5 lg:col-span-4 lg:row-start-14 lg:row-span-4",
-			imageClass: "object-[center_40%]",
+			src: catEyeVideo,
+			poster: catEyePoster,
+			tag: t("app.work.clip.cat_eye@@Cat eye"),
+			label: t(
+				"app.work.clip.cat_eye_label@@Cat-eye gel polish shimmering under a magnet",
+			),
 		},
 		{
-			Image: ImgLashlift,
-			alt: t("app.work.alt.lashlift@@Lash lift result"),
-			class:
-				"aspect-square lg:col-start-1 lg:col-span-4 lg:row-start-15 lg:row-span-4",
-			imageClass: "object-[center_50%]",
+			src: nudeVideo,
+			poster: nudePoster,
+			tag: t("app.work.clip.soft_pink@@Soft pink"),
+			label: t(
+				"app.work.clip.soft_pink_label@@A finished soft pink gel manicure",
+			),
 		},
 	];
 
@@ -112,101 +138,126 @@ export const GalleryGrid = component$(() => {
 		});
 	});
 
+	const trackInstagram = $(() => {
+		trackGoogleAnalyticsEvent("instagram_clicked", {
+			placement: "gallery_section",
+			target_type: "profile",
+			link_url: SITE_METADATA.socials.instagram,
+		});
+	});
+
 	return (
-		<SectionWrapper id="gallery">
-			<div class="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-end">
-				<div>
-					<KickerLabel>{t("app.work.kicker@@From our atelier")}</KickerLabel>
-					<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl lg:text-8xl">
-						{t("app.work.title@@Our Work")}
+		<SectionWrapper id="gallery" background="base-100">
+			<div class="mb-4.5 grid gap-6 md:mb-14 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end lg:gap-16">
+				<FadeUp>
+					<KickerLabel>{t("app.work.kicker@@Our work")}</KickerLabel>
+					<h2 class="text-balance font-cormorant text-[2.875rem] leading-[0.95] text-base-content md:text-7xl lg:text-[5.5rem] lg:leading-[0.9]">
+						{t("app.work.heading@@Recent work")}
 					</h2>
+				</FadeUp>
+				<div class="hidden flex-col gap-4.5 lg:flex">
+					<p class="font-cormorant text-[1.375rem] leading-snug text-base-content italic">
+						{t(
+							"app.work.instagram_note@@Fresh sets and studio moments. More every week on Instagram.",
+						)}
+					</p>
+					<a
+						href={SITE_METADATA.socials.instagram}
+						target="_blank"
+						rel="noopener noreferrer"
+						onClick$={trackInstagram}
+						class="btn btn-outline h-13 min-h-13 gap-2.5 self-start border-neutral px-6 font-main text-sm font-semibold"
+					>
+						<SiInstagram class="size-4.5" aria-hidden="true" />
+						@aestheticlabbe
+					</a>
 				</div>
-				<p class="max-w-md border-l border-base-300 pl-5 text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base lg:justify-self-end">
-					{t(
-						"app.work.description@@Thoughtful details, clean finishes, and results that still feel like you.",
-					)}
-				</p>
 			</div>
 
-			<section
-				class="carousel carousel-start -mx-4 mt-8 w-[calc(100%+2rem)] scroll-smooth snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:mt-10 sm:w-[calc(100%+3rem)] sm:px-6 lg:mx-0 lg:grid lg:h-240 lg:w-full lg:grid-cols-12 lg:grid-rows-18 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
+			<ul
+				class="grid grid-cols-2 gap-2 md:h-[min(46rem,72vw)] md:grid-cols-4 md:grid-rows-3 md:gap-4"
 				aria-label={t("app.work.gallery_label@@Treatment result gallery")}
 			>
 				{items.map((item, index) => {
 					const triggerId = `gallery-lightbox-trigger-${index}`;
 					const Image = item.Image;
 					return (
-						<figure key={item.alt} class={[GRID_ITEM, item.class]}>
+						<li
+							key={item.alt}
+							class={[
+								"group overflow-hidden bg-base-300 md:h-auto",
+								item.class,
+							]}
+						>
 							<button
 								id={triggerId}
 								data-gallery-index={index}
 								type="button"
-								class="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-base-content"
+								class="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-3 focus-visible:outline-base-content"
 								onClick$={open}
 								aria-label={t("app.work.enlarge@@Enlarge image")}
 							>
 								<Image
 									alt={item.alt}
-									class={[GRID_IMG, item.imageClass]}
+									class={["h-full w-full object-cover", item.imageClass]}
 									loading="lazy"
-									sizes={SIZES}
+									sizes={item.sizes ?? SMALL_SIZES}
 								/>
 							</button>
-							<figcaption class={CAPTION}>
-								{String(index + 1).padStart(2, "0")}
-							</figcaption>
-						</figure>
+						</li>
 					);
 				})}
-			</section>
+			</ul>
+
+			<ul
+				class="-mx-4 mt-2 flex snap-x snap-mandatory scroll-px-4 gap-2 overflow-x-auto overscroll-x-contain px-4 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:mt-4 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0"
+				aria-label={t("app.work.clips_label@@Studio clips")}
+			>
+				{clips.map((clip, index) => (
+					<li
+						key={clip.src}
+						class="relative h-96 w-[62vw] max-w-64 shrink-0 snap-start overflow-hidden bg-sage-200 md:h-[34rem] md:w-auto md:max-w-none"
+					>
+						<InViewVideo
+							id={`work-clip-${index}`}
+							src={clip.src}
+							poster={clip.poster}
+							label={clip.label}
+							class="h-full w-full object-cover"
+						/>
+						<span class="absolute bottom-3.5 left-3.5 bg-linen/88 px-3 py-1.5 font-main text-xs font-semibold tracking-[0.1em] text-ink uppercase backdrop-blur-sm">
+							{clip.tag}
+						</span>
+						<VideoControl
+							videoId={`work-clip-${index}`}
+							name={clip.tag}
+							class="absolute right-3.5 bottom-3.5"
+						/>
+					</li>
+				))}
+			</ul>
 
 			<GalleryLightbox activeIndex={activeIndex} openerId={openerId} />
 
 			<a
-				data-testid="instagram-card"
-				href="https://www.instagram.com/aestheticlabbe"
+				data-testid="instagram-link"
+				href={SITE_METADATA.socials.instagram}
 				target="_blank"
 				rel="noopener noreferrer"
-				onClick$={$(() => {
-					trackGoogleAnalyticsEvent("instagram_clicked", {
-						placement: "gallery_section",
-						target_type: "profile",
-						link_url: "https://www.instagram.com/aestheticlabbe",
-					});
-				})}
-				class="group card card-border relative z-10 mx-auto mt-10 max-w-5xl overflow-hidden bg-base-200 transition-shadow duration-200 motion-safe:hover:shadow-lg sm:card-side sm:mt-14 sm:h-72 lg:mt-20 lg:mr-8"
+				onClick$={trackInstagram}
+				class="btn btn-outline mt-4.5 h-13 min-h-13 w-full justify-between border-neutral px-4.5 font-main text-[0.9375rem] font-semibold lg:hidden"
 			>
-				<figure class="h-44 bg-base-300 sm:h-full sm:w-2/5">
-					<ImgPolishApplication
-						alt={t(
-							"app.work.alt.manicure_process@@Manicure polish application in the Aesthetic Lab studio",
-						)}
-						class="h-full w-full object-cover object-[center_63%] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
-						loading="lazy"
-						sizes="(min-width: 1024px) 24rem, (min-width: 640px) 40vw, 100vw"
-					/>
-				</figure>
-				<div class="card-body min-w-0 justify-center gap-4 bg-base-100 p-5 shadow-sm sm:w-96 sm:p-7 md:gap-5 md:p-9">
-					<div class="flex items-center gap-2 text-secondary">
-						<SiInstagram class="size-4" aria-hidden="true" />
-						<span class="font-main text-xs font-semibold uppercase tracking-[0.18em]">
-							Instagram
-						</span>
-					</div>
-					<h3 class="card-title text-3xl leading-none font-normal md:text-4xl">
-						{t("app.instagram.title@@Follow the studio beyond the appointment")}
-					</h3>
-					<p class="font-main text-sm leading-relaxed text-base-content">
-						{t(
-							"app.instagram.description@@Fresh sets, studio moments, and new work from our team.",
-						)}
-					</p>
-					<div class="card-actions mt-1">
-						<span class="btn btn-sm min-h-11 px-4 font-main text-xs font-semibold uppercase tracking-widest">
-							@aestheticlabbe
-						</span>
-					</div>
-				</div>
+				{t("app.work.more_on_instagram@@More on Instagram")} · @aestheticlabbe
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.4"
+					class="size-4.5"
+					aria-hidden="true"
+				>
+					<path d="M5 12h14M13 6l6 6-6 6" />
+				</svg>
 			</a>
 		</SectionWrapper>
 	);

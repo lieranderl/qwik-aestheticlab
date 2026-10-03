@@ -7,6 +7,8 @@ import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 export interface BookingProps {
 	id: string; // unique per service
 	text: string;
+	/** Accessible name when the visible text is ambiguous (e.g. several "Book" links). */
+	ariaLabel?: string;
 	classes?: string;
 	location?: string;
 	category?: string;
@@ -22,6 +24,7 @@ export const Booking = component$<BookingProps>(
 	({
 		id,
 		text,
+		ariaLabel,
 		classes = "btn btn-primary",
 		location,
 		category,
@@ -77,6 +80,7 @@ export const Booking = component$<BookingProps>(
 						.filter(Boolean)
 						.join(" ")}
 					onClick$={openModal}
+					aria-label={ariaLabel}
 				>
 					{text}
 				</button>
@@ -92,7 +96,7 @@ export const Booking = component$<BookingProps>(
 						isLoaded.value = false;
 					})}
 				>
-					<div class="modal-box relative flex min-h-[70vh] w-full max-w-5xl flex-col rounded-t-3xl bg-base-100 p-2 pt-12 sm:min-h-[50vh] sm:w-[calc(100%-1rem)] sm:rounded-2xl">
+					<div class="modal-box relative flex min-h-[70vh] w-full max-w-5xl flex-col bg-base-100 p-2 pt-12 sm:min-h-[50vh] sm:w-[calc(100%-1rem)]">
 						<h2 id={titleId} class="sr-only">
 							{text}
 						</h2>
@@ -126,8 +130,8 @@ export const Booking = component$<BookingProps>(
 									src={iframeUrl}
 									class={
 										isLoaded.value
-											? "h-[75vh] w-full translate-y-0 rounded-2xl border-0 opacity-100 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
-											: "h-[75vh] w-full translate-y-2 rounded-2xl border-0 opacity-0 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+											? "h-[75vh] w-full translate-y-0 border-0 opacity-100 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+											: "h-[75vh] w-full translate-y-2 border-0 opacity-0 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
 									}
 									onLoad$={$(() => {
 										isLoaded.value = true;

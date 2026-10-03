@@ -1,13 +1,13 @@
 import { $, component$, type Signal } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import ImgChromeManicure from "~/media/gallery/atelier/chrome-manicure.jpg?jsx";
-import ImgCoralManicure from "~/media/gallery/atelier/coral-manicure.jpg?jsx";
-import ImgLashes from "~/media/gallery/atelier/lashes.jpg?jsx";
-import ImgLashlift from "~/media/gallery/atelier/lashlift.jpg?jsx";
-import ImgNudeManicure from "~/media/gallery/atelier/nude-manicure.jpg?jsx";
-import ImgPearlManicure from "~/media/gallery/atelier/pearl-manicure.jpg?jsx";
-import ImgPedicure4 from "~/media/gallery/pedicure4.jpg?jsx";
+import ImgCherryGloss from "~/media/gallery/cherry-gloss.jpg?jsx";
+import ImgLashLiftProcess from "~/media/gallery/lash-lift-process.jpg?jsx";
+import ImgLashLiftResult from "~/media/gallery/lash-lift-result.jpg?jsx";
 import ImgPedicure5 from "~/media/gallery/pedicure5.jpg?jsx";
+import ImgPinkShimmer from "~/media/gallery/pink-shimmer.jpg?jsx";
+import ImgTortoise from "~/media/gallery/tortoise.jpg?jsx";
+import ImgWhiteShimmer from "~/media/gallery/white-shimmer.jpg?jsx";
 
 export const galleryLightboxId = "gallery-lightbox";
 export const galleryLightboxCloseId = "gallery-lightbox-close";
@@ -21,42 +21,45 @@ interface GalleryLightboxProps {
 export const GalleryLightbox = component$<GalleryLightboxProps>(
 	({ activeIndex, openerId }) => {
 		const t = inlineTranslate();
+		// Same order as the grid in gallery-grid.tsx.
 		const items = [
 			{
-				Image: ImgCoralManicure,
+				Image: ImgPinkShimmer,
 				alt: t(
-					"app.work.alt.coral_manicure@@Bright coral-red manicure on both hands",
+					"app.work.alt.pink_shimmer@@Pink shimmer gel manicure resting on a mohair knit",
 				),
-			},
-			{
-				Image: ImgPedicure4,
-				alt: t("app.work.alt.p2@@Refined toenail polish finish"),
-			},
-			{
-				Image: ImgNudeManicure,
-				alt: t(
-					"app.work.alt.nude_manicure@@Soft nude manicure with a clean glossy finish",
-				),
-			},
-			{
-				Image: ImgPearlManicure,
-				alt: t("app.work.alt.pearl_manicure@@Pearlescent pink manicure detail"),
 			},
 			{
 				Image: ImgChromeManicure,
 				alt: t("app.work.alt.chrome_manicure@@Pink chrome manicure detail"),
 			},
 			{
+				Image: ImgCherryGloss,
+				alt: t("app.work.alt.cherry_gloss@@Glossy dark cherry manicure"),
+			},
+			{
+				Image: ImgLashLiftResult,
+				alt: t(
+					"app.work.alt.lash_lift_result@@Lifted, curled lashes after a lash lift",
+				),
+			},
+			{
+				Image: ImgTortoise,
+				alt: t("app.work.alt.tortoise@@Brown and tortoiseshell gel manicure"),
+			},
+			{
+				Image: ImgWhiteShimmer,
+				alt: t("app.work.alt.white_shimmer@@White shimmer gel manicure"),
+			},
+			{
+				Image: ImgLashLiftProcess,
+				alt: t(
+					"app.work.alt.lash_lift_process@@Lash lift in progress, lashes set on a silicone shield",
+				),
+			},
+			{
 				Image: ImgPedicure5,
 				alt: t("app.work.alt.p5@@Aesthetic pedicure detailing"),
-			},
-			{
-				Image: ImgLashes,
-				alt: t("app.work.alt.lashes@@Lash extensions result"),
-			},
-			{
-				Image: ImgLashlift,
-				alt: t("app.work.alt.lashlift@@Lash lift result"),
 			},
 		];
 		const item = items[activeIndex.value] ?? items[0];
@@ -137,7 +140,7 @@ export const GalleryLightbox = component$<GalleryLightboxProps>(
 					<ActiveImage
 						key={activeIndex.value}
 						alt={item.alt}
-						class="max-h-[85vh] max-w-[90vw] rounded-box object-contain"
+						class="max-h-[85vh] max-w-[90vw] object-contain"
 					/>
 
 					<button

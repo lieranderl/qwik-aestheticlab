@@ -2,29 +2,29 @@ import { describe, expect, it } from "vitest";
 import { getNavLinkKeys } from "./nav-links";
 
 describe("getNavLinkKeys", () => {
-	it("returns all links including home by default", () => {
-		const links = getNavLinkKeys();
-		expect(links).toHaveLength(7); // home + 6 sections
-		expect(links[0]).toEqual({ href: "#", key: "app.nav.home@@Home" });
+	it("lists the landing sections and the price list in page order", () => {
+		expect(getNavLinkKeys().map((link) => link.href)).toEqual([
+			"#services",
+			"pricelist",
+			"#gallery",
+			"#team",
+			"#faq",
+			"#contact",
+		]);
 	});
 
-	it("excludes home when includeHome is false", () => {
-		const links = getNavLinkKeys(false);
-		expect(links).toHaveLength(6);
-		expect(links[0]).toEqual({
-			href: "#services",
-			key: "app.nav.services@@Services",
-		});
+	it("keeps the desktop header to five primary links", () => {
+		expect(getNavLinkKeys().filter((link) => link.primary)).toHaveLength(5);
 	});
 
-	it("returns links with expected structure", () => {
-		const links = getNavLinkKeys(true);
-		for (const link of links) {
-			expect(link).toHaveProperty("href");
-			expect(link).toHaveProperty("key");
-			expect(typeof link.href).toBe("string");
-			expect(typeof link.key).toBe("string");
+	it("returns links with translation keys and section ids for anchors", () => {
+		for (const link of getNavLinkKeys()) {
 			expect(link.key).toContain("@@");
+			if (link.href.startsWith("#")) {
+				expect(link.sectionId).toBe(link.href.slice(1));
+			} else {
+				expect(link.sectionId).toBeUndefined();
+			}
 		}
 	});
 });

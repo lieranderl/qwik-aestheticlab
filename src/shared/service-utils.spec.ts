@@ -2,12 +2,16 @@ import { describe, expect, test } from "vitest";
 
 import type { Service, ServiceGroup } from "~/types";
 import {
+	capitalizeFirst,
 	getCategoryDescription,
 	getCategoryStartingPrice,
 	getDisplayCategoryName,
 	getGroupCoverImage,
+	getLowestAddOnPrice,
+	getMainServices,
 	getServiceItemImage,
 	groupServicesAndCategories,
+	isAddOnService,
 	isLaserCategory,
 	resolveCoverImage,
 } from "./service-utils";
@@ -134,6 +138,7 @@ describe("service-utils image resolution", () => {
 		expect(resolveCoverImage("Laser Hair Removal Face")).toBe(
 			"service:laser-face.webp",
 		);
+		expect(resolveCoverImage("Face Waxing")).toBe("service:face-waxing.jpg");
 	});
 
 	test("falls back to the universal image when no cover asset matches", () => {
@@ -240,6 +245,19 @@ describe("getCategoryDescription", () => {
 		expect(getCategoryDescription(category, labels)).toBe("Laser description");
 	});
 
+	test("matches face waxing when a waxing label is provided", () => {
+		const category = createCategory({ name_en: "Face Waxing" });
+		expect(
+			getCategoryDescription(category, {
+				...labels,
+				waxing: "Waxing description",
+			}),
+		).toBe("Waxing description");
+		expect(getCategoryDescription(category, labels)).toBe(
+			"General description",
+		);
+	});
+
 	test("returns general description for unknown category", () => {
 		const category = createCategory({ name_en: "Unknown Service" });
 		expect(getCategoryDescription(category, labels)).toBe(
@@ -306,5 +324,68 @@ describe("getCategoryStartingPrice", () => {
 		const result = getCategoryStartingPrice(services, "From");
 		expect(result).toBeDefined();
 		expect(result).toContain("35");
+	});
+});
+
+describe("add-on services", () => {
+	const repair = createService({
+		name: "Extra nail repair (up to 3 nails)",
+		price: 5,
+	});
+	const removal = createService({
+		name: "Coating removal (our salon)",
+		price: 10,
+	});
+	const express = createService({
+		name: "Express manicure + polish",
+		price: 35,
+	});
+	const extensions = createService({
+		name: "Extensions using dual forms",
+		price: 80,
+	});
+
+	test("recognises repairs, nail art extras and coating removal", () => {
+		expect(isAddOnService(repair)).toBe(true);
+		expect(isAddOnService(removal)).toBe(true);
+		expect(isAddOnService({ name: "Extra nail design: french" })).toBe(true);
+		expect(isAddOnService(express)).toBe(false);
+		// Translated pages keep the English base name for classification.
+		expect(
+			isAddOnService({
+				name: "Gellak verwijderen",
+				name_en: "Gel polish coating removal",
+			}),
+		).toBe(true);
+		expect(
+			isAddOnService({ name: "Extra herstel", name_en: "Manicure express" }),
+		).toBe(false);
+		expect(isAddOnService(extensions)).toBe(false);
+	});
+
+	test("starts category prices at the cheapest main treatment", () => {
+		const result = getCategoryStartingPrice(
+			[repair, removal, express, extensions],
+			"From",
+		);
+		expect(result).toContain("35");
+		expect(result).not.toContain("5,");
+	});
+
+	test("falls back to every service when a group only has add-ons", () => {
+		expect(getMainServices([repair, removal])).toEqual([repair, removal]);
+	});
+
+	test("finds the lowest add-on price", () => {
+		expect(getLowestAddOnPrice([express, removal, repair])).toBe(5);
+		expect(getLowestAddOnPrice([express])).toBeUndefined();
+	});
+});
+
+describe("capitalizeFirst", () => {
+	test("capitalizes lowercase translated category names", () => {
+		expect(capitalizeFirst("manicure")).toBe("Manicure");
+		expect(capitalizeFirst("Brows & Lashes")).toBe("Brows & Lashes");
+		expect(capitalizeFirst("")).toBe("");
 	});
 });

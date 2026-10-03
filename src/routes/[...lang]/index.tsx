@@ -1,7 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { type DocumentHead, useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
-import { BookingCtaSection } from "~/components/sections/booking-cta-section";
 import { ContactSection } from "~/components/sections/contact-section";
 import { FaqSection } from "~/components/sections/faq-section";
 import { Footer } from "~/components/sections/footer";
@@ -12,6 +11,7 @@ import { ReviewsSection } from "~/components/sections/reviews-section";
 import { ServiceGrid } from "~/components/sections/service-grid";
 import { TeamSection } from "~/components/sections/team-section";
 import { ScrollToTop } from "~/components/ui/scroll-to-top";
+import { isSupportedLocaleParam } from "~/shared/locale-navigation";
 import {
 	useContactLoader,
 	useServiceGroupsLoader,
@@ -26,6 +26,13 @@ export default component$(() => {
 	const techniciansSignal = useTechniciansLoader();
 	const contactSignal = useContactLoader();
 	const location = useLocation();
+	const durations = servicesSignal.value
+		.map((service) => service.duration)
+		.filter((duration) => duration > 0);
+	const durationRange =
+		durations.length > 0
+			? { min: Math.min(...durations), max: Math.max(...durations) }
+			: undefined;
 
 	return (
 		<div class="min-h-screen">
@@ -58,11 +65,9 @@ export default component$(() => {
 
 				<TeamSection technicians={techniciansSignal.value} />
 
-				<FaqSection />
+				<FaqSection durationRange={durationRange} />
 
 				<ContactSection contact={contactSignal.value} />
-
-				<BookingCtaSection />
 			</main>
 
 			<Footer />
@@ -71,15 +76,23 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = () => {
+export const head: DocumentHead = ({ params }) => {
 	const t = inlineTranslate();
+	if (!isSupportedLocaleParam(params.lang)) {
+		return {
+			title: t("app.head.not_found.title@@Page not found | Aesthetic Lab"),
+			meta: [{ name: "robots", content: "noindex" }],
+		};
+	}
 	return {
-		title: t("app.head.home.title@@Aesthetic Lab | Nail Design, Brows & Laser"),
+		title: t(
+			"app.head.home.title@@Aesthetic Lab — Manicure · Pedicure · Brows · Lashes · Laser in Leuven",
+		),
 		meta: [
 			{
 				name: "description",
 				content: t(
-					"app.head.home.description@@Premium beauty salon offering bespoke manicures, brow sculpting, and laser treatments in a zen, organic setting.",
+					"app.head.home.description@@Manicure, pedicure, brows, lashes, and laser in Leuven. Book your appointment online.",
 				),
 			},
 		],

@@ -16,6 +16,7 @@ const NAME_TO_FILE: Record<string, string> = {
 
 // Override specific cover image filenames (defaults to `{name}.webp`)
 const COVER_IMAGE_OVERRIDES: Record<string, string> = {
+	"face-waxing": "face-waxing.jpg",
 	manicure: "manicure.jpg",
 	pedicure: "pedicure.jpg",
 	laser: "laser.jpg",
@@ -35,6 +36,7 @@ const GALLERY_CONFIG: Record<string, { prefix: string; count: number }> = {
 
 const SERVICE_COVER_IMAGE_NAMES = new Set([
 	"brows",
+	"face-waxing",
 	"laser-body",
 	"laser-combo",
 	"laser-face",
@@ -82,6 +84,7 @@ export function getCategoryDescription(
 		pedicure: string;
 		brows: string;
 		laser: string;
+		waxing?: string;
 		general: string;
 	},
 ): string {
@@ -97,6 +100,7 @@ export function getCategoryDescription(
 		return labels.brows;
 	if (normalizedName.includes("laser") || normalizedName.includes("removal"))
 		return labels.laser;
+	if (normalizedName.includes("wax") && labels.waxing) return labels.waxing;
 
 	return labels.general;
 }
@@ -110,6 +114,32 @@ export function isLaserCategory(category: ServiceGroup | undefined): boolean {
 	return normalizedName.includes("laser") || normalizedName.includes("removal");
 }
 
+// Add-ons (repairs, nail art, coating removal) are booked on top of a
+// treatment, so they must not set a category's "from" price.
+const ADD_ON_PATTERN = /^extra\b|coating removal/i;
+
+// Classify by the English base name: translated names (e.g. Dutch
+// "verwijderen") would otherwise slip add-ons into the main list.
+export function isAddOnService(
+	service: Pick<Service, "name" | "name_en">,
+): boolean {
+	return ADD_ON_PATTERN.test((service.name_en || service.name).trim());
+}
+
+/** Main treatments of a group; falls back to every service when all are add-ons. */
+export function getMainServices(groupServices: Service[]): Service[] {
+	const main = groupServices.filter((service) => !isAddOnService(service));
+	return main.length > 0 ? main : groupServices;
+}
+
+/** Lowest add-on price across all services, if any add-ons exist. */
+export function getLowestAddOnPrice(services: Service[]): number | undefined {
+	const prices = services
+		.filter((service) => isAddOnService(service))
+		.map((service) => service.price);
+	return prices.length > 0 ? Math.min(...prices) : undefined;
+}
+
 export function getCategoryStartingPrice(
 	groupServices: Service[],
 	fromLabel: string,
@@ -117,7 +147,7 @@ export function getCategoryStartingPrice(
 ): string | undefined {
 	if (groupServices.length === 0) return undefined;
 	const startingPrice = Math.min(
-		...groupServices.map((service) => service.price),
+		...getMainServices(groupServices).map((service) => service.price),
 	);
 	return `${fromLabel} ${formatPremiumPrice(startingPrice, locale)}`;
 }
@@ -229,4 +259,9 @@ export function groupServicesAndCategories(
 	});
 
 	return result.sort((a, b) => b.priority - a.priority);
+}
+
+/** "manicure" → "Manicure": some translated category names start lowercase. */
+export function capitalizeFirst(value: string): string {
+	return value ? value.charAt(0).toLocaleUpperCase() + value.slice(1) : value;
 }

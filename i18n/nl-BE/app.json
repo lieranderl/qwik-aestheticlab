@@ -19,6 +19,16 @@
       "loading": "Boekingsopties laden",
       "widget_title": "Boekingswidget"
     },
+    "care": {
+      "intro": "Lees dit vóór je afspraak voor het mooiste, langst houdbare resultaat.",
+      "kicker": "Voor en na je bezoek",
+      "laser": "Laser",
+      "laser_before": "Voor je sessie",
+      "laser_shave": "Scheer de zone 24 uur voor je sessie.",
+      "laser_sun": "Vermijd zon, zonnebank en zelfbruiner minstens 2 weken vooraf.",
+      "nails": "Nagels",
+      "title": "Verzorgingstips"
+    },
     "changeLocale": "Verander taal",
     "common": {
       "close": "Sluiten",
@@ -30,31 +40,40 @@
     },
     "contact": {
       "appointment_only": "Bezoeken zijn alleen op afspraak",
+      "bookings": "Afspraken",
       "contact": "Contact",
       "description": "Plan je bezoek met het actuele adres, de openingstijden, routebeschrijving en parkeermogelijkheden in de buurt.",
       "directions": "Routebeschrijving",
+      "email": "E-mail",
       "email_us": "E-mail ons",
+      "get_directions": "Routebeschrijving",
+      "image_alt": "Zilveren manicure met een kaartje van Aesthetic Lab",
       "instagram": "Volg ons op Instagram",
       "kicker": "Jouw studio in Leuven",
       "location": "Locatie",
       "map_location": "Locatiekaart",
       "map_title": "Aesthetic Lab Locatie",
+      "message_instagram": "Stuur een bericht op Instagram",
       "monday": "Maandag",
       "opening_hours": "Openingstijden",
       "parking": "Parkeren beschikbaar bij",
+      "parking_label": "Parkeren",
       "saturday": "Zaterdag",
       "sunday": "Zondag",
       "unavailable_description": "Je kunt ons nog steeds per e-mail bereiken terwijl we de actuele studiogegevens herstellen.",
       "unavailable_title": "Contactgegevens tijdelijk niet beschikbaar",
+      "visit_kicker": "Bezoek de studio",
       "visit_us": "Bezoek ons"
     },
     "cookies": {
       "accept": "Analyse accepteren",
       "description": "We gebruiken strikt noodzakelijke cookies om deze website te laten werken. Google Analytics draait in Consent Mode: analyseopslag wordt geweigerd tenzij je accepteert, en Google kan cookieloze toestemmings- en meetpings ontvangen voordat je kiest.",
+      "heading": "Cookies",
       "necessary": "Strikt noodzakelijke cookies zijn altijd actief.",
       "privacy_link": "Lees ons privacybeleid",
       "reject": "Analyse weigeren",
       "settings": "Cookie-instellingen",
+      "summary": "Noodzakelijke cookies houden de site werkend. Analytische cookies plaatsen we alleen als je dat toestaat.",
       "title": "Cookie-instellingen"
     },
     "cta": {
@@ -65,30 +84,45 @@
       "booking": {
         "answer_after": " om de actuele beschikbaarheid te openen en kies vervolgens je behandeling en favoriete specialist.",
         "answer_before": "Gebruik een ",
+        "answer_direct": "Tik op een Boek-knop om de beschikbaarheid te zien en kies dan je behandeling en je favoriete specialist.",
         "question": "Hoe maak ik een afspraak?"
       },
       "cancellation": {
         "answer": "Ja — annuleer of verplaats je afspraak minstens 24 uur vooraf via het boekingssysteem. Je kunt ons ook rechtstreeks bereiken via <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer' class='link link-secondary'>Instagram</a> of per <a href='mailto:aestheticlabbe@gmail.com' class='link link-secondary'>e-mail</a>. Bij een late annulering kunnen kosten worden aangerekend.",
-        "question": "Kan ik een afspraak annuleren of verzetten?"
+        "answer_direct": "Ja, minstens 24 uur vooraf via het boekingssysteem, of stuur ons een bericht op <a href='https://www.instagram.com/aestheticlabbe' target='_blank' rel='noopener noreferrer'>Instagram</a> of per <a href='mailto:aestheticlabbe@gmail.com'>e-mail</a>. Bij late annulering kunnen kosten worden aangerekend.",
+        "question": "Kan ik een afspraak annuleren of verzetten?",
+        "question_short": "Kan ik annuleren of verplaatsen?"
       },
       "consultation": {
         "answer": "Zeker. Als je niet weet welke behandeling het beste bij je past, <a href='#contact' class='link link-secondary'>neem dan contact op</a> en we helpen je de juiste keuze te maken tijdens een korte gratis consultatie.",
-        "question": "Bieden jullie consultaties aan vóór het boeken?"
+        "answer_direct": "Ja. Twijfel je welke behandeling bij je past? <a href='https://ig.me/m/aestheticlabbe' target='_blank' rel='noopener noreferrer'>Vraag ons</a> om een kort, gratis advies.",
+        "question": "Bieden jullie consultaties aan vóór het boeken?",
+        "question_short": "Kan ik advies krijgen voor ik boek?"
       },
       "description": "Enkele praktische details om je afspraak eenvoudig te plannen.",
       "duration": {
         "answer": "Open een <a href='./pricelist' class='link link-secondary'>behandelingscategorie</a> om vóór het boeken de actuele duur en prijs van elke beschikbare behandeling te vergelijken.",
+        "answer_fallback": "De duur van elke behandeling staat in de <a href='./pricelist'>prijslijst</a>.",
+        "answer_range": "Van {{min}} tot {{max}} minuten, afhankelijk van de behandeling. De duur van elke behandeling staat in de <a href='./pricelist'>prijslijst</a>.",
         "question": "Hoe lang duren de behandelingen?"
       },
+      "heading": "Goed om te weten",
       "kicker": "Voor je bezoek",
       "laser_prep": {
         "answer": "Scheer het gebied 24 uur voor je sessie en vermijd blootstelling aan de zon, zonnebank en zelfbruiner gedurende minstens 2 weken. Lees ons volledige <a href='./notice' class='link link-secondary'>voor- en nazorgbeleid</a> vóór je afspraak.",
-        "question": "Hoe bereid ik me voor op een laserbehandeling?"
+        "answer_direct": "Scheer de zone 24 uur vooraf en vermijd zon, zonnebank en zelfbruiner minstens 2 weken. Lees vóór je bezoek de volledige <a href='./notice?tab=laser'>verzorgingstips</a>.",
+        "question": "Hoe bereid ik me voor op een laserbehandeling?",
+        "question_short": "Hoe bereid ik me voor op laser?"
       },
       "location": {
         "answer": "Ons adres, de openingstijden, kaart en links naar parkeermogelijkheden in de buurt vind je hieronder bij <a href='#contact' class='link link-secondary'>Bezoek ons</a>.",
-        "question": "Waar is de studio in Leuven?"
+        "answer_direct": "{{address}}, in het centrum van Leuven. Routebeschrijving en parkings in de buurt vind je onder <a href='#contact'>Bezoek</a>.",
+        "question": "Waar is de studio in Leuven?",
+        "question_short": "Waar is de studio?"
       },
+      "message_instagram": "Stuur ons een bericht op Instagram",
+      "still_question": "Nog een vraag?",
+      "still_question_body": "Stuur ons een bericht op Instagram of mail naar {{email}}.",
       "title": "FAQ"
     },
     "footer": {
@@ -97,15 +131,25 @@
       "explore": "Ontdek",
       "legal": "Juridisch",
       "navigation": "Navigatie in voettekst",
+      "ready": "Klaar wanneer jij het bent.",
+      "ready_image_alt": "Glanzende taupe manicure op linnen",
+      "ready_note": "Kies een behandeling en een moment dat jou past. Boeken duurt ongeveer een minuut.",
+      "studio": "Studio",
       "tagline": "Nagels, wenkbrauwen, wimpers en laserbehandelingen, helemaal afgestemd op jou"
     },
     "generic": {
       "view": "Bekijken"
     },
     "head": {
+      "care": {
+        "title": "Verzorgingstips | Aesthetic Lab"
+      },
       "home": {
-        "description": "Premium schoonheidssalon met manicures op maat, wenkbrauwmodellering en laserbehandelingen in een zen, biologische omgeving.",
-        "title": "Aesthetic Lab | Nagelontwerp, Wenkbrauwen & Laser"
+        "description": "Manicure, pedicure, wenkbrauwen, wimpers en laser in Leuven. Boek je afspraak online.",
+        "title": "Aesthetic Lab — Manicure · Pedicure · Wenkbrauwen · Wimpers · Laser in Leuven"
+      },
+      "not_found": {
+        "title": "Pagina niet gevonden | Aesthetic Lab"
       },
       "notice": {
         "description": "Belangrijke informatie over houdbaarheid, nazorg en gratis correcties voor klanten van Aesthetic Lab.",
@@ -118,7 +162,8 @@
       "privacy": {
         "description": "Hoe Aesthetic Lab uw persoonsgegevens verzamelt, gebruikt en beschermt.",
         "title": "Privacybeleid | Aesthetic Lab"
-      }
+      },
+      "share_alt": "Aesthetic Lab, Leuven: een glanzende taupe manicure in zacht schuim"
     },
     "hero": {
       "according": "*volgens onze klanten",
@@ -129,18 +174,22 @@
       "brows": "wenkbrauwen",
       "description": "Een toevluchtsoord voor verfijnde schoonheid. Gespecialiseerd in nagelkunst op maat, precisie wenkbrauwen en geavanceerde laserbehandelingen.",
       "google_rating": "5,0 op Google",
+      "google_reviews": "{{count}} Google-reviews",
       "image_brows": "Precies resultaat van wenkbrauw- en wimperstyling bij Aesthetic Lab",
       "image_group": "Behandelingen en afgewerkte beautylooks van Aesthetic Lab",
       "image_nails": "Natuurlijke nude manicure gecreëerd bij Aesthetic Lab",
       "image_work": "Nagelbehandeling in uitvoering bij Aesthetic Lab",
       "in_leuven": "in Leuven",
       "intro": "Nagels, wenkbrauwen, wimpers en laserbehandelingen, met aandacht op maat gemaakt in onze rustige studio in Leuven.",
+      "kicker": "Leuven · sinds 2024",
       "laser": "laser",
       "lashes": "wimpers",
+      "lead": "Manicure, pedicure, wenkbrauwen, wimpers en laser, in een rustige studio in het hart van Leuven.",
       "manicure": "manicure",
       "pedicure": "pedicure",
       "scroll": "Scroll",
       "scroll_down": "Scroll down to see our services",
+      "see_prices": "Bekijk prijzen",
       "slogan": "De kunst van natuurlijke schoonheid",
       "the_best": "De beste",
       "title_end": "voor jou",
@@ -153,6 +202,7 @@
         "leuven": "In het hart van Leuven",
         "results": "Natuurlijke, precieze resultaten"
       },
+      "video_label": "Roze gelmanicure die met zacht schuim wordt gewassen",
       "view_services": "Bekijk diensten"
     },
     "instagram": {
@@ -179,18 +229,31 @@
       "about": "Over ons",
       "close_menu": "Menu sluiten",
       "contact": "Contact",
+      "faq": "Goed om te weten",
       "home": "Start",
       "logo_bird": "Aesthetic Lab Vogel Logo",
       "mobile_menu": "Mobiele navigatie",
       "open_menu": "Menu openen",
       "policy": "Beleid",
+      "prices": "Prijzen",
       "primary": "Hoofdnavigatie",
       "reviews": "Beoordelingen",
       "services": "Diensten",
       "skip_to_content": "Ga naar inhoud",
       "team": "Team",
       "toggle_menu": "Navigatiemenu openen of sluiten",
+      "visit": "Bezoek",
       "work": "Werk"
+    },
+    "not_found": {
+      "body": "De link is misschien verouderd. Alles wat je nodig hebt, is één tik verwijderd.",
+      "image_alt": "Witte glittermanicure op zachte groene wol",
+      "kicker": "Pagina niet gevonden · 404",
+      "popular": "Populaire pagina’s",
+      "prices_note": "Elke behandeling, duur en prijs",
+      "services_note": "Nagels, wenkbrauwen, wimpers en laser",
+      "title": "Deze pagina is verhuisd",
+      "visit_note": "Diestsestraat 174, Leuven"
     },
     "notice": {
       "durability_intro": "Onze salon werkt uitsluitend met professionele materialen, waaronder gellakken, buildergels en harde gels van vertrouwde merken. Volgens de fabrikanten zijn deze producten ontworpen om tot 3 weken mee te gaan bij de juiste toepassing en nazorg.",
@@ -222,13 +285,27 @@
       "title": "Gratis herstelbeleid"
     },
     "pricelist": {
+      "add_ons": "Extra’s · bij elke behandeling",
+      "back_to_categories": "Terug naar categorieën",
+      "book_treatment": "Boek deze behandeling",
       "category_label": "Categorie",
       "category_nav": "Servicecategorieën",
       "empty": "De prijzen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor actuele informatie.",
       "hero_alt": "Achtergrond van de behandelcatalogus van Aesthetic Lab",
-      "ready": "Klaar wanneer u dat bent"
+      "intro": "Elke behandeling met haar duur. Prijzen gelden voor de behandeling zelf; extra’s staan apart vermeld.",
+      "kicker": "Prijslijst",
+      "laser_body": "Lichaam",
+      "laser_face": "Gezicht",
+      "laser_men": "Mannen",
+      "laser_sets": "Sets",
+      "price": "Prijs",
+      "ready": "Klaar wanneer u dat bent",
+      "time": "Duur",
+      "title": "Prijzen & duur",
+      "treatment": "Behandeling"
     },
     "privacy": {
+      "change_cookies": "Cookie-instellingen wijzigen",
       "changes": "7. Wijzigingen in dit beleid",
       "changes_text": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. De nieuwste versie is altijd beschikbaar op onze website.",
       "cookies": "6. Cookies & Traceertechnologieën",
@@ -236,14 +313,17 @@
       "cookies_necessary": "Strikt noodzakelijke cookies: altijd actief voor basisfunctionaliteit van de website.",
       "cookies_text": "We gebruiken strikt noodzakelijke cookies om de website te laten functioneren. Google Analytics draait in Consent Mode v2. Voor toestemming, of als je analyse weigert, blijven analyseopslag en advertentiegerelateerde toestemming geweigerd; Google kan cookieloze toestemmings- en meetpings ontvangen en analysecookies worden niet geplaatst. Als je analyse accepteert, kan Google Analytics analysecookies gebruiken om websitegebruik te begrijpen en onze diensten te verbeteren. Je kunt je keuze op elk moment wijzigen via Cookie-instellingen.",
       "email": "E-mailadres",
+      "email_request": "Mail een gegevensverzoek",
       "important_info": "Belangrijke informatie",
       "improve": "Onze diensten verbeteren",
       "info": "1. Informatie die we verzamelen",
       "info_text": "We verzamelen de volgende persoonlijke informatie wanneer u een afspraak boekt of contact met ons opneemt:",
+      "kicker": "Juridisch",
       "last_update": "Laatst bijgewerkt:",
       "last_update_date": "Laatst bijgewerkt: 19.02.2026",
       "legal": "Wettelijke autoriteiten indien vereist door de wet",
       "name": "Naam",
+      "on_this_page": "Op deze pagina",
       "phone": "Telefoonnummer",
       "privacy_title": "Privacybeleid",
       "respond": "Reageren op uw vragen",
@@ -257,30 +337,43 @@
       "sharing": "4. Uw informatie delen",
       "sharing_text": "We verkopen of verhuren uw persoonlijke informatie niet. We kunnen deze delen met:",
       "use": "2. Hoe we uw informatie gebruiken",
-      "use_text": "we gebruiken uw informatie om:"
+      "use_text": "we gebruiken uw informatie om:",
+      "who": "Wie we zijn",
+      "who_text": "Aesthetic Lab, {{address}}. Voor alles over je gegevens kun je mailen naar {{email}}."
     },
     "reviews": {
       "featured": "Uitgelichte review",
       "google_link": "Lees alle beoordelingen op Google",
+      "image_alt": "Zachte nude manicure in warm licht",
       "kicker": "Klantnotities",
+      "next": "Volgende review",
+      "previous": "Vorige review",
       "rating_aria": "5 van 5 sterren",
       "rating_label": "{{rating}} van {{max}} sterren",
       "section_title": "Mooie woorden",
       "source": "Google-review",
+      "tagline": "Steriel materiaal · Blijvend resultaat · Een rustige, vriendelijke studio",
       "title": "Vriendelijke woorden"
     },
     "services": {
+      "add_on_note": "Prijzen gelden voor de behandeling zelf. Herstellingen, nail art en verwijderen zijn extra, vanaf {{price}}.",
+      "all_prices": "Alle prijzen",
+      "ask_consultation": "Vraag gratis advies",
+      "ask_us": "Vraag het ons",
       "back": "Terug naar overzicht",
       "back_laser": "Terug naar laser",
       "brows_desc": "Epileren, verven en lamineren voor de perfecte vorm.",
       "brows_lashes_title": "Wenkbrauwen & Wimpers",
-      "catalogue": "Behandelcatalogus",
+      "catalogue": "Behandelingen",
+      "consultation_offer": "We helpen je graag, gratis.",
+      "consultation_question": "Twijfel je wat je moet kiezen?",
       "default_category": "Diensten",
       "duration": "Duur:",
       "editorial_title": "Deskundige zorg, natuurlijke resultaten",
       "empty": "De behandelingen zijn tijdelijk niet beschikbaar. Neem contact met ons op voor de actuele opties.",
       "from_price": "Vanaf",
       "general_desc": "Professionele schoonheidsbehandelingen voor uw verfijnde look.",
+      "index_label": "Ga naar een behandeling",
       "laser_category": "Laser",
       "laser_desc": "Veilige, effectieve en pijnloze technologie voor een gladde huid.",
       "manicure_desc": "Hoogwaardige gel-behandelingen en verfijnde Russische technieken voor natuurlijk mooie nagels.",
@@ -291,13 +384,19 @@
       "title": "Onze diensten",
       "treatments": "Behandelingen",
       "view_full": "Bekijk volledige prijslijst",
-      "view_treatments": "Bekijk behandelingen"
+      "view_treatments": "Bekijk behandelingen",
+      "waxing_desc": "Snel en precies harsen van wenkbrauwen, bovenlip, kin, wangen en het hele gezicht."
     },
     "story": "Ons verhaal",
     "story_text": "Bij Aesthetic Lab geloven we in de transformerende kracht van schoonheid. Onze aanpak combineert kunstzinnigheid met expertise, en creëert een toevluchtsoord waar u uw meest stralende zelf kunt ontdekken.",
     "team": {
       "artist": "specialist",
       "artists": "specialisten",
+      "book": "Boek",
+      "book_with": "Boek bij {{name}}",
+      "heading": "Het team",
+      "intro": "Geopend in 2024 met een eenvoudige belofte: mooi werk in een ruimte die rustig, eerlijk en gastvrij aanvoelt. We luisteren eerst, dan creëren we.",
+      "intro_prices": "introductieprijzen",
       "kicker": "Studio-artiesten",
       "leuven": "Leuven",
       "role": {
@@ -307,14 +406,22 @@
       "title": "Ontmoet ons team"
     },
     "title": "Demo van {{name}}",
+    "video": {
+      "pause": "Video pauzeren",
+      "play": "Video afspelen",
+      "replay": "Video opnieuw afspelen"
+    },
     "work": {
       "alt": {
         "b1": "Precieze styling van wenkbrauwen en wimpers",
         "b2": "Natuurlijk resultaat van wenkbrauwstyling",
+        "cherry_gloss": "Glanzende donkere kersenmanicure",
         "chrome_manicure": "Detail van een roze chromen manicure",
         "coral_manicure": "Fel koraalrode manicure op beide handen",
         "eyebrows": "Resultaat van nauwkeurige wenkbrauwstyling",
         "eyebrows2": "Natuurlijk resultaat van wenkbrauwstyling",
+        "lash_lift_process": "Lash lift in uitvoering, wimpers op een siliconen pad",
+        "lash_lift_result": "Gelifte, gekrulde wimpers na een lash lift",
         "lashes": "Resultaat van wimperextensions",
         "lashlift": "Resultaat van een wimperlift",
         "m1": "Detail van klassieke manicure op maat",
@@ -330,13 +437,28 @@
         "p3": "Professionele hygiënische pedicurebehandeling",
         "p5": "Esthetische pedicuredetails",
         "pearl_manicure": "Detail van een parelroze manicure",
-        "pedicure1": "Verzorgde pedicure met zachtroze lak"
+        "pedicure1": "Verzorgde pedicure met zachtroze lak",
+        "pink_shimmer": "Roze glittergelmanicure op een mohair breisel",
+        "tortoise": "Bruine gelmanicure met schildpadpatroon",
+        "white_shimmer": "Witte glittergelmanicure"
       },
+      "clip": {
+        "cat_eye": "Cat eye",
+        "cat_eye_label": "Cat-eye gellak die glinstert onder een magneet",
+        "chrome": "Chroom",
+        "chrome_label": "Chroompoeder wordt op een lavendelkleurige gelnagel gewreven",
+        "soft_pink": "Zacht roze",
+        "soft_pink_label": "Een afgewerkte zachtroze gelmanicure"
+      },
+      "clips_label": "Studioclips",
       "description": "Doordachte details, een verzorgde afwerking en resultaten die echt bij jou passen.",
       "enlarge": "Afbeelding vergroten",
       "gallery_label": "Galerij met behandelresultaten",
+      "heading": "Recent werk",
+      "instagram_note": "Nieuwe sets en momenten uit de studio. Elke week meer op Instagram.",
       "kicker": "Uit ons atelier",
       "lightbox_label": "Galerijviewer",
+      "more_on_instagram": "Meer op Instagram",
       "title": "Ons werk"
     }
   },

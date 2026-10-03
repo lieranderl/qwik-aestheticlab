@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { inlineTranslate } from "qwik-speak";
 import { Booking } from "~/components/ui/booking-modal";
-import { ExpandableText } from "~/components/ui/expandable-text";
+import { FadeUp } from "~/components/ui/fade-up";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { SectionWrapper } from "~/components/ui/section-wrapper";
 
@@ -17,76 +17,55 @@ export const TeamSection = component$<TeamSectionProps>(({ technicians }) => {
 	const sorted = [...technicians].sort((a, b) => a.id - b.id);
 
 	return (
-		<SectionWrapper id="team">
-			{/* Section Header */}
-			<div class="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-				<div>
-					<KickerLabel>
-						{t("app.team.kicker@@The people behind your care")}
-					</KickerLabel>
-					<h2 class="max-w-2xl text-balance font-cormorant text-5xl leading-[0.9] text-base-content md:text-7xl">
-						{t("app.team.section_title@@Meet your beauty team")}
+		<SectionWrapper id="team" background="base-200">
+			<div class="mb-4.5 grid gap-6 md:mb-14 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end lg:gap-16">
+				<FadeUp>
+					<KickerLabel>{t("app.team.kicker@@Who you'll meet")}</KickerLabel>
+					<h2 class="text-balance font-cormorant text-[2.875rem] leading-[0.95] text-base-content md:text-7xl lg:text-[5.5rem] lg:leading-[0.9]">
+						{t("app.team.heading@@The team")}
 					</h2>
-				</div>
-				<div class="max-w-md border-l border-base-300 pl-5 lg:justify-self-end">
-					<p class="text-pretty font-main text-[0.9375rem] leading-relaxed text-base-content/80 md:text-base">
-						{t(
-							"app.story_text@@At Aesthetic Lab, artistry meets expertise in a calm studio created around your comfort.",
-						)}
-					</p>
-					{/* Team stat */}
-					<div class="mt-4">
-						<span class="text-3xl font-cormorant text-base-content">
-							{sorted.length}
-						</span>
-						<span class="ml-2 font-main text-sm text-base-content/80">
-							{sorted.length === 1
-								? t("app.team.artist@@artist")
-								: t("app.team.artists@@artists")}{" "}
-							&mdash; {t("app.team.leuven@@Leuven")}
-						</span>
-					</div>
-				</div>
+				</FadeUp>
+				<p class="hidden font-cormorant text-[1.375rem] leading-snug text-base-content italic lg:block">
+					{t(
+						"app.team.intro@@Opened in 2024 with a simple promise: beautiful work in a space that feels calm, honest and welcoming. We listen first, then create.",
+					)}
+				</p>
 			</div>
 
-			{/* Team Cards — carousel on mobile, grid on desktop */}
-			<section
-				class="carousel carousel-start -mx-4 w-[calc(100%+2rem)] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-none [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:w-[calc(100%+3rem)] sm:px-6 md:mx-0 md:grid md:w-full md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:items-start xl:grid-cols-4"
-				aria-label={t("app.team.section_title@@Meet your beauty team")}
+			<ul
+				class="grid grid-cols-2 gap-x-2.5 gap-y-4.5 md:gap-x-6 md:gap-y-10 lg:grid-cols-4"
+				aria-label={t("app.team.heading@@The team")}
 			>
-				{sorted.map((tech, index) => (
-					<TeamMemberCard key={tech.id} tech={tech} index={index} />
+				{sorted.map((tech) => (
+					<TeamMemberCard key={tech.id} tech={tech} />
 				))}
-			</section>
+			</ul>
 		</SectionWrapper>
 	);
 });
 
 interface TeamMemberCardProps {
 	tech: Staff;
-	index: number;
 }
 
-export const TeamMemberCard = component$<TeamMemberCardProps>(
-	({ tech, index }) => {
-		const t = inlineTranslate();
-		const ImageComp = resolveTeamImage(tech.photo_url);
+export const TeamMemberCard = component$<TeamMemberCardProps>(({ tech }) => {
+	const t = inlineTranslate();
+	const ImageComp = resolveTeamImage(tech.photo_url);
+	const role = tech.role || t("app.team.role.technician@@Technician");
+	const isJunior = /junior/i.test(tech.role);
+	const imageClass =
+		"h-full w-full object-cover object-[center_22%] transition-transform duration-700 ease-(--ease-smooth) group-hover:scale-[1.03] motion-reduce:transition-none";
 
-		return (
-			<article
-				class={[
-					"group card card-border carousel-item w-[62%] shrink-0 snap-start bg-base-100 transition-[box-shadow,border-color] duration-200 motion-safe:hover:shadow-lg sm:w-[44%] md:w-auto",
-					index % 2 === 1 ? "lg:mt-12" : "",
-				]}
-			>
-				{/* Team photo */}
-				<figure class="aspect-3/4 overflow-hidden bg-base-300">
+	return (
+		<li class="group">
+			<div class="flex flex-col gap-2 md:gap-3.5">
+				<figure class="aspect-9/10 overflow-hidden bg-base-300 md:aspect-3/4">
 					{ImageComp ? (
 						<ImageComp
 							alt={tech.name}
-							class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
+							class={imageClass}
 							loading="lazy"
-							sizes="(min-width: 1280px) 20rem, (min-width: 1024px) calc(33vw - 2rem), (min-width: 768px) calc(50vw - 2rem), 62vw"
+							sizes="(min-width: 1280px) 19rem, (min-width: 1024px) 23vw, 50vw"
 						/>
 					) : tech.photo_url ? (
 						<img
@@ -94,50 +73,41 @@ export const TeamMemberCard = component$<TeamMemberCardProps>(
 							alt={tech.name}
 							width={400}
 							height={533}
-							class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
+							class={imageClass}
 							loading="lazy"
 						/>
 					) : (
-						/* Placeholder when no photo */
 						<div class="flex h-full w-full items-center justify-center bg-base-200">
-							<span class="font-cormorant text-6xl text-base-content/20">
+							<span class="font-cormorant text-6xl text-base-content/30">
 								{tech.name.charAt(0)}
 							</span>
 						</div>
 					)}
 				</figure>
 
-				<div class="card-body min-w-0 gap-3 p-5">
-					{/* Name + role badge */}
-					<div>
-						<div class="mb-1.5">
-							<span class="badge badge-secondary badge-soft badge-sm font-main">
-								{tech.role || t("app.team.role.technician@@Technician")}
-							</span>
-						</div>
-						<h3 class="font-cormorant text-2xl leading-none text-base-content">
-							{tech.name}
-						</h3>
-					</div>
-
-					{/* Bio with expand/collapse */}
-					<ExpandableText text={tech.about} maxLength={160} />
-
-					{/* Booking action */}
-					<div class="card-actions mt-auto border-t border-base-300 pt-3.5">
-						<Booking
-							id={`modal_tech_${tech.id}`}
-							text={t("app.book.book_now@@Book Now")}
-							staff={String(tech.id)}
-							classes="btn btn-sm min-h-11 w-full font-main text-xs font-semibold uppercase tracking-wider"
-							analyticsPlacement="team"
-							analyticsServiceCategory="staff"
-							analyticsServiceId={String(tech.id)}
-							analyticsServiceName={tech.role || "Technician"}
-						/>
-					</div>
+				<div class="flex items-baseline justify-between gap-3 md:border-b md:border-neutral md:pb-3">
+					<h3 class="font-cormorant text-2xl leading-none text-base-content md:text-4xl">
+						{tech.name}
+					</h3>
+					<Booking
+						id={`modal_tech_${tech.id}`}
+						text={t("app.team.book@@Book")}
+						ariaLabel={t("app.team.book_with@@Book with {{name}}", {
+							name: tech.name,
+						})}
+						staff={String(tech.id)}
+						classes="link inline-flex min-h-11 items-center font-main text-sm font-semibold underline-offset-4"
+						analyticsPlacement="team"
+						analyticsServiceCategory="staff"
+						analyticsServiceId={String(tech.id)}
+						analyticsServiceName={tech.role || "Technician"}
+					/>
 				</div>
-			</article>
-		);
-	},
-);
+				<p class="font-main text-sm font-semibold text-base-content/80">
+					{role}
+					{isJunior ? ` · ${t("app.team.intro_prices@@intro prices")}` : ""}
+				</p>
+			</div>
+		</li>
+	);
+});
