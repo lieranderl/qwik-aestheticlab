@@ -203,7 +203,7 @@
         "leuven": "Leuven-based",
         "results": "Visible, lasting results"
       },
-      "video_label_shimmer": "Pale pink shimmer manicure rinsed with soft foam",
+      "video_label": "Pink gel manicure being washed with soft foam",
       "view_services": "View services"
     },
     "instagram": {
@@ -436,7 +436,7 @@
         "chrome": "Chrome",
         "chrome_label": "Chrome powder buffed onto a lavender gel nail",
         "foam": "Foam wash",
-        "foam_label": "Pink gel manicure being washed with soft foam",
+        "shimmer_label": "Pale pink shimmer manicure rinsed with soft foam",
         "soft_pink": "Soft pink",
         "soft_pink_label": "A finished soft pink gel manicure"
       },

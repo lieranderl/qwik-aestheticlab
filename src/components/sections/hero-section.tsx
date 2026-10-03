@@ -6,8 +6,8 @@ import { InViewVideo, VideoControl } from "~/components/ui/in-view-video";
 import { KickerLabel } from "~/components/ui/kicker-label";
 import { Parallax } from "~/components/ui/parallax";
 import { googlePlaceUrl, googleRating, googleReviewCount } from "~/consts";
-import heroVideo from "~/media/video/hero.mp4?url";
-import heroPoster from "~/media/video/hero-poster.jpg?url";
+import heroVideo from "~/media/video/reset.mp4?url";
+import heroPoster from "~/media/video/reset-poster.jpg?url";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
 import { getLocaleNavLink } from "~/shared/locale-navigation";
 
@@ -46,7 +46,7 @@ export const HeroSection = component$(() => {
 						poster={heroPoster}
 						preload="auto"
 						label={t(
-							"app.hero.video_label_shimmer@@Pale pink shimmer manicure rinsed with soft foam",
+							"app.hero.video_label@@Pink gel manicure being washed with soft foam",
 						)}
 						class="-ml-15 block h-full w-[calc(100%+3.75rem)] max-w-none object-cover motion-safe:animate-media-slide"
 					/>
