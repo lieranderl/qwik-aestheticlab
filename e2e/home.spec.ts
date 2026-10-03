@@ -251,6 +251,19 @@ test("opens treatments in-page", async ({ page }) => {
 	test.setTimeout(60_000);
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/#services");
+	// The page smooth-scrolls to #services on load; tap once it has arrived.
+	await expect
+		.poll(() =>
+			page.evaluate(() => {
+				const services = document.getElementById("services");
+				if (!services) return Number.POSITIVE_INFINITY;
+				const margin = Number.parseFloat(
+					getComputedStyle(services).scrollMarginTop,
+				);
+				return Math.abs(services.getBoundingClientRect().top - margin);
+			}),
+		)
+		.toBeLessThan(2);
 
 	// Click once: a dropped first interaction is a real UX regression. Only the
 	// heading gets the long wait while the handler's modules load.

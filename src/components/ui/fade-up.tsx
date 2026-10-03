@@ -128,11 +128,16 @@ export const FadeUp = component$(
 			right:
 				"motion-safe:[.js_&]:-translate-x-10 motion-safe:[.js_&]:opacity-0",
 		};
+		// Hidden text is shifted over whatever sits below it, so it must not
+		// catch taps meant for those buttons until it is revealed.
 		const visibilityClass =
 			state.value === "hidden"
-				? mask
-					? "motion-safe:[.js_&]:translate-y-[110%]"
-					: hiddenClassMap[direction]
+				? [
+						"motion-safe:[.js_&]:pointer-events-none",
+						mask
+							? "motion-safe:[.js_&]:translate-y-[110%]"
+							: hiddenClassMap[direction],
+					].join(" ")
 				: "translate-x-0 translate-y-0 opacity-100";
 		const transitionClass =
 			state.value === "hidden" || state.value === "visible"
