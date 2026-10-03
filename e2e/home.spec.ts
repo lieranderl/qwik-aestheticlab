@@ -16,7 +16,7 @@ test("keeps the current locale prefix in primary navigation links", async ({
 	await page.goto("/en-BE/");
 
 	await expect(
-		page.getByRole("link", { name: "Home", exact: true }),
+		page.getByRole("link", { name: "Aesthetic Lab — Home" }),
 	).toHaveAttribute("href", "/en-BE/#");
 	await expect(
 		page
@@ -38,15 +38,7 @@ test("uses the corporate light theme and keeps navigation aligned with page orde
 		page
 			.getByRole("navigation", { name: "Primary navigation" })
 			.getByRole("link"),
-	).toHaveText([
-		"Home",
-		"Services",
-		"Reviews",
-		"Our Work",
-		"Team",
-		"FAQ",
-		"Contact",
-	]);
+	).toHaveText(["Services", "Prices", "Our Work", "Team", "Visit"]);
 });
 
 test("keeps the mobile hero action-led and shows treatment imagery early", async ({
@@ -75,31 +67,31 @@ test("renders localized landing-page copy in every supported language", async ({
 			lang: "en-BE",
 			hero: "The art of natural beauty",
 			reviews: "What people say",
-			faq: "FAQ",
+			faq: "Good to know",
 		},
 		{
 			lang: "nl-BE",
 			hero: "De kunst van natuurlijke schoonheid",
 			reviews: "Mooie woorden",
-			faq: "FAQ",
+			faq: "Goed om te weten",
 		},
 		{
 			lang: "fr-BE",
 			hero: "L'art de la beauté naturelle",
 			reviews: "Mots doux",
-			faq: "FAQ",
+			faq: "Bon à savoir",
 		},
 		{
 			lang: "ru-BE",
 			hero: "Искусство естественной красоты",
 			reviews: "Тёплые слова",
-			faq: "Частые вопросы",
+			faq: "Полезно знать",
 		},
 		{
 			lang: "uk-BE",
 			hero: "Мистецтво природної краси",
 			reviews: "Теплі слова",
-			faq: "Поширені запитання",
+			faq: "Корисно знати",
 		},
 	];
 
@@ -148,46 +140,46 @@ test("supports the audited responsive widths without horizontal overflow", async
 	}
 });
 
-test("keeps the Instagram profile card compact on desktop and fluid on mobile", async ({
+test("links to Instagram from the work section on phone and desktop", async ({
 	page,
 }) => {
-	// Two viewports, each with up to 15s of layout retries plus navigation.
-	test.setTimeout(60_000);
-	for (const viewport of [
-		{ width: 390, height: 844 },
-		{ width: 1440, height: 900 },
-	]) {
-		await page.setViewportSize(viewport);
-		await page.goto("/en-BE/#gallery");
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/en-BE/#gallery");
+	const phoneLink = page.getByTestId("instagram-link");
+	await expect(phoneLink).toBeVisible();
+	await expect(phoneLink).toHaveAttribute(
+		"href",
+		"https://www.instagram.com/aestheticlabbe",
+	);
 
-		// The dev server injects CSS via JavaScript after the load event, so retry the
-		// measurement until the layout has settled instead of reading it once.
-		await expect(async () => {
-			const metrics = await page
-				.getByTestId("instagram-card")
-				.evaluate((card) => {
-					const box = card.getBoundingClientRect();
-					return {
-						height: box.height,
-						left: box.left,
-						viewportWidth: document.documentElement.clientWidth,
-						width: box.width,
-					};
-				});
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await expect(phoneLink).toBeHidden();
+	await expect(
+		page.locator("#gallery").getByRole("link", { name: "@aestheticlabbe" }),
+	).toBeVisible();
+});
 
-			if (viewport.width >= 1024) {
-				expect(metrics.width).toBeLessThanOrEqual(1024);
-				expect(metrics.height).toBeLessThanOrEqual(448.5);
-				expect(metrics.left).toBeGreaterThanOrEqual(16);
-				expect(metrics.left + metrics.width).toBeLessThanOrEqual(
-					metrics.viewportWidth - 16,
-				);
-			} else {
-				expect(metrics.width).toBe(viewport.width - 32);
-				expect(metrics.height).toBeGreaterThan(300);
-			}
-		}).toPass({ timeout: 15_000 });
-	}
+test("shows honest starting prices that skip add-ons", async ({ page }) => {
+	await page.goto("/en-BE/#services");
+
+	const manicure = page
+		.locator("#services")
+		.getByRole("button", { name: /Manicure/ })
+		.first();
+	await expect(manicure).toContainText(/From €\d+/);
+	await expect(manicure).not.toContainText(/From €5(?!\d)/);
+});
+
+test("shows the phone booking bar once the hero is scrolled past", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/en-BE/");
+
+	const bookingBar = page.locator("#bottom-bar-book-btn").locator("..");
+	await expect(bookingBar).toHaveAttribute("aria-hidden", "true");
+	await page.mouse.wheel(0, 900);
+	await expect(bookingBar).not.toHaveAttribute("aria-hidden", "true");
 });
 
 test("keeps the hero content inside the viewport at mobile and desktop widths", async ({
@@ -247,7 +239,9 @@ test("renders the reviews section with heading and star ratings", async ({
 test("renders the FAQ section with proper heading", async ({ page }) => {
 	await page.goto("/en-BE/#faq");
 
-	await expect(page.getByRole("heading", { name: "FAQ" })).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Good to know" }),
+	).toBeVisible();
 	await expect(page.locator("#faq .collapse-title").first()).toBeVisible();
 });
 
@@ -257,12 +251,25 @@ test("opens treatments in-page", async ({ page }) => {
 	test.setTimeout(60_000);
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/en-BE/#services");
+	// The page smooth-scrolls to #services on load; tap once it has arrived.
+	await expect
+		.poll(() =>
+			page.evaluate(() => {
+				const services = document.getElementById("services");
+				if (!services) return Number.POSITIVE_INFINITY;
+				const margin = Number.parseFloat(
+					getComputedStyle(services).scrollMarginTop,
+				);
+				return Math.abs(services.getBoundingClientRect().top - margin);
+			}),
+		)
+		.toBeLessThan(2);
 
 	// Click once: a dropped first interaction is a real UX regression. Only the
 	// heading gets the long wait while the handler's modules load.
 	await page
 		.locator("#services")
-		.getByRole("button", { name: "View Treatments" })
+		.getByRole("button", { name: /Manicure/ })
 		.first()
 		.click();
 
@@ -331,6 +338,9 @@ test.describe("cookie consent banner", () => {
 		).toHaveAttribute("href", "/en-BE/privacy-policy");
 
 		await page.getByRole("button", { name: "Accept analytics" }).click();
+		await expect(
+			page.getByRole("button", { name: "Accept analytics" }),
+		).toBeHidden();
 
 		await expect(
 			page.getByRole("button", { name: "Cookie settings" }),
@@ -349,6 +359,9 @@ test.describe("cookie consent banner", () => {
 		await page.goto("/en-BE/");
 
 		await page.getByRole("button", { name: "Reject analytics" }).click();
+		await expect(
+			page.getByRole("button", { name: "Reject analytics" }),
+		).toBeHidden();
 
 		await expect(
 			page.getByRole("button", { name: "Cookie settings" }),
@@ -433,4 +446,14 @@ test("localizes gallery and rating accessibility labels", async ({ page }) => {
 		page.getByRole("button", { name: "Agrandir l’image" }).first(),
 	).toBeVisible();
 	await expect(page.getByLabel("5 étoiles sur 5").first()).toBeVisible();
+});
+
+test("videos have a pause, play and replay control", async ({ page }) => {
+	await page.goto("/en-BE/");
+	const heroControl = page.locator('button[aria-controls="hero-video"]');
+	await expect(heroControl).toBeVisible();
+	await expect(heroControl).toHaveAttribute("aria-label", /\S/);
+	await expect(
+		page.locator('#gallery button[aria-controls^="work-clip-"]'),
+	).toHaveCount(3);
 });

@@ -69,6 +69,7 @@ describe("Supabase data projection", () => {
 				id: "service-1",
 				group_id: "group-1",
 				name: "Manucure classique",
+				name_en: "Classic manicure",
 				description: "Description française",
 				duration: 60,
 				price: 50,

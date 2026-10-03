@@ -8,6 +8,7 @@ import {
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import { trackGoogleAnalyticsEvent } from "~/shared/cookie-consent";
+import { getLocaleNativeName } from "~/shared/locale-navigation";
 import { config } from "~/speak-config";
 
 export interface LanguageSwitcherProps {
@@ -65,7 +66,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 					type="button"
 					popovertarget={menuId}
 					style={`anchor-name: ${anchorName}`}
-					class={`btn btn-ghost min-h-11 min-w-11 gap-1 px-2 text-sm font-medium tracking-wide uppercase text-primary-content transition-colors duration-150 hover:text-primary-content ${buttonClass || ""}`}
+					class={`btn btn-ghost min-h-11 min-w-11 gap-1 border-0 px-2 font-main text-xs font-semibold uppercase tracking-[0.2em] text-current hover:bg-transparent ${buttonClass || ""}`}
 					aria-label={t("app.language.select@@Select language")}
 					aria-haspopup="menu"
 					aria-expanded={isExpanded.value}
@@ -91,7 +92,7 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 				<ul
 					id={menuId}
 					popover="auto"
-					class="dropdown menu menu-sm z-10 mt-1 w-32 rounded-2xl border border-base-content/20 bg-base-100 p-2 shadow-lg"
+					class="dropdown menu menu-sm z-50 mt-1 w-44 border border-base-300 bg-base-100 p-1.5 text-base-content shadow-lg"
 					style={`position-anchor: ${anchorName}; inset: auto; top: anchor(bottom)`}
 					aria-label={t("app.language.options@@Language options")}
 					onClick$={trackLanguageChange}
@@ -121,18 +122,19 @@ export const LanguageSwitcher = component$<LanguageSwitcherProps>(
 							<li key={locale.lang}>
 								{isCurrent ? (
 									<span
-										class="flex min-h-11 cursor-default items-center rounded-xl px-3 py-2 text-sm font-bold text-base-content"
+										class="flex min-h-11 cursor-default items-center justify-between gap-2 bg-neutral px-3 py-2 font-main text-sm font-semibold text-neutral-content hover:bg-neutral hover:text-neutral-content"
 										aria-current="true"
 									>
-										{locale.lang.split("-")[0].toUpperCase()}
+										{getLocaleNativeName(locale.lang)}
+										<span aria-hidden="true">✓</span>
 									</span>
 								) : (
 									<a
 										href={localizedHref}
 										data-locale={locale.lang}
-										class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-base-content transition-colors duration-150 hover:bg-base-200"
+										class="flex min-h-11 items-center px-3 py-2 font-main text-sm text-base-content transition-colors duration-150 hover:bg-base-200"
 									>
-										{locale.lang.split("-")[0].toUpperCase()}
+										{getLocaleNativeName(locale.lang)}
 									</a>
 								)}
 							</li>

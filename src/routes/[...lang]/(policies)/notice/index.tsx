@@ -1,6 +1,8 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
+import { KickerLabel } from "~/components/ui/kicker-label";
+import { SITE_METADATA } from "~/constants/metadata";
 
 export default component$(() => {
 	const t = inlineTranslate();
@@ -25,143 +27,203 @@ export default component$(() => {
 		),
 	];
 
-	return (
-		<section class="grid gap-10 lg:grid-cols-[minmax(15rem,0.62fr)_minmax(0,1.38fr)] lg:gap-16 xl:gap-24">
-			<header class="lg:sticky lg:top-32 lg:self-start">
-				<p class="font-main text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
-					Aesthetic Lab Leuven
-				</p>
-				<h1 class="mt-4 text-balance font-cormorant text-5xl leading-[0.95] text-base-content sm:text-6xl lg:text-7xl">
-					{t("app.notice.important_info@@Important Client Information")}
-				</h1>
-				<div class="my-6 h-px w-20 bg-primary" />
-				<p class="max-w-sm font-main text-sm leading-7 text-base-content">
-					{t(
-						"app.head.notice.description@@Important treatment durability, aftercare, and complimentary fix information for Aesthetic Lab clients.",
-					)}
-				</p>
-				<p class="badge badge-outline mt-6 min-h-7 border-base-300 px-3 font-main text-xs font-medium uppercase tracking-wider text-base-content">
-					{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
-				</p>
-			</header>
+	const location = useLocation();
+	const showLaser = location.url.searchParams.get("tab") === "laser";
+	const laserBefore = [
+		t("app.care.laser_shave@@Shave the area 24 hours before your session."),
+		t(
+			"app.care.laser_sun@@Avoid sun, tanning beds and self-tanner for at least 2 weeks before.",
+		),
+	];
+	const heading =
+		"flex items-baseline gap-3 font-cormorant text-[1.75rem] leading-[1.1] lg:text-[2.125rem]";
+	const number =
+		"font-main text-xs font-semibold tracking-[0.14em] text-primary-content/80";
+	const list = "border-t border-base-300";
+	const listItem = "border-b border-base-300 py-2.75 leading-[1.55]";
 
-			<div class="space-y-6 font-main text-base-content sm:space-y-8">
-				<div class="alert border border-base-300 bg-base-100 px-5 py-5 shadow-sm sm:px-8 sm:py-6">
-					<p class="text-sm leading-7 sm:text-base">
+	return (
+		<>
+			<section class="bg-primary text-primary-content">
+				<div class="mx-auto flex max-w-360 flex-col gap-3 px-5.5 pt-7 pb-6 md:px-10 lg:gap-5 lg:px-16 lg:py-16 xl:px-28">
+					<KickerLabel tone="sage" class="mb-0">
+						{t("app.care.kicker@@Before & after your visit")}
+					</KickerLabel>
+					<h1 class="font-cormorant text-[2.875rem] leading-[0.95] lg:text-[5rem] lg:leading-[0.9]">
+						{t("app.care.title@@Care notes")}
+					</h1>
+					<p class="max-w-xl font-main text-sm leading-normal lg:text-base">
 						{t(
-							"app.notice.intro@@At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
+							"app.care.intro@@Read these before your appointment for the best, longest-lasting result.",
 						)}
 					</p>
+					<p class="font-main text-xs font-semibold tracking-[0.18em] uppercase">
+						{t("app.notice.last_update_date@@Last updated: 01.07.2025")}
+					</p>
 				</div>
+			</section>
 
-				<div class="card card-border overflow-hidden border-base-300 bg-base-100 shadow-sm">
-					<div class="card-body gap-0 p-5 sm:p-8 md:p-10">
-						<section class="border-b border-base-300/50 pb-8 sm:pb-10">
-							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
+			<div class="mx-auto max-w-360 px-5.5 pb-16 md:px-10 lg:px-16 lg:pb-24 xl:px-28">
+				{/* DaisyUI radio tabs: native radios in a labelled radio group, so the
+				    selected topic is announced ("Laser, radio, checked"). */}
+				<div
+					role="radiogroup"
+					aria-label={t("app.care.title@@Care notes")}
+					class="tabs tabs-border grid grid-cols-2 lg:max-w-3xl"
+				>
+					<input
+						type="radio"
+						name="care-notes"
+						class="tab h-13 border-b border-neutral font-main text-xs font-semibold tracking-[0.18em] uppercase"
+						aria-label={t("app.care.nails@@Nails")}
+						checked={!showLaser}
+					/>
+					<div class="tab-content col-span-2 pt-6 lg:pt-10">
+						<div class="flex max-w-3xl flex-col gap-8 font-main text-[0.9375rem] lg:gap-11 lg:text-base">
+							<p class="font-cormorant text-[1.375rem] leading-[1.35] italic lg:text-[1.625rem]">
 								{t(
-									"app.notice.durability_title@@Product Durability Disclaimer",
-								)}
-							</h2>
-							<p class="mt-4 text-sm leading-7 sm:text-base">
-								{t(
-									"app.notice.durability_intro@@Our salon works exclusively with professional materials, including gel polishes, builder gels, and hard gels from trusted brands. According to manufacturers, these products are designed to last up to 3 weeks with proper application and aftercare.",
+									"app.notice.intro@@At our salon, we strive to deliver high-quality, long-lasting nail services using only professional products and techniques. To ensure transparency and manage expectations, please carefully read the following information:",
 								)}
 							</p>
-							<p class="mt-5 text-sm font-semibold text-secondary sm:text-base">
-								{t("app.notice.however@@However, please note:")}
-							</p>
-							<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
-								{durabilityFactors.map((factor) => (
-									<li key={factor} class="list-row gap-3 px-4 py-3">
-										<span aria-hidden="true" class="pt-0.5 text-secondary">
-											✦
-										</span>
-										<span class="leading-6">{factor}</span>
-									</li>
-								))}
-							</ul>
-							<div
-								class="alert alert-warning alert-soft mt-5 px-4 py-4"
-								role="note"
-							>
-								<p class="text-sm font-medium leading-6 sm:text-base">
+
+							<section class="flex flex-col gap-3">
+								<h2 class={heading}>
+									<span class={number}>01</span>
+									{t(
+										"app.notice.durability_title@@Product Durability Disclaimer",
+									)}
+								</h2>
+								<p class="leading-relaxed">
+									{t(
+										"app.notice.durability_intro@@Our salon works exclusively with professional materials, including gel polishes, builder gels, and hard gels from trusted brands. According to manufacturers, these products are designed to last up to 3 weeks with proper application and aftercare.",
+									)}
+								</p>
+								<p class="font-semibold">
+									{t("app.notice.however@@However, please note:")}
+								</p>
+								<ul class={list}>
+									{durabilityFactors.map((factor) => (
+										<li key={factor} class={listItem}>
+											{factor}
+										</li>
+									))}
+								</ul>
+								<p
+									class="border-l-2 border-primary pl-4 leading-relaxed"
+									role="note"
+								>
 									{t(
 										"app.notice.guarantee@@The salon guarantees proper and professional application of materials, but we cannot guarantee maximum wear time if external or individual factors interfere.",
 									)}
 								</p>
-							</div>
-						</section>
+							</section>
 
-						<section class="border-b border-base-300/50 py-8 sm:py-10">
-							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
-								{t("app.notice.hormonal_title@@Important Notice")}
-							</h2>
-							<p class="mt-4 text-sm leading-7 sm:text-base">
-								{t(
-									"app.notice.hormonal_intro@@The durability of nail coatings may vary depending on individual characteristics, including hormonal fluctuations. Please be aware that during periods of hormonal changes (such as PMS, pregnancy, breastfeeding, taking hormonal medications, or experiencing high stress levels), the adhesion of the product to the nail plate may decrease, which can affect the longevity of the coating.",
-								)}
-							</p>
-							<p class="mt-5 text-sm font-semibold text-secondary sm:text-base">
-								{t(
-									"app.notice.other_factors@@Other factors that may affect durability:",
-								)}
-							</p>
-							<ul class="list mt-3 rounded-box bg-base-200/45 py-1 text-sm sm:text-base">
-								{individualFactors.map((factor) => (
-									<li key={factor} class="list-row gap-3 px-4 py-3">
-										<span aria-hidden="true" class="pt-0.5 text-secondary">
-											✦
-										</span>
-										<span class="leading-6">{factor}</span>
-									</li>
-								))}
-							</ul>
-							<div
-								class="alert alert-info alert-soft mt-5 px-4 py-4"
-								role="note"
-							>
-								<p class="text-sm font-medium leading-6 sm:text-base">
+							<section class="flex flex-col gap-3">
+								<h2 class={heading}>
+									<span class={number}>02</span>
+									{t("app.notice.hormonal_title@@Important Notice")}
+								</h2>
+								<p class="leading-relaxed">
+									{t(
+										"app.notice.hormonal_intro@@The durability of nail coatings may vary depending on individual characteristics, including hormonal fluctuations. Please be aware that during periods of hormonal changes (such as PMS, pregnancy, breastfeeding, taking hormonal medications, or experiencing high stress levels), the adhesion of the product to the nail plate may decrease, which can affect the longevity of the coating.",
+									)}
+								</p>
+								<p class="font-semibold">
+									{t(
+										"app.notice.other_factors@@Other factors that may affect durability:",
+									)}
+								</p>
+								<ul class={list}>
+									{individualFactors.map((factor) => (
+										<li key={factor} class={listItem}>
+											{factor}
+										</li>
+									))}
+								</ul>
+								<p
+									class="border-l-2 border-primary pl-4 leading-relaxed"
+									role="note"
+								>
 									{t(
 										"app.notice.understanding@@Please understand that in the presence of these factors, the salon cannot guarantee standard wear time of the coating.",
 									)}
 								</p>
-							</div>
-						</section>
+							</section>
 
-						<section class="pt-8 sm:pt-10">
-							<h2 class="font-main text-xl leading-snug font-semibold text-secondary sm:text-2xl">
-								{t("app.notice.policy_title@@Complimentary Fix Policy")}
-							</h2>
-							<p class="mt-4 text-sm leading-7 sm:text-base">
+							<section class="flex flex-col gap-3 bg-primary px-5 py-6 text-primary-content lg:px-8 lg:py-7">
+								<h2 class={heading}>
+									<span class="font-main text-xs font-semibold tracking-[0.14em]">
+										03
+									</span>
+									{t("app.notice.policy_title@@Complimentary Fix Policy")}
+								</h2>
+								<p class="leading-relaxed">
+									{t(
+										"app.notice.policy_description@@If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
+									)}
+								</p>
+								<p class="leading-relaxed">
+									{t(
+										"app.notice.policy_care@@We care about your satisfaction and will be happy to fix any issues that may arise within this period.",
+									)}
+								</p>
+							</section>
+
+							<p class="border-t border-neutral pt-4 font-cormorant text-xl leading-snug italic">
 								{t(
-									"app.notice.policy_description@@If you experience any issues with your manicure within the first 5 days after your appointment, you are welcome to come back for a free correction.",
+									"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting.",
 								)}
 							</p>
-							<p class="mt-4 text-sm font-medium leading-7 text-secondary sm:text-base">
-								{t(
-									"app.notice.policy_care@@We care about your satisfaction and will be happy to fix any issues that may arise within this period.",
-								)}
-							</p>
-						</section>
+						</div>
+					</div>
+
+					<input
+						type="radio"
+						name="care-notes"
+						class="tab h-13 border-b border-neutral font-main text-xs font-semibold tracking-[0.18em] uppercase"
+						aria-label={t("app.care.laser@@Laser")}
+						checked={showLaser}
+					/>
+					<div class="tab-content col-span-2 pt-6 lg:pt-10">
+						<div class="flex max-w-3xl flex-col gap-8 font-main text-[0.9375rem] lg:gap-11 lg:text-base">
+							<section class="flex flex-col gap-3">
+								<h2 class={heading}>
+									<span class={number}>01</span>
+									{t("app.care.laser_before@@Before your session")}
+								</h2>
+								<ul class={list}>
+									{laserBefore.map((item) => (
+										<li key={item} class={listItem}>
+											{item}
+										</li>
+									))}
+								</ul>
+							</section>
+							<section class="flex flex-col gap-2 bg-primary px-5 py-5 text-primary-content lg:px-8 lg:py-6">
+								<p class="font-cormorant text-[1.375rem] italic">
+									{t("app.faq.still_question@@Still have a question?")}
+								</p>
+								<a
+									href={SITE_METADATA.socials.instagramMessage}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex min-h-11 items-center self-start font-main text-xs font-semibold tracking-[0.16em] uppercase underline-offset-4 hover:underline"
+								>
+									{t("app.faq.message_instagram@@Message us on Instagram")}
+								</a>
+							</section>
+						</div>
 					</div>
 				</div>
-
-				<div class="alert border border-base-300 bg-base-100 px-5 py-5 text-center shadow-sm sm:px-8 sm:py-6">
-					<p class="w-full font-main text-lg leading-relaxed font-medium text-secondary sm:text-xl">
-						{t(
-							"app.notice.thank_you@@Thank you for your understanding, trust, and cooperation! We look forward to making your nails beautiful and long-lasting.",
-						)}
-					</p>
-				</div>
 			</div>
-		</section>
+		</>
 	);
 });
 
 export const head: DocumentHead = () => {
 	const t = inlineTranslate();
 	return {
-		title: t("app.head.notice.title@@Client Information | Aesthetic Lab"),
+		title: t("app.head.care.title@@Care notes | Aesthetic Lab"),
 		meta: [
 			{
 				name: "description",

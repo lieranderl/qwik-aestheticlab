@@ -36,6 +36,8 @@ export interface Service {
 	id: string;
 	group_id: ServiceGroup["id"];
 	name: string;
+	/** English base name, independent of the page language (stable for classification). */
+	name_en?: string;
 	description: string;
 	duration: number;
 	price: number;

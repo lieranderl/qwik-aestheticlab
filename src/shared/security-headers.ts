@@ -9,7 +9,7 @@ const contentSecurityPolicy = [
 	"img-src 'self' data: https:",
 	"font-src 'self' data:",
 	"connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com",
-	"frame-src https://www.google.com https://bookings.gettimely.com",
+	"frame-src https://bookings.gettimely.com",
 	"upgrade-insecure-requests",
 ].join("; ");
 

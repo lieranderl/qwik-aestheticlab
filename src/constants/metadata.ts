@@ -14,6 +14,8 @@ export const SITE_METADATA = {
 	},
 	socials: {
 		instagram: "https://www.instagram.com/aestheticlabbe",
+		/** Opens a direct message thread with the studio. */
+		instagramMessage: "https://ig.me/m/aestheticlabbe",
 	},
 	pricing: "€€",
 	hours: [

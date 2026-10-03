@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { useDocumentHead, useLocation } from "@builder.io/qwik-city";
+import { inlineTranslate } from "qwik-speak";
 import { SITE_METADATA } from "~/constants/metadata";
 import { config } from "~/speak-config";
 
@@ -28,9 +29,22 @@ export function getLocalizedSeoLinks(pathname: string) {
  * The RouterHead component is placed inside of the document `<head>` element.
  */
 export const RouterHead = component$(() => {
+	const t = inlineTranslate();
 	const head = useDocumentHead();
 	const loc = useLocation();
 	const seoLinks = getLocalizedSeoLinks(loc.url.pathname);
+	const description =
+		head.meta.find((meta) => meta.name === "description")?.content ?? "";
+	const lang =
+		config.supportedLocales.find(
+			(locale) => loc.url.pathname.split("/")[1] === locale.lang,
+		)?.lang ?? config.defaultLocale.lang;
+	const ogLocale = lang.replace("-", "_");
+	// One 1200 × 630 image per language (rendered by scripts/share-images.ts).
+	const shareImage = `${SITE_METADATA.url}/og/${lang}.jpg`;
+	const shareImageAlt = t(
+		"app.head.share_alt@@Aesthetic Lab, Leuven: a glossy taupe manicure in soft foam",
+	);
 
 	return (
 		<>
@@ -50,6 +64,37 @@ export const RouterHead = component$(() => {
 			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 			<link rel="apple-touch-icon" href="/icon-192.svg" />
 			<meta name="theme-color" content="#8b9687" />
+
+			{/* Link previews in WhatsApp, Instagram, Messenger, etc. */}
+			<meta property="og:type" content="website" />
+			<meta property="og:site_name" content={SITE_METADATA.name} />
+			<meta property="og:title" content={head.title} />
+			{description ? (
+				<meta property="og:description" content={description} />
+			) : null}
+			<meta property="og:url" content={seoLinks.canonical} />
+			<meta property="og:locale" content={ogLocale} />
+			{config.supportedLocales
+				.filter((locale) => locale.lang !== lang)
+				.map((locale) => (
+					<meta
+						key={locale.lang}
+						property="og:locale:alternate"
+						content={locale.lang.replace("-", "_")}
+					/>
+				))}
+			<meta property="og:image" content={shareImage} />
+			<meta property="og:image:type" content="image/jpeg" />
+			<meta property="og:image:width" content="1200" />
+			<meta property="og:image:height" content="630" />
+			<meta property="og:image:alt" content={shareImageAlt} />
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:title" content={head.title} />
+			{description ? (
+				<meta name="twitter:description" content={description} />
+			) : null}
+			<meta name="twitter:image" content={shareImage} />
+			<meta name="twitter:image:alt" content={shareImageAlt} />
 
 			{head.meta.map((m) => (
 				<meta key={m.key} {...m} />

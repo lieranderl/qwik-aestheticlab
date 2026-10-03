@@ -32,6 +32,16 @@ const services = serviceGroups.map((group, index) => ({
 	active: true,
 }));
 
+// An add-on must not set the category's "from" price.
+services.push({
+	...services[0],
+	id: "service-add-on",
+	name: "Extra nail repair (up to 3 nails)",
+	description: "Repair of up to 3 nails",
+	duration: 5,
+	price: 5,
+});
+
 function json(data: unknown, status = 200) {
 	return Response.json(data, {
 		status,

@@ -106,6 +106,7 @@ export function localizeService(
 	return {
 		id: service.id,
 		group_id: service.group_id,
+		name_en: service.name,
 		name: resolveLocalizedField(localeCode, {
 			defaultValue: service.name,
 			ru: service.name_ru,

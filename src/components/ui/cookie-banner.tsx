@@ -1,10 +1,17 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+	$,
+	component$,
+	useOnWindow,
+	useSignal,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { inlineTranslate } from "qwik-speak";
 import {
 	disableAnalytics,
 	enableAnalytics,
 	initializeGoogleAnalytics,
+	OPEN_COOKIE_SETTINGS_EVENT,
 	readCookieConsent,
 	saveCookieConsent,
 } from "~/shared/cookie-consent";
@@ -17,37 +24,37 @@ export const CookieBanner = component$(() => {
 	const descriptionId = "cookie-settings-description";
 
 	const showBanner = useSignal(false);
-	const hasChoice = useSignal(false);
 
 	// biome-ignore lint/correctness/noQwikUseVisibleTask: Needs client-only storage/script initialization.
-	useVisibleTask$(() => {
-		initializeGoogleAnalytics();
-		const stored = readCookieConsent();
-		if (!stored) {
-			showBanner.value = true;
-			return;
-		}
+	useVisibleTask$(
+		() => {
+			initializeGoogleAnalytics();
+			const stored = readCookieConsent();
+			if (!stored) {
+				showBanner.value = true;
+				return;
+			}
 
-		hasChoice.value = true;
-		if (stored.analytics) {
-			enableAnalytics({ trackUpdate: false });
-			return;
-		}
+			if (stored.analytics) {
+				enableAnalytics({ trackUpdate: false });
+				return;
+			}
 
-		disableAnalytics({ trackUpdate: false });
-	});
+			disableAnalytics({ trackUpdate: false });
+		},
+		// The wrapper is empty until a banner shows, so it never becomes "visible".
+		{ strategy: "document-ready" },
+	);
 
 	const acceptAll = $(() => {
 		saveCookieConsent(true);
 		enableAnalytics();
-		hasChoice.value = true;
 		showBanner.value = false;
 	});
 
 	const rejectOptional = $(() => {
 		saveCookieConsent(false);
 		disableAnalytics();
-		hasChoice.value = true;
 		showBanner.value = false;
 	});
 
@@ -57,90 +64,63 @@ export const CookieBanner = component$(() => {
 
 	const privacyHref = getLocaleNavLink(location.url.pathname, "privacy-policy");
 
+	useOnWindow(OPEN_COOKIE_SETTINGS_EVENT, openSettings);
+
+	// Always render the wrapper: Qwik attaches the window listener to it.
 	return (
-		<>
+		<div data-cookie-consent>
 			{showBanner.value && (
 				<section
-					class="fixed bottom-3 right-3 left-3 z-50 motion-safe:animate-fade-in md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-4 md:right-auto md:w-[min(28rem,calc(100vw-3rem))] motion-reduce:animate-none"
+					class="fixed top-[calc(env(safe-area-inset-top)+4.25rem)] right-3 left-3 z-50 motion-safe:animate-fade-in motion-reduce:animate-none md:top-auto md:right-auto md:bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] md:left-6 md:w-[min(26rem,calc(100vw-3rem))]"
 					aria-labelledby={titleId}
 					aria-describedby={descriptionId}
 				>
-					<div class="max-h-[50svh] overflow-y-auto overscroll-contain rounded-2xl border border-base-content/10 bg-base-100/98 p-4 shadow-xl md:p-5">
-						<div class="flex flex-col gap-4">
-							<div class="space-y-2">
-								<p
-									id={titleId}
-									class="font-main text-sm font-semibold uppercase tracking-wider text-base-content"
-								>
-									{t("app.cookies.title@@Cookie settings")}
-								</p>
-								<p id={descriptionId} class="text-sm text-base-content/80">
-									{t(
-										"app.cookies.description@@We use strictly necessary cookies to run this site. Google Analytics runs in Consent Mode: analytics storage is denied unless you accept, and Google may receive cookieless consent and measurement pings before your choice.",
-									)}
-								</p>
-								<div class="text-xs text-base-content">
-									{t(
-										"app.cookies.necessary@@Strictly necessary cookies are always active.",
-									)}{" "}
-									<a
-										class="link inline-flex min-h-11 items-center"
-										href={privacyHref}
-									>
-										{t("app.cookies.privacy_link@@Read our Privacy Policy")}
-									</a>
-								</div>
-							</div>
-
-							<div class="flex gap-2 sm:items-center sm:justify-end">
-								<button
-									type="button"
-									class="btn btn-outline btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
-									onClick$={rejectOptional}
-								>
-									{t("app.cookies.reject@@Reject analytics")}
-								</button>
-								<button
-									type="button"
-									class="btn btn-primary btn-sm min-h-11 min-w-0 flex-1 rounded-full px-3 text-xs sm:flex-none"
-									onClick$={acceptAll}
-								>
-									{t("app.cookies.accept@@Accept analytics")}
-								</button>
-							</div>
+					<div class="flex max-h-[45svh] flex-col gap-2.5 overflow-y-auto overscroll-contain border border-base-300 bg-base-100 p-3.5 sm:gap-3 sm:p-5 text-base-content shadow-[0_12px_32px_rgb(26_36_26/0.25)]">
+						{/* Phones: compact, so the hero headline and booking button stay in view. */}
+						<div class="flex items-baseline justify-between gap-4 max-sm:sr-only">
+							<h2
+								id={titleId}
+								class="font-cormorant text-[1.625rem] leading-none"
+							>
+								{t("app.cookies.heading@@Cookies")}
+							</h2>
+							<a
+								class="link inline-flex min-h-11 items-center font-main text-xs underline-offset-3"
+								href={privacyHref}
+							>
+								{t("app.cookies.privacy_link@@Read our Privacy Policy")}
+							</a>
+						</div>
+						<p
+							id={descriptionId}
+							class="font-main text-sm leading-normal text-base-content"
+						>
+							{t(
+								"app.cookies.summary@@Necessary cookies keep the site working. Analytics cookies are only set if you allow them.",
+							)}{" "}
+							<a class="link sm:hidden" href={privacyHref}>
+								{t("app.cookies.privacy_link@@Read our Privacy Policy")}
+							</a>
+						</p>
+						<div class="grid grid-cols-2 gap-2">
+							<button
+								type="button"
+								class="btn btn-outline h-11 min-h-11 border-neutral px-2 font-main text-sm font-semibold sm:h-12 sm:min-h-12"
+								onClick$={rejectOptional}
+							>
+								{t("app.cookies.reject@@Reject analytics")}
+							</button>
+							<button
+								type="button"
+								class="btn btn-outline h-11 min-h-11 border-neutral px-2 font-main text-sm font-semibold sm:h-12 sm:min-h-12"
+								onClick$={acceptAll}
+							>
+								{t("app.cookies.accept@@Accept analytics")}
+							</button>
 						</div>
 					</div>
 				</section>
 			)}
-
-			{hasChoice.value && !showBanner.value && (
-				<div class="fixed bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] left-2 z-30 md:bottom-[calc(env(safe-area-inset-bottom)+1rem)] md:left-4">
-					<button
-						type="button"
-						class="btn btn-square btn-sm rounded-full border border-base-content/20 bg-base-100/95 text-xs opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100 md:w-auto md:px-4 md:opacity-90"
-						onClick$={openSettings}
-						aria-label={t("app.cookies.settings@@Cookie settings")}
-					>
-						<svg
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.75"
-							class="size-4"
-							aria-hidden="true"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4"
-							/>
-						</svg>
-						<span class="hidden md:inline">
-							{t("app.cookies.settings@@Cookie settings")}
-						</span>
-					</button>
-				</div>
-			)}
-		</>
+		</div>
 	);
 });

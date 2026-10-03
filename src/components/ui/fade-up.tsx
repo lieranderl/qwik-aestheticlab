@@ -46,6 +46,8 @@ export interface FadeUpProps {
 	rootMargin?: number;
 	direction?: "up" | "down" | "left" | "right";
 	disable?: boolean;
+	/** Headline style: the text slides up from behind its own edge, no fade. */
+	mask?: boolean;
 	class?: string;
 	onClick$?: PropFunction<() => void>;
 }
@@ -53,11 +55,12 @@ export interface FadeUpProps {
 export const FadeUp = component$(
 	({
 		delay = 0,
-		threshold = 0.1,
+		threshold = 0,
 		runOnce = true,
-		rootMargin = 50,
+		rootMargin = 0,
 		direction = "up",
 		disable = false,
+		mask = false,
 		class: className = "",
 		onClick$,
 	}: FadeUpProps) => {
@@ -117,39 +120,70 @@ export const FadeUp = component$(
 			});
 		});
 
+		// Text only (photos never fade): rises 40px while fading in.
 		const hiddenClassMap = {
-			up: "motion-safe:[.js_&]:translate-y-12 motion-safe:[.js_&]:opacity-0",
-			down: "motion-safe:[.js_&]:-translate-y-12 motion-safe:[.js_&]:opacity-0",
+			up: "motion-safe:[.js_&]:translate-y-10 motion-safe:[.js_&]:opacity-0",
+			down: "motion-safe:[.js_&]:-translate-y-10 motion-safe:[.js_&]:opacity-0",
 			left: "motion-safe:[.js_&]:translate-x-10 motion-safe:[.js_&]:opacity-0",
 			right:
 				"motion-safe:[.js_&]:-translate-x-10 motion-safe:[.js_&]:opacity-0",
 		};
+		// Hidden text is shifted over whatever sits below it, so it must not
+		// catch taps meant for those buttons until it is revealed.
 		const visibilityClass =
 			state.value === "hidden"
-				? hiddenClassMap[direction]
+				? [
+						"motion-safe:[.js_&]:pointer-events-none",
+						mask
+							? "motion-safe:[.js_&]:translate-y-[110%]"
+							: hiddenClassMap[direction],
+					].join(" ")
 				: "translate-x-0 translate-y-0 opacity-100";
 		const transitionClass =
 			state.value === "hidden" || state.value === "visible"
-				? "motion-safe:transition-[opacity,transform] motion-safe:duration-400 motion-safe:ease-[var(--ease-smooth)]"
+				? mask
+					? "motion-safe:transition-transform motion-safe:duration-1000 motion-safe:ease-(--ease-smooth)"
+					: "motion-safe:transition-[opacity,transform] motion-safe:duration-900 motion-safe:ease-(--ease-quint)"
 				: "transition-none";
 
-		// Clamp delay to 0-300 range, round to nearest 20ms
+		// Clamp delay to 0-400 range, round to nearest 20ms
 		const clampedDelay = Math.min(
-			300,
+			400,
 			Math.max(0, Math.round(delay / 20) * 20),
 		);
+
+		const motionClasses = [
+			transitionClass,
+			visibilityClass,
+			"motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
+		];
+		// Inline delay: Tailwind cannot see dynamically built class names.
+		const delayStyle =
+			clampedDelay > 0 &&
+			(state.value === "hidden" || state.value === "visible")
+				? { transitionDelay: `${clampedDelay}ms` }
+				: undefined;
+
+		if (mask) {
+			return (
+				<div
+					ref={elRef}
+					data-fade-up
+					class={["overflow-clip pb-[0.06em]", className]}
+				>
+					<div class={motionClasses} style={delayStyle}>
+						<Slot />
+					</div>
+				</div>
+			);
+		}
 
 		return (
 			<div
 				ref={elRef}
 				data-fade-up
-				class={[
-					transitionClass,
-					visibilityClass,
-					clampedDelay > 0 ? `motion-safe:delay-[${clampedDelay}ms]` : "",
-					"motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
-					className,
-				]}
+				class={[motionClasses, className]}
+				style={delayStyle}
 				onClick$={onClick$}
 			>
 				<Slot />

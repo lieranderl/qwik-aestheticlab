@@ -304,3 +304,13 @@ export const trackGoogleAnalyticsEvent = (
 		...sanitizeEventParams(params),
 	});
 };
+
+/**
+ * Window event that reopens the cookie settings (dispatched from the footer).
+ * Qwik's loader listens for camelCase event names.
+ */
+export const OPEN_COOKIE_SETTINGS_EVENT = "openCookieSettings";
+
+export const openCookieSettings = () => {
+	window.dispatchEvent(new CustomEvent(OPEN_COOKIE_SETTINGS_EVENT));
+};
