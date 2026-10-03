@@ -27,6 +27,8 @@ interface FooterProps {
 	bookingBar?: boolean;
 }
 
+const [emailName, emailDomain] = SITE_METADATA.email.split("@");
+
 export const Footer = component$<FooterProps>(
 	({ readyBand = true, bookingBar = true }) => {
 		const t = inlineTranslate();
@@ -120,7 +122,8 @@ export const Footer = component$<FooterProps>(
 					]}
 				>
 					<div class="mx-auto flex max-w-7xl flex-col gap-8 lg:gap-12">
-						<div class="grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-3 lg:gap-12">
+						{/* Phones: the contact column is a little wider so the email fits one line. */}
+						<div class="grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-x-4 gap-y-6 lg:grid-cols-3 lg:gap-12">
 							<div class="flex flex-col gap-2 border-t border-ink pt-3 font-main text-sm leading-normal lg:gap-3.5 lg:pt-3.5 lg:text-[0.9375rem]">
 								<h2 class={columnLabel}>{t("app.footer.studio@@Studio")}</h2>
 								<p>
@@ -130,7 +133,13 @@ export const Footer = component$<FooterProps>(
 								</p>
 								<p>
 									{t("app.contact.monday@@Monday")} –{" "}
-									{t("app.contact.saturday@@Saturday")} · {opens} – {closes}
+									{t("app.contact.saturday@@Saturday")}
+									{/* Phones: hours on their own line in the narrower column. */}
+									<span class="max-lg:hidden"> · </span>
+									<br class="lg:hidden" />
+									<span class="whitespace-nowrap">
+										{opens} – {closes}
+									</span>
 									<br />
 									{t("app.contact.appointment_only@@By appointment only")}
 								</p>
@@ -148,9 +157,11 @@ export const Footer = component$<FooterProps>(
 								<h2 class={columnLabel}>{t("app.contact.contact@@Contact")}</h2>
 								<a
 									href={`mailto:${SITE_METADATA.email}`}
-									class="inline-flex min-h-11 items-center break-all hover:underline lg:min-h-0"
+									class="inline-block py-3 hover:underline lg:py-0"
 								>
-									{SITE_METADATA.email}
+									{/* Narrow phones: wrap at the @, never mid-word. */}
+									{emailName}
+									<wbr />@{emailDomain}
 								</a>
 								<a
 									href={SITE_METADATA.socials.instagram}
