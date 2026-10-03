@@ -73,10 +73,11 @@ export const HeroSection = component$(() => {
 					fadeOutOver={420}
 					class="flex flex-col gap-4.5 px-6 pt-28 pb-[calc(env(safe-area-inset-bottom)+2.5rem)] lg:gap-7 lg:px-0 lg:pt-0 lg:pb-3"
 				>
-					{/* Phones: one centered line, sized from the slogan length so every locale fits. */}
+					{/* Phones: one centered line, sized from the slogan length so every locale
+					    fits. The rem floor keeps it zoomable; past that it wraps. */}
 					<h1
 						style={{ "--slogan-chars": slogan.length }}
-						class="overflow-clip pb-[0.06em] text-center font-cormorant text-[min(2.75rem,calc((100vw-3rem)/(var(--slogan-chars)*0.46)))] leading-[0.9] font-medium tracking-[-0.02em] whitespace-nowrap lg:text-left lg:text-[clamp(4rem,5.6vw,6rem)] lg:whitespace-normal lg:text-balance"
+						class="overflow-clip pb-[0.06em] text-center font-cormorant text-[clamp(1.25rem,calc((100vw-3rem)/(var(--slogan-chars)*0.46)),2.75rem)] leading-[0.9] font-medium tracking-[-0.02em] text-balance lg:text-left lg:text-[clamp(4rem,5.6vw,6rem)]"
 					>
 						<span class="block motion-safe:animate-line-up [animation-delay:160ms]">
 							{slogan}
