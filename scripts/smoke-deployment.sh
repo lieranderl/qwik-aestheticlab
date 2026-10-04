@@ -16,6 +16,8 @@ curl_args=(
 	--retry-all-errors
 	--retry-delay 2
 	--header "Cache-Control: no-cache"
+	--cookie "${work_dir}/cookies"
+	--cookie-jar "${work_dir}/cookies"
 )
 
 curl "${curl_args[@]}" "${base_url}/readyz" > /dev/null

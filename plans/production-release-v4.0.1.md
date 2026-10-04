@@ -28,6 +28,8 @@ Preserve the published v4.0.0 tag; release the correction as v4.0.1.
    proven defects from mixed-traffic smoke tests and cross-revision counting;
    candidate and final smoke tests verify every image without exclusions.
    Keep gates and thresholds.
+   Preserve the Cloud Run affinity cookie across page and asset probes; verify
+   this behavior with a server that rejects image requests without the cookie.
 4. Bump package.json to 4.0.1 and document the deployment invariant.
 
 ## Phases and Verification Gates
