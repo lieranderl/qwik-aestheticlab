@@ -1,11 +1,16 @@
+import UniversalImage from "~/media/gallery/universal.jpg?jsx";
+
 type ImageComponent =
 	typeof import("~/media/gallery/universal.jpg?jsx").default;
 
-const GALLERY_IMAGES = import.meta.glob("../media/gallery/*.jpg", {
-	eager: true,
-	query: "?jsx",
-	import: "default",
-}) as Record<string, ImageComponent>;
+const GALLERY_IMAGES = import.meta.glob(
+	["../media/gallery/*.jpg", "!../media/gallery/lazer1.jpg"],
+	{
+		eager: true,
+		query: "?jsx",
+		import: "default",
+	},
+) as Record<string, ImageComponent>;
 
 const SERVICE_IMAGES = import.meta.glob("../media/services/*.{webp,jpg}", {
 	eager: true,
@@ -20,6 +25,9 @@ const TEAM_IMAGES = import.meta.glob("../media/*.jpg", {
 }) as Record<string, ImageComponent>;
 
 const IMAGE_COMPONENTS = new Map<string, ImageComponent>([
+	// These source files are byte-identical. Import only the canonical file so
+	// independent client/SSR builds cannot choose different deduplicated names.
+	["gallery:lazer1.jpg", UniversalImage],
 	...Object.entries(GALLERY_IMAGES).map(
 		([path, component]) =>
 			[`gallery:${path.split("/").at(-1)}`, component] as const,

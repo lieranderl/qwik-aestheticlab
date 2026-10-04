@@ -59,6 +59,7 @@
 - Use `~/*` imports, typed props, existing `src/components/ui/*` primitives, DaisyUI semantic tokens, and `custom-container`; do not add `tailwind.config.js`.
 - Use `inlineTranslate()` and `key@@Default English Text`; synchronize all five locales with `bun run qwik-speak-extract`.
 - Route files own `DocumentHead`; preserve Consent Mode v2, accessibility, meaningful image `alt`, and stable image sizing.
+- Byte-identical optimized images must share one canonical import; alias legacy gallery keys to it. Deployment smoke tests must verify every rendered optimized image URL.
 - Biome owns formatting. Do not add ESLint or Prettier.
 
 ## Dependencies, Env, and Generated Files

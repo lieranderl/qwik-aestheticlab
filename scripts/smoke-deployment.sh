@@ -35,4 +35,29 @@ for path in /en-BE/ /fr-BE/pricelist/; do
 	grep --extended-regexp --ignore-case --quiet \
 		'^x-content-type-options:[[:space:]]*nosniff' \
 		"${work_dir}/${name}.headers"
+	grep --only-matching --extended-regexp \
+		'/assets/[A-Za-z0-9._/-]+\.(webp|avif|png|jpe?g|svg)' \
+		"${work_dir}/${name}.body" >> "${work_dir}/images" || true
 done
+
+# Validate every responsive image variant referenced by server-rendered HTML.
+# Client/server image deduplication must never produce URLs absent from dist.
+test -s "${work_dir}/images"
+sort -u "${work_dir}/images" > "${work_dir}/unique-images"
+while IFS= read -r image_path; do
+	# During mixed traffic only, the caller may supply the byte-verified baseline
+	# of old HTML defects. Candidate and final smoke tests never use this list.
+	if [[ -n "${SMOKE_REPAIRED_LEGACY_IMAGES:-}" ]] \
+		&& grep -Fxq "$image_path" "$SMOKE_REPAIRED_LEGACY_IMAGES"; then
+		continue
+	fi
+	if ! content_type=$(curl "${curl_args[@]}" --output /dev/null \
+		--write-out '%{content_type}' "${base_url}${image_path}"); then
+		echo "Rendered image request failed: $image_path" >&2
+		exit 1
+	fi
+	if [[ "$content_type" != image/* ]]; then
+		echo "Rendered image did not return image content: $image_path ($content_type)" >&2
+		exit 1
+	fi
+done < "${work_dir}/unique-images"

@@ -1,6 +1,7 @@
 import { createQwikCity } from "@builder.io/qwik-city/middleware/bun";
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
+import { getLegacyImageRequest } from "~/shared/legacy-image-request";
 import { isRuntimeConfigReady } from "~/shared/runtime-config";
 import { applySecurityHeaders } from "~/shared/security-headers";
 import { logServerEvent } from "~/shared/server-logging";
@@ -103,9 +104,18 @@ Bun.serve({
 			adjustedRequest = new Request(httpsUrl.toString(), request);
 		}
 
+		let assetResponse = await staticFile(adjustedRequest);
+		if (!assetResponse || assetResponse.status === 404) {
+			const legacyImageRequest = getLegacyImageRequest(adjustedRequest);
+			if (legacyImageRequest) {
+				const compatibleResponse = await staticFile(legacyImageRequest);
+				if (compatibleResponse?.ok) assetResponse = compatibleResponse;
+			}
+		}
+
 		// Try handling with Qwik City router
 		const response =
-			(await staticFile(adjustedRequest)) ??
+			assetResponse ??
 			(await router(adjustedRequest)) ??
 			(await notFound(adjustedRequest));
 

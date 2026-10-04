@@ -370,6 +370,8 @@ jobs:
           trap 'exit 130' INT TERM
 
           require_watchdog initial
+          bash ./scripts/legacy-image-baseline.sh "$URL" "$CANDIDATE_URL" > /tmp/repaired-legacy-images
+          echo "Verified pre-existing image defects repaired by candidate: $(wc -l < /tmp/repaired-legacy-images)"
           canary_started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gcloud run services update-traffic "$PROD_SERVICE" --region="$GCP_REGION" --project="$GCP_PROJECT" --to-revisions="$REVISION=10,$PREVIOUS=90" --quiet
           ./scripts/smoke-deployment.sh "$CANDIDATE_URL"
@@ -381,7 +383,7 @@ jobs:
           # Bake: drive the public URL so roughly 10% of requests reach the candidate.
           bake_deadline=$(( $(date +%s) + CANARY_BAKE_SECONDS ))
           while (( $(date +%s) < bake_deadline )); do
-            ./scripts/smoke-deployment.sh "$URL"
+            SMOKE_REPAIRED_LEGACY_IMAGES=/tmp/repaired-legacy-images ./scripts/smoke-deployment.sh "$URL"
             sleep 30
           done
           sleep 30 # allow request logs to reach Cloud Logging
@@ -409,6 +411,11 @@ jobs:
             path="/${request_url#*://*/}"
             path="${path%%\?*}"
             if [[ ! "$path" =~ ^/(build|assets)/[A-Za-z0-9._/-]+$ ]]; then
+              continue
+            fi
+            # These were already broken in the previous revision's own HTML,
+            # and preflight proved the candidate serves identical canonical bytes.
+            if grep -Fxq "$path" /tmp/repaired-legacy-images; then
               continue
             fi
             if [[ -z "${candidate_status[$path]:-}" ]]; then
